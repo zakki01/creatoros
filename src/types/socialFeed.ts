@@ -70,7 +70,9 @@ export interface SocialPost {
   authorBadge?: string;
   discoveryBadge?: string;
   contentType: PostContentType; // 'reel' | 'shot' | 'blog'
-  content: string; // caption or excerpt
+  content: string; // legacy / combined text
+  shortExcerpt?: string; // 1-2 sentence preview for feed cards ONLY
+  fullContent?: string; // Complete text for full post reader / blog modal ONLY
   mediaUrl?: string;
   mediaType?: 'image' | 'video';
   videoUrl?: string;

@@ -1228,6 +1228,14 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       discoveryBadge: postData.discoveryBadge || (contentType === 'reel' ? '🔥 Trending' : '✨ Recommended'),
       contentType,
       content: postData.content || '',
+      shortExcerpt:
+        postData.shortExcerpt ||
+        (postData.content
+          ? postData.content.length > 120
+            ? postData.content.slice(0, 117) + '...'
+            : postData.content
+          : ''),
+      fullContent: postData.fullContent || postData.blogContent || postData.content || '',
       mediaUrl: postData.mediaUrl,
       mediaType: postData.mediaType || (contentType === 'reel' ? 'video' : 'image'),
       videoUrl: postData.videoUrl,

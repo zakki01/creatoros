@@ -143,6 +143,8 @@ export const INITIAL_SOCIAL_POSTS: SocialPost[] = [
     authorBadge: 'Sneaker Historian',
     discoveryBadge: '🔥 Trending',
     contentType: 'reel',
+    shortExcerpt: 'New sneaker drop 👟 Behind-the-scenes cutting the 4K grade on summer streetwear lookbook.',
+    fullContent: 'New sneaker drop 👟 Behind-the-scenes cutting the 4K grade on the summer streetwear lookbook. Hand-crafted beat sync and macro textile close-ups.',
     content: 'New sneaker drop 👟 Behind-the-scenes cutting the 4K grade on the summer streetwear lookbook. Hand-crafted beat sync and macro textile close-ups.',
     mediaUrl: 'https://images.unsplash.com/photo-1552346154-21d32810aba3?w=800&auto=format&fit=crop&q=80',
     mediaType: 'video',
@@ -221,6 +223,8 @@ export const INITIAL_SOCIAL_POSTS: SocialPost[] = [
     blogTitle: 'How We Built Our Latest Streetwear Collection',
     blogReadingTime: '4 min read',
     blogCoverImage: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=1200&auto=format&fit=crop&q=80',
+    shortExcerpt: 'A deep-dive into our design philosophy: merging industrial heavy-weight cottons with contemporary Mumbai youth culture.',
+    fullContent: `For the past nine months, our creative lab worked in isolation to answer one foundational question: What does authentic subcultural apparel look like when designed specifically for tropical urban climates? Engineered with 320 GSM French Terry for concrete heat and monsoon humidity.`,
     content: 'A deep-dive into our design philosophy: merging industrial heavy-weight cottons with contemporary Mumbai youth culture, collaborating with underground creators, and ditching conventional fashion seasons.',
     blogContent: `## The Anatomy of Modern Indian Streetwear
 
@@ -279,6 +283,8 @@ Every creator in our summer drop receives guaranteed escrow compensation plus re
     authorBadge: 'Verified Brand',
     discoveryBadge: 'Looking for Creators',
     contentType: 'shot',
+    shortExcerpt: '🔥 OPEN CASTING CALL: We are scouting 5 high-impact fashion and culture creators for our Summer Drop 2026.',
+    fullContent: '🔥 OPEN CASTING CALL: We are scouting 5 high-impact fashion and culture creators for our Summer Drop 2026. Looking for organic street-style reels, fit transitions, and aesthetic unboxings. Escrow funded contracts (₹35K – ₹60K per deliverable).',
     content: '🔥 OPEN CASTING CALL: We are scouting 5 high-impact fashion and culture creators for our Summer Drop 2026. Looking for organic street-style reels, fit transitions, and aesthetic unboxings. Escrow funded contracts (₹35K – ₹60K per deliverable).',
     mediaUrl: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=800&auto=format&fit=crop&q=80',
     mediaType: 'image',
@@ -334,6 +340,8 @@ Every creator in our summer drop receives guaranteed escrow compensation plus re
     blogTitle: 'The Evolution of Indian Sneaker Culture: 2020 to 2026',
     blogReadingTime: '6 min read',
     blogCoverImage: 'https://images.unsplash.com/photo-1552346154-21d32810aba3?w=1200&auto=format&fit=crop&q=80',
+    shortExcerpt: 'From chasing international resellers to building indigenous subcultural labels: how Indian collectors matured.',
+    fullContent: `Six years ago, acquiring a deadstock pair of Dunks in Mumbai required international cousins, exorbitant customs fees, and months of waiting. Today, India is one of the most vibrant creator-led street fashion hubs on the planet. Restoration studios and local customizers transformed hype into archival appreciation.`,
     content: 'From chasing international resellers to building indigenous subcultural labels: how Indian collectors matured into world-class tastemakers.',
     blogContent: `## The Shifting Pulse of South Asian Street Culture
 
@@ -374,6 +382,8 @@ Restoration studios and local customizers transformed what was once a disposable
     authorBadge: 'High Fashion & UGC',
     discoveryBadge: '✨ Recommended',
     contentType: 'shot',
+    shortExcerpt: 'Architectural minimalism in South Mumbai: clean tailoring against heritage facades.',
+    fullContent: 'Architectural minimalism in South Mumbai. A campaign series exploring clean tailoring against heritage facades for our upcoming fall collaboration portfolio.',
     content: 'Architectural minimalism in South Mumbai. A campaign series exploring clean tailoring against heritage facades for our upcoming fall collaboration portfolio.',
     mediaUrl: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&auto=format&fit=crop&q=80',
     mediaType: 'image',
@@ -403,6 +413,8 @@ Restoration studios and local customizers transformed what was once a disposable
     authorBadge: 'Youth Humour & Culture',
     discoveryBadge: 'Popular in Mumbai',
     contentType: 'reel',
+    shortExcerpt: 'POV: Explaining why your new sneakers cost more than monthly rent to parents 😂👟',
+    fullContent: 'POV: Explaining why your new sneakers cost more than monthly rent to parents 😂👟 Organic skit crossed 1.4M views in 24 hours.',
     content: 'POV: Explaining why your new sneakers cost more than monthly rent to parents 😂👟 Organic skit crossed 1.4M views in 24 hours.',
     mediaUrl: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=800&auto=format&fit=crop&q=80',
     mediaType: 'video',
@@ -434,6 +446,8 @@ Restoration studios and local customizers transformed what was once a disposable
     authorBadge: 'Athletic Wear',
     discoveryBadge: 'New Campaign',
     contentType: 'shot',
+    shortExcerpt: 'Introducing RapidDry Performance: scouting 8 fitness and run-club creators for 30-day wear tests.',
+    fullContent: 'Introducing the RapidDry Performance Series. We are commissioning 8 fitness and run-club creators for 30-day wear tests and pacing clips. Immediate sign-offs via CreatorOS Escrow.',
     content: 'Introducing the RapidDry Performance Series. We are commissioning 8 fitness and run-club creators for 30-day wear tests and pacing clips. Immediate sign-offs via CreatorOS Escrow.',
     mediaUrl: 'https://images.unsplash.com/photo-1483721074577-83201416bb5a?w=800&auto=format&fit=crop&q=80',
     mediaType: 'image',
@@ -463,6 +477,8 @@ Restoration studios and local customizers transformed what was once a disposable
     authorBadge: 'Athleisure & Fitness',
     discoveryBadge: 'Great Match',
     contentType: 'shot',
+    shortExcerpt: 'Morning 10K pacing session in Bandra with high-compression gear test.',
+    fullContent: 'Morning 10K pacing session in Bandra. High-compression seamless gear test delivered 2 days ahead of schedule for brand review.',
     content: 'Morning 10K pacing session in Bandra. High-compression seamless gear test delivered 2 days ahead of schedule for brand review.',
     mediaUrl: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=800&auto=format&fit=crop&q=80',
     mediaType: 'image',
@@ -540,6 +556,14 @@ export class SocialFeedService {
       discoveryBadge: newPostData.discoveryBadge || 'New Creator',
       contentType: newPostData.contentType || 'shot',
       content: newPostData.content || '',
+      shortExcerpt:
+        newPostData.shortExcerpt ||
+        (newPostData.content
+          ? newPostData.content.length > 120
+            ? newPostData.content.slice(0, 117) + '...'
+            : newPostData.content
+          : ''),
+      fullContent: newPostData.fullContent || newPostData.blogContent || newPostData.content || '',
       mediaUrl: newPostData.mediaUrl,
       mediaType: newPostData.mediaType || 'image',
       isReel: newPostData.isReel || newPostData.contentType === 'reel',

@@ -4,6 +4,8 @@ import { WelcomePage } from './features/auth/components/WelcomePage';
 import { AuthPage } from './features/auth/components/AuthPage';
 import { BrandLogo } from './components/common/BrandLogo';
 import { AdminAuthService } from './features/auth/services/authService';
+import { ToastProvider } from './components/ui';
+import { DesignSystemDemo } from './components/ui/DesignSystemDemo';
 
 const BusinessLayout = lazy(() =>
   import('./components/business/BusinessLayout').then((m) => ({
@@ -78,6 +80,16 @@ const MainApp: React.FC = () => {
 
   const isAdminRoute = currentPath.startsWith('/admin') || currentPath.startsWith('/secure-admin');
   const isAdminLoginRoute = currentPath === '/admin/login' || currentPath === '/secure-admin/login';
+
+  // Design System Demo Route (Phase 2 Component Verification)
+  if (
+    currentPath === '/design-system' ||
+    (typeof window !== 'undefined' &&
+      (window.location.hash === '#design-system' ||
+        window.location.search.includes('demo=design-system')))
+  ) {
+    return <DesignSystemDemo onBack={() => navigateTo('/')} />;
+  }
 
   // =========================================================================
   // 1. DEDICATED ADMIN / RESTRICTED ENCLAVE ROUTING
@@ -218,7 +230,9 @@ const MainApp: React.FC = () => {
 export default function App() {
   return (
     <StateProvider>
-      <MainApp />
+      <ToastProvider>
+        <MainApp />
+      </ToastProvider>
     </StateProvider>
   );
 }

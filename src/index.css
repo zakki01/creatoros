@@ -51,8 +51,18 @@
   border-radius: 9999px;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: #3f3f46;
+/* Safe-area insets & mobile touch targets */
+.pb-safe {
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+}
+
+.pt-safe {
+  padding-top: max(0.75rem, env(safe-area-inset-top));
+}
+
+.touch-target {
+  min-width: 44px;
+  min-height: 44px;
 }
 
 /* Glassmorphism subtle layers */

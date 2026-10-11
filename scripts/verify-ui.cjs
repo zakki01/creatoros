@@ -40,7 +40,8 @@ if (require.main === module) {
   const width = parseInt(process.argv[2] || '375');
   const height = parseInt(process.argv[3] || '812');
   const name = process.argv[4] || 'app';
-  captureBreakpoint(width, height, name)
+  const url = process.argv[5] || 'http://localhost:5173/';
+  captureBreakpoint(width, height, name, url)
     .then(res => {
       console.log(`Screenshot saved to: ${res.outputPath}`);
       if (res.errors.length) {
