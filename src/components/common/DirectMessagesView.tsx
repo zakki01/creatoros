@@ -506,8 +506,8 @@ export const DirectMessagesView: React.FC = () => {
               />
 
               <div className="min-w-0 flex-1">
-                <div className="flex items-center gap-1.5 flex-nowrap">
-                  <h3 className="text-xs sm:text-sm font-bold text-white shrink-0">
+                <div className="flex items-center gap-1.5 min-w-0">
+                  <h3 className="text-xs sm:text-sm font-bold text-white truncate">
                     {activeConv.participantName}
                   </h3>
                   {activeConv.participantBadge && (
@@ -533,9 +533,9 @@ export const DirectMessagesView: React.FC = () => {
 
             {/* Contract Context & Campaign Context Pill */}
             <div className="flex items-center gap-1 sm:gap-2 shrink-0">
-              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-xs">
+              <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-xs">
                 <FileText className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
-                <span className="font-mono text-zinc-300 font-semibold text-[11px] hidden sm:inline">
+                <span className="font-mono text-zinc-300 font-semibold text-[11px]">
                   #CR-2026-8491
                 </span>
                 <button
