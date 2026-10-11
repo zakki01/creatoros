@@ -14,11 +14,15 @@ import { SocialPost, PostComment } from '../../types/socialFeed';
 import { useAppState } from '../../context/StateContext';
 import { EmojiPicker } from './EmojiPicker';
 import { ReactionPicker } from './ReactionPicker';
+import { Avatar } from '../ui/Avatar';
+import { IconButton } from '../ui/IconButton';
 
 export interface CommentsViewProps {
   post: SocialPost;
   onClose: () => void;
 }
+
+const QUICK_REACTION_CHIPS = ['🔥 Fire', '❤️ Love', '👏 Applause', '🙌 Collab', '✨ Pure Art'];
 
 export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => {
   const {
@@ -33,18 +37,27 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
   const [replyingTo, setReplyingTo] = useState<PostComment | null>(null);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [activeReactionCommentId, setActiveReactionCommentId] = useState<string | null>(null);
-  const [expandedReplies, setExpandedReplies] = useState<Record<string, boolean>>({});
+  const [expandedReplies, setExpandedReplies] = useState<Record<string, boolean>>({
+    'c-101': true, // Keep initial reply visible for demonstration
+  });
 
   const commentInputRef = useRef<HTMLInputElement>(null);
   const commentsListRef = useRef<HTMLDivElement>(null);
 
-  // Close on Escape
+  // Close on Escape & Lock body scroll
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
     };
+
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   }, [onClose]);
 
   // Handle focus when replying
@@ -54,6 +67,16 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
     setTimeout(() => {
       commentInputRef.current?.focus();
     }, 50);
+  };
+
+  const handleQuickChip = (chip: string) => {
+    const emojiOnly = chip.split(' ')[0];
+    addPostComment(post.id, emojiOnly);
+    setTimeout(() => {
+      if (commentsListRef.current) {
+        commentsListRef.current.scrollTop = commentsListRef.current.scrollHeight;
+      }
+    }, 100);
   };
 
   const handleSubmitComment = (e?: React.FormEvent) => {
@@ -96,9 +119,9 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
 
   return (
     <>
-      {/* Subtle overlay allowing the background post to remain clearly visible */}
+      {/* Backdrop */}
       <div
-        className="fixed inset-0 z-40 bg-black/60 backdrop-blur-[3px] transition-opacity animate-in fade-in duration-200"
+        className="fixed inset-0 z-40 bg-black/70 backdrop-blur-[4px] transition-opacity animate-in fade-in duration-200"
         onClick={onClose}
         aria-hidden="true"
       />
@@ -108,23 +131,23 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
           - Mobile (<sm): Modern Bottom Sheet (rounded-t-3xl, max-h-[85dvh], dynamic content height)
       */}
       <aside
-        className="fixed z-50 flex flex-col bg-[#0c0c11]/98 border-white/[0.12] shadow-2xl backdrop-blur-2xl text-zinc-100 transition-all duration-300 overflow-hidden
+        className="fixed z-50 flex flex-col bg-[#0c0c11] border-white/[0.12] shadow-2xl backdrop-blur-2xl text-zinc-100 transition-all duration-300 overflow-hidden
           inset-x-0 bottom-0 max-h-[85dvh] rounded-t-3xl border-t
           sm:inset-y-0 sm:right-0 sm:left-auto sm:h-full sm:max-h-full sm:w-[420px] sm:rounded-none sm:border-l sm:border-t-0 animate-in slide-in-from-bottom sm:slide-in-from-right duration-250"
         role="dialog"
         aria-label="Comments"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Mobile Drag Indicator */}
+        {/* Mobile Drag Indicator Bar */}
         <div
           className="sm:hidden w-full pt-3 pb-1 flex justify-center cursor-pointer select-none"
           onClick={onClose}
         >
-          <div className="w-10 h-1 bg-white/25 rounded-full hover:bg-white/40 transition-colors" />
+          <div className="w-10 h-1.5 bg-white/20 rounded-full hover:bg-white/35 transition-colors" />
         </div>
 
         {/* Panel Header */}
-        <header className="px-4 py-3.5 border-b border-white/[0.08] flex items-center justify-between shrink-0">
+        <header className="px-5 py-3.5 border-b border-white/[0.08] flex items-center justify-between shrink-0">
           <div>
             <h2 className="text-sm font-bold text-white tracking-tight flex items-center gap-2">
               <span>Comments</span>
@@ -137,26 +160,28 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
             </p>
           </div>
 
-          <button
-            onClick={onClose}
-            className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800/60 transition-colors cursor-pointer"
+          <IconButton
             aria-label="Close comments"
+            variant="ghost"
+            size="sm"
+            onClick={onClose}
+            className="-mr-1 text-zinc-400 hover:text-white"
           >
             <X className="w-4 h-4" />
-          </button>
+          </IconButton>
         </header>
 
         {/* Comments Scrollable Feed */}
         <div
           ref={commentsListRef}
-          className="flex-1 overflow-y-auto px-4 py-3 space-y-4 focus:outline-none scrollbar-thin min-h-0"
+          className="flex-1 overflow-y-auto px-5 py-4 space-y-4 focus:outline-none scrollbar-thin min-h-0"
         >
           {comments.length === 0 ? (
             <div className="py-12 flex flex-col items-center justify-center text-center p-6 space-y-2">
-              <div className="w-10 h-10 rounded-full bg-white/[0.05] flex items-center justify-center text-zinc-500">
-                <Smile className="w-5 h-5" />
+              <div className="w-12 h-12 rounded-full bg-white/[0.05] flex items-center justify-center text-zinc-500">
+                <Smile className="w-6 h-6" />
               </div>
-              <p className="text-xs font-medium text-zinc-300">No comments yet</p>
+              <p className="text-xs font-semibold text-zinc-300">No comments yet</p>
               <p className="text-[11px] text-zinc-400">
                 Be the first to share your thoughts on this drop.
               </p>
@@ -168,13 +193,14 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
               const isRepliesOpen = expandedReplies[comment.id];
 
               return (
-                <div key={comment.id} className="group/comment space-y-2">
+                <div key={comment.id} className="group/comment space-y-2.5">
                   {/* Top-level Comment Row */}
-                  <div className="flex items-start gap-2.5 relative">
-                    <img
+                  <div className="flex items-start gap-3 relative">
+                    <Avatar
                       src={comment.authorAvatar}
-                      alt={comment.authorName}
-                      className="w-8 h-8 rounded-full object-cover shrink-0 ring-1 ring-white/10"
+                      name={comment.authorName}
+                      size="sm"
+                      verified={comment.authorVerified}
                     />
 
                     <div className="flex-1 min-w-0 pr-1">
@@ -183,21 +209,18 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
                         <span className="text-xs font-semibold text-white truncate">
                           {comment.authorName}
                         </span>
-                        {comment.authorVerified && (
-                          <ShieldCheck className="w-3 h-3 text-indigo-400 shrink-0" />
-                        )}
-                        <span className="text-[10px] text-zinc-400 font-mono">
+                        <span className="text-[10px] text-zinc-500 font-mono">
                           {comment.timestamp}
                         </span>
                       </div>
 
                       {/* Comment Content */}
-                      <p className="text-xs text-zinc-200 mt-0.5 leading-relaxed break-words">
+                      <p className="text-xs text-zinc-200 mt-1 leading-relaxed break-words font-sans">
                         {comment.content}
                       </p>
 
                       {/* Comment Actions (Like + Reply) */}
-                      <div className="flex items-center gap-3.5 mt-1.5 text-[11px] text-zinc-400">
+                      <div className="flex items-center gap-4 mt-2 text-[11px] text-zinc-400">
                         {/* Like button with reaction tray trigger */}
                         <div className="relative">
                           <button
@@ -208,7 +231,7 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
                                 activeReactionCommentId === comment.id ? null : comment.id
                               );
                             }}
-                            className={`flex items-center gap-1 transition-colors cursor-pointer ${
+                            className={`flex items-center gap-1.5 transition-colors cursor-pointer select-none ${
                               comment.likedByMe
                                 ? 'text-rose-400 font-medium'
                                 : 'hover:text-zinc-200'
@@ -241,10 +264,10 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
                           )}
                         </div>
 
-                        {/* Reply button */}
+                        {/* Reply trigger button */}
                         <button
                           onClick={() => handleStartReply(comment)}
-                          className="hover:text-zinc-200 transition-colors font-medium cursor-pointer"
+                          className="hover:text-white transition-colors cursor-pointer select-none font-medium"
                         >
                           Reply
                         </button>
@@ -252,52 +275,57 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
                     </div>
                   </div>
 
-                  {/* Inline Reply Threads (Section 4) */}
+                  {/* Threaded Replies Section */}
                   {hasReplies && (
-                    <div className="pl-9 space-y-2.5 pt-0.5">
+                    <div className="pl-9 space-y-2">
                       <button
                         onClick={() => toggleRepliesExpansion(comment.id)}
-                        className="text-[11px] text-zinc-400 hover:text-indigo-400 flex items-center gap-1.5 font-mono cursor-pointer transition-colors"
+                        className="flex items-center gap-2 text-[11px] text-indigo-400 hover:text-indigo-300 font-medium cursor-pointer transition-colors py-1 select-none"
                       >
-                        <span className="w-5 h-px bg-zinc-700" />
+                        <div className="w-5 h-px bg-white/20" />
+                        <span>
+                          {isRepliesOpen
+                            ? 'Hide replies'
+                            : `View ${replies.length} ${
+                                replies.length === 1 ? 'reply' : 'replies'
+                              }`}
+                        </span>
                         {isRepliesOpen ? (
-                          <>
-                            <ChevronUp className="w-3 h-3" />
-                            <span>Hide {replies.length} replies</span>
-                          </>
+                          <ChevronUp className="w-3 h-3" />
                         ) : (
-                          <>
-                            <ChevronDown className="w-3 h-3" />
-                            <span>View {replies.length} {replies.length === 1 ? 'reply' : 'replies'}</span>
-                          </>
+                          <ChevronDown className="w-3 h-3" />
                         )}
                       </button>
 
                       {isRepliesOpen && (
-                        <div className="space-y-3 pt-1 border-l border-white/[0.06] pl-3 ml-2">
+                        <div className="space-y-3 pt-1 border-l border-white/10 pl-3 animate-in fade-in duration-200">
                           {replies.map((reply) => (
-                            <div key={reply.id} className="flex items-start gap-2 text-left">
-                              <img
+                            <div
+                              key={reply.id}
+                              className="flex items-start gap-2.5 relative"
+                            >
+                              <Avatar
                                 src={reply.authorAvatar}
-                                alt={reply.authorName}
-                                className="w-6 h-6 rounded-full object-cover shrink-0 ring-1 ring-white/10"
+                                name={reply.authorName}
+                                size="xs"
+                                verified={reply.authorVerified}
                               />
-                              <div className="flex-1 min-w-0">
+
+                              <div className="flex-1 min-w-0 pr-1">
                                 <div className="flex items-center gap-1.5 flex-wrap">
-                                  <span className="text-[11px] font-semibold text-white">
+                                  <span className="text-xs font-semibold text-white truncate">
                                     {reply.authorName}
                                   </span>
-                                  {reply.authorVerified && (
-                                    <ShieldCheck className="w-2.5 h-2.5 text-indigo-400" />
-                                  )}
-                                  <span className="text-[9px] text-zinc-400 font-mono">
+                                  <span className="text-[10px] text-zinc-500 font-mono">
                                     {reply.timestamp}
                                   </span>
                                 </div>
-                                <p className="text-xs text-zinc-300 mt-0.5 leading-relaxed break-words">
+
+                                <p className="text-xs text-zinc-300 mt-1 leading-relaxed break-words font-sans">
                                   {reply.content}
                                 </p>
-                                <div className="flex items-center gap-3 mt-1 text-[10px] text-zinc-400">
+
+                                <div className="flex items-center gap-3 mt-1.5 text-[10px] text-zinc-400">
                                   <button
                                     onClick={() => toggleCommentLike(post.id, reply.id)}
                                     className={`flex items-center gap-1 transition-colors cursor-pointer ${
@@ -311,7 +339,7 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
                                   </button>
                                   <button
                                     onClick={() => handleStartReply(comment)}
-                                    className="hover:text-zinc-200 cursor-pointer"
+                                    className="hover:text-white cursor-pointer"
                                   >
                                     Reply
                                   </button>
@@ -331,9 +359,9 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
 
         {/* Replying indicator banner */}
         {replyingTo && (
-          <div className="px-4 py-1.5 bg-indigo-950/40 border-t border-indigo-500/20 text-[11px] text-indigo-300 flex items-center justify-between">
-            <span className="flex items-center gap-1">
-              <CornerDownRight className="w-3 h-3 text-indigo-400" />
+          <div className="px-5 py-2 bg-indigo-950/40 border-t border-indigo-500/20 text-xs text-indigo-300 flex items-center justify-between shrink-0">
+            <span className="flex items-center gap-1.5">
+              <CornerDownRight className="w-3.5 h-3.5 text-indigo-400" />
               Replying to <strong className="text-white">{replyingTo.authorName}</strong>
             </span>
             <button
@@ -341,15 +369,29 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
                 setReplyingTo(null);
                 setCommentText('');
               }}
-              className="text-zinc-400 hover:text-white"
+              className="text-zinc-400 hover:text-white p-1"
             >
               <X className="w-3.5 h-3.5" />
             </button>
           </div>
         )}
 
-        {/* Bottom Composer */}
-        <footer className="p-3 pb-5 sm:pb-3 border-t border-white/[0.08] bg-[#09090d] relative shrink-0 z-10 shadow-lg">
+        {/* Quick Reaction Chips Row */}
+        <div className="px-4 py-2 border-t border-white/[0.06] bg-[#0c0c11] flex items-center gap-1.5 overflow-x-auto no-scrollbar shrink-0">
+          {QUICK_REACTION_CHIPS.map((chip) => (
+            <button
+              key={chip}
+              type="button"
+              onClick={() => handleQuickChip(chip)}
+              className="px-2.5 py-1 rounded-full bg-white/[0.05] hover:bg-white/[0.1] active:bg-white/[0.15] text-[11px] font-medium text-zinc-300 hover:text-white border border-white/[0.08] transition-colors whitespace-nowrap cursor-pointer select-none"
+            >
+              {chip}
+            </button>
+          ))}
+        </div>
+
+        {/* Bottom Sticky Composer with Safe Area Insets */}
+        <footer className="p-3 sm:p-4 border-t border-white/[0.08] bg-[#09090d]/95 backdrop-blur-md pb-safe relative shrink-0 z-10 shadow-xl">
           {showEmojiPicker && (
             <div className="absolute bottom-full right-3 mb-2 z-50">
               <EmojiPicker
@@ -367,10 +409,11 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
             onSubmit={handleSubmitComment}
             className="flex items-center gap-2"
           >
-            <img
+            <Avatar
               src={userProfile.avatarUrl}
-              alt={userProfile.name}
-              className="w-7 h-7 rounded-full object-cover shrink-0 ring-1 ring-white/10 hidden sm:block"
+              name={userProfile.name}
+              size="sm"
+              className="hidden sm:inline-flex shrink-0"
             />
 
             <div className="flex-1 relative flex items-center">
@@ -384,13 +427,13 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
                     ? `Reply to @${replyingTo.authorHandle.replace('@', '')}...`
                     : 'Add a comment...'
                 }
-                className="w-full bg-zinc-900 border border-white/[0.12] rounded-xl pl-3.5 pr-10 py-2.5 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-indigo-500/80 transition-all font-sans"
+                className="w-full bg-zinc-900 border border-white/[0.12] rounded-xl pl-3.5 pr-10 py-2.5 min-h-[44px] text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-indigo-500/80 transition-all font-sans"
               />
 
               <button
                 type="button"
                 onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-                className="absolute right-2 p-1.5 text-zinc-400 hover:text-amber-300 transition-colors cursor-pointer"
+                className="absolute right-1.5 min-w-[36px] min-h-[36px] flex items-center justify-center text-zinc-400 hover:text-amber-300 transition-colors cursor-pointer"
                 title="Insert emoji"
                 aria-label="Insert emoji"
               >
@@ -401,10 +444,10 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
             <button
               type="submit"
               disabled={!commentText.trim()}
-              className="px-3.5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 disabled:hover:bg-indigo-600 text-white transition-all cursor-pointer flex items-center justify-center shrink-0 active:scale-95 shadow-sm shadow-indigo-600/30"
+              className="min-w-[44px] min-h-[44px] rounded-xl bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 disabled:hover:bg-indigo-600 text-white transition-all cursor-pointer flex items-center justify-center shrink-0 active:scale-95 shadow-sm shadow-indigo-600/30"
               aria-label="Send comment"
             >
-              <Send className="w-3.5 h-3.5" />
+              <Send className="w-4 h-4" />
             </button>
           </form>
         </footer>
