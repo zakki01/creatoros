@@ -218,7 +218,7 @@ const MainApp: React.FC = () => {
   // Authenticated Public Role -> Creator or Brand Layout
   return (
     <Suspense fallback={<AppLoadingScreen />}>
-      {role === 'business' ? (
+      {role === 'business' || currentPath.startsWith('/brand') ? (
         <BusinessLayout />
       ) : (
         <CreatorLayout />

@@ -27,6 +27,7 @@ import {
   Pin,
   Camera,
   BookOpen,
+  FileText,
 } from 'lucide-react';
 import { useAppState } from '../../context/StateContext';
 import { Card } from '../ui/Card';
@@ -285,6 +286,17 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
                 >
                   <MessageSquare className="w-3.5 h-3.5 text-zinc-400" />
                   <span>Message</span>
+                </button>
+
+                <button
+                  onClick={() => {
+                    window.history.pushState({}, '', `/brand/contracts/new?creatorId=${creator.id}`);
+                    window.dispatchEvent(new PopStateEvent('popstate'));
+                  }}
+                  className="flex-1 sm:flex-none min-h-[44px] px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold flex items-center justify-center gap-1.5 shadow-sm shadow-indigo-600/30 transition-all cursor-pointer active:scale-95"
+                >
+                  <FileText className="w-3.5 h-3.5" />
+                  <span>+ Create Contract</span>
                 </button>
 
                 <button

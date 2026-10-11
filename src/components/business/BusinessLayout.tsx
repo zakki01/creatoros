@@ -12,6 +12,7 @@ import {
   MessageSquare,
   ShieldCheck,
   Compass,
+  FileText,
 } from 'lucide-react';
 import { BrandLogo } from '../common/BrandLogo';
 import { useAppState } from '../../context/StateContext';
@@ -33,12 +34,44 @@ import { PaymentsWorkspace } from './PaymentsWorkspace';
 import { BrandAdminWorkspace } from './BrandAdminWorkspace';
 import { SettingsWorkspace } from './SettingsWorkspace';
 import { CampaignCreationModal } from './CampaignCreationModal';
+import { ContractsWorkspace } from './ContractsWorkspace';
 
 export const BusinessLayout: React.FC = () => {
   const { submissions, attentionItems, totalUnreadMessages } = useAppState();
 
-  const [activeTab, setActiveTab] = useState('home');
+  // Parse path & params for /brand/contracts
+  const getInitialContractsState = () => {
+    if (typeof window === 'undefined') {
+      return { tab: 'home', mode: 'list' as const, contractId: null, creatorId: null, campaignId: null };
+    }
+    const path = window.location.pathname;
+    const urlParams = new URLSearchParams(window.location.search);
+    const creatorId = urlParams.get('creatorId');
+    const campaignId = urlParams.get('campaignId');
+
+    if (path.startsWith('/brand/contracts')) {
+      if (path === '/brand/contracts/new' || creatorId) {
+        return { tab: 'contracts', mode: 'new' as const, contractId: null, creatorId, campaignId };
+      }
+      const match = path.match(/\/brand\/contracts\/([^/]+)/);
+      if (match && match[1] && match[1] !== 'new') {
+        return { tab: 'contracts', mode: 'detail' as const, contractId: match[1], creatorId, campaignId };
+      }
+      return { tab: 'contracts', mode: 'list' as const, contractId: null, creatorId, campaignId };
+    }
+    return { tab: 'home', mode: 'list' as const, contractId: null, creatorId, campaignId };
+  };
+
+  const initialContractsState = getInitialContractsState();
+  const [activeTab, setActiveTab] = useState(initialContractsState.tab);
   const [activeCampaignId, setActiveCampaignId] = useState<string | null>(null);
+  const [contractWorkspaceParams, setContractWorkspaceParams] = useState({
+    contractId: initialContractsState.contractId,
+    creatorId: initialContractsState.creatorId,
+    campaignId: initialContractsState.campaignId,
+    mode: initialContractsState.mode,
+  });
+
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(
     () => typeof window !== 'undefined' && window.innerWidth < 1024
   );
@@ -53,6 +86,7 @@ export const BusinessLayout: React.FC = () => {
   const primaryNavigationItems = [
     { id: 'home', label: 'Home', icon: LayoutDashboard, badge: activeAttentionCount > 0 ? activeAttentionCount : undefined },
     { id: 'campaigns', label: 'Campaigns', icon: Layers },
+    { id: 'contracts', label: 'Contracts', icon: FileText },
     { id: 'creators', label: 'Creators', icon: Users },
     { id: 'discover', label: 'Discover', icon: Compass },
     { id: 'content', label: 'Content', icon: Film, badge: pendingApprovalsCount > 0 ? pendingApprovalsCount : undefined },
@@ -66,9 +100,33 @@ export const BusinessLayout: React.FC = () => {
     { id: 'settings', label: 'Settings', icon: Settings },
   ];
 
-  const handleNavigate = (tab: string) => {
+  const handleNavigate = (
+    tab: string,
+    params?: {
+      contractId?: string | null;
+      creatorId?: string | null;
+      campaignId?: string | null;
+      mode?: 'list' | 'new' | 'detail';
+    }
+  ) => {
     setActiveTab(tab);
     setActiveCampaignId(null);
+    if (tab === 'contracts') {
+      setContractWorkspaceParams({
+        contractId: params?.contractId ?? null,
+        creatorId: params?.creatorId ?? null,
+        campaignId: params?.campaignId ?? null,
+        mode: params?.mode ?? (params?.contractId ? 'detail' : params?.creatorId ? 'new' : 'list'),
+      });
+      if (typeof window !== 'undefined') {
+        const path = params?.contractId
+          ? `/brand/contracts/${params.contractId}`
+          : params?.mode === 'new' || params?.creatorId
+          ? '/brand/contracts/new'
+          : '/brand/contracts';
+        window.history.pushState({}, '', path);
+      }
+    }
   };
 
   const handleOpenCampaign = (campaignId: string) => {
@@ -210,6 +268,16 @@ export const BusinessLayout: React.FC = () => {
             />
           )}
 
+          {activeTab === 'contracts' && (
+            <ContractsWorkspace
+              initialContractId={contractWorkspaceParams.contractId}
+              initialCreatorId={contractWorkspaceParams.creatorId}
+              initialCampaignId={contractWorkspaceParams.campaignId}
+              initialMode={contractWorkspaceParams.mode}
+              onNavigateToMessages={(creatorId) => handleNavigate('messages')}
+            />
+          )}
+
           {activeTab === 'creators' && <CreatorDiscovery />}
 
           {activeTab === 'discover' && <DiscoverView />}
@@ -265,7 +333,7 @@ export const BusinessLayout: React.FC = () => {
         items={[
           { id: 'home', label: 'Home', icon: LayoutDashboard },
           { id: 'campaigns', label: 'Campaigns', icon: Layers },
-          { id: 'creators', label: 'Creators', icon: Users },
+          { id: 'contracts', label: 'Contracts', icon: FileText },
           { id: 'discover', label: 'Discover', icon: Compass },
           {
             id: 'messages',

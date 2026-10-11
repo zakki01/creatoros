@@ -14,6 +14,7 @@ import {
   Search,
   Command,
   Zap,
+  FileText,
 } from 'lucide-react';
 import { BrandLogo } from '../common/BrandLogo';
 import { useAppState } from '../../context/StateContext';
@@ -24,6 +25,7 @@ import { AdminModerationView } from './AdminModerationView';
 import { AdminReportsView } from './AdminReportsView';
 import { AdminSettingsView } from './AdminSettingsView';
 import { AdminLogsView } from './AdminLogsView';
+import { AdminContractsGovernance } from '../contracts/AdminContractsGovernance';
 import { DiscoverView } from '../common/DiscoverView';
 import { CommandPalette } from '../common/CommandPalette';
 import { NotificationDrawer } from '../common/NotificationDrawer';
@@ -36,6 +38,7 @@ interface SuperAdminLayoutProps {
 
 const getTabFromPath = (path: string): string => {
   const p = path.toLowerCase();
+  if (p.includes('/contracts')) return 'contracts';
   if (p.includes('/users') || p.includes('/creators') || p.includes('/brands')) return 'users';
   if (p.includes('/moderation') || p.includes('/content')) return 'moderation';
   if (p.includes('/reports')) return 'reports';
@@ -47,6 +50,7 @@ const getTabFromPath = (path: string): string => {
 
 const getPathFromTab = (tab: string): string => {
   switch (tab) {
+    case 'contracts': return '/admin/contracts';
     case 'users': return '/admin/users';
     case 'moderation': return '/admin/moderation';
     case 'reports': return '/admin/reports';
@@ -99,6 +103,7 @@ export const SuperAdminLayout: React.FC<SuperAdminLayoutProps> = ({
 
   const navigationItems = [
     { id: 'overview', label: 'Command Center', icon: Activity },
+    { id: 'contracts', label: 'Commercial Contracts', icon: FileText },
     { id: 'users', label: 'User Governance', icon: Users },
     {
       id: 'moderation',
@@ -283,6 +288,7 @@ export const SuperAdminLayout: React.FC<SuperAdminLayoutProps> = ({
         {/* Main Content Area */}
         <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto space-y-8">
           {activeTab === 'overview' && <AdminOverviewView onNavigateTab={handleTabChange} />}
+          {activeTab === 'contracts' && <AdminContractsGovernance />}
           {activeTab === 'users' && <AdminUsersView />}
           {activeTab === 'moderation' && <AdminModerationView />}
           {activeTab === 'reports' && <AdminReportsView />}

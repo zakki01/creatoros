@@ -352,8 +352,25 @@ export const DirectMessagesView: React.FC = () => {
               </div>
             </div>
 
-            {/* Campaign Context Pill & Header Actions */}
+            {/* Contract Context & Campaign Context Pill */}
             <div className="flex items-center gap-1 sm:gap-2 shrink-0">
+              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-xs">
+                <FileText className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
+                <span className="font-mono text-zinc-300 font-semibold text-[11px] hidden sm:inline">
+                  #CR-2026-8491
+                </span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    window.history.pushState({}, '', '/brand/contracts');
+                    window.dispatchEvent(new PopStateEvent('popstate'));
+                  }}
+                  className="text-[10px] text-indigo-400 hover:text-indigo-300 font-semibold underline ml-0.5 cursor-pointer"
+                >
+                  Open Contract
+                </button>
+              </div>
+
               {activeConv.campaignContext && (
                 <div className="hidden 2xl:flex items-center gap-2 px-2.5 py-1 rounded-xl bg-white/[0.04] border border-white/[0.08] text-xs">
                   <div className="flex items-center gap-1 text-zinc-200 font-medium max-w-[140px] truncate">

@@ -15,6 +15,7 @@ import {
   Settings,
   Briefcase,
   Sparkles,
+  FileText,
 } from 'lucide-react';
 import { BrandLogo } from '../common/BrandLogo';
 import { useAppState } from '../../context/StateContext';
@@ -37,6 +38,7 @@ import { CreatorPassport } from './CreatorPassport';
 import { CreatorAdminWorkspace } from './CreatorAdminWorkspace';
 import { CreatorSubmissionModal } from './CreatorSubmissionModal';
 import { CreatorAiStudio } from './CreatorAiStudio';
+import { CreatorContractPortal } from '../contracts/CreatorContractPortal';
 
 const CreatorLiveStudio = React.lazy(() =>
   import('./live/CreatorLiveStudio').then((m) => ({ default: m.CreatorLiveStudio }))
@@ -61,6 +63,7 @@ export const CreatorLayout: React.FC = () => {
   const primaryNavigationItems = [
     { id: 'home', label: 'Home', icon: Home },
     { id: 'opportunities', label: 'Opportunities', icon: Briefcase, badge: pendingOpportunitiesCount > 0 ? pendingOpportunitiesCount : undefined },
+    { id: 'contracts', label: 'Contracts', icon: FileText },
     { id: 'campaigns', label: 'Campaigns', icon: Layers },
     { id: 'content', label: 'Content', icon: Film },
     { id: 'discover', label: 'Discover', icon: Compass },
@@ -198,6 +201,10 @@ export const CreatorLayout: React.FC = () => {
           )}
 
           {activeTab === 'opportunities' && <CreatorOpportunities />}
+
+          {activeTab === 'contracts' && (
+            <CreatorContractPortal onOpenMessages={() => handleNavigate('messages')} />
+          )}
 
           {activeTab === 'campaigns' && (
             <CreatorCampaigns

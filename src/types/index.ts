@@ -333,4 +333,5 @@ export * from './rbac';
 export * from './socialFeed';
 export * from './messaging';
 export * from './trustSafety';
+export * from './contract';
 

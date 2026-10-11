@@ -7,6 +7,7 @@ import {
   Check,
   ShieldCheck,
   Plus,
+  FileText,
 } from 'lucide-react';
 import { useAppState } from '../../context/StateContext';
 import { OutreachItem } from '../../types';
@@ -262,13 +263,30 @@ export const CampaignDetail: React.FC<CampaignDetailProps> = ({
                   </div>
                 </div>
 
-                <div className="text-right">
-                  <span className="text-xs font-bold font-mono text-zinc-200">
-                    ₹{(creator.estimatedRate / 1000).toFixed(0)}k
-                  </span>
-                  <span className="text-[10px] text-emerald-400 block font-mono">
-                    {creator.reliabilityMetrics.onTimeDelivery}% on-time
-                  </span>
+                <div className="flex flex-col items-end gap-1.5 shrink-0">
+                  <div className="text-right">
+                    <span className="text-xs font-bold font-mono text-zinc-200">
+                      ${(creator.estimatedRate).toLocaleString()}
+                    </span>
+                    <span className="text-[10px] text-emerald-400 block font-mono">
+                      {creator.reliabilityMetrics.onTimeDelivery}% on-time
+                    </span>
+                  </div>
+
+                  <button
+                    onClick={() => {
+                      window.history.pushState(
+                        {},
+                        '',
+                        `/brand/contracts/new?creatorId=${creator.id}&campaignId=${campaign.id}`
+                      );
+                      window.dispatchEvent(new PopStateEvent('popstate'));
+                    }}
+                    className="min-h-[36px] px-2.5 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-[10px] flex items-center gap-1 transition-all cursor-pointer shadow-sm shadow-indigo-600/30"
+                  >
+                    <FileText className="w-3 h-3" />
+                    <span>Create Contract</span>
+                  </button>
                 </div>
               </div>
             ))}
