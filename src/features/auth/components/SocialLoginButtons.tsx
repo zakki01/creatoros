@@ -18,7 +18,7 @@ export const SocialLoginButtons: React.FC<SocialLoginButtonsProps> = ({
         onClick={() => onSelectProvider('google')}
         aria-label="Continue with Google"
         title="Continue with Google"
-        className={`flex-1 h-10 rounded-xl border border-zinc-800/90 bg-zinc-900/70 hover:bg-zinc-800/90 hover:border-zinc-700/80 flex items-center justify-center transition-all focus:outline-none focus:ring-2 focus:ring-sky-500/30 active:scale-95 group ${
+        className={`flex-1 min-h-[44px] h-11 min-w-[44px] rounded-xl border border-white/[0.08] bg-zinc-900/80 hover:bg-zinc-800 hover:border-white/20 flex items-center justify-center transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500/50 active:scale-95 group ${
           disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:shadow-md'
         }`}
       >
@@ -49,7 +49,7 @@ export const SocialLoginButtons: React.FC<SocialLoginButtonsProps> = ({
         onClick={() => onSelectProvider('facebook')}
         aria-label="Continue with Facebook"
         title="Continue with Facebook"
-        className={`flex-1 h-10 rounded-xl border border-zinc-800/90 bg-zinc-900/70 hover:bg-zinc-800/90 hover:border-zinc-700/80 flex items-center justify-center transition-all focus:outline-none focus:ring-2 focus:ring-sky-500/30 active:scale-95 group ${
+        className={`flex-1 min-h-[44px] h-11 min-w-[44px] rounded-xl border border-white/[0.08] bg-zinc-900/80 hover:bg-zinc-800 hover:border-white/20 flex items-center justify-center transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500/50 active:scale-95 group ${
           disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:shadow-md'
         }`}
       >
@@ -65,7 +65,7 @@ export const SocialLoginButtons: React.FC<SocialLoginButtonsProps> = ({
         onClick={() => onSelectProvider('apple')}
         aria-label="Continue with Apple"
         title="Continue with Apple"
-        className={`flex-1 h-10 rounded-xl border border-zinc-800/90 bg-zinc-900/70 hover:bg-zinc-800/90 hover:border-zinc-700/80 flex items-center justify-center transition-all focus:outline-none focus:ring-2 focus:ring-sky-500/30 active:scale-95 group ${
+        className={`flex-1 min-h-[44px] h-11 min-w-[44px] rounded-xl border border-white/[0.08] bg-zinc-900/80 hover:bg-zinc-800 hover:border-white/20 flex items-center justify-center transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500/50 active:scale-95 group ${
           disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:shadow-md'
         }`}
       >

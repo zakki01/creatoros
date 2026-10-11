@@ -219,7 +219,7 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
               <>
                 <button
                   onClick={handleShare}
-                  className="flex-1 sm:flex-none px-3.5 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-xs text-zinc-200 font-medium flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                  className="flex-1 sm:flex-none min-h-[44px] px-4 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-xs text-zinc-200 font-medium flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                 >
                   <Share2 className="w-3.5 h-3.5 text-zinc-400" />
                   <span>{copied ? 'Copied Link!' : 'Share Profile'}</span>
@@ -227,17 +227,17 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
 
                 <Button
                   variant="outline"
-                  size="sm"
+                  size="md"
                   onClick={() => setIsAgeModalOpen(true)}
                   leftIcon={<ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />}
-                  className="flex-1 sm:flex-none text-xs border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/10 cursor-pointer"
+                  className="flex-1 sm:flex-none min-h-[44px] text-xs border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/10 cursor-pointer"
                 >
                   {ageVerification.ageVerified ? '18+ Verified' : 'Verify Age'}
                 </Button>
 
                 <button
                   onClick={() => setIsAddShowcaseOpen(true)}
-                  className="flex-1 sm:flex-none px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold flex items-center justify-center gap-1.5 shadow-sm shadow-indigo-600/30 transition-all cursor-pointer"
+                  className="flex-1 sm:flex-none min-h-[44px] px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold flex items-center justify-center gap-1.5 shadow-sm shadow-indigo-600/30 transition-all cursor-pointer"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   <span>+ Add Work</span>
@@ -248,7 +248,7 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
                 {connectionState === 'connected' ? (
                   <button
                     disabled
-                    className="flex-1 sm:flex-none px-4 py-2 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs font-semibold flex items-center justify-center gap-1.5"
+                    className="flex-1 sm:flex-none min-h-[44px] px-4 py-2.5 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs font-semibold flex items-center justify-center gap-1.5"
                   >
                     <Check className="w-4 h-4" />
                     <span>Connected ✓</span>
@@ -256,7 +256,7 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
                 ) : connectionState === 'pending' ? (
                   <button
                     disabled
-                    className="flex-1 sm:flex-none px-4 py-2 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-400 text-xs font-semibold flex items-center justify-center gap-1.5"
+                    className="flex-1 sm:flex-none min-h-[44px] px-4 py-2.5 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-400 text-xs font-semibold flex items-center justify-center gap-1.5"
                   >
                     <Clock className="w-4 h-4" />
                     <span>Pending</span>
@@ -264,7 +264,7 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
                 ) : connectionState === 'active_campaign' ? (
                   <button
                     disabled
-                    className="flex-1 sm:flex-none px-4 py-2 rounded-xl bg-blue-500/15 border border-blue-500/30 text-blue-400 text-xs font-semibold flex items-center justify-center gap-1.5"
+                    className="flex-1 sm:flex-none min-h-[44px] px-4 py-2.5 rounded-xl bg-blue-500/15 border border-blue-500/30 text-blue-400 text-xs font-semibold flex items-center justify-center gap-1.5"
                   >
                     <Sparkles className="w-4 h-4" />
                     <span>Active Campaign</span>
@@ -272,7 +272,7 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
                 ) : (
                   <button
                     onClick={() => setIsConnectModalOpen(true)}
-                    className="flex-1 sm:flex-none px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold flex items-center justify-center gap-1.5 shadow-sm shadow-indigo-600/30 transition-all cursor-pointer active:scale-95"
+                    className="flex-1 sm:flex-none min-h-[44px] px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold flex items-center justify-center gap-1.5 shadow-sm shadow-indigo-600/30 transition-all cursor-pointer active:scale-95"
                   >
                     <UserPlus className="w-4 h-4" />
                     <span>Connect</span>
@@ -281,7 +281,7 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
 
                 <button
                   onClick={handleMessageClick}
-                  className="flex-1 sm:flex-none px-3.5 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-white/[0.08] text-zinc-200 text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                  className="flex-1 sm:flex-none min-h-[44px] px-4 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-white/[0.08] text-zinc-200 text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer"
                 >
                   <MessageSquare className="w-3.5 h-3.5 text-zinc-400" />
                   <span>Message</span>
@@ -289,8 +289,9 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
 
                 <button
                   onClick={handleShare}
-                  className="p-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 hover:text-white transition-colors cursor-pointer"
+                  className="min-w-[44px] min-h-[44px] rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 hover:text-white transition-colors cursor-pointer flex items-center justify-center"
                   title="Share profile link"
+                  aria-label="Share profile link"
                 >
                   <Share2 className="w-4 h-4" />
                 </button>
