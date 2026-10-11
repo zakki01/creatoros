@@ -1,0 +1,23 @@
+{
+  "name": "CreatorOS — Influencer Operating System",
+  "short_name": "CreatorOS",
+  "description": "AI-powered creator workspace for campaigns, content & live creation.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#09090b",
+  "theme_color": "#09090b",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/creatoros-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
