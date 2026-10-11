@@ -21,6 +21,7 @@ import { NotificationDrawer } from '../common/NotificationDrawer';
 import { DirectMessagesView } from '../common/DirectMessagesView';
 import { SocialFeedView } from '../common/SocialFeedView';
 import { DiscoverView } from '../common/DiscoverView';
+import { MobileBottomNav } from '../common/MobileBottomNav';
 import { ProUpgradeModal } from '../common/ProUpgradeModal';
 import { BusinessOverview } from './BusinessOverview';
 import { CampaignsList } from './CampaignsList';
@@ -38,7 +39,9 @@ export const BusinessLayout: React.FC = () => {
 
   const [activeTab, setActiveTab] = useState('home');
   const [activeCampaignId, setActiveCampaignId] = useState<string | null>(null);
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(
+    () => typeof window !== 'undefined' && window.innerWidth < 1024
+  );
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [isCreateCampaignOpen, setIsCreateCampaignOpen] = useState(false);
@@ -257,46 +260,24 @@ export const BusinessLayout: React.FC = () => {
       {/* Pro Tier & 7-Day Trial Modal */}
       <ProUpgradeModal />
 
-      {/* Mobile Bottom Navigation Bar (Thumb Zone / Serial Position Effect) */}
-      <nav
-        aria-label="Mobile navigation"
-        className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#070709]/95 backdrop-blur-xl border-t border-white/[0.08] px-3 py-1.5 flex items-center justify-around"
-      >
-        {[
+      {/* Mobile Bottom Navigation Bar (Fitts's Law 44px + Safe Area Insets) */}
+      <MobileBottomNav
+        items={[
           { id: 'home', label: 'Home', icon: LayoutDashboard },
           { id: 'campaigns', label: 'Campaigns', icon: Layers },
           { id: 'creators', label: 'Creators', icon: Users },
           { id: 'discover', label: 'Discover', icon: Compass },
-          { id: 'messages', label: 'Messages', icon: MessageSquare, badge: totalUnreadMessages > 0 ? totalUnreadMessages : undefined },
-        ].map((item) => {
-          const Icon = item.icon;
-          const isActive = activeTab === item.id;
-          return (
-            <button
-              key={item.id}
-              onClick={() => handleNavigate(item.id)}
-              className={`relative flex flex-col items-center justify-center min-w-[54px] min-h-[44px] py-1 rounded-xl transition-all cursor-pointer ${
-                isActive ? 'text-indigo-400 font-semibold' : 'text-zinc-400 hover:text-zinc-200'
-              }`}
-            >
-              <div className="relative">
-                <Icon className={`w-5 h-5 transition-transform ${isActive ? 'scale-110' : ''}`} />
-                {typeof item.badge === 'number' && item.badge > 0 && (
-                  <span className="absolute -top-1 -right-2 min-w-[15px] h-3.5 px-1 rounded-full bg-indigo-500 text-[9px] font-bold text-white flex items-center justify-center ring-2 ring-[#070709]">
-                    {item.badge}
-                  </span>
-                )}
-              </div>
-              <span className={`text-[10px] tracking-tight mt-0.5 ${isActive ? 'text-white font-medium' : 'text-zinc-400'}`}>
-                {item.label}
-              </span>
-              {isActive && (
-                <span className="w-1 h-1 rounded-full bg-indigo-400 mt-0.5" />
-              )}
-            </button>
-          );
-        })}
-      </nav>
+          {
+            id: 'messages',
+            label: 'Messages',
+            icon: MessageSquare,
+            badge: totalUnreadMessages > 0 ? totalUnreadMessages : undefined,
+          },
+        ]}
+        activeTab={activeTab}
+        onNavigate={handleNavigate}
+        accentColor="indigo"
+      />
     </div>
   );
 };

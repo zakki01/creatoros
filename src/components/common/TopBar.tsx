@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Bell,
   Search,
   Command,
-  ChevronDown,
   RotateCcw,
   ShieldCheck,
   Sparkles,
@@ -13,7 +12,9 @@ import {
   User,
 } from 'lucide-react';
 import { useAppState } from '../../context/StateContext';
-import { Tooltip } from '../ui/Tooltip';
+import { IconButton } from '../ui/IconButton';
+import { Avatar } from '../ui/Avatar';
+import { Popover } from '../ui/Popover';
 
 interface TopBarProps {
   onOpenCommandPalette: () => void;
@@ -40,24 +41,23 @@ export const TopBar: React.FC<TopBarProps> = ({
     totalUnreadMessages,
   } = useAppState();
 
-  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
-
   const unreadNotificationsCount = notifications.filter(
     (n) => !n.read && (n.targetRole === role || n.targetRole === 'business')
   ).length;
 
   return (
-    <header className="sticky top-0 z-30 w-full h-14 border-b border-white/[0.08] bg-[#070709]/85 backdrop-blur-xl px-3 sm:px-6 flex items-center justify-between gap-2 sm:gap-4">
-      {/* Left: Current Workspace context */}
+    <header className="sticky top-0 z-30 w-full h-14 border-b border-white/[0.08] bg-[#070709]/90 backdrop-blur-xl px-3 sm:px-6 flex items-center justify-between gap-2 sm:gap-4 shrink-0">
+      {/* Left: Workspace Identifier */}
       <div className="flex items-center gap-2 sm:gap-3 min-w-0">
         <div className="flex items-center gap-2 min-w-0">
-          <img
+          <Avatar
             src={workspace.avatarUrl}
-            alt={workspace.name}
-            className="w-6 h-6 rounded-md object-cover ring-1 ring-zinc-700/60 shrink-0"
+            name={workspace.name}
+            size="sm"
+            className="shrink-0"
           />
           <div className="flex items-center gap-1.5 text-xs min-w-0">
-            <span className="font-semibold text-zinc-100 truncate max-w-[110px] sm:max-w-[200px]">
+            <span className="font-semibold text-zinc-100 truncate max-w-[120px] sm:max-w-[200px]">
               {workspace.name}
             </span>
             <span className="hidden sm:inline-block text-[10px] text-zinc-500 uppercase tracking-wider font-mono shrink-0">
@@ -68,8 +68,9 @@ export const TopBar: React.FC<TopBarProps> = ({
 
         {/* Global Search / Command Bar Trigger (Desktop) */}
         <button
+          type="button"
           onClick={onOpenCommandPalette}
-          className="hidden md:flex items-center gap-2 ml-3 px-2.5 py-1.5 rounded-lg bg-zinc-900/70 hover:bg-zinc-800/80 border border-zinc-800 hover:border-zinc-700 text-zinc-400 text-xs transition-all duration-200 w-52 lg:w-60 justify-between cursor-pointer"
+          className="hidden lg:flex items-center gap-2 ml-3 px-2.5 py-1.5 rounded-xl bg-zinc-900/80 hover:bg-zinc-800/90 border border-white/[0.08] hover:border-white/[0.14] text-zinc-400 text-xs transition-all duration-150 w-52 lg:w-60 justify-between cursor-pointer select-none"
         >
           <div className="flex items-center gap-2">
             <Search className="w-3.5 h-3.5 text-zinc-500" />
@@ -81,35 +82,36 @@ export const TopBar: React.FC<TopBarProps> = ({
           </div>
         </button>
 
-        {/* Global Search Trigger (Mobile) */}
-        <Tooltip content="Search">
-          <button
+        {/* Mobile & Tablet Search Icon Button */}
+        <div className="flex lg:hidden">
+          <IconButton
+            aria-label="Search or jump to"
+            variant="ghost"
+            size="sm"
             onClick={onOpenCommandPalette}
-            className="flex md:hidden p-1.5 rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/80 transition-all duration-200 cursor-pointer"
-            aria-label="Search"
           >
-            <Search className="w-4 h-4" />
-          </button>
-        </Tooltip>
+            <Search className="w-4 h-4 text-zinc-400" />
+          </IconButton>
+        </div>
       </div>
 
-      {/* Right Actions */}
-      <div className="flex items-center gap-1 sm:gap-2.5 shrink-0">
-        {/* Immutable Account Badge - desktop only to prevent mobile crowding */}
+      {/* Right: Actions & Profile */}
+      <div className="flex items-center gap-1 sm:gap-2 shrink-0">
+        {/* Immutable Account Badge - desktop only to preserve mobile and tablet breathing room */}
         {role === 'super_admin' ? (
-          <div className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-500/15 border border-rose-500/30 text-rose-300 text-xs font-medium">
+          <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-500/15 border border-rose-500/30 text-rose-300 text-xs font-medium">
             <ShieldCheck className="w-3.5 h-3.5 text-rose-400" />
             <span>Super Admin</span>
             <span className="w-1.5 h-1.5 rounded-full bg-rose-400 animate-pulse ml-0.5" />
           </div>
         ) : role === 'business' ? (
-          <div className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/25 text-indigo-300 text-xs font-medium">
+          <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/25 text-indigo-300 text-xs font-medium">
             <ShieldCheck className="w-3.5 h-3.5 text-indigo-400" />
             <span>Verified Business</span>
             <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse ml-0.5" />
           </div>
         ) : (
-          <div className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-300 text-xs font-medium">
+          <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-300 text-xs font-medium">
             <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
             <span>Creator Account</span>
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse ml-0.5" />
@@ -118,8 +120,9 @@ export const TopBar: React.FC<TopBarProps> = ({
 
         {/* 7-Day Pro Trial Countdown Pill */}
         <button
+          type="button"
           onClick={() => setIsProModalOpen(true)}
-          className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-medium hover:bg-amber-500/20 transition-all duration-200 cursor-pointer"
+          className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-medium hover:bg-amber-500/20 transition-all duration-150 cursor-pointer select-none"
           title="Manage Subscription"
           aria-label="Manage Subscription"
         >
@@ -127,108 +130,106 @@ export const TopBar: React.FC<TopBarProps> = ({
           <span>Pro Trial • {trialDaysLeft}d left</span>
         </button>
 
-        {/* Direct Messages Shortcut Button */}
+        {/* Direct Messages Shortcut (Desktop) */}
         {onOpenMessages && (
-          <Tooltip content="Direct Messages">
-            <button
-              onClick={onOpenMessages}
-              className="relative p-2 rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/80 transition-all duration-200 cursor-pointer"
+          <div className="hidden sm:flex">
+            <IconButton
               aria-label="Direct Messages"
+              variant="ghost"
+              size="sm"
+              onClick={onOpenMessages}
+              badge={totalUnreadMessages > 0 ? totalUnreadMessages : undefined}
+              badgeColor="primary"
             >
-              <MessageSquare className="w-4 h-4" />
-              {totalUnreadMessages > 0 && (
-                <span className="absolute top-1 right-1 min-w-[14px] h-3.5 px-1 rounded-full bg-indigo-500 text-[9px] font-bold text-white flex items-center justify-center ring-2 ring-zinc-950">
-                  {totalUnreadMessages}
-                </span>
-              )}
-            </button>
-          </Tooltip>
+              <MessageSquare className="w-4 h-4 text-zinc-400" />
+            </IconButton>
+          </div>
         )}
 
         {/* Notifications Icon Button */}
-        <Tooltip content="Notifications">
-          <button
-            onClick={onOpenNotifications}
-            className="relative p-2 rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/80 transition-all duration-200 cursor-pointer"
-            aria-label="Notifications"
-          >
-            <Bell className="w-4 h-4" />
-            {unreadNotificationsCount > 0 && (
-              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-indigo-500 ring-2 ring-zinc-950" />
-            )}
-          </button>
-        </Tooltip>
+        <IconButton
+          aria-label="Notifications"
+          variant="ghost"
+          size="sm"
+          onClick={onOpenNotifications}
+          badge={unreadNotificationsCount > 0 ? true : undefined}
+          badgeColor="primary"
+        >
+          <Bell className="w-4 h-4 text-zinc-400" />
+        </IconButton>
 
-        {/* User Profile Avatar & Menu */}
-        <div className="relative">
-          <button
-            onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
-            className="flex items-center gap-1 p-1 rounded-lg hover:bg-zinc-800/80 border border-transparent hover:border-zinc-700/60 transition-all duration-200 cursor-pointer"
-            aria-label="User Account Menu"
-          >
-            <img
-              src={userProfile.avatarUrl}
-              alt={userProfile.name}
-              className="w-7 h-7 rounded-full object-cover ring-1 ring-zinc-700/60"
-            />
-            <ChevronDown className="w-3 h-3 text-zinc-400 hidden sm:block" />
-          </button>
-
-
-          {isProfileMenuOpen && (
-            <div className="absolute right-0 mt-1.5 w-60 rounded-xl bg-zinc-900 border border-zinc-800 shadow-xl p-1.5 z-50 animate-slide-up">
-              <div className="px-3 py-2 border-b border-zinc-800/80">
-                <p className="text-xs font-medium text-zinc-200">{userProfile.name}</p>
-                <p className="text-[11px] text-zinc-500 truncate">{userProfile.email}</p>
-                <div className="mt-1.5 flex items-center gap-1.5 text-[10px] text-zinc-400">
+        {/* User Profile Avatar Popover Menu */}
+        <Popover
+          placement="bottom"
+          align="end"
+          trigger={
+            <div
+              className="p-1 rounded-full hover:ring-2 hover:ring-white/20 transition-all cursor-pointer"
+              aria-label="Open user profile menu"
+            >
+              <Avatar
+                src={userProfile.avatarUrl}
+                name={userProfile.name}
+                size="sm"
+                verified={role === 'business' || role === 'super_admin'}
+              />
+            </div>
+          }
+          content={(close) => (
+            <div className="w-64 py-2">
+              <div className="px-3.5 py-2.5 border-b border-white/[0.08]">
+                <p className="text-xs font-semibold text-zinc-100">{userProfile.name}</p>
+                <p className="text-[11px] text-zinc-400 truncate mt-0.5">{userProfile.email}</p>
+                <div className="mt-2 flex items-center gap-1.5 text-[10px] text-zinc-400">
                   <User className="w-3 h-3 text-zinc-500" />
                   <span>Role: {role === 'business' ? businessRole : creatorRole}</span>
                 </div>
               </div>
 
-              <div className="p-1">
+              <div className="p-1.5 space-y-0.5">
                 <button
+                  type="button"
                   onClick={() => {
                     setIsProModalOpen(true);
-                    setIsProfileMenuOpen(false);
+                    close();
                   }}
-                  className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs text-amber-400 hover:text-amber-300 hover:bg-amber-500/10 transition-colors cursor-pointer"
+                  className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium text-amber-400 hover:text-amber-300 hover:bg-amber-500/10 transition-colors cursor-pointer select-none"
                 >
-                  <Zap className="w-3 h-3 text-amber-400" />
+                  <Zap className="w-3.5 h-3.5 text-amber-400" />
                   <span>Upgrade to Pro Plan</span>
                 </button>
 
                 <button
+                  type="button"
                   onClick={() => {
                     resetDemoData();
-                    setIsProfileMenuOpen(false);
+                    close();
                   }}
-                  className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/60 transition-colors cursor-pointer"
+                  className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.06] transition-colors cursor-pointer select-none"
                 >
-                  <RotateCcw className="w-3 h-3 text-zinc-400" />
+                  <RotateCcw className="w-3.5 h-3.5 text-zinc-400" />
                   <span>Reset Demo State</span>
                 </button>
 
                 <button
+                  type="button"
                   onClick={() => {
                     logout();
-                    setIsProfileMenuOpen(false);
+                    close();
                   }}
-                  className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 transition-colors mt-0.5 cursor-pointer"
+                  className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 transition-colors cursor-pointer select-none"
                 >
-                  <LogOut className="w-3 h-3 text-rose-400" />
+                  <LogOut className="w-3.5 h-3.5 text-rose-400" />
                   <span>Sign Out</span>
                 </button>
               </div>
 
-              <div className="px-3 py-1.5 border-t border-zinc-800/80 bg-zinc-950/40 rounded-b-lg">
-                <p className="text-[10px] text-zinc-500 leading-tight">
-                  Immutable account. To switch between Creator and Business, sign out.
-                </p>
+              <div className="px-3.5 py-2 border-t border-white/[0.08] bg-black/20 text-[10px] text-zinc-500 leading-tight">
+                Immutable account. To change role, sign out.
               </div>
             </div>
           )}
-        </div>
+        />
       </div>
     </header>
   );
