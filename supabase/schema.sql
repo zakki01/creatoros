@@ -171,7 +171,9 @@ CREATE TABLE IF NOT EXISTS public.messages (
   conversation_id UUID NOT NULL REFERENCES public.conversations(id) ON DELETE CASCADE,
   sender_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
   content TEXT NOT NULL,
+  message_type TEXT NOT NULL DEFAULT 'text' CHECK (message_type IN ('text', 'image', 'gif', 'video', 'file')),
   attachment_url TEXT,
+  media_metadata JSONB,
   is_read BOOLEAN NOT NULL DEFAULT false,
   contract_reference_id UUID,
   created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc', now())
@@ -463,3 +465,42 @@ CREATE POLICY "Participants can send messages"
 CREATE POLICY "Users see own notifications"
   ON public.notifications FOR ALL
   USING (user_id = auth.uid());
+
+-- =============================================================================
+-- 10. CHAT MEDIA & GIF STORAGE BUCKET POLICIES
+-- =============================================================================
+
+-- Bucket creation for chat media (chat-media/{conversation_id}/{message_id}/{filename})
+INSERT INTO storage.buckets (id, name, public)
+VALUES ('chat-media', 'chat-media', false)
+ON CONFLICT (id) DO NOTHING;
+
+-- Storage: Participants can view/download chat media from their conversations
+CREATE POLICY "Participants access conversation media"
+  ON storage.objects FOR SELECT
+  USING (
+    bucket_id = 'chat-media'
+    AND (
+      public.is_super_admin()
+      OR EXISTS (
+        SELECT 1 FROM public.conversations c
+        WHERE c.id::text = (storage.foldername(name))[1]
+          AND (c.participant_one = auth.uid() OR c.participant_two = auth.uid())
+      )
+    )
+  );
+
+-- Storage: Authorized participants can upload chat media
+CREATE POLICY "Participants upload conversation media"
+  ON storage.objects FOR INSERT
+  WITH CHECK (
+    bucket_id = 'chat-media'
+    AND (
+      public.is_super_admin()
+      OR EXISTS (
+        SELECT 1 FROM public.conversations c
+        WHERE c.id::text = (storage.foldername(name))[1]
+          AND (c.participant_one = auth.uid() OR c.participant_two = auth.uid())
+      )
+    )
+  );

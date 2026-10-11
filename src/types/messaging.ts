@@ -1,3 +1,18 @@
+export type MessageType = 'text' | 'image' | 'video' | 'file' | 'gif';
+export type AttachmentType = 'image' | 'video' | 'file' | 'gif';
+
+export interface GifMetadata {
+  mimeType: 'image/gif';
+  fileName: string;
+  fileSize: number;
+  width?: number;
+  height?: number;
+  storagePath: string;
+  storageUrl: string;
+  thumbnailUrl?: string;
+  createdAt?: string;
+}
+
 export interface DirectMessage {
   id: string;
   conversationId: string;
@@ -7,8 +22,12 @@ export interface DirectMessage {
   senderAvatar: string;
   content: string;
   timestamp: string;
+  messageType?: MessageType;
   attachmentUrl?: string;
-  attachmentType?: 'image' | 'video' | 'file';
+  attachmentType?: AttachmentType;
+  mediaMetadata?: GifMetadata;
+  uploadStatus?: 'uploading' | 'sent' | 'failed';
+  uploadProgress?: number;
   campaignId?: string;
   campaignName?: string;
   reactions?: Record<string, number>;

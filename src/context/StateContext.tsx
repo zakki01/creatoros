@@ -50,6 +50,9 @@ import {
   PostStatus,
   ModerationStatus,
   ReportStatus,
+  AttachmentType,
+  MessageType,
+  GifMetadata,
 } from '../types';
 import {
   INITIAL_TEAM_MEMBERS,
@@ -95,7 +98,27 @@ interface StateContextType {
   messages: Record<string, DirectMessage[]>;
   activeConversationId: string | null;
   setActiveConversationId: (id: string | null) => void;
-  sendDirectMessage: (content: string, attachmentUrl?: string, attachmentType?: 'image' | 'video' | 'file') => void;
+  sendDirectMessage: (
+    content: string,
+    attachmentUrl?: string,
+    attachmentType?: AttachmentType,
+    options?: {
+      messageType?: MessageType;
+      mediaMetadata?: GifMetadata;
+      uploadStatus?: 'uploading' | 'sent' | 'failed';
+      uploadProgress?: number;
+      customId?: string;
+    }
+  ) => DirectMessage | undefined;
+  updateDirectMessageStatus: (
+    conversationId: string,
+    messageId: string,
+    updates: Partial<DirectMessage>
+  ) => void;
+  deleteDirectMessage: (
+    conversationId: string,
+    messageId: string
+  ) => void;
   totalUnreadMessages: number;
   toggleMessageReaction: (messageId: string, reaction: string) => void;
 
@@ -1011,11 +1034,19 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const sendDirectMessage = (
     content: string,
     attachmentUrl?: string,
-    attachmentType?: 'image' | 'video' | 'file'
-  ) => {
-    if (!activeConversationId) return;
+    attachmentType?: AttachmentType,
+    options?: {
+      messageType?: MessageType;
+      mediaMetadata?: GifMetadata;
+      uploadStatus?: 'uploading' | 'sent' | 'failed';
+      uploadProgress?: number;
+      customId?: string;
+    }
+  ): DirectMessage | undefined => {
+    if (!activeConversationId) return undefined;
+    const msgType = options?.messageType || (attachmentType === 'gif' ? 'gif' : attachmentType ? 'image' : 'text');
     const newMsg: DirectMessage = {
-      id: `msg-${Date.now()}`,
+      id: options?.customId || `msg-${Date.now()}`,
       conversationId: activeConversationId,
       senderId: userProfile.id || (role === 'business' ? 'brand-aura' : 'creator-rohan'),
       senderName: userProfile.name,
@@ -1023,8 +1054,12 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       senderAvatar: userProfile.avatarUrl,
       content,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      messageType: msgType,
       attachmentUrl,
       attachmentType,
+      mediaMetadata: options?.mediaMetadata,
+      uploadStatus: options?.uploadStatus || 'sent',
+      uploadProgress: options?.uploadProgress,
     };
 
     setMessages((prev) => ({
@@ -1032,18 +1067,54 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       [activeConversationId]: [...(prev[activeConversationId] || []), newMsg],
     }));
 
+    const previewSnippet = content
+      ? content
+      : attachmentType === 'gif'
+      ? 'Sent a GIF'
+      : attachmentType
+      ? `Sent an ${attachmentType}`
+      : 'Sent an attachment';
+
     setConversations((prev) =>
       prev.map((c) =>
         c.id === activeConversationId
           ? {
               ...c,
-              lastMessage: content || (attachmentType ? `Sent an ${attachmentType}` : 'Sent an attachment'),
+              lastMessage: previewSnippet,
               lastTimestamp: 'Just now',
               unreadCount: 0,
             }
           : c
       )
     );
+
+    return newMsg;
+  };
+
+  const updateDirectMessageStatus = (
+    conversationId: string,
+    messageId: string,
+    updates: Partial<DirectMessage>
+  ) => {
+    setMessages((prev) => {
+      const convMsgs = prev[conversationId] || [];
+      return {
+        ...prev,
+        [conversationId]: convMsgs.map((m) =>
+          m.id === messageId ? { ...m, ...updates } : m
+        ),
+      };
+    });
+  };
+
+  const deleteDirectMessage = (conversationId: string, messageId: string) => {
+    setMessages((prev) => {
+      const convMsgs = prev[conversationId] || [];
+      return {
+        ...prev,
+        [conversationId]: convMsgs.filter((m) => m.id !== messageId),
+      };
+    });
   };
 
   const toggleMessageReaction = (messageId: string, reaction: string) => {
@@ -1554,6 +1625,8 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         activeConversationId,
         setActiveConversationId,
         sendDirectMessage,
+        updateDirectMessageStatus,
+        deleteDirectMessage,
         totalUnreadMessages,
         toggleMessageReaction,
         socialPosts,

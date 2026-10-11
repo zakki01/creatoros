@@ -126,7 +126,7 @@ export class MessagingService {
     // Update conversation last message
     const conv = this.conversations.find(c => c.id === conversationId);
     if (conv) {
-      conv.lastMessage = newMsg.content;
+      conv.lastMessage = newMsg.content || (newMsg.attachmentType === 'gif' ? 'Sent a GIF' : 'Sent an attachment');
       conv.lastTimestamp = newMsg.timestamp;
       conv.unreadCount = 0;
     }
