@@ -315,9 +315,9 @@ export const PostCard: React.FC<PostCardProps> = ({
       </div>
 
       {/* 3. SOCIAL ENGAGEMENT ACTION ROW */}
-      <div className="px-3.5 sm:px-4 pt-3 flex items-center justify-between">
-        <div className="flex items-center gap-5">
-          {/* Like Button with Tap / Long-Press Reaction Tray (Section 5) */}
+      <div className="px-2 sm:px-3 pt-2 flex items-center justify-between">
+        <div className="flex items-center gap-1 sm:gap-2">
+          {/* Like Button with Tap / Long-Press Reaction Tray */}
           <div className="relative">
             <button
               onClick={() => togglePostLike(post.id)}
@@ -327,7 +327,7 @@ export const PostCard: React.FC<PostCardProps> = ({
                 e.preventDefault();
                 setShowReactionPicker(!showReactionPicker);
               }}
-              className={`flex items-center gap-1.5 transition-transform active:scale-90 cursor-pointer ${
+              className={`min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl transition-all active:scale-90 cursor-pointer ${
                 post.likedByMe ? 'text-rose-400 font-semibold' : 'text-zinc-300 hover:text-white'
               }`}
               title="Like / React (Press & hold for reaction tray)"
@@ -355,20 +355,20 @@ export const PostCard: React.FC<PostCardProps> = ({
             )}
           </div>
 
-          {/* Comment Button (Section 1 & 2 & 3: triggers Comments experience) */}
+          {/* Comment Button (44px hit-box) */}
           <button
             onClick={() => onOpenComments(post)}
-            className="flex items-center gap-1.5 text-zinc-300 hover:text-white transition-transform active:scale-90 cursor-pointer"
+            className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl text-zinc-300 hover:text-white transition-all active:scale-90 cursor-pointer"
             title="Comments"
             aria-label="View comments"
           >
             <MessageCircle className="w-5 h-5" />
           </button>
 
-          {/* Share Button (Section 11: triggers Share Sheet) */}
+          {/* Share Button (44px hit-box) */}
           <button
             onClick={() => onOpenShare(post)}
-            className="flex items-center gap-1.5 text-zinc-300 hover:text-white transition-transform active:scale-90 cursor-pointer"
+            className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl text-zinc-300 hover:text-white transition-all active:scale-90 cursor-pointer"
             title="Share"
             aria-label="Share post"
           >
@@ -376,10 +376,10 @@ export const PostCard: React.FC<PostCardProps> = ({
           </button>
         </div>
 
-        {/* Save / Bookmark Button */}
+        {/* Save / Bookmark Button (44px hit-box) */}
         <button
           onClick={() => togglePostSave(post.id)}
-          className={`p-1.5 rounded-lg transition-transform active:scale-90 cursor-pointer ${
+          className={`min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl transition-all active:scale-90 cursor-pointer ${
             post.savedByMe ? 'text-indigo-400' : 'text-zinc-400 hover:text-white'
           }`}
           title={post.savedByMe ? 'Remove from saved' : 'Save drop'}
@@ -396,15 +396,15 @@ export const PostCard: React.FC<PostCardProps> = ({
           <span className="font-mono">{post.likes.toLocaleString()}</span> likes
         </div>
 
-        {/* Short Caption with 'more' opening Detail View (Section 14 & 15: NO DUPLICATE CONTENT) */}
+        {/* Short Caption with 'more' opening Detail View (Strictly single excerpt, zero duplicate) */}
         <div className="text-zinc-300 leading-relaxed">
           <strong className="text-white mr-1.5 font-medium">{post.authorName}</strong>
           <span className="line-clamp-2 inline">
-            {post.content}
+            {post.shortExcerpt || post.content}
           </span>
           <button
             onClick={() => onOpenDetail(post)}
-            className="text-zinc-500 hover:text-zinc-300 ml-1 font-medium cursor-pointer"
+            className="text-zinc-500 hover:text-zinc-300 ml-1.5 font-medium cursor-pointer"
           >
             more
           </button>

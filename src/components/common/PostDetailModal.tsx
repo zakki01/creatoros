@@ -170,16 +170,9 @@ export const PostDetailModal: React.FC<PostDetailModalProps> = ({
               </h2>
             )}
 
-            {/* Full Post Description / Article Text */}
+            {/* Full Post Description / Article Text (Single unified fullContent, zero repetition) */}
             <div className="text-xs text-zinc-200 leading-relaxed whitespace-pre-line space-y-2">
-              <p>{post.content}</p>
-              {post.blogContent && (
-                <div className="pt-2 text-zinc-300 text-xs space-y-2 border-t border-white/[0.06]">
-                  {post.blogContent.split('\n\n').map((para, idx) => (
-                    <p key={idx}>{para}</p>
-                  ))}
-                </div>
-              )}
+              <p>{post.fullContent || post.blogContent || post.content}</p>
             </div>
 
             {/* Tags */}

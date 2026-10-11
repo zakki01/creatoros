@@ -129,9 +129,25 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
 
     const campaignObj = campaigns.find((c) => c.id === selectedCampaignId);
 
+    const generatedBlogContent =
+      blogContent ||
+      `## Creative Direction & Workflow
+
+Every production begins with intentional craft. In this article, we break down lighting frameworks, sound design architecture, and collaborating on high-impact creator campaigns.
+
+### Key Milestones
+- **Authentic Framing:** Organic cinematography beats overly polished commercial scripts.
+- **Color Timing:** Crafting custom LUTs for 4K delivery.
+- **Escrow Contracts:** Guaranteed milestone execution.`;
+
     const postPayload: Partial<SocialPost> = {
       contentType,
       content: caption || (contentType === 'blog' ? blogTitle : 'New creative drop.'),
+      shortExcerpt:
+        contentType === 'blog'
+          ? (caption || blogTitle || 'New creative editorial.')
+          : (caption ? (caption.length > 120 ? caption.slice(0, 117) + '...' : caption) : 'New creative drop.'),
+      fullContent: contentType === 'blog' ? generatedBlogContent : (caption || 'New creative drop.'),
       tags: parsedTags.length > 0 ? parsedTags : ['#CreatorOS', '#NewDrop'],
       category: contentType === 'reel' ? 'reels' : contentType === 'blog' ? 'blogs' : 'shots',
       postStatus: status,
