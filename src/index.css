@@ -24,15 +24,78 @@
     --input: 240 3.7% 15.9%;
     --ring: 240 4.9% 83.9%;
     --radius: 0.75rem;
+
+    /* Prevent browser text insertion caret from appearing between words on static UI */
+    caret-color: transparent;
   }
 
   * {
     @apply border-zinc-800;
   }
 
+  /* Static elements default to standard arrow cursor, not I-beam text caret */
+  html,
+  body,
+  main,
+  section,
+  article,
+  aside,
+  header,
+  nav,
+  footer,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  span,
+  label,
+  dt,
+  dd,
+  li {
+    cursor: default;
+  }
+
   body {
     @apply bg-[#09090b] text-zinc-100 font-sans;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11", "tnum";
+    font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  /* Interactive clickable elements */
+  button,
+  a,
+  [role="button"],
+  select,
+  summary,
+  .cursor-pointer {
+    cursor: pointer;
+  }
+
+  /* Real inputs and textareas restore text caret and cursor */
+  input,
+  textarea,
+  [contenteditable="true"] {
+    cursor: text;
+    caret-color: auto;
+  }
+
+  /* Disabled controls */
+  button:disabled,
+  input:disabled,
+  textarea:disabled,
+  select:disabled,
+  [aria-disabled="true"],
+  .cursor-not-allowed {
+    cursor: not-allowed;
+  }
+
+  /* Draggable elements */
+  [draggable="true"],
+  .cursor-grab {
+    cursor: grab;
   }
 }
 
@@ -161,5 +224,39 @@
 
 .animate-heart-pop {
   animation: heartPop 0.85s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* Responsive button feedback (active scale 0.98) */
+button:not(:disabled):active,
+[role="button"]:not([aria-disabled="true"]):active {
+  transform: scale(0.98);
+}
+
+/* Fluid page transitions */
+.page-fade-in {
+  animation: pageFadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes pageFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Respect user motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 

@@ -37,6 +37,36 @@ const AccessDeniedPage = lazy(() =>
   }))
 );
 
+const TermsPage = lazy(() =>
+  import('./components/legal/TermsPage').then((m) => ({
+    default: m.TermsPage,
+  }))
+);
+
+const PrivacyPage = lazy(() =>
+  import('./components/legal/PrivacyPage').then((m) => ({
+    default: m.PrivacyPage,
+  }))
+);
+
+const SupportPortal = lazy(() =>
+  import('./components/support/SupportPortal').then((m) => ({
+    default: m.SupportPortal,
+  }))
+);
+
+const NotFoundPage = lazy(() =>
+  import('./components/common/NotFoundPage').then((m) => ({
+    default: m.NotFoundPage,
+  }))
+);
+
+const Error500Page = lazy(() =>
+  import('./components/common/Error500Page').then((m) => ({
+    default: m.Error500Page,
+  }))
+);
+
 const AppLoadingScreen: React.FC = () => (
   <div className="h-screen w-full bg-[#09090b] flex flex-col items-center justify-center space-y-4">
     <div className="animate-pulse">
@@ -177,7 +207,77 @@ const MainApp: React.FC = () => {
   }
 
   // =========================================================================
-  // 2. PUBLIC CREATOR & BRAND WORKSPACE
+  // 2. PUBLIC LEGAL, SUPPORT & ERROR PAGES (Accredited Public Routes)
+  // =========================================================================
+  if (currentPath === '/terms' || currentPath === '/legal/terms') {
+    return (
+      <Suspense fallback={<AppLoadingScreen />}>
+        <TermsPage onBack={() => navigateTo('/')} />
+      </Suspense>
+    );
+  }
+
+  if (currentPath === '/privacy' || currentPath === '/legal/privacy') {
+    return (
+      <Suspense fallback={<AppLoadingScreen />}>
+        <PrivacyPage onBack={() => navigateTo('/')} />
+      </Suspense>
+    );
+  }
+
+  if (currentPath === '/support' || currentPath.startsWith('/support/')) {
+    return (
+      <Suspense fallback={<AppLoadingScreen />}>
+        <SupportPortal onBack={() => navigateTo('/')} />
+      </Suspense>
+    );
+  }
+
+  if (currentPath === '/500') {
+    return (
+      <Suspense fallback={<AppLoadingScreen />}>
+        <Error500Page onGoHome={() => navigateTo('/')} />
+      </Suspense>
+    );
+  }
+
+  if (currentPath === '/404') {
+    return (
+      <Suspense fallback={<AppLoadingScreen />}>
+        <NotFoundPage onGoHome={() => navigateTo('/')} onGoBack={() => window.history.back()} />
+      </Suspense>
+    );
+  }
+
+  // Check if non-existent unrecognized route was accessed directly
+  const knownPrefixes = [
+    '/',
+    '/brand',
+    '/creator',
+    '/admin',
+    '/secure-admin',
+    '/terms',
+    '/legal',
+    '/privacy',
+    '/support',
+    '/design-system',
+    '/500',
+    '/404',
+  ];
+  const isKnownRoute = knownPrefixes.some(
+    (p) => currentPath === p || (p !== '/' && currentPath.startsWith(p))
+  );
+
+  if (!isKnownRoute) {
+    return (
+      <Suspense fallback={<AppLoadingScreen />}>
+        <NotFoundPage onGoHome={() => navigateTo('/')} onGoBack={() => window.history.back()} />
+      </Suspense>
+    );
+  }
+
+  // =========================================================================
+  // 3. PUBLIC CREATOR & BRAND WORKSPACE
   // =========================================================================
 
   // Unauthenticated -> Welcome Landing Experience

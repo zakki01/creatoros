@@ -63,14 +63,14 @@ export const WelcomePage: React.FC<WelcomePageProps> = ({
               onClick={() => onDemoAccess('creator')}
               className="hidden sm:inline-block text-xs font-sans font-medium text-zinc-400 hover:text-white transition-colors cursor-pointer"
             >
-              Demo Creator
+              Explore Creator
             </button>
 
             <button
               onClick={() => onDemoAccess('business')}
               className="hidden sm:inline-block text-xs font-sans font-medium text-zinc-400 hover:text-white transition-colors cursor-pointer"
             >
-              Demo Brand
+              Explore Brand
             </button>
 
             <button
@@ -387,28 +387,31 @@ export const WelcomePage: React.FC<WelcomePageProps> = ({
           <div className="flex items-center gap-3">
             <BrandLogo size="xs" />
             <span className="text-zinc-600">•</span>
-            <span className="text-zinc-400">Commercial Creative Engine for CodeCudos</span>
+            <span className="text-zinc-400">Next-Generation Creator & Brand Network</span>
           </div>
 
-          <div className="flex items-center gap-6">
-            <div className="hidden md:flex items-center gap-2 text-zinc-400">
+          <div className="flex items-center flex-wrap gap-4 sm:gap-6 text-zinc-400">
+            <a href="/terms" className="hover:text-zinc-200 transition-colors">
+              Terms
+            </a>
+            <a href="/privacy" className="hover:text-zinc-200 transition-colors">
+              Privacy
+            </a>
+            <a href="/support" className="hover:text-zinc-200 transition-colors">
+              Support
+            </a>
+            <span className="hidden md:inline text-zinc-600">•</span>
+            <div className="hidden md:flex items-center gap-1.5 text-zinc-400">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
               <span className="text-[11px] font-mono">Systems Operational</span>
             </div>
-            <button onClick={onSignIn} className="hover:text-zinc-300 transition-colors cursor-pointer">
+            <button onClick={onSignIn} className="hover:text-zinc-200 transition-colors cursor-pointer">
               Sign In
             </button>
-            <button onClick={onGetStarted} className="hover:text-zinc-300 transition-colors cursor-pointer">
+            <button onClick={onGetStarted} className="hover:text-zinc-200 transition-colors cursor-pointer">
               Create Account
             </button>
-            <button
-              onClick={() => onDemoAccess('creator')}
-              className="hover:text-sky-400 transition-colors cursor-pointer"
-            >
-              Demo Access
-            </button>
           </div>
-
         </div>
       </footer>
     </div>

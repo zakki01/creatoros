@@ -328,11 +328,12 @@ export const DiscoverView: React.FC = () => {
           {featureFlags.posting && (
             <button
               onClick={() => setIsCreatePostOpen(true)}
-              aria-label="Create new social post"
+              aria-label="Create new post"
               className="min-h-[44px] px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold flex items-center justify-center gap-1.5 shadow-sm shadow-indigo-600/30 transition-all cursor-pointer active:scale-95 shrink-0"
             >
               <Plus className="w-3.5 h-3.5" />
-              <span>+ Create Post</span>
+              <span className="hidden sm:inline">Create</span>
+              <span className="sm:hidden">Post</span>
             </button>
           )}
         </div>

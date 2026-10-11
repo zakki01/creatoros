@@ -16,16 +16,16 @@ export const DemoAccessCard: React.FC<DemoAccessCardProps> = ({
     <div className="p-4 rounded-2xl bg-zinc-900/40 border border-zinc-800/80 space-y-3">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-1.5 text-xs font-semibold text-zinc-300 uppercase tracking-wider">
-          <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
-          <span>Quick Demo Access</span>
+          <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
+          <span>Explore CreatorOS</span>
         </div>
         <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-zinc-800 text-zinc-400 border border-zinc-700/50">
-          No password needed
+          Instant preview
         </span>
       </div>
 
       <p className="text-[11px] text-zinc-400">
-        Instantly explore with pre-populated campaigns, deliverables, and Live Studio.
+        Instantly explore with active campaigns, deliverables, and Live Studio.
       </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
@@ -40,7 +40,7 @@ export const DemoAccessCard: React.FC<DemoAccessCardProps> = ({
             <BrandLogo size="xs" iconOnly />
             <div className="truncate">
               <span className="text-xs font-semibold text-zinc-200 block truncate group-hover:text-sky-300">
-                Demo Creator
+                Creator Experience
               </span>
               <span className="text-[10px] text-zinc-500 block truncate">
                 Rohan Sharma (Fashion)
@@ -63,7 +63,7 @@ export const DemoAccessCard: React.FC<DemoAccessCardProps> = ({
             </div>
             <div className="truncate">
               <span className="text-xs font-semibold text-zinc-200 block truncate group-hover:text-indigo-300">
-                Demo Brand
+                Brand Workspace
               </span>
               <span className="text-[10px] text-zinc-500 block truncate">
                 Aura Streetwear Co.
@@ -75,7 +75,7 @@ export const DemoAccessCard: React.FC<DemoAccessCardProps> = ({
       </div>
 
       <p className="text-[10px] text-zinc-500 text-center font-mono">
-        Demo account — data stored in local browser sandbox.
+        Active interactive sandbox.
       </p>
     </div>
   );
