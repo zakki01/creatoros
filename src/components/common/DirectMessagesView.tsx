@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   Send,
   Paperclip,
   CheckCheck,
+  Check,
   Search,
-  Sparkles,
   DollarSign,
   Clock,
   Layers,
@@ -13,33 +13,35 @@ import {
   Reply,
   Forward,
   Copy,
-  Check,
   MoreVertical,
   ShieldAlert,
   VolumeX,
   Volume2,
   Ban,
   ArrowLeft,
+  Phone,
+  Video,
+  User,
+  Download,
+  FileText,
+  Sparkles,
+  MessageSquare,
 } from 'lucide-react';
 import { useAppState } from '../../context/StateContext';
 import { DirectMessage } from '../../types';
 import { Modal } from '../ui/Modal';
 import { Button } from '../ui/Button';
-import { Badge } from '../ui/Badge';
+import { Avatar } from '../ui/Avatar';
+import { IconButton } from '../ui/IconButton';
+import { useToast } from '../ui/Toast';
 import { EmojiPicker } from './EmojiPicker';
 import { ReactionPicker } from './ReactionPicker';
-import { Tooltip } from '../ui/Tooltip';
 
-const EMOJI_OPTIONS = ['❤️', '😂', '🔥', '👍', '👏', '😍', '😮', '😢'];
-
-const RECENT_EMOJIS_DEFAULT = ['🔥', '❤️', '👍', '👏', '🙌', '✨', '🎯', '👟', '🚀', '💯', '😍', '🎉'];
-
-const ALL_EMOJIS = [
-  '😊', '😂', '🔥', '❤️', '👍', '👏',
-  '🙌', '✨', '🎯', '👟', '🚀', '💯',
-  '😍', '🤩', '😎', '🤝', '💼', '📸',
-  '🎬', '🎨', '🎉', '⚡', '💡', '💬',
-  '👌', '🙏', '💪', '👀', '🏆', '📈',
+const QUICK_ACTION_CHIPS = [
+  { id: 'draft', label: '✨ Draft uploaded', prompt: '✨ Draft uploaded for your review. Please let me know what you think!' },
+  { id: 'approve', label: 'Approve draft', prompt: 'Draft looks fantastic! Approved to proceed with final cut.' },
+  { id: 'feedback', label: '👍 Feedback', prompt: '👍 Left feedback on the latest draft in the deliverables section.' },
+  { id: 'review', label: '🎯 Review', prompt: '🎯 Reviewing the latest deliverable now. Will get back shortly.' },
 ];
 
 export const DirectMessagesView: React.FC = () => {
@@ -52,31 +54,22 @@ export const DirectMessagesView: React.FC = () => {
     role,
   } = useAppState();
 
+  const toast = useToast();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const messageInputRef = useRef<HTMLInputElement>(null);
+
   const [messageInput, setMessageInput] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [attachedImage, setAttachedImage] = useState<string | null>(null);
+  const [attachedFileName, setAttachedFileName] = useState<string>('lookbook-draft-cut.jpg');
   const [showMobileChat, setShowMobileChat] = useState(false);
 
   // Emoji picker state
   const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
-  const [recentEmojis, setRecentEmojis] = useState<string[]>(() => {
-    try {
-      const saved = localStorage.getItem('creatoros_recent_emojis');
-      return saved ? JSON.parse(saved) : RECENT_EMOJIS_DEFAULT;
-    } catch {
-      return RECENT_EMOJIS_DEFAULT;
-    }
-  });
 
   const handleSelectEmoji = (emoji: string) => {
     setMessageInput((prev) => prev + emoji);
-    setRecentEmojis((prev) => {
-      const updated = [emoji, ...prev.filter((e) => e !== emoji)].slice(0, 12);
-      try {
-        localStorage.setItem('creatoros_recent_emojis', JSON.stringify(updated));
-      } catch {}
-      return updated;
-    });
+    messageInputRef.current?.focus();
   };
 
   // Advanced messaging state
@@ -127,19 +120,40 @@ export const DirectMessagesView: React.FC = () => {
 
   const handleQuickPrompt = (promptText: string) => {
     setMessageInput(promptText);
+    messageInputRef.current?.focus();
   };
 
-  const handleMockAttachment = () => {
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setAttachedFileName(file.name);
+      if (file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          setAttachedImage(reader.result as string);
+          toast.success(`Attached image ${file.name}`);
+        };
+        reader.readAsDataURL(file);
+      } else {
+        // Fallback placeholder preview
+        setAttachedImage('https://images.unsplash.com/photo-1509631179647-0177331693ae?w=800&auto=format&fit=crop&q=80');
+        toast.info(`Attached file ${file.name}`);
+      }
+    }
+  };
+
+  const triggerAttachment = () => {
     if (attachedImage) {
       setAttachedImage(null);
     } else {
-      setAttachedImage('https://images.unsplash.com/photo-1509631179647-0177331693ae?w=800&auto=format&fit=crop&q=80');
+      fileInputRef.current?.click();
     }
   };
 
   const handleCopyText = (msg: DirectMessage) => {
     navigator.clipboard?.writeText(msg.content);
     setCopiedMsgId(msg.id);
+    toast.success('Message copied to clipboard');
     setTimeout(() => setCopiedMsgId(null), 2000);
   };
 
@@ -161,134 +175,169 @@ export const DirectMessagesView: React.FC = () => {
     setActiveConversationId(targetConvId);
     sendDirectMessage(`[Forwarded from ${forwardingMsg.senderName}]: ${forwardingMsg.content}`);
     setForwardingMsg(null);
+    toast.success('Message forwarded successfully');
+  };
+
+  const handleCallAction = (type: 'audio' | 'video') => {
+    if (type === 'audio') {
+      toast.info(`Starting voice call with ${activeConv?.participantName}...`, 'Encrypted Audio');
+    } else {
+      toast.info(`Creating video meeting room with ${activeConv?.participantName}...`, 'HD Video Call');
+    }
   };
 
   return (
-    <div className="h-[calc(100vh-8.5rem)] md:h-[calc(100vh-6.5rem)] rounded-2xl border border-zinc-800/80 bg-zinc-950/70 backdrop-blur-md flex overflow-hidden shadow-2xl animate-fade-in relative">
-      {/* Left Sidebar: Conversations List (100% on mobile when viewing list) */}
+    <div className="h-[calc(100vh-8.5rem)] md:h-[calc(100vh-6.5rem)] rounded-2xl border border-white/[0.08] bg-[#0c0c11]/80 backdrop-blur-xl flex overflow-hidden shadow-2xl relative">
+      {/* Hidden File Input for Real/Mock Attachments */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*,video/*,.pdf,.zip"
+        onChange={handleFileSelect}
+        className="hidden"
+        aria-label="Upload message attachment"
+      />
+
+      {/* =========================================================================
+          LEFT COLUMN: Conversations Master List
+          On mobile (<768px): 100% width when showMobileChat is false, hidden when true.
+          On desktop (>=768px): w-80 fixed sidebar.
+         ========================================================================= */}
       <div
         className={`${
           showMobileChat ? 'hidden md:flex' : 'flex'
-        } w-full md:w-80 border-r border-zinc-800/80 flex-col shrink-0 bg-zinc-950/40`}
+        } w-full md:w-80 border-r border-white/[0.08] flex-col shrink-0 bg-[#09090d]/80`}
       >
         {/* Search header */}
-        <div className="p-3.5 border-b border-zinc-800/80">
-          <div className="flex items-center justify-between mb-2">
+        <div className="p-3.5 border-b border-white/[0.08]">
+          <div className="flex items-center justify-between mb-2.5">
             <h2 className="text-sm font-bold text-white tracking-tight">Direct Messages</h2>
-            <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-zinc-800 text-zinc-400">
+            <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/[0.06] text-zinc-400 border border-white/[0.08]">
               Encrypted
             </span>
           </div>
           <div className="relative">
-            <Search className="w-3.5 h-3.5 text-zinc-500 absolute left-2.5 top-2.5" />
+            <Search className="w-3.5 h-3.5 text-zinc-400 absolute left-3 top-3 pointer-events-none" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search conversations..."
-              className="w-full bg-zinc-900/60 border border-zinc-800/80 rounded-xl pl-8 pr-3 py-1.5 text-xs text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-indigo-500/60"
+              className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl pl-9 pr-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-indigo-500/60 transition-colors"
             />
           </div>
         </div>
 
         {/* Conversation list */}
-        <div className="flex-1 overflow-y-auto divide-y divide-zinc-900/80">
-          {filteredConversations.map((conv) => {
-            const isSelected = activeConv?.id === conv.id;
-            return (
-              <button
-                key={conv.id}
-                onClick={() => {
-                  setActiveConversationId(conv.id);
-                  setShowMobileChat(true);
-                }}
-                className={`w-full p-3 flex items-start gap-3 text-left transition-colors cursor-pointer ${
-                  isSelected
-                    ? 'bg-zinc-900/80 border-l-2 border-indigo-500'
-                    : 'hover:bg-zinc-900/30'
-                }`}
-              >
-                <div className="relative shrink-0">
-                  <img
+        <div className="flex-1 overflow-y-auto divide-y divide-white/[0.04] overscroll-contain">
+          {filteredConversations.length === 0 ? (
+            <div className="p-8 text-center text-xs text-zinc-500">
+              No conversations found.
+            </div>
+          ) : (
+            filteredConversations.map((conv) => {
+              const isSelected = activeConv?.id === conv.id;
+              return (
+                <button
+                  key={conv.id}
+                  onClick={() => {
+                    setActiveConversationId(conv.id);
+                    setShowMobileChat(true);
+                  }}
+                  className={`w-full p-3.5 flex items-start gap-3 text-left transition-colors cursor-pointer ${
+                    isSelected
+                      ? 'bg-white/[0.07] border-l-2 border-indigo-500'
+                      : 'hover:bg-white/[0.03]'
+                  }`}
+                >
+                  <Avatar
                     src={conv.participantAvatar}
-                    alt={conv.participantName}
-                    className="w-10 h-10 rounded-full object-cover ring-1 ring-zinc-700/60"
+                    name={conv.participantName}
+                    size="md"
+                    status={conv.isOnline ? 'online' : 'offline'}
+                    verified={!!conv.participantBadge}
                   />
-                  {conv.isOnline && (
-                    <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-zinc-950" />
-                  )}
-                </div>
 
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between mb-0.5">
-                    <span className="text-xs font-semibold text-zinc-200 truncate">
-                      {conv.participantName}
-                    </span>
-                    <span className="text-[10px] text-zinc-500 font-mono shrink-0 ml-1">
-                      {conv.lastTimestamp}
-                    </span>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between mb-0.5">
+                      <span className="text-xs font-semibold text-zinc-100 truncate">
+                        {conv.participantName}
+                      </span>
+                      <span className="text-[10px] text-zinc-400 font-mono shrink-0 ml-1">
+                        {conv.lastTimestamp}
+                      </span>
+                    </div>
+
+                    <p className="text-[11px] text-zinc-400 truncate mb-1">
+                      {conv.lastMessage}
+                    </p>
+
+                    {conv.campaignContext && (
+                      <div className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-indigo-500/10 text-[10px] text-indigo-300 font-mono truncate max-w-full border border-indigo-500/20">
+                        <Layers className="w-2.5 h-2.5 shrink-0" />
+                        <span className="truncate">{conv.campaignContext.name}</span>
+                      </div>
+                    )}
                   </div>
 
-                  <p className="text-[11px] text-zinc-400 truncate mb-1">
-                    {conv.lastMessage}
-                  </p>
-
-                  {conv.campaignContext && (
-                    <div className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-zinc-800/80 text-[10px] text-indigo-300 font-mono truncate max-w-full">
-                      <Layers className="w-2.5 h-2.5 shrink-0" />
-                      <span className="truncate">{conv.campaignContext.name}</span>
-                    </div>
+                  {conv.unreadCount > 0 && (
+                    <span className="w-4 h-4 rounded-full bg-indigo-600 text-white text-[9px] font-bold flex items-center justify-center shrink-0 mt-1 shadow-sm shadow-indigo-600/40">
+                      {conv.unreadCount}
+                    </span>
                   )}
-                </div>
-
-                {conv.unreadCount > 0 && (
-                  <span className="w-4 h-4 rounded-full bg-indigo-600 text-white text-[9px] font-bold flex items-center justify-center shrink-0 mt-1">
-                    {conv.unreadCount}
-                  </span>
-                )}
-              </button>
-            );
-          })}
+                </button>
+              );
+            })
+          )}
         </div>
       </div>
 
-      {/* Right Canvas: Chat Thread (100% on mobile when viewing chat) */}
+      {/* =========================================================================
+          RIGHT CANVAS: Chat Thread Detail View
+          On mobile (<768px): 100% width when showMobileChat is true, hidden when false.
+          On desktop (>=768px): flex-1 min-w-0.
+         ========================================================================= */}
       {activeConv ? (
         <div
           className={`${
             !showMobileChat ? 'hidden md:flex' : 'flex'
-          } flex-1 flex-col min-w-0 bg-zinc-950/20`}
+          } flex-1 flex-col min-w-0 bg-[#09090d]/30`}
         >
           {/* Thread Header */}
-          <div className="p-3 sm:p-3.5 border-b border-zinc-800/80 flex items-center justify-between bg-zinc-950/60">
+          <div className="p-3 sm:p-3.5 border-b border-white/[0.08] flex items-center justify-between gap-3 bg-[#0a0a0f]/90 backdrop-blur-md">
             <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
-              {/* Mobile Back Button to conversation list */}
-              <button
-                type="button"
-                onClick={() => setShowMobileChat(false)}
-                className="md:hidden p-1.5 -ml-1 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors cursor-pointer shrink-0"
-                aria-label="Back to conversations"
-              >
-                <ArrowLeft className="w-4 h-4" />
-              </button>
+              {/* Mobile Back Button: Return to conversation list */}
+              <div className="md:hidden">
+                <IconButton
+                  aria-label="Back to conversations"
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setShowMobileChat(false)}
+                >
+                  <ArrowLeft className="w-4 h-4 text-zinc-300" />
+                </IconButton>
+              </div>
 
-              <img
+              <Avatar
                 src={activeConv.participantAvatar}
-                alt={activeConv.participantName}
-                className="w-8 h-8 sm:w-9 sm:h-9 rounded-full object-cover ring-1 ring-zinc-700/60 shrink-0"
+                name={activeConv.participantName}
+                size="sm"
+                status={activeConv.isOnline ? 'online' : 'offline'}
+                verified={!!activeConv.participantBadge}
               />
+
               <div className="min-w-0 flex-1">
-                <div className="flex items-center gap-1.5 flex-wrap">
-                  <h3 className="text-xs sm:text-sm font-bold text-white truncate max-w-[130px] sm:max-w-[200px]">
+                <div className="flex items-center gap-1.5 flex-nowrap">
+                  <h3 className="text-xs sm:text-sm font-bold text-white shrink-0">
                     {activeConv.participantName}
                   </h3>
                   {activeConv.participantBadge && (
-                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 font-medium shrink-0">
+                    <span className="hidden sm:inline-flex text-[10px] px-2 py-0.5 rounded-full bg-indigo-500/15 text-indigo-300 border border-indigo-500/30 font-medium shrink-0">
                       {activeConv.participantBadge}
                     </span>
                   )}
                   {isMuted && (
-                    <span className="text-[10px] px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-400 flex items-center gap-1 shrink-0">
+                    <span className="text-[10px] px-1.5 py-0.5 rounded bg-white/[0.06] text-zinc-400 flex items-center gap-1 shrink-0 border border-white/[0.08]">
                       <VolumeX className="w-3 h-3" /> Muted
                     </span>
                   )}
@@ -296,7 +345,7 @@ export const DirectMessagesView: React.FC = () => {
                 <div className="text-[10px] text-zinc-400 font-mono truncate">
                   <span>{activeConv.participantHandle}</span>
                   <span className="mx-1">•</span>
-                  <span className={activeConv.isOnline ? 'text-emerald-400' : 'text-zinc-500'}>
+                  <span className={activeConv.isOnline ? 'text-emerald-400 font-semibold' : 'text-zinc-500'}>
                     {activeConv.isOnline ? 'Online now' : 'Active recently'}
                   </span>
                 </div>
@@ -304,17 +353,17 @@ export const DirectMessagesView: React.FC = () => {
             </div>
 
             {/* Campaign Context Pill & Header Actions */}
-            <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+            <div className="flex items-center gap-1 sm:gap-2 shrink-0">
               {activeConv.campaignContext && (
-                <div className="hidden lg:flex items-center gap-2.5 px-2.5 py-1 rounded-xl bg-zinc-900 border border-zinc-800 text-xs">
-                  <div className="flex items-center gap-1.5 text-zinc-300 font-medium max-w-[160px] truncate">
+                <div className="hidden 2xl:flex items-center gap-2 px-2.5 py-1 rounded-xl bg-white/[0.04] border border-white/[0.08] text-xs">
+                  <div className="flex items-center gap-1 text-zinc-200 font-medium max-w-[140px] truncate">
                     <Layers className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
                     <span className="truncate">{activeConv.campaignContext.name}</span>
                   </div>
                   <span className="text-zinc-600">|</span>
                   <div className="flex items-center gap-1 text-emerald-400 font-mono font-semibold">
                     <DollarSign className="w-3 h-3" />
-                    <span>{activeConv.campaignContext.agreedFee.toLocaleString()}</span>
+                    <span>${activeConv.campaignContext.agreedFee.toLocaleString()}</span>
                   </div>
                   <span className="text-zinc-600">|</span>
                   <div className="flex items-center gap-1 text-amber-400 font-mono text-[10px]">
@@ -324,26 +373,57 @@ export const DirectMessagesView: React.FC = () => {
                 </div>
               )}
 
+              {/* Call Actions (Audio & Video) */}
+              <IconButton
+                aria-label="Start voice call"
+                variant="ghost"
+                size="sm"
+                onClick={() => handleCallAction('audio')}
+                className="hidden sm:inline-flex"
+              >
+                <Phone className="w-4 h-4 text-zinc-400 hover:text-white" />
+              </IconButton>
+
+              <IconButton
+                aria-label="Start video call"
+                variant="ghost"
+                size="sm"
+                onClick={() => handleCallAction('video')}
+                className="hidden sm:inline-flex"
+              >
+                <Video className="w-4 h-4 text-zinc-400 hover:text-white" />
+              </IconButton>
+
+              <IconButton
+                aria-label={`View ${activeConv.participantName}'s profile`}
+                variant="ghost"
+                size="sm"
+                onClick={() => toast.info(`Viewing ${activeConv.participantName}'s portfolio & brand metrics`)}
+              >
+                <User className="w-4 h-4 text-zinc-400 hover:text-white" />
+              </IconButton>
+
               {/* Thread Menu */}
               <div className="relative">
-                <button
-                  type="button"
+                <IconButton
+                  aria-label="More conversation options"
+                  variant="ghost"
+                  size="sm"
                   onClick={() => setIsHeaderMenuOpen(!isHeaderMenuOpen)}
-                  className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors cursor-pointer"
-                  title="Thread options"
                 >
-                  <MoreVertical className="w-4 h-4" />
-                </button>
+                  <MoreVertical className="w-4 h-4 text-zinc-400 hover:text-white" />
+                </IconButton>
 
                 {isHeaderMenuOpen && (
-                  <div className="absolute right-0 top-8 z-40 w-44 rounded-xl bg-zinc-900 border border-zinc-800 shadow-xl py-1 text-xs text-zinc-300 animate-fade-in">
+                  <div className="absolute right-0 top-10 z-40 w-48 rounded-xl bg-[#0e0e15] border border-white/[0.12] shadow-2xl py-1 text-xs text-zinc-300 animate-slide-up backdrop-blur-xl">
                     <button
                       type="button"
                       onClick={() => {
                         setIsMuted(!isMuted);
                         setIsHeaderMenuOpen(false);
+                        toast.info(isMuted ? 'Notifications unmuted' : 'Notifications muted');
                       }}
-                      className="w-full px-3 py-2 text-left hover:bg-zinc-800 flex items-center gap-2 cursor-pointer"
+                      className="w-full px-3.5 py-2 text-left hover:bg-white/[0.06] flex items-center gap-2.5 cursor-pointer transition-colors"
                     >
                       {isMuted ? <Volume2 className="w-3.5 h-3.5 text-emerald-400" /> : <VolumeX className="w-3.5 h-3.5 text-zinc-400" />}
                       <span>{isMuted ? 'Unmute Notifications' : 'Mute Thread'}</span>
@@ -354,7 +434,7 @@ export const DirectMessagesView: React.FC = () => {
                         setIsReportModalOpen(true);
                         setIsHeaderMenuOpen(false);
                       }}
-                      className="w-full px-3 py-2 text-left hover:bg-zinc-800 flex items-center gap-2 text-amber-400 cursor-pointer"
+                      className="w-full px-3.5 py-2 text-left hover:bg-white/[0.06] flex items-center gap-2.5 text-amber-400 cursor-pointer transition-colors"
                     >
                       <ShieldAlert className="w-3.5 h-3.5" />
                       <span>Report User</span>
@@ -365,7 +445,7 @@ export const DirectMessagesView: React.FC = () => {
                         setIsBlockModalOpen(true);
                         setIsHeaderMenuOpen(false);
                       }}
-                      className="w-full px-3 py-2 text-left hover:bg-zinc-800 flex items-center gap-2 text-rose-400 cursor-pointer"
+                      className="w-full px-3.5 py-2 text-left hover:bg-white/[0.06] flex items-center gap-2.5 text-rose-400 cursor-pointer transition-colors"
                     >
                       <Ban className="w-3.5 h-3.5" />
                       <span>Block Contact</span>
@@ -377,171 +457,196 @@ export const DirectMessagesView: React.FC = () => {
           </div>
 
           {/* Messages Stream */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4">
-            {activeMessages.map((msg) => {
-              const isMine =
-                msg.senderRole === role ||
-                (role === 'business' && msg.senderId === 'brand-aura') ||
-                (role === 'creator' && msg.senderId === 'creator-rohan');
+          <div className="flex-1 overflow-y-auto p-4 space-y-4 overscroll-contain">
+            {activeMessages.length === 0 ? (
+              <div className="h-full flex flex-col items-center justify-center text-center p-8 space-y-3">
+                <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 flex items-center justify-center shadow-lg">
+                  <MessageSquare className="w-6 h-6" />
+                </div>
+                <h4 className="text-sm font-semibold text-white">Start a conversation</h4>
+                <p className="text-xs text-zinc-400 max-w-xs">
+                  Discuss campaign deliverables, review revisions, or share milestones directly with {activeConv.participantName}.
+                </p>
+              </div>
+            ) : (
+              activeMessages.map((msg) => {
+                const isMine =
+                  msg.senderRole === role ||
+                  (role === 'business' && msg.senderId === 'brand-aura') ||
+                  (role === 'creator' && msg.senderId === 'creator-rohan');
 
-              const msgReactions = reactions[msg.id] || {};
+                const msgReactions = reactions[msg.id] || {};
 
-              return (
-                <div
-                  key={msg.id}
-                  className={`group relative flex items-end gap-2.5 max-w-lg ${
-                    isMine ? 'ml-auto flex-row-reverse' : 'mr-auto'
-                  }`}
-                >
-                  <img
-                    src={msg.senderAvatar}
-                    alt={msg.senderName}
-                    className="w-7 h-7 rounded-full object-cover ring-1 ring-zinc-700/60 shrink-0 mb-1"
-                  />
+                return (
+                  <div
+                    key={msg.id}
+                    className={`group relative flex items-end gap-2.5 max-w-[88%] sm:max-w-lg ${
+                      isMine ? 'ml-auto flex-row-reverse' : 'mr-auto'
+                    }`}
+                  >
+                    <Avatar
+                      src={msg.senderAvatar}
+                      name={msg.senderName}
+                      size="xs"
+                      className="shrink-0 mb-1"
+                    />
 
-                  <div className="relative">
-                    {/* Hover Action Bar */}
-                    <div
-                      className={`absolute -top-7 ${
-                        isMine ? 'right-0' : 'left-0'
-                      } hidden group-hover:flex items-center gap-1 bg-zinc-900 border border-zinc-800 rounded-lg px-1.5 py-0.5 shadow-lg z-20`}
-                    >
-                      {/* Reaction Popover Toggle */}
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setActiveReactionMsgId(activeReactionMsgId === msg.id ? null : msg.id)
-                        }
-                        className="p-1 hover:text-amber-400 text-zinc-400 rounded transition-colors cursor-pointer"
-                        title="Add reaction"
-                      >
-                        <Smile className="w-3.5 h-3.5" />
-                      </button>
-
-                      {/* Reply */}
-                      <button
-                        type="button"
-                        onClick={() => setReplyingTo(msg)}
-                        className="p-1 hover:text-indigo-400 text-zinc-400 rounded transition-colors cursor-pointer"
-                        title="Reply quote"
-                      >
-                        <Reply className="w-3.5 h-3.5" />
-                      </button>
-
-                      {/* Forward */}
-                      <button
-                        type="button"
-                        onClick={() => setForwardingMsg(msg)}
-                        className="p-1 hover:text-emerald-400 text-zinc-400 rounded transition-colors cursor-pointer"
-                        title="Forward"
-                      >
-                        <Forward className="w-3.5 h-3.5" />
-                      </button>
-
-                      {/* Copy */}
-                      <button
-                        type="button"
-                        onClick={() => handleCopyText(msg)}
-                        className="p-1 hover:text-zinc-200 text-zinc-400 rounded transition-colors cursor-pointer"
-                        title="Copy message"
-                      >
-                        {copiedMsgId === msg.id ? (
-                          <Check className="w-3.5 h-3.5 text-emerald-400" />
-                        ) : (
-                          <Copy className="w-3.5 h-3.5" />
-                        )}
-                      </button>
-                    </div>
-
-                    {/* Reaction Emoji Picker Popover */}
-                    {activeReactionMsgId === msg.id && (
+                    <div className="relative">
+                      {/* Hover Action Bar */}
                       <div
-                        className={`absolute -top-12 ${
+                        className={`absolute -top-7 ${
                           isMine ? 'right-0' : 'left-0'
-                        } z-40 animate-fade-in`}
+                        } hidden group-hover:flex items-center gap-0.5 bg-[#12121b] border border-white/[0.1] rounded-lg px-1 py-0.5 shadow-xl z-20 backdrop-blur-md`}
                       >
-                        <ReactionPicker
-                          onSelectReaction={(emoji) => handleToggleReaction(msg.id, emoji)}
-                          onClose={() => setActiveReactionMsgId(null)}
-                          position="top"
-                        />
+                        {/* Reaction Toggle */}
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setActiveReactionMsgId(activeReactionMsgId === msg.id ? null : msg.id)
+                          }
+                          className="p-1 hover:text-amber-400 text-zinc-400 rounded transition-colors cursor-pointer"
+                          title="Add reaction"
+                        >
+                          <Smile className="w-3.5 h-3.5" />
+                        </button>
+
+                        {/* Reply */}
+                        <button
+                          type="button"
+                          onClick={() => setReplyingTo(msg)}
+                          className="p-1 hover:text-indigo-400 text-zinc-400 rounded transition-colors cursor-pointer"
+                          title="Reply quote"
+                        >
+                          <Reply className="w-3.5 h-3.5" />
+                        </button>
+
+                        {/* Forward */}
+                        <button
+                          type="button"
+                          onClick={() => setForwardingMsg(msg)}
+                          className="p-1 hover:text-emerald-400 text-zinc-400 rounded transition-colors cursor-pointer"
+                          title="Forward"
+                        >
+                          <Forward className="w-3.5 h-3.5" />
+                        </button>
+
+                        {/* Copy */}
+                        <button
+                          type="button"
+                          onClick={() => handleCopyText(msg)}
+                          className="p-1 hover:text-zinc-200 text-zinc-400 rounded transition-colors cursor-pointer"
+                          title="Copy message"
+                        >
+                          {copiedMsgId === msg.id ? (
+                            <Check className="w-3.5 h-3.5 text-emerald-400" />
+                          ) : (
+                            <Copy className="w-3.5 h-3.5" />
+                          )}
+                        </button>
                       </div>
-                    )}
 
-                    {/* Bubble Content */}
-                    <div
-                      onDoubleClick={() => handleToggleReaction(msg.id, '❤️')}
-                      className={`rounded-2xl p-3 text-xs space-y-1.5 cursor-pointer select-none transition-transform active:scale-[0.99] ${
-                        isMine
-                          ? 'bg-indigo-600 text-white rounded-br-none shadow-md shadow-indigo-600/20'
-                          : 'bg-zinc-900/90 text-zinc-200 border border-zinc-800/80 rounded-bl-none'
-                      }`}
-                    >
-                      {msg.campaignName && (
-                        <div className="text-[10px] font-mono uppercase tracking-wider text-indigo-200 opacity-90 flex items-center gap-1">
-                          <Layers className="w-2.5 h-2.5" />
-                          <span>Campaign: {msg.campaignName}</span>
-                        </div>
-                      )}
-
-                      {msg.content && (
-                        <p className="leading-relaxed whitespace-pre-line">{msg.content}</p>
-                      )}
-
-                      {msg.attachmentUrl && (
-                        <div className="rounded-lg overflow-hidden border border-black/20 my-1 max-w-sm">
-                          <img
-                            src={msg.attachmentUrl}
-                            alt="Attachment preview"
-                            className="w-full h-auto max-h-60 object-cover"
+                      {/* Reaction Popover */}
+                      {activeReactionMsgId === msg.id && (
+                        <div
+                          className={`absolute -top-12 ${
+                            isMine ? 'right-0' : 'left-0'
+                          } z-40 animate-fade-in`}
+                        >
+                          <ReactionPicker
+                            onSelectReaction={(emoji) => handleToggleReaction(msg.id, emoji)}
+                            onClose={() => setActiveReactionMsgId(null)}
+                            position="top"
                           />
                         </div>
                       )}
 
+                      {/* Bubble Content */}
                       <div
-                        className={`text-[9px] font-mono flex items-center justify-end gap-1 ${
-                          isMine ? 'text-indigo-200' : 'text-zinc-500'
+                        onDoubleClick={() => handleToggleReaction(msg.id, '❤️')}
+                        className={`rounded-2xl p-3 sm:p-3.5 text-xs space-y-1.5 cursor-pointer select-none transition-transform active:scale-[0.99] ${
+                          isMine
+                            ? 'bg-indigo-600 text-white rounded-br-none shadow-md shadow-indigo-600/20'
+                            : 'bg-[#13131c] text-zinc-100 border border-white/[0.08] rounded-bl-none shadow-sm'
                         }`}
                       >
-                        <span>{msg.timestamp}</span>
-                        {isMine && <CheckCheck className="w-3 h-3" />}
-                      </div>
-                    </div>
+                        {msg.campaignName && (
+                          <div className="text-[10px] font-mono uppercase tracking-wider text-indigo-200/90 flex items-center gap-1 font-semibold">
+                            <Layers className="w-2.5 h-2.5" />
+                            <span>Campaign: {msg.campaignName}</span>
+                          </div>
+                        )}
 
-                    {/* Reaction Badges Under Bubble */}
-                    {Object.keys(msgReactions).length > 0 && (
-                      <div
-                        className={`flex items-center gap-1 mt-1 ${
-                          isMine ? 'justify-end' : 'justify-start'
-                        }`}
-                      >
-                        {Object.entries(msgReactions).map(([emoji, count]) => (
-                          <button
-                            key={emoji}
-                            type="button"
-                            onClick={() => handleToggleReaction(msg.id, emoji)}
-                            className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-zinc-900 border border-zinc-800 text-[11px] hover:border-zinc-700 transition-colors cursor-pointer"
-                          >
-                            <span>{emoji}</span>
-                            <span className="font-mono text-[10px] text-zinc-400 font-semibold">
-                              {count}
+                        {msg.content && (
+                          <p className="leading-relaxed whitespace-pre-line text-xs sm:text-[13px]">{msg.content}</p>
+                        )}
+
+                        {msg.attachmentUrl && (
+                          <div className="rounded-xl overflow-hidden border border-white/10 my-1.5 max-w-sm bg-black/40">
+                            <img
+                              src={msg.attachmentUrl}
+                              alt="Attachment preview"
+                              className="w-full h-auto max-h-60 object-cover"
+                            />
+                            <div className="p-2 flex items-center justify-between bg-black/60 text-[10px] text-zinc-300 font-mono">
+                              <span className="truncate">lookbook-draft-cut.jpg</span>
+                              <Download className="w-3.5 h-3.5 text-zinc-400 hover:text-white cursor-pointer ml-2 shrink-0" />
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Timestamp & Status Indicator */}
+                        <div
+                          className={`text-[9px] font-mono flex items-center justify-end gap-1 mt-1 ${
+                            isMine ? 'text-indigo-200' : 'text-zinc-400'
+                          }`}
+                        >
+                          <span>{msg.timestamp}</span>
+                          {isMine && (
+                            <span title="Read by recipient">
+                              <CheckCheck className="w-3.5 h-3.5 text-sky-300" />
                             </span>
-                          </button>
-                        ))}
+                          )}
+                        </div>
                       </div>
-                    )}
+
+                      {/* Reaction Badges Under Bubble */}
+                      {Object.keys(msgReactions).length > 0 && (
+                        <div
+                          className={`flex items-center gap-1 mt-1 ${
+                            isMine ? 'justify-end' : 'justify-start'
+                          }`}
+                        >
+                          {Object.entries(msgReactions).map(([emoji, count]) => (
+                            <button
+                              key={emoji}
+                              type="button"
+                              onClick={() => handleToggleReaction(msg.id, emoji)}
+                              className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-[#13131c] border border-white/10 text-[11px] hover:border-white/20 transition-colors cursor-pointer"
+                            >
+                              <span>{emoji}</span>
+                              <span className="font-mono text-[10px] text-zinc-400 font-semibold">
+                                {count}
+                              </span>
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })
+            )}
           </div>
 
-          {/* Message Composer Area */}
-          <div className="p-3.5 border-t border-zinc-800/80 bg-zinc-950/60 space-y-2">
+          {/* =========================================================================
+              MESSAGE COMPOSER AREA: [ 📎 ] [ 😊 ] [ Type your message... ] [ Send ]
+              Includes Safe Area Inset (pb-safe) and Fitts's Law 44px hit targets.
+             ========================================================================= */}
+          <div className="p-3 sm:p-3.5 border-t border-white/[0.08] bg-[#09090d]/80 space-y-2 pb-safe">
             {/* Quoted Reply Preview Bar */}
             {replyingTo && (
-              <div className="flex items-center justify-between p-2 rounded-xl bg-zinc-900 border border-indigo-500/30 text-xs">
-                <div className="flex items-center gap-2 truncate">
+              <div className="flex items-center justify-between p-2.5 rounded-xl bg-white/[0.04] border border-indigo-500/40 text-xs animate-slide-up">
+                <div className="flex items-center gap-2.5 truncate">
                   <div className="w-1 h-6 bg-indigo-500 rounded-full shrink-0" />
                   <div className="truncate">
                     <span className="font-semibold text-indigo-300 block text-[11px]">
@@ -555,96 +660,79 @@ export const DirectMessagesView: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setReplyingTo(null)}
-                  className="text-zinc-500 hover:text-white p-1 transition-colors cursor-pointer"
+                  className="text-zinc-400 hover:text-white p-1 transition-colors cursor-pointer rounded-lg hover:bg-white/10"
+                  aria-label="Cancel reply"
                 >
-                  <X className="w-3.5 h-3.5" />
+                  <X className="w-4 h-4" />
                 </button>
               </div>
             )}
 
             {/* Short Quick-Action Chips */}
-            <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-[11px] no-scrollbar">
-              <button
-                type="button"
-                onClick={() => handleQuickPrompt('✨ Draft uploaded')}
-                className="px-2.5 py-1 rounded-full bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 shrink-0 transition-colors cursor-pointer text-[11px] flex items-center gap-1"
-              >
-                <span>✨</span>
-                <span>Draft uploaded</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => handleQuickPrompt('Approve draft')}
-                className="px-2.5 py-1 rounded-full bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 shrink-0 transition-colors cursor-pointer text-[11px]"
-              >
-                Approve draft
-              </button>
-              <button
-                type="button"
-                onClick={() => handleQuickPrompt('👍 Feedback')}
-                className="px-2.5 py-1 rounded-full bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 shrink-0 transition-colors cursor-pointer text-[11px] flex items-center gap-1"
-              >
-                <span>👍</span>
-                <span>Feedback</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => handleQuickPrompt('🎯 Review')}
-                className="px-2.5 py-1 rounded-full bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 shrink-0 transition-colors cursor-pointer text-[11px] flex items-center gap-1"
-              >
-                <span>🎯</span>
-                <span>Review</span>
-              </button>
+            <div className="flex items-center gap-2 overflow-x-auto pb-1 text-xs no-scrollbar">
+              {QUICK_ACTION_CHIPS.map((chip) => (
+                <button
+                  key={chip.id}
+                  type="button"
+                  onClick={() => handleQuickPrompt(chip.prompt)}
+                  className="px-3 py-1.5 rounded-full bg-white/[0.05] hover:bg-white/[0.1] active:bg-white/[0.15] border border-white/[0.08] text-zinc-300 shrink-0 transition-colors cursor-pointer text-xs flex items-center gap-1.5 focus:outline-none focus:ring-1 focus:ring-indigo-500/40"
+                >
+                  <span>{chip.label}</span>
+                </button>
+              ))}
             </div>
 
             {/* Attachment preview if selected */}
             {attachedImage && (
-              <div className="flex items-center gap-2 p-2 rounded-xl bg-zinc-900 border border-zinc-800 w-fit">
-                <img src={attachedImage} alt="Attachment" className="w-10 h-10 object-cover rounded-lg" />
-                <span className="text-xs text-zinc-300">lookbook-draft-cut.jpg</span>
+              <div className="flex items-center gap-2.5 p-2 rounded-xl bg-white/[0.05] border border-white/10 w-fit animate-slide-up">
+                <img src={attachedImage} alt="Attachment" className="w-10 h-10 object-cover rounded-lg ring-1 ring-white/10" />
+                <span className="text-xs text-zinc-300 font-mono">{attachedFileName}</span>
                 <button
                   type="button"
                   onClick={() => setAttachedImage(null)}
-                  className="text-zinc-500 hover:text-white px-1.5 transition-colors cursor-pointer"
+                  className="text-zinc-400 hover:text-white p-1 transition-colors cursor-pointer rounded-lg hover:bg-white/10"
+                  aria-label="Remove attachment"
                 >
-                  <X className="w-3.5 h-3.5" />
+                  <X className="w-4 h-4" />
                 </button>
               </div>
             )}
 
-            {/* Input Form [ 📎 ] [ 😊 ] [ Type your message... ] [ Send ] */}
-            <form onSubmit={handleSend} className="flex items-center gap-1.5 relative">
-              {/* Attachment Button */}
+            {/* Modernized Composer Form: [ 📎 ] [ 😊 ] [ Type your message... ] [ Send ] */}
+            <form onSubmit={handleSend} className="flex items-center gap-2 relative">
+              {/* Attachment Button: 44px Hit Target (Fitts's Law) */}
               <button
                 type="button"
-                onClick={handleMockAttachment}
-                className={`p-2 rounded-xl border transition-colors cursor-pointer shrink-0 ${
+                onClick={triggerAttachment}
+                className={`min-w-[44px] min-h-[44px] rounded-xl border flex items-center justify-center transition-colors cursor-pointer shrink-0 ${
                   attachedImage
                     ? 'bg-indigo-600/20 border-indigo-500/40 text-indigo-300'
-                    : 'bg-zinc-900/60 hover:bg-zinc-800 border-zinc-800 text-zinc-400'
+                    : 'bg-white/[0.05] hover:bg-white/[0.1] active:bg-white/[0.15] border-white/[0.08] text-zinc-400 hover:text-zinc-200'
                 }`}
-                title="Attach media or deliverable sample"
+                aria-label="Attach file or photo"
+                title="Attach file or deliverable draft"
               >
                 <Paperclip className="w-4 h-4" />
               </button>
 
-              {/* Emoji Button & Compact Dark Glass Popover */}
+              {/* Emoji Button & Compact Dark Glass Popover: 44px Hit Target */}
               <div className="relative shrink-0">
                 <button
                   type="button"
                   onClick={() => setIsEmojiPickerOpen(!isEmojiPickerOpen)}
-                  className={`p-2 rounded-xl border transition-colors cursor-pointer ${
+                  className={`min-w-[44px] min-h-[44px] rounded-xl border flex items-center justify-center transition-colors cursor-pointer ${
                     isEmojiPickerOpen
                       ? 'bg-indigo-600/20 border-indigo-500/50 text-indigo-300'
-                      : 'bg-zinc-900/60 hover:bg-zinc-800 border-zinc-800 text-zinc-400'
+                      : 'bg-white/[0.05] hover:bg-white/[0.1] active:bg-white/[0.15] border-white/[0.08] text-zinc-400 hover:text-zinc-200'
                   }`}
+                  aria-label="Insert emoji"
                   title="Insert emoji"
                 >
                   <Smile className="w-4 h-4" />
                 </button>
 
                 {isEmojiPickerOpen && (
-                  <div className="absolute bottom-11 left-0 z-50">
+                  <div className="fixed bottom-24 left-4 right-4 sm:left-auto sm:right-auto sm:absolute sm:bottom-14 sm:left-0 z-50 animate-slide-up">
                     <EmojiPicker
                       onSelect={(emoji) => {
                         handleSelectEmoji(emoji);
@@ -657,25 +745,30 @@ export const DirectMessagesView: React.FC = () => {
                 )}
               </div>
 
+              {/* Message Input: 44px Hit Target */}
               <input
+                ref={messageInputRef}
                 type="text"
                 value={messageInput}
                 onChange={(e) => setMessageInput(e.target.value)}
                 placeholder={
                   replyingTo
                     ? `Reply to ${replyingTo.senderName}...`
-                    : 'Type your message, deliverable update, or campaign question...'
+                    : 'Type your message...'
                 }
-                className="flex-1 bg-zinc-900/60 border border-zinc-800/80 rounded-xl px-3.5 py-2 text-xs text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-indigo-500/60"
+                className="flex-1 min-h-[44px] bg-white/[0.04] border border-white/[0.08] rounded-xl px-4 py-2 text-xs sm:text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-indigo-500/60 focus:ring-1 focus:ring-indigo-500/40 transition-colors"
+                aria-label="Message text"
               />
 
+              {/* Send Button: 44px Hit Target */}
               <button
                 type="submit"
                 disabled={!messageInput.trim() && !attachedImage}
-                className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 text-white text-xs font-semibold flex items-center gap-1.5 transition-all shadow-sm shadow-indigo-600/30 cursor-pointer"
+                className="min-w-[44px] min-h-[44px] px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 text-white text-xs sm:text-sm font-semibold flex items-center justify-center gap-1.5 transition-all shadow-md shadow-indigo-600/30 cursor-pointer active:scale-95 shrink-0"
+                aria-label="Send message"
               >
-                <Send className="w-3.5 h-3.5" />
-                <span>Send</span>
+                <Send className="w-4 h-4" />
+                <span className="hidden sm:inline">Send</span>
               </button>
             </form>
           </div>
@@ -695,7 +788,7 @@ export const DirectMessagesView: React.FC = () => {
           maxWidth="md"
         >
           <div className="space-y-4 text-xs">
-            <div className="p-3 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-300 italic">
+            <div className="p-3 rounded-xl bg-white/[0.04] border border-white/10 text-zinc-300 italic">
               "{forwardingMsg.content}"
             </div>
             <p className="font-semibold text-zinc-400">Select conversation to forward to:</p>
@@ -706,10 +799,10 @@ export const DirectMessagesView: React.FC = () => {
                   <button
                     key={conv.id}
                     onClick={() => handleForwardTo(conv.id)}
-                    className="w-full p-2.5 rounded-xl bg-zinc-900/60 hover:bg-zinc-800/80 border border-zinc-800 flex items-center justify-between text-left transition-colors cursor-pointer"
+                    className="w-full p-2.5 rounded-xl bg-white/[0.03] hover:bg-white/[0.07] border border-white/[0.08] flex items-center justify-between text-left transition-colors cursor-pointer"
                   >
                     <div className="flex items-center gap-2.5">
-                      <img src={conv.participantAvatar} alt={conv.participantName} className="w-7 h-7 rounded-full object-cover" />
+                      <Avatar src={conv.participantAvatar} name={conv.participantName} size="xs" />
                       <div>
                         <span className="font-semibold text-zinc-200 block">{conv.participantName}</span>
                         <span className="text-[10px] text-zinc-500 font-mono">{conv.participantHandle}</span>
@@ -743,7 +836,7 @@ export const DirectMessagesView: React.FC = () => {
                 variant="primary"
                 size="sm"
                 onClick={() => {
-                  alert(`${activeConv?.participantName} has been blocked.`);
+                  toast.warning(`${activeConv?.participantName} has been blocked.`);
                   setIsBlockModalOpen(false);
                 }}
                 className="bg-rose-600 hover:bg-rose-500 text-white cursor-pointer"
@@ -772,7 +865,7 @@ export const DirectMessagesView: React.FC = () => {
               <select
                 value={reportReason}
                 onChange={(e) => setReportReason(e.target.value)}
-                className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500"
+                className="w-full bg-[#12121a] border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500"
               >
                 <option value="deliverable_breach">Deliverable Breach / Non-Delivery</option>
                 <option value="harassment">Unprofessional Conduct / Harassment</option>
@@ -788,7 +881,7 @@ export const DirectMessagesView: React.FC = () => {
                 variant="primary"
                 size="sm"
                 onClick={() => {
-                  alert('Trust & Safety report submitted with encrypted transcript.');
+                  toast.success('Trust & Safety report submitted with encrypted transcript.');
                   setIsReportModalOpen(false);
                 }}
                 className="bg-amber-600 hover:bg-amber-500 text-white cursor-pointer"
