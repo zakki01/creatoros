@@ -46,22 +46,28 @@ export const Modal: React.FC<ModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto animate-fade-in">
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/75 backdrop-blur-md transition-opacity"
+        className="fixed inset-0 bg-black/80 backdrop-blur-xl transition-opacity"
         onClick={onClose}
       />
 
-      {/* Modal Dialog */}
+      {/* Modal Dialog (Surface 4 Floating Elevation) */}
       <div
         className={clsx(
-          'relative w-full rounded-3xl bg-zinc-900 border border-zinc-700/60 shadow-2xl shadow-black/80 flex flex-col max-h-[92vh] z-10 overflow-hidden animate-slide-up',
+          'relative w-full rounded-3xl surface-4 flex flex-col max-h-[92vh] z-10 overflow-hidden animate-slide-up',
           maxWidths[maxWidth]
         )}
       >
+        {/* Top Specular Edge */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent"
+        />
+
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-5 border-b border-zinc-800/80 bg-zinc-900/50 backdrop-blur-sm">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.08] bg-white/[0.02]">
           <div>
             {typeof title === 'string' ? (
-              <h2 className="text-lg font-semibold text-zinc-100 font-display">
+              <h2 className="text-base sm:text-lg font-semibold text-white font-display tracking-tight">
                 {title}
               </h2>
             ) : (
@@ -73,7 +79,7 @@ export const Modal: React.FC<ModalProps> = ({
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-xl text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800/80 transition-colors"
+            className="p-1.5 rounded-xl text-zinc-400 hover:text-white hover:bg-white/[0.08] transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -84,7 +90,7 @@ export const Modal: React.FC<ModalProps> = ({
 
         {/* Footer */}
         {footer && (
-          <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-zinc-800/80 bg-zinc-950/60">
+          <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-white/[0.08] bg-black/30">
             {footer}
           </div>
         )}

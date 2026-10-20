@@ -10,10 +10,14 @@ import {
   Video,
   Film,
   Layers,
+  FileText,
+  Sparkles,
 } from 'lucide-react';
 import { useAppState } from '../../context/StateContext';
 import { Button } from '../ui/Button';
 import { Badge } from '../ui/Badge';
+import { Avatar } from '../ui/Avatar';
+import { SpatialCard } from '../ui/SpatialCard';
 
 interface CreatorHomeProps {
   onNavigate: (tab: string) => void;
@@ -33,17 +37,14 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
 
   const currentCreator = creators[0]; // Rohan Sharma by default
 
-  // Opportunities: outreach items where stage is Contacted or Interested
   const incomingOpportunities = outreachItems.filter(
     (i) => i.creatorId === currentCreator.id && (i.stage === 'Contacted' || i.stage === 'Interested')
   );
 
-  // Active accepted campaigns
   const activeCampaignItems = outreachItems.filter(
     (i) => i.creatorId === currentCreator.id && i.stage === 'Confirmed'
   );
 
-  // Creator's payments
   const creatorPayments = payments.filter((p) => p.creatorId === currentCreator.id);
   const paidEarnings = creatorPayments
     .filter((p) => p.status === 'paid')
@@ -51,11 +52,7 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
   const pendingEarnings = creatorPayments
     .filter((p) => p.status === 'pending')
     .reduce((sum, p) => sum + p.amount, 0);
-  const upcomingEarnings = creatorPayments
-    .filter((p) => p.status === 'upcoming')
-    .reduce((sum, p) => sum + p.amount, 0);
 
-  // Content counts
   const creatorSubmissions = submissions.filter((s) => s.creatorId === currentCreator.id);
   const draftsCount = creatorSubmissions.filter(
     (s) => s.status === 'draft' || s.status === 'changes_requested'
@@ -65,41 +62,39 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
 
   return (
     <div className="space-y-6 animate-fade-in pb-12">
-      {/* Header with Verified Status & Uniform Quick Actions */}
+      {/* Top Section: Creator Identity + Quick Actions */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-3">
-            <h1 className="text-2xl sm:text-3xl font-bold text-zinc-100 font-display tracking-tight">
-              Good morning, {currentCreator.name}
-            </h1>
-            <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              <ShieldCheck className="w-3.5 h-3.5" />
-              <span>CreatorOS Verified</span>
+        <div className="flex items-center gap-3.5">
+          <Avatar
+            src={currentCreator.avatar}
+            name={currentCreator.name}
+            size="lg"
+            verified
+            ring="primary"
+          />
+          <div>
+            <div className="flex items-center gap-2">
+              <h1 className="text-xl sm:text-2xl font-bold text-white font-display tracking-tight">
+                {currentCreator.name}
+              </h1>
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-500/12 text-emerald-300 border border-emerald-500/30 shadow-[0_0_16px_-4px_rgba(16,185,129,0.4)]">
+                <ShieldCheck className="w-3 h-3 text-emerald-400" />
+                96 Reputation
+              </span>
             </div>
+            <p className="text-xs text-zinc-400 mt-0.5">
+              {currentCreator.niche} · {currentCreator.location}
+            </p>
           </div>
-          <p className="text-xs text-zinc-400 mt-1 font-mono">
-            Reputation: 96/100 • 3 Active Contracts • Escrow Protected
-          </p>
         </div>
 
-        {/* Uniform Quick Action Buttons */}
+        {/* Clean Tactile Quick Actions */}
         <div className="flex items-center gap-2">
           <Button
-            variant="outline"
-            size="md"
-            leftIcon={<Video className="w-4 h-4 text-indigo-400" />}
-            onClick={() => onNavigate('live')}
-            className="border-indigo-500/30 hover:border-indigo-500/60 text-zinc-200 cursor-pointer"
-          >
-            Live Studio
-          </Button>
-          <Button
-            variant="outline"
+            variant="secondary"
             size="md"
             leftIcon={<ShieldCheck className="w-4 h-4 text-emerald-400" />}
             onClick={() => onNavigate('passport')}
-            className="border-zinc-800 hover:border-zinc-700 text-zinc-200 cursor-pointer"
           >
             Passport
           </Button>
@@ -108,77 +103,176 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
             size="md"
             leftIcon={<Plus className="w-4 h-4" />}
             onClick={onOpenSubmissionModal}
-            className="bg-emerald-600 hover:bg-emerald-500 shadow-emerald-600/20 text-white cursor-pointer"
           >
-            Submit Draft
+            Submit Work
           </Button>
         </div>
       </div>
 
-      {/* Visual Live Studio Banner */}
-      <div
-        className="glass-bento p-5 sm:p-6 border border-indigo-500/30 bg-gradient-to-r from-indigo-950/40 via-zinc-950/80 to-zinc-950/90 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 cursor-pointer hover:border-indigo-500/50 hover:shadow-2xl transition-all duration-200 group"
-        onClick={() => onNavigate('live')}
-      >
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-indigo-600/20 border border-indigo-500/40 text-indigo-400 flex items-center justify-center shrink-0 shadow-lg group-hover:scale-105 transition-transform">
-            <Video className="w-6 h-6" />
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h3 className="text-sm font-semibold text-zinc-100">Live Studio</h3>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-mono bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
-                AI Realtime
-              </span>
-            </div>
-            <p className="text-xs text-zinc-300 font-medium mt-0.5">
-              AI-powered live creation
-            </p>
-            <p className="text-[11px] text-zinc-400 font-mono mt-0.5">
-              Create • Record • Submit
-            </p>
-          </div>
-        </div>
-
-        <Button
-          variant="primary"
-          size="sm"
-          className="shrink-0 bg-indigo-600 hover:bg-indigo-500 text-xs shadow-indigo-600/20 cursor-pointer"
+      {/* Hero Row: 3D Live Studio Feature Card + Actionable Contract Card */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+        {/* Hero Feature Card: Live Studio (3D visual object + action) */}
+        <SpatialCard
+          surface={3}
+          tilt
+          glare
+          glowColor="indigo"
+          onClick={() => onNavigate('live')}
+          className="lg:col-span-7 p-6 sm:p-7 bg-gradient-to-br from-indigo-950/55 via-[#131320]/90 to-[#0B0B12]/95 border-indigo-500/30 group"
         >
-          Open Studio →
-        </Button>
+          {/* Ambient radial 3D studio light */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -right-10 -top-10 w-64 h-64 rounded-full bg-indigo-500/20 blur-3xl group-hover:bg-indigo-500/30 transition-all duration-300"
+          />
+
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-5 h-full">
+            <div className="space-y-3 max-w-sm">
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-mono uppercase tracking-wider bg-indigo-500/15 text-indigo-300 border border-indigo-500/30">
+                <Sparkles className="w-3 h-3 text-indigo-400" />
+                <span>3D AI Environment</span>
+              </div>
+              <div>
+                <h2 className="text-xl sm:text-2xl font-bold text-white font-display tracking-tight">
+                  Live Studio
+                </h2>
+                <p className="text-xs sm:text-sm text-zinc-300 mt-0.5">
+                  Create in real time
+                </p>
+              </div>
+              <div className="pt-1">
+                <Button
+                  variant="primary"
+                  size="sm"
+                  leftIcon={<Video className="w-3.5 h-3.5" />}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onNavigate('live');
+                  }}
+                >
+                  Open Studio
+                </Button>
+              </div>
+            </div>
+
+            {/* Expressive 3D Camera / Studio Object */}
+            <div className="relative shrink-0 self-center sm:self-auto">
+              <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-3xl bg-gradient-to-b from-indigo-500/15 to-purple-500/5 border border-white/15 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.25),0_20px_40px_-12px_rgba(0,0,0,0.8)] flex items-center justify-center animate-float-slow">
+                <svg
+                  viewBox="0 0 120 120"
+                  className="w-24 h-24 drop-shadow-[0_14px_24px_rgba(99,102,241,0.45)] group-hover:scale-105 transition-transform duration-300"
+                >
+                  <defs>
+                    <linearGradient id="heroCamBody" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#4338ca" />
+                      <stop offset="55%" stopColor="#1e1b4b" />
+                      <stop offset="100%" stopColor="#09090b" />
+                    </linearGradient>
+                    <linearGradient id="heroCamLens" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#a5b4fc" />
+                      <stop offset="45%" stopColor="#6366f1" />
+                      <stop offset="100%" stopColor="#1e1b4b" />
+                    </linearGradient>
+                    <linearGradient id="heroRim" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stopColor="#ffffff" stopOpacity="0.55" />
+                      <stop offset="100%" stopColor="#ffffff" stopOpacity="0.08" />
+                    </linearGradient>
+                  </defs>
+                  <ellipse cx="60" cy="102" rx="34" ry="5" fill="rgba(0,0,0,0.55)" />
+                  <rect x="26" y="28" width="68" height="50" rx="15" fill="url(#heroCamBody)" stroke="url(#heroRim)" strokeWidth="1.5" transform="rotate(-5 60 53)" />
+                  <rect x="20" y="34" width="78" height="54" rx="16" fill="url(#heroCamBody)" stroke="url(#heroRim)" strokeWidth="1.5" />
+                  <rect x="34" y="25" width="24" height="10" rx="5" fill="#4f46e5" stroke="url(#heroRim)" strokeWidth="1.2" />
+                  <circle cx="59" cy="61" r="20" fill="#07070A" stroke="url(#heroRim)" strokeWidth="2" />
+                  <circle cx="59" cy="61" r="14" fill="url(#heroCamLens)" />
+                  <circle cx="54" cy="56" r="4.5" fill="rgba(255,255,255,0.65)" />
+                  <circle cx="64" cy="66" r="2" fill="rgba(199,210,254,0.55)" />
+                  <circle cx="84" cy="44" r="3.5" fill="#34d399" />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </SpatialCard>
+
+        {/* Contract Activity Card (Spatial Surface 3) */}
+        <SpatialCard
+          surface={3}
+          tilt
+          glare
+          glowColor="amber"
+          onClick={() => onNavigate('contracts')}
+          className="lg:col-span-5 p-6 flex flex-col justify-between gap-4 border-amber-500/25"
+        >
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <div className="w-11 h-11 rounded-2xl bg-amber-500/15 border border-amber-500/30 text-amber-300 flex items-center justify-center shadow-[0_0_20px_-4px_rgba(245,158,11,0.35)] shrink-0">
+                <FileText className="w-5 h-5" />
+              </div>
+              <div>
+                <span className="inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-wider text-amber-300 bg-amber-500/12 px-2 py-0.5 rounded-full border border-amber-500/25">
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+                  Awaiting Signature
+                </span>
+                <h3 className="text-base font-bold text-white mt-1">
+                  Aura Streetwear Co.
+                </h3>
+              </div>
+            </div>
+            <span className="text-lg font-bold font-mono text-emerald-400">$1,500</span>
+          </div>
+
+          <div className="flex items-center justify-between pt-2 border-t border-white/[0.07]">
+            <span className="text-xs text-zinc-400 font-mono">Summer Capsule · 2 Deliverables</span>
+            <Button
+              variant="primary"
+              size="sm"
+              onClick={(e) => {
+                e.stopPropagation();
+                onNavigate('contracts');
+              }}
+            >
+              Review
+            </Button>
+          </div>
+        </SpatialCard>
       </div>
 
-      {/* Top 5 Bento Quick Stats: Opportunities, Earnings, Content, Analytics */}
+      {/* Key Spatial Cards Grid: Opportunity, Content Pipeline, Earnings, Analytics */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* Bento 1: Opportunities */}
-        <div
-          className="glass-bento p-5 border border-indigo-500/25 bg-gradient-to-br from-indigo-950/30 to-zinc-950/90 rounded-2xl space-y-3 hover:border-indigo-500/40 transition-all duration-200 cursor-pointer"
+        {/* Card 1: Opportunity */}
+        <SpatialCard
+          surface={2}
+          tilt
+          glare
+          glowColor="indigo"
           onClick={() => onNavigate('opportunities')}
+          className="p-5 flex flex-col justify-between space-y-3"
         >
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-mono uppercase tracking-wider text-indigo-400 font-semibold">
-              Invitations
+            <span className="text-[11px] font-mono uppercase tracking-wider text-indigo-300 font-semibold">
+              Opportunity
             </span>
-            <div className="w-2 h-2 rounded-full bg-indigo-400 animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-indigo-400 shadow-[0_0_8px_rgba(129,140,248,0.9)] animate-pulse" />
           </div>
           <div>
-            <h3 className="text-2xl font-bold text-zinc-100 font-display">
-              {Math.max(1, incomingOpportunities.length)} New Opportunity
+            <h3 className="text-2xl font-bold text-white font-display">
+              {Math.max(1, incomingOpportunities.length)} New
             </h3>
-            <p className="text-xs text-zinc-400 mt-1">
-              Nike Summer Launch • ₹45,000
+            <p className="text-xs text-zinc-400 mt-0.5 truncate">
+              Nike Summer Launch · ₹45,000
             </p>
           </div>
-          <div className="flex items-center text-xs text-indigo-400 font-medium gap-1 pt-1">
-            <span>Review offers →</span>
+          <div className="flex items-center text-xs text-indigo-300 font-medium gap-1 pt-1">
+            <span>View offer →</span>
           </div>
-        </div>
+        </SpatialCard>
 
-        {/* Bento 2: Content Pipeline */}
-        <div
-          className="glass-bento p-5 border border-white/10 bg-zinc-950/70 rounded-2xl space-y-3 hover:border-white/20 transition-all duration-200 cursor-pointer"
+        {/* Card 2: Content Pipeline */}
+        <SpatialCard
+          surface={2}
+          tilt
+          glare
           onClick={() => onNavigate('content')}
+          className="p-5 flex flex-col justify-between space-y-3"
         >
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-400 font-semibold">
@@ -186,106 +280,113 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
             </span>
             <Film className="w-4 h-4 text-zinc-400" />
           </div>
-          <div className="grid grid-cols-3 gap-2 pt-1 text-center">
-            <div className="p-2 rounded-lg bg-zinc-900/80 border border-white/5">
-              <span className="text-lg font-bold font-mono text-zinc-200">{draftsCount}</span>
-              <p className="text-[10px] text-zinc-400 mt-0.5">Drafts</p>
+          <div className="grid grid-cols-3 gap-2 pt-0.5 text-center">
+            <div className="p-2 rounded-xl bg-white/[0.03] border border-white/[0.07]">
+              <span className="text-base font-bold font-mono text-white">{draftsCount}</span>
+              <p className="text-[10px] text-zinc-400">Drafts</p>
             </div>
-            <div className="p-2 rounded-lg bg-amber-500/10 border border-amber-500/20">
-              <span className="text-lg font-bold font-mono text-amber-400">{pendingApprovalCount}</span>
-              <p className="text-[10px] text-amber-300 mt-0.5">Pending</p>
+            <div className="p-2 rounded-xl bg-amber-500/10 border border-amber-500/25">
+              <span className="text-base font-bold font-mono text-amber-300">{pendingApprovalCount}</span>
+              <p className="text-[10px] text-amber-300">Pending</p>
             </div>
-            <div className="p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
-              <span className="text-lg font-bold font-mono text-emerald-400">{approvedCount}</span>
-              <p className="text-[10px] text-emerald-300 mt-0.5">Approved</p>
+            <div className="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/25">
+              <span className="text-base font-bold font-mono text-emerald-300">{approvedCount}</span>
+              <p className="text-[10px] text-emerald-300">Approved</p>
             </div>
           </div>
           <div className="flex items-center text-xs text-zinc-300 font-medium gap-1">
-            <span>View all deliverables →</span>
+            <span>Deliverables →</span>
           </div>
-        </div>
+        </SpatialCard>
 
-        {/* Bento 3: Earnings Breakdown */}
-        <div
-          className="glass-bento p-5 border border-emerald-500/25 bg-gradient-to-br from-emerald-950/30 to-zinc-950/90 rounded-2xl space-y-3 hover:border-emerald-500/40 transition-all duration-200 cursor-pointer"
+        {/* Card 3: Earnings */}
+        <SpatialCard
+          surface={2}
+          tilt
+          glare
+          glowColor="emerald"
           onClick={() => onNavigate('earnings')}
+          className="p-5 flex flex-col justify-between space-y-3"
         >
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-mono uppercase tracking-wider text-emerald-400 font-semibold">
+            <span className="text-[11px] font-mono uppercase tracking-wider text-emerald-300 font-semibold">
               Earnings
             </span>
             <CreditCard className="w-4 h-4 text-emerald-400" />
           </div>
           <div>
-            <h3 className="text-2xl font-bold text-zinc-100 font-mono">
+            <h3 className="text-2xl font-bold text-white font-mono">
               ₹{(pendingEarnings || 82000).toLocaleString()}
             </h3>
-            <p className="text-xs text-zinc-400 mt-1">
+            <p className="text-xs text-zinc-400 mt-0.5">
               Available: <span className="text-emerald-400 font-mono font-medium">₹{(paidEarnings || 127500).toLocaleString()}</span>
             </p>
           </div>
-          <div className="flex items-center justify-between text-[11px] text-zinc-400 font-mono pt-1">
-            <span>Pending Escrow</span>
-            <span className="text-emerald-400 font-medium">Payout details →</span>
+          <div className="flex items-center text-xs text-emerald-300 font-medium gap-1 pt-1">
+            <span>Payouts →</span>
           </div>
-        </div>
+        </SpatialCard>
 
-        {/* Bento 4: Performance Analytics */}
-        <div
-          className="glass-bento p-5 border border-white/10 bg-zinc-950/70 rounded-2xl space-y-3 hover:border-white/20 transition-all duration-200 cursor-pointer"
+        {/* Card 4: Analytics */}
+        <SpatialCard
+          surface={2}
+          tilt
+          glare
+          glowColor="sky"
           onClick={() => onNavigate('analytics')}
+          className="p-5 flex flex-col justify-between space-y-3"
         >
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-400 font-semibold">
-              Analytics
+              Reach
             </span>
             <TrendingUp className="w-4 h-4 text-emerald-400" />
           </div>
           <div>
-            <h3 className="text-2xl font-bold text-zinc-100 font-mono">
+            <h3 className="text-2xl font-bold text-white font-mono">
               1.37M
             </h3>
-            <div className="flex items-center gap-2 mt-1">
-              <span className="text-xs text-emerald-400 font-mono font-medium">+24% reach</span>
-              <span className="text-xs text-zinc-500">•</span>
-              <span className="text-xs text-zinc-300 font-mono">5.4% eng</span>
-            </div>
+            <p className="text-xs text-emerald-400 font-mono mt-0.5">
+              +24% reach · 5.4% eng
+            </p>
           </div>
           <div className="flex items-center text-xs text-zinc-300 font-medium gap-1 pt-1">
-            <span>View performance →</span>
+            <span>Analytics →</span>
           </div>
-        </div>
+        </SpatialCard>
       </div>
 
       {/* Active Campaigns Stream */}
       <div className="space-y-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Layers className="w-4 h-4 text-zinc-400" />
-            <h2 className="text-base font-bold text-zinc-100 font-display">Active Campaigns</h2>
+            <Layers className="w-4 h-4 text-indigo-400" />
+            <h2 className="text-base font-bold text-white font-display">Active Campaigns</h2>
           </div>
           <Button
             variant="ghost"
             size="sm"
             onClick={() => onNavigate('campaigns')}
             rightIcon={<ChevronRight className="w-4 h-4" />}
-            className="text-xs text-zinc-400 hover:text-zinc-200 cursor-pointer"
+            className="text-xs"
           >
-            All Campaigns ({activeCampaignItems.length})
+            All ({activeCampaignItems.length})
           </Button>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {activeCampaignItems.map((item) => (
-            <div
+            <SpatialCard
               key={item.id}
-              className="p-5 rounded-2xl bg-zinc-950/70 border border-white/10 hover:border-white/20 backdrop-blur-xl transition-all duration-200 space-y-4"
+              surface={2}
+              glare
+              className="p-5 space-y-4"
             >
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <h3 className="text-sm font-bold text-zinc-100">{item.campaignName}</h3>
+                  <h3 className="text-sm font-bold text-white">{item.campaignName}</h3>
                   <p className="text-xs text-zinc-400 mt-0.5">
-                    Brand: <span className="text-zinc-200 font-medium">Aura Streetwear Co.</span>
+                    Aura Streetwear Co.
                   </p>
                 </div>
                 <Badge variant="success" size="sm" dot>
@@ -293,91 +394,47 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
                 </Badge>
               </div>
 
-              {/* Progress Milestones */}
-              <div className="p-3 rounded-xl bg-zinc-900/60 border border-white/5 space-y-2 text-xs">
+              {/* Dimensional Milestone Bar */}
+              <div className="p-3 rounded-xl bg-black/30 border border-white/[0.06] space-y-2 text-xs">
                 <div className="flex justify-between items-center">
-                  <span className="text-zinc-400 text-[11px]">Current Milestone</span>
-                  <span className="font-semibold text-emerald-400 text-[11px]">Content Draft Review</span>
+                  <span className="text-zinc-400 text-[11px]">Milestone</span>
+                  <span className="font-semibold text-emerald-400 text-[11px]">Draft Review</span>
                 </div>
-                <div className="w-full bg-zinc-800 h-1.5 rounded-full overflow-hidden">
-                  <div className="bg-emerald-500 h-full rounded-full w-2/3" />
+                <div className="w-full bg-zinc-800/80 h-1.5 rounded-full overflow-hidden">
+                  <div className="bg-gradient-to-r from-indigo-500 to-emerald-400 h-full rounded-full w-2/3 shadow-[0_0_10px_rgba(52,211,153,0.5)]" />
                 </div>
                 <div className="flex justify-between text-[10px] text-zinc-400 font-mono">
                   <span className="flex items-center gap-1 text-emerald-400">
                     <CheckCircle2 className="w-3 h-3" /> Signed
                   </span>
-                  <span className="text-amber-400 font-medium">Draft Review (Now)</span>
-                  <span>Payout Release</span>
+                  <span className="text-amber-300 font-medium">Review</span>
+                  <span>Payout</span>
                 </div>
               </div>
 
-              <div className="flex items-center justify-between text-xs pt-1 border-t border-white/5">
+              <div className="flex items-center justify-between text-xs pt-1 border-t border-white/[0.06]">
                 <div className="flex items-center gap-1.5 text-zinc-400">
                   <Clock className="w-3.5 h-3.5 text-zinc-500" />
-                  <span className="font-mono text-[11px]">Due in 48 hours</span>
+                  <span className="font-mono text-[11px]">48h left</span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <span className="text-zinc-200 font-mono font-semibold">
+                  <span className="text-white font-mono font-semibold">
                     ₹{item.proposedFee.toLocaleString()}
                   </span>
                   <Button
                     variant="primary"
                     size="sm"
                     onClick={onOpenSubmissionModal}
-                    className="text-xs bg-emerald-600 hover:bg-emerald-500 cursor-pointer"
                   >
-                    Submit Draft
+                    Submit
                   </Button>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Creator Reputation Snapshot */}
-      <div className="p-5 rounded-2xl bg-zinc-950/70 border border-white/10 backdrop-blur-xl space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div>
-            <h3 className="text-sm font-bold text-zinc-100 font-display flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-emerald-400" />
-              <span>Platform Reputation Score: 96 / 100</span>
-            </h3>
-            <p className="text-xs text-zinc-400 mt-0.5">
-              Verified across {currentCreator.pastCampaignsCount} completed brand deliverables.
-            </p>
-          </div>
-
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => onNavigate('passport')}
-            className="text-xs cursor-pointer border-zinc-800 text-zinc-300"
-          >
-            Passport Breakdown
-          </Button>
-        </div>
-
-        <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
-          {[
-            { label: 'On-Time Delivery', score: currentCreator.reliabilityMetrics.onTimeDelivery },
-            { label: 'Brief Compliance', score: currentCreator.reliabilityMetrics.briefCompliance },
-            { label: 'Communication', score: currentCreator.reliabilityMetrics.communication },
-            { label: 'Content Quality', score: currentCreator.reliabilityMetrics.contentQuality },
-            { label: 'Campaign ROAS Lift', score: currentCreator.reliabilityMetrics.campaignPerformance },
-          ].map((m, idx) => (
-            <div
-              key={idx}
-              className="p-3 rounded-xl bg-zinc-900/60 border border-white/5 text-center"
-            >
-              <p className="text-[10px] text-zinc-400 uppercase font-mono tracking-wide">{m.label}</p>
-              <p className="text-sm font-bold font-mono text-emerald-400 mt-0.5">
-                {m.score}%
-              </p>
-            </div>
+            </SpatialCard>
           ))}
         </div>
       </div>
     </div>
   );
 };
+

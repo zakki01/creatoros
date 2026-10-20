@@ -17,12 +17,12 @@ export const LiveScenePicker: React.FC<LiveScenePickerProps> = ({
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
-        <label className="text-xs font-semibold text-zinc-300 uppercase tracking-wider flex items-center gap-1.5">
+        <label className="text-xs font-semibold text-white uppercase tracking-wider flex items-center gap-1.5">
           <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
-          <span>Select AI Scene</span>
+          <span>AI Scenes</span>
         </label>
         <span className="text-[11px] text-zinc-500 font-mono">
-          {LIVE_SCENES.length} styles available
+          {LIVE_SCENES.length} presets
         </span>
       </div>
 
@@ -34,45 +34,47 @@ export const LiveScenePicker: React.FC<LiveScenePickerProps> = ({
               key={scene.id}
               disabled={disabled}
               onClick={() => onSelectScene(scene)}
-              className={`group relative p-3 rounded-xl text-left transition-all duration-200 border flex flex-col justify-between ${
+              className={`group relative overflow-hidden rounded-2xl text-left transition-all duration-200 flex flex-col justify-between ${
                 isSelected
-                  ? 'border-indigo-500/70 bg-zinc-900/90 shadow-lg ring-1 ring-indigo-500/30'
-                  : 'border-zinc-800/80 bg-zinc-950/60 hover:bg-zinc-900/60 hover:border-zinc-700/80'
+                  ? 'surface-3 border-indigo-500/70 ring-1 ring-indigo-500/40 shadow-[0_12px_28px_-6px_rgba(99,102,241,0.35)] -translate-y-0.5'
+                  : 'surface-2 hover:border-white/20 hover:-translate-y-0.5'
               } ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
             >
-              <div>
-                <div className="flex items-start justify-between gap-1">
-                  <div className="flex items-center gap-1.5">
+              {/* Visual Preview Thumbnail */}
+              <div className="relative h-20 w-full overflow-hidden bg-zinc-900">
+                {scene.thumbnailUrl && (
+                  <img
+                    src={scene.thumbnailUrl}
+                    alt={scene.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    loading="lazy"
+                  />
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0D0D14] via-black/25 to-transparent" />
+
+                {/* Accent Orb / Selected Check */}
+                <div className="absolute top-2 right-2">
+                  {isSelected ? (
+                    <div className="w-5 h-5 rounded-full bg-indigo-500 text-white flex items-center justify-center shadow-[0_0_12px_rgba(99,102,241,0.8)]">
+                      <Check className="w-3 h-3" />
+                    </div>
+                  ) : (
                     <span
-                      className="w-2 h-2 rounded-full shrink-0"
+                      className="block w-2.5 h-2.5 rounded-full ring-2 ring-black/60 shadow-sm"
                       style={{ backgroundColor: scene.accentColor }}
                     />
-                    <span className="text-xs font-semibold text-zinc-200 truncate">
-                      {scene.name}
-                    </span>
-                  </div>
-                  {isSelected && (
-                    <div className="w-4 h-4 rounded-full bg-indigo-500 text-white flex items-center justify-center shrink-0">
-                      <Check className="w-2.5 h-2.5" />
-                    </div>
                   )}
                 </div>
-
-                <p className="text-[11px] text-zinc-400 mt-1 line-clamp-2 leading-tight">
-                  {scene.tagline}
-                </p>
               </div>
 
-              {/* Tags */}
-              <div className="mt-2.5 flex flex-wrap gap-1">
-                {scene.tags.slice(0, 2).map((tag, idx) => (
-                  <span
-                    key={idx}
-                    className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-zinc-800/70 text-zinc-400 border border-zinc-700/40"
-                  >
-                    {tag}
-                  </span>
-                ))}
+              {/* Concise Preset Metadata */}
+              <div className="p-2.5">
+                <p className="text-xs font-semibold text-white truncate">
+                  {scene.name}
+                </p>
+                <p className="text-[11px] text-zinc-400 truncate mt-0.5">
+                  {scene.tagline}
+                </p>
               </div>
             </button>
           );
@@ -81,3 +83,4 @@ export const LiveScenePicker: React.FC<LiveScenePickerProps> = ({
     </div>
   );
 };
+

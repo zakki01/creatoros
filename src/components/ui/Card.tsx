@@ -2,7 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 
 interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
-  variant?: 'default' | 'glass' | 'interactive' | 'active' | 'bento';
+  variant?: 'default' | 'glass' | 'interactive' | 'active' | 'bento' | 'elevated' | 'floating';
 }
 
 export const Card: React.FC<CardProps> = ({
@@ -12,12 +12,14 @@ export const Card: React.FC<CardProps> = ({
   ...props
 }) => {
   const variantStyles = {
-    default: 'bg-zinc-900/90 border border-zinc-800/80 text-zinc-100 rounded-2xl',
+    default: 'surface-1 text-zinc-100 rounded-2xl',
     glass: 'glass-card text-zinc-100 rounded-2xl',
     interactive:
-      'glass-card text-zinc-100 rounded-2xl cursor-pointer hover:border-zinc-600/80 hover:bg-zinc-800/40 transition-all duration-200 active:scale-[0.99]',
+      'glass-card text-zinc-100 rounded-2xl cursor-pointer hover:-translate-y-0.5 hover:border-white/20 transition-all duration-200 active:scale-[0.99]',
     active: 'glass-card-active text-zinc-100 rounded-2xl',
-    bento: 'glass-bento text-zinc-100 rounded-3xl cursor-pointer',
+    bento: 'glass-bento text-zinc-100 rounded-3xl cursor-pointer hover:-translate-y-0.5',
+    elevated: 'surface-3 text-zinc-100 rounded-2xl',
+    floating: 'surface-4 text-zinc-100 rounded-3xl',
   };
 
   return (
@@ -26,3 +28,4 @@ export const Card: React.FC<CardProps> = ({
     </div>
   );
 };
+

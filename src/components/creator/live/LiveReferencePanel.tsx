@@ -47,13 +47,11 @@ export const LiveReferencePanel: React.FC<LiveReferencePanelProps> = ({
   return (
     <div className="space-y-2.5">
       <div className="flex items-center justify-between">
-        <label className="text-xs font-semibold text-zinc-300 uppercase tracking-wider flex items-center gap-1.5">
+        <label className="text-xs font-semibold text-white uppercase tracking-wider flex items-center gap-1.5">
           <ImageIcon className="w-3.5 h-3.5 text-indigo-400" />
-          <span>Style Reference Image</span>
-          <span className="text-[10px] lowercase text-zinc-500 font-normal">
-            (optional)
-          </span>
+          <span>Reference Look</span>
         </label>
+        <span className="text-[10px] text-zinc-500 font-mono">Optional</span>
       </div>
 
       <input
@@ -66,25 +64,25 @@ export const LiveReferencePanel: React.FC<LiveReferencePanelProps> = ({
       />
 
       {referenceImage ? (
-        <div className="flex items-center gap-3 p-2.5 rounded-xl bg-zinc-900/80 border border-zinc-800/80">
+        <div className="flex items-center gap-3 p-2.5 rounded-2xl surface-3">
           <img
             src={referenceImage.dataUrl}
             alt="Reference preview"
-            className="w-12 h-12 rounded-lg object-cover border border-zinc-700/80 shrink-0"
+            className="w-12 h-12 rounded-xl object-cover border border-white/15 shrink-0"
           />
           <div className="flex-1 min-w-0">
-            <p className="text-xs font-medium text-zinc-200 truncate">
+            <p className="text-xs font-medium text-white truncate">
               {referenceImage.name}
             </p>
-            <p className="text-[11px] text-zinc-400 mt-0.5">
-              Live AI style guiding active
+            <p className="text-[11px] text-emerald-400 mt-0.5">
+              Style active
             </p>
           </div>
           <button
             onClick={handleRemove}
             disabled={disabled}
-            className="p-1.5 rounded-lg text-zinc-400 hover:text-rose-400 hover:bg-zinc-800 transition-colors"
-            title="Remove reference image"
+            className="p-1.5 rounded-xl text-zinc-400 hover:text-rose-400 hover:bg-white/[0.06] transition-colors"
+            title="Remove reference"
           >
             <X className="w-4 h-4" />
           </button>
@@ -94,12 +92,12 @@ export const LiveReferencePanel: React.FC<LiveReferencePanelProps> = ({
           type="button"
           onClick={() => fileInputRef.current?.click()}
           disabled={disabled}
-          className={`w-full flex items-center justify-center gap-2 p-3 rounded-xl border border-dashed border-zinc-800 hover:border-zinc-700 bg-zinc-950/40 hover:bg-zinc-900/40 text-zinc-400 hover:text-zinc-200 text-xs transition-colors ${
+          className={`w-full flex items-center justify-center gap-2 p-3.5 rounded-2xl border border-dashed border-white/15 hover:border-indigo-500/40 bg-white/[0.02] hover:bg-white/[0.05] text-zinc-400 hover:text-white text-xs transition-all ${
             disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
           }`}
         >
-          <Upload className="w-3.5 h-3.5 text-zinc-500" />
-          <span>Upload mood board or look reference</span>
+          <Upload className="w-3.5 h-3.5 text-indigo-400" />
+          <span>Add reference</span>
         </button>
       )}
     </div>

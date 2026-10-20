@@ -25,6 +25,7 @@ export interface LiveScene {
   prompt: string;
   accentColor: string;
   bgGradient: string;
+  thumbnailUrl?: string;
   tags: string[];
   filterStyle: SceneFilterStyle;
 }

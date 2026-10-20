@@ -47,7 +47,7 @@ export const PasswordField: React.FC<PasswordFieldProps> = ({
           placeholder={placeholder}
           disabled={disabled}
           autoComplete={autoComplete}
-          className="w-full pl-9 pr-10 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-xs text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-indigo-500 transition-colors font-mono disabled:opacity-60 disabled:cursor-not-allowed"
+          className="input-soft-recessed w-full pl-9 pr-10 py-2.5 rounded-xl text-xs text-zinc-100 placeholder:text-zinc-500 focus:outline-none transition-all font-mono disabled:opacity-60 disabled:cursor-not-allowed"
         />
         <Lock className="w-4 h-4 text-zinc-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
         <button

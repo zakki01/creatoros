@@ -13,19 +13,19 @@ export const DemoAccessCard: React.FC<DemoAccessCardProps> = ({
   disabled = false,
 }) => {
   return (
-    <div className="p-4 rounded-2xl bg-zinc-900/40 border border-zinc-800/80 space-y-3">
+    <div className="surface-soft-recessed p-4 rounded-2xl space-y-3">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-1.5 text-xs font-semibold text-zinc-300 uppercase tracking-wider">
-          <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
+          <Sparkles className="w-3.5 h-3.5 text-sky-400" />
           <span>Explore CreatorOS</span>
         </div>
-        <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-zinc-800 text-zinc-400 border border-zinc-700/50">
+        <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-zinc-800/80 text-zinc-300 border border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]">
           Instant preview
         </span>
       </div>
 
       <p className="text-[11px] text-zinc-400">
-        Instantly explore with active campaigns, deliverables, and Live Studio.
+        Instantly explore with active campaigns, contracts, and deliverables.
       </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
@@ -34,7 +34,7 @@ export const DemoAccessCard: React.FC<DemoAccessCardProps> = ({
           type="button"
           disabled={disabled}
           onClick={() => onSelectDemo('creator')}
-          className="flex items-center justify-between p-3 rounded-xl bg-zinc-900/90 hover:bg-sky-950/20 border border-zinc-800 hover:border-sky-500/40 text-left transition-all group cursor-pointer"
+          className="btn-soft-raised flex items-center justify-between p-3 rounded-xl text-left transition-all group cursor-pointer"
         >
           <div className="flex items-center gap-2.5 min-w-0">
             <BrandLogo size="xs" iconOnly />
@@ -55,10 +55,10 @@ export const DemoAccessCard: React.FC<DemoAccessCardProps> = ({
           type="button"
           disabled={disabled}
           onClick={() => onSelectDemo('business')}
-          className="flex items-center justify-between p-3 rounded-xl bg-zinc-900/90 hover:bg-indigo-950/20 border border-zinc-800 hover:border-indigo-500/40 text-left transition-all group cursor-pointer"
+          className="btn-soft-raised flex items-center justify-between p-3 rounded-xl text-left transition-all group cursor-pointer"
         >
           <div className="flex items-center gap-2.5 min-w-0">
-            <div className="w-8 h-8 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center shrink-0">
+            <div className="w-8 h-8 rounded-lg bg-indigo-500/15 border border-indigo-500/20 text-indigo-400 flex items-center justify-center shrink-0">
               <Building2 className="w-4 h-4" />
             </div>
             <div className="truncate">

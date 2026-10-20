@@ -6,13 +6,11 @@ import {
   Smile,
   ChevronDown,
   ChevronUp,
-  ShieldCheck,
   CornerDownRight,
-  Sparkles,
 } from 'lucide-react';
 import { SocialPost, PostComment } from '../../types/socialFeed';
 import { useAppState } from '../../context/StateContext';
-import { EmojiPicker } from './EmojiPicker';
+import { EmojiPicker, SelectedGifPayload } from './EmojiPicker';
 import { ReactionPicker } from './ReactionPicker';
 import { Avatar } from '../ui/Avatar';
 import { IconButton } from '../ui/IconButton';
@@ -22,45 +20,34 @@ export interface CommentsViewProps {
   onClose: () => void;
 }
 
-const QUICK_REACTION_CHIPS = ['🔥 Fire', '❤️ Love', '👏 Applause', '🙌 Collab', '✨ Pure Art'];
-
 export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => {
   const {
     userProfile,
-    role,
     addPostComment,
     toggleCommentLike,
     addCommentReply,
   } = useAppState();
 
   const [commentText, setCommentText] = useState('');
+  const [pendingGif, setPendingGif] = useState<SelectedGifPayload | null>(null);
   const [replyingTo, setReplyingTo] = useState<PostComment | null>(null);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [activeReactionCommentId, setActiveReactionCommentId] = useState<string | null>(null);
   const [expandedReplies, setExpandedReplies] = useState<Record<string, boolean>>({
-    'c-101': true, // Keep initial reply visible for demonstration
+    'c-101': true,
   });
 
   const commentInputRef = useRef<HTMLInputElement>(null);
   const commentsListRef = useRef<HTMLDivElement>(null);
 
-  // Close on Escape & Lock body scroll
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
     };
-
-    const originalOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
     window.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      document.body.style.overflow = originalOverflow;
-      window.removeEventListener('keydown', handleKeyDown);
-    };
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, [onClose]);
 
-  // Handle focus when replying
   const handleStartReply = (comment: PostComment) => {
     setReplyingTo(comment);
     setCommentText(`@${comment.authorHandle.replace('@', '')} `);
@@ -69,39 +56,28 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
     }, 50);
   };
 
-  const handleQuickChip = (chip: string) => {
-    const emojiOnly = chip.split(' ')[0];
-    addPostComment(post.id, emojiOnly);
-    setTimeout(() => {
-      if (commentsListRef.current) {
-        commentsListRef.current.scrollTop = commentsListRef.current.scrollHeight;
-      }
-    }, 100);
-  };
-
   const handleSubmitComment = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     const text = commentText.trim();
-    if (!text) return;
+    if (!text && !pendingGif) return;
 
     if (replyingTo) {
-      addCommentReply(post.id, replyingTo.id, text);
-      // Auto-expand replies for this comment
+      addCommentReply(post.id, replyingTo.id, text, pendingGif?.url);
       setExpandedReplies((prev) => ({ ...prev, [replyingTo.id]: true }));
       setReplyingTo(null);
     } else {
-      addPostComment(post.id, text);
+      addPostComment(post.id, text, pendingGif?.url);
     }
 
     setCommentText('');
+    setPendingGif(null);
     setShowEmojiPicker(false);
 
-    // Scroll to bottom
     setTimeout(() => {
       if (commentsListRef.current) {
         commentsListRef.current.scrollTop = commentsListRef.current.scrollHeight;
       }
-    }, 100);
+    }, 80);
   };
 
   const toggleRepliesExpansion = (commentId: string) => {
@@ -117,47 +93,87 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
     0
   );
 
+  const primaryMediaUrl = post.mediaUrl;
+
   return (
     <>
-      {/* Backdrop */}
+      {/* Subtle Backdrop: keeps post visible on left on desktop and partially visible behind bottom sheet on mobile */}
       <div
-        className="fixed inset-0 z-40 bg-black/70 backdrop-blur-[4px] transition-opacity animate-in fade-in duration-200"
+        className="fixed inset-0 z-40 bg-black/40 backdrop-blur-[2px] transition-opacity animate-in fade-in duration-200"
         onClick={onClose}
         aria-hidden="true"
       />
 
-      {/* Responsive Container:
-          - Desktop (sm+): Right-side Contextual Panel (w-[420px])
-          - Mobile (<sm): Modern Bottom Sheet (rounded-t-3xl, max-h-[85dvh], dynamic content height)
+      {/* Desktop Left Post Context Preview (sm+): ensures post media/content is always visible on the left while commenting */}
+      {primaryMediaUrl && (
+        <div
+          className="hidden lg:flex fixed inset-y-8 left-8 right-[420px] z-40 items-center justify-center pointer-events-none"
+          aria-hidden="true"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="pointer-events-auto max-w-[440px] w-full rounded-3xl overflow-hidden bg-[#0b0b10]/95 border border-white/[0.12] shadow-[0_28px_70px_rgba(0,0,0,0.85)] backdrop-blur-xl flex flex-col"
+          >
+            <div className="px-4 py-3 flex items-center gap-2.5 border-b border-white/[0.06]">
+              <Avatar
+                src={post.authorAvatar}
+                name={post.authorName}
+                size="xs"
+                verified={post.authorVerified}
+              />
+              <span className="text-xs font-semibold text-white truncate">
+                {post.authorName}
+              </span>
+              <span className="text-[11px] text-zinc-400 truncate">
+                {post.authorHandle}
+              </span>
+            </div>
+            <div className="relative aspect-[4/5] max-h-[62vh] w-full bg-black flex items-center justify-center overflow-hidden">
+              <img
+                src={primaryMediaUrl}
+                alt={post.caption}
+                className="w-full h-full object-cover"
+              />
+            </div>
+            {post.caption && (
+              <div className="px-4 py-3 text-xs text-zinc-300 line-clamp-2 border-t border-white/[0.06]">
+                <span className="font-semibold text-white mr-1.5">{post.authorName}</span>
+                {post.caption}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Responsive Social Comments Panel:
+          - Desktop (sm+): Compact Right Panel (w-[390px])
+          - Mobile (<sm): Bottom Sheet (max-h-[72dvh], rounded-t-3xl) leaving post partially visible behind sheet
       */}
       <aside
-        className="fixed z-50 flex flex-col bg-[#0c0c11] border-white/[0.12] shadow-2xl backdrop-blur-2xl text-zinc-100 transition-all duration-300 overflow-hidden
-          inset-x-0 bottom-0 max-h-[85dvh] rounded-t-3xl border-t
-          sm:inset-y-0 sm:right-0 sm:left-auto sm:h-full sm:max-h-full sm:w-[420px] sm:rounded-none sm:border-l sm:border-t-0 animate-in slide-in-from-bottom sm:slide-in-from-right duration-250"
+        className="fixed z-50 flex flex-col bg-[#0c0c12]/98 border-white/[0.12] shadow-[0_-20px_60px_rgba(0,0,0,0.85)] backdrop-blur-2xl text-zinc-100 transition-all duration-300 overflow-hidden
+          inset-x-0 bottom-0 max-h-[72dvh] rounded-t-3xl border-t
+          sm:inset-y-0 sm:right-0 sm:left-auto sm:h-full sm:max-h-full sm:w-[390px] sm:rounded-none sm:border-l sm:border-t-0 animate-in slide-in-from-bottom sm:slide-in-from-right duration-200"
         role="dialog"
         aria-label="Comments"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Mobile Drag Indicator Bar */}
+        {/* Mobile Drag Handle */}
         <div
-          className="sm:hidden w-full pt-3 pb-1 flex justify-center cursor-pointer select-none"
+          className="sm:hidden w-full pt-2.5 pb-1 flex justify-center cursor-pointer select-none"
           onClick={onClose}
         >
-          <div className="w-10 h-1.5 bg-white/20 rounded-full hover:bg-white/35 transition-colors" />
+          <div className="w-9 h-1 bg-white/20 rounded-full" />
         </div>
 
-        {/* Panel Header */}
-        <header className="px-5 py-3.5 border-b border-white/[0.08] flex items-center justify-between shrink-0">
-          <div>
-            <h2 className="text-sm font-bold text-white tracking-tight flex items-center gap-2">
-              <span>Comments</span>
-              <span className="text-xs px-2 py-0.5 rounded-full bg-white/[0.08] text-zinc-300 font-mono font-medium">
-                {totalCommentsCount}
-              </span>
+        {/* Clean Header: ONLY Comments + Count + [X] */}
+        <header className="px-4 py-3 border-b border-white/[0.07] flex items-center justify-between shrink-0">
+          <div className="flex items-center gap-2">
+            <h2 className="text-sm font-semibold text-white tracking-tight">
+              Comments
             </h2>
-            <p className="text-[11px] text-zinc-400 font-mono mt-0.5 truncate max-w-[280px]">
-              On {post.authorName}’s {post.contentType}
-            </p>
+            <span className="text-xs px-2 py-0.5 rounded-full bg-white/[0.07] text-zinc-300 font-medium">
+              {totalCommentsCount}
+            </span>
           </div>
 
           <IconButton
@@ -171,20 +187,15 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
           </IconButton>
         </header>
 
-        {/* Comments Scrollable Feed */}
+        {/* Compact Social Comments List */}
         <div
           ref={commentsListRef}
-          className="flex-1 overflow-y-auto px-5 py-4 space-y-4 focus:outline-none scrollbar-thin min-h-0"
+          className="flex-1 overflow-y-auto px-4 py-3 space-y-3.5 focus:outline-none scrollbar-thin min-h-0"
         >
           {comments.length === 0 ? (
-            <div className="py-12 flex flex-col items-center justify-center text-center p-6 space-y-2">
-              <div className="w-12 h-12 rounded-full bg-white/[0.05] flex items-center justify-center text-zinc-500">
-                <Smile className="w-6 h-6" />
-              </div>
-              <p className="text-xs font-semibold text-zinc-300">No comments yet</p>
-              <p className="text-[11px] text-zinc-400">
-                Be the first to share your thoughts on this drop.
-              </p>
+            <div className="py-10 flex flex-col items-center justify-center text-center space-y-1.5">
+              <Smile className="w-5 h-5 text-zinc-500" />
+              <p className="text-xs font-medium text-zinc-300">No comments yet</p>
             </div>
           ) : (
             comments.map((comment) => {
@@ -193,63 +204,79 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
               const isRepliesOpen = expandedReplies[comment.id];
 
               return (
-                <div key={comment.id} className="group/comment space-y-2.5">
-                  {/* Top-level Comment Row */}
-                  <div className="flex items-start gap-3 relative">
+                <div key={comment.id} className="space-y-2">
+                  {/* Compact Comment Row */}
+                  <div className="flex items-start gap-2.5">
                     <Avatar
                       src={comment.authorAvatar}
                       name={comment.authorName}
-                      size="sm"
+                      size="xs"
                       verified={comment.authorVerified}
                     />
 
-                    <div className="flex-1 min-w-0 pr-1">
-                      {/* Name & Handle & Time */}
-                      <div className="flex items-center gap-1.5 flex-wrap">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-baseline gap-1.5">
                         <span className="text-xs font-semibold text-white truncate">
                           {comment.authorName}
                         </span>
-                        <span className="text-[10px] text-zinc-500 font-mono">
+                        <span className="text-[10px] text-zinc-500">
                           {comment.timestamp}
                         </span>
                       </div>
 
-                      {/* Comment Content */}
-                      <p className="text-xs text-zinc-200 mt-1 leading-relaxed break-words font-sans">
-                        {comment.content}
-                      </p>
+                      {comment.content && (
+                        <p className="text-xs text-zinc-200 mt-0.5 leading-relaxed break-words">
+                          {comment.content}
+                        </p>
+                      )}
 
-                      {/* Comment Actions (Like + Reply) */}
-                      <div className="flex items-center gap-4 mt-2 text-[11px] text-zinc-400">
-                        {/* Like button with reaction tray trigger */}
+                      {comment.gifUrl && (
+                        <div className="mt-1.5 relative w-44 h-28 rounded-xl overflow-hidden border border-white/[0.1] bg-zinc-900">
+                          <img
+                            src={comment.gifUrl}
+                            alt="Comment GIF"
+                            className="w-full h-full object-cover block"
+                          />
+                          <span className="absolute bottom-1.5 right-1.5 px-1.5 py-0.5 rounded bg-black/80 text-[9px] font-bold text-indigo-300 border border-white/10">
+                            GIF
+                          </span>
+                        </div>
+                      )}
+
+                      {/* Compact Actions: ♡ Like | Reaction | Reply */}
+                      <div className="flex items-center gap-3.5 mt-1.5 text-[11px] text-zinc-400">
+                        <button
+                          type="button"
+                          onClick={() => toggleCommentLike(post.id, comment.id)}
+                          className={`flex items-center gap-1 transition-colors cursor-pointer ${
+                            comment.likedByMe
+                              ? 'text-rose-400 font-medium'
+                              : 'hover:text-zinc-200'
+                          }`}
+                        >
+                          <Heart
+                            className={`w-3 h-3 ${comment.likedByMe ? 'fill-current' : ''}`}
+                          />
+                          <span>
+                            {comment.likes && comment.likes > 0 ? comment.likes : 'Like'}
+                          </span>
+                        </button>
+
+                        {/* Reaction Button */}
                         <div className="relative">
                           <button
-                            onClick={() => toggleCommentLike(post.id, comment.id)}
-                            onContextMenu={(e) => {
-                              e.preventDefault();
+                            type="button"
+                            onClick={() =>
                               setActiveReactionCommentId(
                                 activeReactionCommentId === comment.id ? null : comment.id
-                              );
-                            }}
-                            className={`flex items-center gap-1.5 transition-colors cursor-pointer select-none ${
-                              comment.likedByMe
-                                ? 'text-rose-400 font-medium'
-                                : 'hover:text-zinc-200'
-                            }`}
+                              )
+                            }
+                            className="flex items-center gap-1 hover:text-zinc-200 transition-colors cursor-pointer"
                           >
-                            <Heart
-                              className={`w-3.5 h-3.5 ${
-                                comment.likedByMe ? 'fill-current' : ''
-                              }`}
-                            />
-                            {comment.likes && comment.likes > 0 ? (
-                              <span className="font-mono text-[10px]">
-                                {comment.likes}
-                              </span>
-                            ) : null}
+                            <span>{comment.reaction || '😊'}</span>
+                            <span>React</span>
                           </button>
 
-                          {/* Reaction Tray for comment */}
                           {activeReactionCommentId === comment.id && (
                             <div className="absolute bottom-full left-0 mb-1 z-30">
                               <ReactionPicker
@@ -264,10 +291,10 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
                           )}
                         </div>
 
-                        {/* Reply trigger button */}
                         <button
+                          type="button"
                           onClick={() => handleStartReply(comment)}
-                          className="hover:text-white transition-colors cursor-pointer select-none font-medium"
+                          className="hover:text-white transition-colors cursor-pointer font-medium"
                         >
                           Reply
                         </button>
@@ -275,20 +302,19 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
                     </div>
                   </div>
 
-                  {/* Threaded Replies Section */}
+                  {/* Compact Threaded Replies */}
                   {hasReplies && (
-                    <div className="pl-9 space-y-2">
+                    <div className="pl-8 space-y-1.5">
                       <button
+                        type="button"
                         onClick={() => toggleRepliesExpansion(comment.id)}
-                        className="flex items-center gap-2 text-[11px] text-indigo-400 hover:text-indigo-300 font-medium cursor-pointer transition-colors py-1 select-none"
+                        className="flex items-center gap-1.5 text-[11px] text-zinc-400 hover:text-zinc-200 font-medium cursor-pointer transition-colors"
                       >
-                        <div className="w-5 h-px bg-white/20" />
+                        <div className="w-4 h-px bg-white/15" />
                         <span>
                           {isRepliesOpen
                             ? 'Hide replies'
-                            : `View ${replies.length} ${
-                                replies.length === 1 ? 'reply' : 'replies'
-                              }`}
+                            : `${replies.length} ${replies.length === 1 ? 'reply' : 'replies'}`}
                         </span>
                         {isRepliesOpen ? (
                           <ChevronUp className="w-3 h-3" />
@@ -298,12 +324,9 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
                       </button>
 
                       {isRepliesOpen && (
-                        <div className="space-y-3 pt-1 border-l border-white/10 pl-3 animate-in fade-in duration-200">
+                        <div className="space-y-2.5 pt-0.5 pl-2.5 border-l border-white/[0.08]">
                           {replies.map((reply) => (
-                            <div
-                              key={reply.id}
-                              className="flex items-start gap-2.5 relative"
-                            >
+                            <div key={reply.id} className="flex items-start gap-2">
                               <Avatar
                                 src={reply.authorAvatar}
                                 name={reply.authorName}
@@ -311,33 +334,52 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
                                 verified={reply.authorVerified}
                               />
 
-                              <div className="flex-1 min-w-0 pr-1">
-                                <div className="flex items-center gap-1.5 flex-wrap">
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-baseline gap-1.5">
                                   <span className="text-xs font-semibold text-white truncate">
                                     {reply.authorName}
                                   </span>
-                                  <span className="text-[10px] text-zinc-500 font-mono">
+                                  <span className="text-[10px] text-zinc-500">
                                     {reply.timestamp}
                                   </span>
                                 </div>
 
-                                <p className="text-xs text-zinc-300 mt-1 leading-relaxed break-words font-sans">
-                                  {reply.content}
-                                </p>
+                                {reply.content && (
+                                  <p className="text-xs text-zinc-300 mt-0.5 leading-relaxed break-words">
+                                    {reply.content}
+                                  </p>
+                                )}
 
-                                <div className="flex items-center gap-3 mt-1.5 text-[10px] text-zinc-400">
+                                {reply.gifUrl && (
+                                  <div className="mt-1.5 relative w-fit max-w-[180px] rounded-xl overflow-hidden border border-white/[0.08] bg-black/50">
+                                    <img
+                                      src={reply.gifUrl}
+                                      alt="Reply GIF"
+                                      className="max-h-32 w-auto object-contain block"
+                                    />
+                                    <span className="absolute bottom-1 right-1 px-1 py-0.2 rounded bg-black/75 text-[8px] font-bold text-indigo-300">
+                                      GIF
+                                    </span>
+                                  </div>
+                                )}
+
+                                <div className="flex items-center gap-3 mt-1 text-[10px] text-zinc-400">
                                   <button
+                                    type="button"
                                     onClick={() => toggleCommentLike(post.id, reply.id)}
                                     className={`flex items-center gap-1 transition-colors cursor-pointer ${
                                       reply.likedByMe ? 'text-rose-400' : 'hover:text-zinc-200'
                                     }`}
                                   >
-                                    <Heart className={`w-3 h-3 ${reply.likedByMe ? 'fill-current' : ''}`} />
-                                    {reply.likes && reply.likes > 0 ? (
-                                      <span className="font-mono">{reply.likes}</span>
-                                    ) : null}
+                                    <Heart
+                                      className={`w-2.5 h-2.5 ${reply.likedByMe ? 'fill-current' : ''}`}
+                                    />
+                                    <span>
+                                      {reply.likes && reply.likes > 0 ? reply.likes : 'Like'}
+                                    </span>
                                   </button>
                                   <button
+                                    type="button"
                                     onClick={() => handleStartReply(comment)}
                                     className="hover:text-white cursor-pointer"
                                   >
@@ -357,46 +399,67 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
           )}
         </div>
 
-        {/* Replying indicator banner */}
+        {/* Replying To Bar */}
         {replyingTo && (
-          <div className="px-5 py-2 bg-indigo-950/40 border-t border-indigo-500/20 text-xs text-indigo-300 flex items-center justify-between shrink-0">
-            <span className="flex items-center gap-1.5">
-              <CornerDownRight className="w-3.5 h-3.5 text-indigo-400" />
+          <div className="px-4 py-1.5 bg-indigo-950/40 border-t border-indigo-500/20 text-[11px] text-indigo-300 flex items-center justify-between shrink-0">
+            <span className="flex items-center gap-1.5 truncate">
+              <CornerDownRight className="w-3 h-3 text-indigo-400 shrink-0" />
               Replying to <strong className="text-white">{replyingTo.authorName}</strong>
             </span>
             <button
+              type="button"
               onClick={() => {
                 setReplyingTo(null);
                 setCommentText('');
               }}
-              className="text-zinc-400 hover:text-white p-1"
+              className="text-zinc-400 hover:text-white p-0.5"
             >
               <X className="w-3.5 h-3.5" />
             </button>
           </div>
         )}
 
-        {/* Quick Reaction Chips Row */}
-        <div className="px-4 py-2 border-t border-white/[0.06] bg-[#0c0c11] flex items-center gap-1.5 overflow-x-auto no-scrollbar shrink-0">
-          {QUICK_REACTION_CHIPS.map((chip) => (
+        {/* Attached GIF Preview Bar (when user picks/uploads a GIF from EmojiPicker) */}
+        {pendingGif && (
+          <div className="px-4 py-2 bg-zinc-900/95 border-t border-white/[0.08] flex items-center justify-between gap-2 shrink-0">
+            <div className="flex items-center gap-2.5 min-w-0">
+              <div className="relative w-11 h-11 rounded-lg overflow-hidden bg-black border border-white/10 shrink-0">
+                <img
+                  src={pendingGif.url}
+                  alt={pendingGif.title || 'GIF'}
+                  className="w-full h-full object-cover"
+                />
+                <span className="absolute bottom-0.5 right-0.5 px-1 rounded bg-black/80 text-[8px] font-bold text-indigo-300">
+                  GIF
+                </span>
+              </div>
+              <span className="text-xs text-zinc-200 truncate">
+                {pendingGif.title || 'Animated GIF'}
+              </span>
+            </div>
             <button
-              key={chip}
               type="button"
-              onClick={() => handleQuickChip(chip)}
-              className="px-2.5 py-1 rounded-full bg-white/[0.05] hover:bg-white/[0.1] active:bg-white/[0.15] text-[11px] font-medium text-zinc-300 hover:text-white border border-white/[0.08] transition-colors whitespace-nowrap cursor-pointer select-none"
+              onClick={() => setPendingGif(null)}
+              className="p-1 rounded-lg text-zinc-400 hover:text-white hover:bg-white/10"
+              aria-label="Remove GIF"
             >
-              {chip}
+              <X className="w-3.5 h-3.5" />
             </button>
-          ))}
-        </div>
+          </div>
+        )}
 
-        {/* Bottom Sticky Composer with Safe Area Insets */}
-        <footer className="p-3 sm:p-4 border-t border-white/[0.08] bg-[#09090d]/95 backdrop-blur-md pb-safe relative shrink-0 z-10 shadow-xl">
+        {/* Persistent Bottom Composer: [avatar] [ Add a comment... 😊 ] [Send] */}
+        <footer className="p-3 border-t border-white/[0.08] bg-[#09090d]/95 backdrop-blur-md pb-safe relative shrink-0 z-10">
           {showEmojiPicker && (
-            <div className="absolute bottom-full right-3 mb-2 z-50">
+            <div className="fixed bottom-20 left-3 right-3 sm:left-auto sm:right-3 sm:absolute sm:bottom-full sm:mb-2 z-50 flex justify-end">
               <EmojiPicker
                 onSelect={(emoji) => {
                   setCommentText((prev) => prev + emoji);
+                  commentInputRef.current?.focus();
+                }}
+                onSelectGif={(gif) => {
+                  setPendingGif(gif);
+                  setShowEmojiPicker(false);
                   commentInputRef.current?.focus();
                 }}
                 onClose={() => setShowEmojiPicker(false)}
@@ -405,15 +468,12 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
             </div>
           )}
 
-          <form
-            onSubmit={handleSubmitComment}
-            className="flex items-center gap-2"
-          >
+          <form onSubmit={handleSubmitComment} className="flex items-center gap-2">
             <Avatar
               src={userProfile.avatarUrl}
               name={userProfile.name}
-              size="sm"
-              className="hidden sm:inline-flex shrink-0"
+              size="xs"
+              className="shrink-0"
             />
 
             <div className="flex-1 relative flex items-center">
@@ -427,15 +487,21 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
                     ? `Reply to @${replyingTo.authorHandle.replace('@', '')}...`
                     : 'Add a comment...'
                 }
-                className="w-full bg-zinc-900 border border-white/[0.12] rounded-xl pl-3.5 pr-10 py-2.5 min-h-[44px] text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-indigo-500/80 transition-all font-sans"
+                data-testid="comment-composer-input"
+                className="w-full bg-zinc-900/90 border border-white/[0.1] rounded-xl pl-3 pr-9 py-2 min-h-[40px] text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-indigo-500/70 transition-all"
               />
 
               <button
                 type="button"
                 onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-                className="absolute right-1.5 min-w-[36px] min-h-[36px] flex items-center justify-center text-zinc-400 hover:text-amber-300 transition-colors cursor-pointer"
-                title="Insert emoji"
-                aria-label="Insert emoji"
+                data-testid="comment-emoji-gif-btn"
+                className={`absolute right-1.5 w-7 h-7 rounded-lg flex items-center justify-center transition-colors cursor-pointer ${
+                  showEmojiPicker || pendingGif
+                    ? 'text-indigo-400 bg-indigo-500/15'
+                    : 'text-zinc-400 hover:text-zinc-200'
+                }`}
+                title="Emoji & GIF"
+                aria-label="Emoji & GIF"
               >
                 <Smile className="w-4 h-4" />
               </button>
@@ -443,11 +509,12 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
 
             <button
               type="submit"
-              disabled={!commentText.trim()}
-              className="min-w-[44px] min-h-[44px] rounded-xl bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 disabled:hover:bg-indigo-600 text-white transition-all cursor-pointer flex items-center justify-center shrink-0 active:scale-95 shadow-sm shadow-indigo-600/30"
+              disabled={!commentText.trim() && !pendingGif}
+              data-testid="comment-send-btn"
+              className="min-w-[40px] min-h-[40px] px-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 text-white text-xs font-semibold transition-all cursor-pointer flex items-center justify-center shrink-0 active:scale-95"
               aria-label="Send comment"
             >
-              <Send className="w-4 h-4" />
+              <Send className="w-3.5 h-3.5" />
             </button>
           </form>
         </footer>

@@ -32,17 +32,17 @@ export const Button: React.FC<ButtonProps> = ({
 
   const variantStyles = {
     primary:
-      'bg-indigo-600 hover:bg-indigo-500 text-white shadow-sm hover:shadow-indigo-500/25 focus:ring-indigo-500',
+      'depth-btn-primary text-white focus:ring-indigo-500 active:translate-y-[1px]',
     secondary:
-      'bg-zinc-800/90 hover:bg-zinc-700/90 text-zinc-100 border border-zinc-700/50 hover:border-zinc-600 focus:ring-zinc-600',
+      'depth-btn-secondary text-zinc-100 focus:ring-zinc-600 active:translate-y-[1px]',
     outline:
-      'bg-transparent hover:bg-zinc-800/50 text-zinc-300 hover:text-white border border-zinc-700 focus:ring-zinc-600',
+      'bg-white/[0.02] hover:bg-white/[0.06] text-zinc-200 hover:text-white border border-white/12 hover:border-white/25 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.08)] hover:-translate-y-[1px] active:translate-y-[1px] focus:ring-zinc-600',
     ghost:
-      'bg-transparent hover:bg-zinc-800/60 text-zinc-400 hover:text-zinc-100 focus:ring-zinc-700',
+      'bg-transparent hover:bg-white/[0.06] text-zinc-400 hover:text-zinc-100 focus:ring-zinc-700',
     danger:
-      'bg-rose-600/20 hover:bg-rose-600/30 text-rose-300 border border-rose-500/30 hover:border-rose-500/50 focus:ring-rose-500',
+      'bg-gradient-to-b from-rose-500/25 to-rose-600/30 hover:from-rose-500/35 hover:to-rose-600/40 text-rose-200 border border-rose-500/35 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.15),0_4px_12px_-2px_rgba(244,63,94,0.25)] hover:-translate-y-[1px] active:translate-y-[1px] focus:ring-rose-500',
     ai:
-      'bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white hover:opacity-95 shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/30 focus:ring-purple-500',
+      'bg-gradient-to-b from-indigo-500 via-purple-500 to-pink-600 text-white border border-white/25 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.35),0_8px_20px_-4px_rgba(168,85,247,0.45)] hover:-translate-y-[1px] active:translate-y-[1px] focus:ring-purple-500',
   };
 
   return (

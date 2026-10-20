@@ -95,13 +95,19 @@ export const ResponsiveAuthPanel: React.FC<ResponsiveAuthPanelProps> = ({
 
   return (
     <div
-      className={`w-full rounded-3xl bg-zinc-950/90 border border-white/10 p-6 sm:p-8 lg:p-10 flex flex-col justify-between space-y-6 text-left shadow-2xl backdrop-blur-2xl ${className}`}
+      className={`glass-primary rounded-3xl p-6 sm:p-7 lg:p-8 flex flex-col justify-between space-y-6 text-left relative overflow-hidden shadow-[0_24px_50px_-12px_rgba(0,0,0,0.85)] ${className}`}
     >
+      {/* Specular Top Edge Light */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/25 to-transparent"
+      />
+
       <div className="space-y-6">
         {/* Tab Switcher: Sign In vs Create Account */}
         <div className="flex items-center justify-between gap-4">
           <div className="space-y-1">
-            <h3 className="text-2xl font-medium font-display text-white tracking-tight">
+            <h3 className="text-xl sm:text-2xl font-medium font-display text-white tracking-tight">
               {activeTab === 'login' ? 'Sign In' : 'Create Account'}
             </h3>
             <p className="text-xs text-zinc-400 font-sans font-light">
@@ -111,19 +117,18 @@ export const ResponsiveAuthPanel: React.FC<ResponsiveAuthPanelProps> = ({
             </p>
           </div>
 
-
           {/* Minimal Tab Switcher Pill */}
-          <div className="flex p-0.5 rounded-xl bg-zinc-900 border border-white/10 shrink-0">
+          <div className="flex p-0.5 rounded-xl bg-black/40 border border-white/[0.08] shadow-[inset_1px_1px_3px_rgba(0,0,0,0.6)] shrink-0">
             <button
               type="button"
               onClick={() => {
                 setActiveTab('login');
                 setErrorMessage(null);
               }}
-              className={`px-3 py-1.5 rounded-lg text-xs font-sans font-medium transition-all cursor-pointer ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-sans transition-all cursor-pointer ${
                 activeTab === 'login'
-                  ? 'bg-white text-zinc-950 shadow-sm'
-                  : 'text-zinc-400 hover:text-white'
+                  ? 'btn-soft-primary font-semibold shadow-sm'
+                  : 'text-zinc-400 hover:text-white font-medium'
               }`}
             >
               Sign In
@@ -134,10 +139,10 @@ export const ResponsiveAuthPanel: React.FC<ResponsiveAuthPanelProps> = ({
                 setActiveTab('signup');
                 setErrorMessage(null);
               }}
-              className={`px-3 py-1.5 rounded-lg text-xs font-sans font-medium transition-all cursor-pointer ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-sans transition-all cursor-pointer ${
                 activeTab === 'signup'
-                  ? 'bg-white text-zinc-950 shadow-sm'
-                  : 'text-zinc-400 hover:text-white'
+                  ? 'btn-soft-primary font-semibold shadow-sm'
+                  : 'text-zinc-400 hover:text-white font-medium'
               }`}
             >
               Register

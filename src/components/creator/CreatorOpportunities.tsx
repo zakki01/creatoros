@@ -36,34 +36,25 @@ export const CreatorOpportunities: React.FC = () => {
   );
 
   return (
-    <div className="space-y-8 animate-fade-in pb-12">
+    <div className="space-y-5 animate-fade-in pb-12 max-w-5xl mx-auto">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-2">
-            <h1 className="text-2xl sm:text-3xl font-bold text-zinc-100 font-display">
-              Campaign Opportunities
-            </h1>
-            <Badge variant="brand" size="sm">
-              AI Tailored
-            </Badge>
-          </div>
-          <p className="text-sm text-zinc-400 mt-1">
-            Personalized campaign invitations from premium brands matched to your content style and audience.
-          </p>
-        </div>
-
-        <div className="text-xs text-zinc-400 bg-zinc-900 border border-zinc-800 px-3.5 py-2 rounded-xl">
-          Profile: <strong className="text-zinc-200">@{currentCreator.handle}</strong> ({currentCreator.category})
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center gap-2.5">
+          <h1 className="text-xl sm:text-2xl font-bold text-white font-display tracking-tight">
+            Opportunities
+          </h1>
+          <Badge variant="brand" size="sm">
+            {opportunities.length}
+          </Badge>
         </div>
       </div>
 
       {/* Opportunities List */}
-      <div className="space-y-5">
+      <div className="space-y-4">
         {opportunities.length === 0 ? (
-          <div className="p-12 text-center rounded-3xl bg-zinc-900/60 border border-zinc-800 space-y-2">
-            <p className="text-sm font-medium text-zinc-300">No pending opportunities right now.</p>
-            <p className="text-xs text-zinc-500">Brands discover your profile automatically via Creator Passport.</p>
+          <div className="p-10 text-center rounded-3xl surface-2 space-y-1.5">
+            <p className="text-sm font-medium text-zinc-200">No pending opportunities</p>
+            <p className="text-xs text-zinc-400">New brand invitations appear here.</p>
           </div>
         ) : (
           opportunities.map((opp) => {
@@ -73,19 +64,19 @@ export const CreatorOpportunities: React.FC = () => {
             return (
               <Card
                 key={opp.id}
-                className={`p-6 space-y-5 transition-all ${
-                  isConfirmed ? 'border-emerald-500/40 bg-zinc-900/90' : 'hover:border-zinc-700'
+                className={`p-5 space-y-4 transition-all ${
+                  isConfirmed ? 'border-emerald-500/40' : ''
                 }`}
               >
-                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
                   <div className="space-y-1">
-                    <div className="flex items-center gap-2.5">
-                      <h3 className="text-lg font-bold text-zinc-100 font-display">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <h3 className="text-base sm:text-lg font-bold text-white font-display">
                         {opp.campaignName}
                       </h3>
                       {isConfirmed ? (
                         <Badge variant="success" size="sm" dot>
-                          Accepted & Confirmed
+                          Accepted
                         </Badge>
                       ) : isDeclined ? (
                         <Badge variant="danger" size="sm">
@@ -93,55 +84,24 @@ export const CreatorOpportunities: React.FC = () => {
                         </Badge>
                       ) : (
                         <Badge variant="brand" size="sm">
-                          Active Invitation
+                          Invite
                         </Badge>
                       )}
                     </div>
                     <p className="text-xs text-zinc-400">
-                      Brand: <strong className="text-zinc-200">Aura Streetwear Co.</strong> • Location: <strong className="text-zinc-200">Mumbai</strong>
+                      Aura Streetwear Co. · Mumbai · 1x Reel + 2x Stories · Due Oct 12
                     </p>
                   </div>
 
-                  {/* AI Match Badge */}
-                  <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-indigo-950/40 border border-indigo-500/40 text-indigo-300 text-xs font-semibold shrink-0">
-                    <Sparkles className="w-3.5 h-3.5 text-indigo-400 animate-pulse-subtle" />
-                    <span>AI MATCH: 94%</span>
-                  </div>
-                </div>
-
-                {/* Compensation & Deliverables Grid */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-3.5 rounded-2xl bg-zinc-950/70 border border-zinc-800 text-xs">
-                  <div>
-                    <span className="text-[10px] text-zinc-500 uppercase block">Compensation</span>
-                    <span className="text-base font-bold font-mono text-emerald-400">
+                  {/* Compensation + Match */}
+                  <div className="flex items-center gap-3 shrink-0">
+                    <span className="text-base sm:text-lg font-bold font-mono text-emerald-400">
                       ₹{opp.proposedFee.toLocaleString()}
                     </span>
-                  </div>
-                  <div>
-                    <span className="text-[10px] text-zinc-500 uppercase block">Scope</span>
-                    <span className="font-semibold text-zinc-200">1x Reel + 2x Stories</span>
-                  </div>
-                  <div>
-                    <span className="text-[10px] text-zinc-500 uppercase block">Deadline</span>
-                    <span className="font-semibold text-zinc-200">October 12, 2026</span>
-                  </div>
-                  <div>
-                    <span className="text-[10px] text-zinc-500 uppercase block">Sampling</span>
-                    <span className="font-semibold text-zinc-200">Sneaker Physical Drop</span>
-                  </div>
-                </div>
-
-                {/* Why You Match (As specified in prompt) */}
-                <div className="p-3.5 rounded-2xl bg-indigo-950/20 border border-indigo-500/20 space-y-1.5 text-xs">
-                  <div className="flex items-center gap-1.5 text-indigo-300 font-semibold text-[11px] uppercase tracking-wider">
-                    <Sparkles className="w-3.5 h-3.5" />
-                    <span>Why you match this campaign:</span>
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-zinc-300 text-[11px]">
-                    <p>• <strong>Fashion niche:</strong> Sneaker styling authority with verified high engagement</p>
-                    <p>• <strong>Mumbai audience:</strong> 44% of your followers are located in the launch target city</p>
-                    <p>• <strong>Previous sneaker drop:</strong> 4.2x ROAS achieved on your past footwear campaign</p>
-                    <p>• <strong>Audience age match:</strong> 88% aged 18-34, matching Aura buyer persona</p>
+                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-indigo-500/15 border border-indigo-500/30 text-indigo-300 text-xs font-semibold">
+                      <Sparkles className="w-3 h-3 text-indigo-400" />
+                      94% Match
+                    </span>
                   </div>
                 </div>
 
@@ -154,7 +114,7 @@ export const CreatorOpportunities: React.FC = () => {
                     leftIcon={<Eye className="w-3.5 h-3.5" />}
                     className="text-xs"
                   >
-                    View Campaign Brief
+                    View
                   </Button>
 
                   {!isConfirmed && !isDeclined ? (
@@ -174,9 +134,10 @@ export const CreatorOpportunities: React.FC = () => {
                         leftIcon={<Check className="w-3.5 h-3.5" />}
                         className="text-xs bg-emerald-600 hover:bg-emerald-500 shadow-emerald-600/20"
                       >
-                        Accept Campaign & Lock ₹{opp.proposedFee.toLocaleString()}
+                        Accept
                       </Button>
                     </div>
+
                   ) : isConfirmed ? (
                     <span className="text-xs text-emerald-400 font-medium flex items-center gap-1">
                       <Check className="w-3.5 h-3.5" />

@@ -4,12 +4,13 @@ export const LIVE_SCENES: LiveScene[] = [
   {
     id: 'cinematic',
     name: 'Cinematic 35mm',
-    tagline: 'Anamorphic flare, shallow depth, warm film grain',
-    description: 'Arri Alexa 35mm aesthetic with golden hour soft lighting, dramatic bokeh, and teal-orange color grading.',
+    tagline: 'Warm film',
+    description: 'Arri Alexa 35mm aesthetic with golden hour soft lighting and warm film grading.',
     prompt: 'Cinematic 35mm film shot, anamorphic lens flare, shallow depth of field, warm cinematic color grading, hyper-realistic film grain, golden hour rim light, 8k quality',
     accentColor: '#f59e0b',
     bgGradient: 'from-amber-950/60 via-zinc-900 to-black',
-    tags: ['Film', '35mm', 'Warm Tones', 'Golden Hour'],
+    thumbnailUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=400&q=80',
+    tags: ['Film', '35mm'],
     filterStyle: {
       brightness: 1.05,
       contrast: 1.18,
@@ -21,13 +22,14 @@ export const LIVE_SCENES: LiveScene[] = [
   },
   {
     id: 'cyberpunk',
-    name: 'Cyberpunk Neon',
-    tagline: 'Electric violet, cyan backlights & rain reflections',
-    description: 'Neo-Tokyo dystopian cyberpunk atmosphere with neon pink and cyan rim lights, chrome reflections, and dark high-contrast shadows.',
+    name: 'Cyberpunk',
+    tagline: 'Neon',
+    description: 'Neo-Tokyo neon atmosphere with cyan and magenta rim lighting.',
     prompt: 'Cyberpunk 2077 aesthetic, neo-tokyo neon lights, vibrant cyan and magenta rim lighting, rainy street reflections, high contrast chromatic aberration, futuristic holographic ambient glow',
     accentColor: '#06b6d4',
     bgGradient: 'from-cyan-950/60 via-zinc-900 to-black',
-    tags: ['Cyberpunk', 'Neon', 'Cyan & Pink', 'Futuristic'],
+    thumbnailUrl: 'https://images.unsplash.com/photo-1563089145-599997674d42?auto=format&fit=crop&w=400&q=80',
+    tags: ['Cyberpunk', 'Neon'],
     filterStyle: {
       brightness: 1.08,
       contrast: 1.35,
@@ -39,13 +41,14 @@ export const LIVE_SCENES: LiveScene[] = [
   },
   {
     id: 'luxury',
-    name: 'Old Money Luxury',
-    tagline: 'Muted earth tones, marble ambiance & quiet luxury',
-    description: 'Bespoke high-society aesthetic with Italian marble, cashmere tones, soft diffused studio light, and refined neutral contrast.',
+    name: 'Old Money',
+    tagline: 'Luxury',
+    description: 'Bespoke editorial aesthetic with cashmere tones and soft studio daylight.',
     prompt: 'Quiet luxury aesthetic, editorial Vogue lighting, subtle warm champagne tones, soft diffused Italian daylight, minimalist elegance, refined wealthy lifestyle atmosphere',
     accentColor: '#d97706',
     bgGradient: 'from-stone-900 via-zinc-900 to-black',
-    tags: ['Luxury', 'Neutral', 'Quiet Elegance', 'Vogue'],
+    thumbnailUrl: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=400&q=80',
+    tags: ['Luxury', 'Neutral'],
     filterStyle: {
       brightness: 1.02,
       contrast: 1.1,
@@ -57,13 +60,14 @@ export const LIVE_SCENES: LiveScene[] = [
   },
   {
     id: 'fashion',
-    name: 'High Fashion Editorial',
-    tagline: 'High key runway lighting, sharp focus & bold contours',
-    description: 'Paris Fashion Week editorial studio shoot. Ultra-clean stark whites, sharp silhouettes, and crisp high-fashion flash aesthetics.',
+    name: 'High Fashion',
+    tagline: 'Editorial',
+    description: 'Runway editorial studio shoot with sharp contour flash aesthetics.',
     prompt: 'High fashion editorial lookbook, Paris runway lighting, sharp contour flash photography, ultra-clean background, vibrant colors, striking model presence',
     accentColor: '#ec4899',
     bgGradient: 'from-pink-950/60 via-zinc-900 to-black',
-    tags: ['Editorial', 'Runway', 'High Key', 'Paris'],
+    thumbnailUrl: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=400&q=80',
+    tags: ['Editorial', 'Runway'],
     filterStyle: {
       brightness: 1.12,
       contrast: 1.25,
@@ -75,13 +79,14 @@ export const LIVE_SCENES: LiveScene[] = [
   },
   {
     id: 'music_video',
-    name: 'Music Video Glow',
-    tagline: 'Dreamy bloom, prismatic prism flares & haze',
-    description: '90s analog music video with ethereal star filters, dreamy soft bloom on highlights, and deep saturated moody lighting.',
+    name: 'Music Video',
+    tagline: 'Prismatic',
+    description: '90s analog music video with dreamy bloom highlights and prismatic streaks.',
     prompt: 'Moody hip-hop music video aesthetic, dreamy bloom highlights, vintage anamorphic lens streaks, hazy smoke atmosphere, rich jewel tones, iconic music video grade',
     accentColor: '#8b5cf6',
     bgGradient: 'from-purple-950/60 via-zinc-900 to-black',
-    tags: ['Music Video', 'Bloom', 'Moody', 'Analog'],
+    thumbnailUrl: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=400&q=80',
+    tags: ['Music Video', 'Bloom'],
     filterStyle: {
       brightness: 1.06,
       contrast: 1.22,
@@ -93,13 +98,14 @@ export const LIVE_SCENES: LiveScene[] = [
   },
   {
     id: 'gaming',
-    name: 'Gaming Streamer',
-    tagline: 'RGB backlighting, dynamic rim light & streamer setup',
-    description: 'Pro streamer battle station with synchronized RGB ambient lights, crisp webcam key-light, and gamer studio depth.',
+    name: 'Gaming',
+    tagline: 'RGB',
+    description: 'Pro studio setup with synchronized RGB ambient lights and crisp keylight.',
     prompt: 'Professional gaming streamer setup, dual RGB backlight, Razer Chroma aura, crisp keylight, dark studio background with purple and green neon accents, high fidelity stream camera',
     accentColor: '#10b981',
     bgGradient: 'from-emerald-950/60 via-zinc-900 to-black',
-    tags: ['Gaming', 'RGB', 'Streamer', 'Battle Station'],
+    thumbnailUrl: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=400&q=80',
+    tags: ['Gaming', 'RGB'],
     filterStyle: {
       brightness: 1.1,
       contrast: 1.3,
@@ -112,3 +118,4 @@ export const LIVE_SCENES: LiveScene[] = [
 ];
 
 export const DEFAULT_SCENE = LIVE_SCENES[0];
+

@@ -64,7 +64,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
             placeholder="creator@example.com"
             disabled={isLoading}
             autoComplete="username"
-            className="w-full pl-9 pr-3.5 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-xs text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-indigo-500 transition-colors"
+            className="input-soft-recessed w-full pl-9 pr-3.5 py-2.5 rounded-xl text-xs text-zinc-100 placeholder:text-zinc-500 focus:outline-none transition-all"
           />
           <Mail className="w-4 h-4 text-zinc-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
         </div>
@@ -81,7 +81,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
           <button
             type="button"
             onClick={onForgotPassword}
-            className="text-[11px] text-indigo-400 hover:text-indigo-300 transition-colors focus:outline-none"
+            className="text-[11px] text-sky-400 hover:text-sky-300 transition-colors focus:outline-none cursor-pointer"
           >
             Forgot password?
           </button>
@@ -95,7 +95,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
           id="rememberMe"
           checked={rememberMe}
           onChange={(e) => setRememberMe(e.target.checked)}
-          className="rounded border-zinc-800 bg-zinc-900 text-indigo-600 focus:ring-0 focus:ring-offset-0 w-3.5 h-3.5 cursor-pointer"
+          className="rounded border-zinc-700/60 bg-zinc-900/90 text-indigo-500 focus:ring-0 focus:ring-offset-0 w-3.5 h-3.5 cursor-pointer accent-indigo-500"
         />
         <label htmlFor="rememberMe" className="text-xs text-zinc-400 cursor-pointer select-none">
           Keep me signed in on this device
@@ -106,19 +106,19 @@ export const LoginForm: React.FC<LoginFormProps> = ({
       <button
         type="submit"
         disabled={isLoading}
-        className={`w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow-lg shadow-indigo-600/25 transition-all ${
-          isLoading ? 'opacity-70 cursor-not-allowed' : 'cursor-pointer hover:shadow-indigo-600/35'
+        className={`btn-soft-primary w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-semibold cursor-pointer active:scale-[0.99] transition-all ${
+          isLoading ? 'opacity-70 cursor-not-allowed' : ''
         }`}
       >
         {isLoading ? (
           <>
-            <Loader2 className="w-4 h-4 animate-spin" />
+            <Loader2 className="w-4 h-4 animate-spin text-zinc-900" />
             <span>Signing in...</span>
           </>
         ) : (
           <>
             <span>Sign In to CreatorOS</span>
-            <ArrowRight className="w-3.5 h-3.5" />
+            <ArrowRight className="w-3.5 h-3.5 text-zinc-900" />
           </>
         )}
       </button>

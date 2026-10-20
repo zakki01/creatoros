@@ -4,8 +4,6 @@ import {
   Search,
   Command,
   RotateCcw,
-  ShieldCheck,
-  Sparkles,
   Zap,
   MessageSquare,
   LogOut,
@@ -46,10 +44,10 @@ export const TopBar: React.FC<TopBarProps> = ({
   ).length;
 
   return (
-    <header className="sticky top-0 z-30 w-full h-14 border-b border-white/[0.08] bg-[#070709]/90 backdrop-blur-xl px-3 sm:px-6 flex items-center justify-between gap-2 sm:gap-4 shrink-0">
+    <header className="sticky top-0 z-30 w-full h-14 border-b border-white/[0.07] bg-[#07070A]/80 backdrop-blur-2xl shadow-[inset_0_-1px_0_0_rgba(255,255,255,0.04),0_8px_24px_-8px_rgba(0,0,0,0.65)] px-3 sm:px-6 flex items-center justify-between gap-2 sm:gap-4 shrink-0">
       {/* Left: Workspace Identifier */}
-      <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-        <div className="flex items-center gap-2 min-w-0">
+      <div className="flex items-center gap-2.5 sm:gap-3.5 min-w-0">
+        <div className="flex items-center gap-2.5 min-w-0">
           <Avatar
             src={workspace.avatarUrl}
             name={workspace.name}
@@ -57,26 +55,26 @@ export const TopBar: React.FC<TopBarProps> = ({
             className="shrink-0"
           />
           <div className="flex items-center gap-1.5 text-xs min-w-0">
-            <span className="font-semibold text-zinc-100 truncate max-w-[120px] sm:max-w-[200px]">
+            <span className="font-semibold text-white truncate max-w-[130px] sm:max-w-[200px] tracking-tight">
               {workspace.name}
             </span>
             <span className="hidden sm:inline-block text-[10px] text-zinc-500 uppercase tracking-wider font-mono shrink-0">
-              / {role === 'super_admin' ? 'Command Center' : role === 'business' ? 'Brand Workspace' : 'Creator Studio'}
+              / {role === 'super_admin' ? 'Admin' : role === 'business' ? 'Brand' : 'Studio'}
             </span>
           </div>
         </div>
 
-        {/* Global Search / Command Bar Trigger (Desktop) */}
+        {/* Global Search / Command Bar Trigger (Desktop Floating Surface) */}
         <button
           type="button"
           onClick={onOpenCommandPalette}
-          className="hidden lg:flex items-center gap-2 ml-3 px-2.5 py-1.5 rounded-xl bg-zinc-900/80 hover:bg-zinc-800/90 border border-white/[0.08] hover:border-white/[0.14] text-zinc-400 text-xs transition-all duration-150 w-52 lg:w-60 justify-between cursor-pointer select-none"
+          className="hidden lg:flex items-center gap-2 ml-2 px-3 py-1.5 rounded-xl surface-2 hover:border-white/20 text-zinc-400 hover:text-zinc-200 text-xs transition-all duration-150 w-56 lg:w-64 justify-between cursor-pointer select-none"
         >
           <div className="flex items-center gap-2">
-            <Search className="w-3.5 h-3.5 text-zinc-500" />
-            <span className="text-zinc-500">Search or jump to...</span>
+            <Search className="w-3.5 h-3.5 text-zinc-400" />
+            <span className="text-zinc-400">Search or jump...</span>
           </div>
-          <div className="flex items-center gap-0.5 text-[10px] bg-zinc-800/80 px-1.5 py-0.5 rounded text-zinc-400 font-mono">
+          <div className="flex items-center gap-0.5 text-[10px] bg-white/[0.06] border border-white/10 px-1.5 py-0.5 rounded-md text-zinc-300 font-mono">
             <Command className="w-2.5 h-2.5" />
             <span>K</span>
           </div>
@@ -85,7 +83,8 @@ export const TopBar: React.FC<TopBarProps> = ({
         {/* Mobile & Tablet Search Icon Button */}
         <div className="flex lg:hidden">
           <IconButton
-            aria-label="Search or jump to"
+            aria-label="Search"
+            title="Search (⌘K)"
             variant="ghost"
             size="sm"
             onClick={onOpenCommandPalette}
@@ -95,68 +94,39 @@ export const TopBar: React.FC<TopBarProps> = ({
         </div>
       </div>
 
-      {/* Right: Actions & Profile */}
-      <div className="flex items-center gap-1 sm:gap-2 shrink-0">
-        {/* Immutable Account Badge - desktop only to preserve mobile and tablet breathing room */}
-        {role === 'super_admin' ? (
-          <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-500/15 border border-rose-500/30 text-rose-300 text-xs font-medium">
-            <ShieldCheck className="w-3.5 h-3.5 text-rose-400" />
-            <span>Super Admin</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-rose-400 animate-pulse ml-0.5" />
-          </div>
-        ) : role === 'business' ? (
-          <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/25 text-indigo-300 text-xs font-medium">
-            <ShieldCheck className="w-3.5 h-3.5 text-indigo-400" />
-            <span>Verified Business</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse ml-0.5" />
-          </div>
-        ) : (
-          <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-300 text-xs font-medium">
-            <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
-            <span>Creator Account</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse ml-0.5" />
-          </div>
-        )}
+      {/* Right: Clean Floating Action Surface (No cluttered status pills) */}
+      <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+        <div className="flex items-center gap-1 px-1.5 py-1 rounded-2xl bg-white/[0.03] border border-white/[0.07] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)]">
+          {/* Direct Messages Shortcut (Desktop) */}
+          {onOpenMessages && (
+            <div className="hidden sm:flex">
+              <IconButton
+                aria-label="Direct Messages"
+                title="Messages"
+                variant="ghost"
+                size="sm"
+                onClick={onOpenMessages}
+                badge={totalUnreadMessages > 0 ? totalUnreadMessages : undefined}
+                badgeColor="primary"
+              >
+                <MessageSquare className="w-4 h-4 text-zinc-300" />
+              </IconButton>
+            </div>
+          )}
 
-        {/* 7-Day Pro Trial Countdown Pill */}
-        <button
-          type="button"
-          onClick={() => setIsProModalOpen(true)}
-          className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-medium hover:bg-amber-500/20 transition-all duration-150 cursor-pointer select-none"
-          title="Manage Subscription"
-          aria-label="Manage Subscription"
-        >
-          <Zap className="w-3 h-3 text-amber-400 fill-amber-400" />
-          <span>Pro Trial • {trialDaysLeft}d left</span>
-        </button>
-
-        {/* Direct Messages Shortcut (Desktop) */}
-        {onOpenMessages && (
-          <div className="hidden sm:flex">
-            <IconButton
-              aria-label="Direct Messages"
-              variant="ghost"
-              size="sm"
-              onClick={onOpenMessages}
-              badge={totalUnreadMessages > 0 ? totalUnreadMessages : undefined}
-              badgeColor="primary"
-            >
-              <MessageSquare className="w-4 h-4 text-zinc-400" />
-            </IconButton>
-          </div>
-        )}
-
-        {/* Notifications Icon Button */}
-        <IconButton
-          aria-label="Notifications"
-          variant="ghost"
-          size="sm"
-          onClick={onOpenNotifications}
-          badge={unreadNotificationsCount > 0 ? true : undefined}
-          badgeColor="primary"
-        >
-          <Bell className="w-4 h-4 text-zinc-400" />
-        </IconButton>
+          {/* Notifications Icon Button */}
+          <IconButton
+            aria-label="Notifications"
+            title="Notifications"
+            variant="ghost"
+            size="sm"
+            onClick={onOpenNotifications}
+            badge={unreadNotificationsCount > 0 ? true : undefined}
+            badgeColor="primary"
+          >
+            <Bell className="w-4 h-4 text-zinc-300" />
+          </IconButton>
+        </div>
 
         {/* User Profile Avatar Popover Menu */}
         <Popover
@@ -164,25 +134,34 @@ export const TopBar: React.FC<TopBarProps> = ({
           align="end"
           trigger={
             <div
-              className="p-1 rounded-full hover:ring-2 hover:ring-white/20 transition-all cursor-pointer"
+              className="p-0.5 rounded-full hover:ring-2 hover:ring-indigo-500/40 transition-all cursor-pointer"
               aria-label="Open user profile menu"
+              title="Account & Workspace"
             >
               <Avatar
                 src={userProfile.avatarUrl}
                 name={userProfile.name}
                 size="sm"
-                verified={role === 'business' || role === 'super_admin'}
+                verified={role === 'business' || role === 'super_admin' || role === 'creator'}
               />
             </div>
           }
           content={(close) => (
             <div className="w-64 py-2">
               <div className="px-3.5 py-2.5 border-b border-white/[0.08]">
-                <p className="text-xs font-semibold text-zinc-100">{userProfile.name}</p>
+                <div className="flex items-center justify-between gap-2">
+                  <p className="text-xs font-semibold text-white truncate">{userProfile.name}</p>
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-indigo-500/15 text-indigo-300 border border-indigo-500/30">
+                    {role === 'super_admin' ? 'Admin' : role === 'business' ? 'Brand' : 'Creator'}
+                  </span>
+                </div>
                 <p className="text-[11px] text-zinc-400 truncate mt-0.5">{userProfile.email}</p>
-                <div className="mt-2 flex items-center gap-1.5 text-[10px] text-zinc-400">
-                  <User className="w-3 h-3 text-zinc-500" />
-                  <span>Role: {role === 'business' ? businessRole : creatorRole}</span>
+                <div className="mt-2 flex items-center justify-between text-[10px] text-zinc-400">
+                  <span className="flex items-center gap-1">
+                    <User className="w-3 h-3 text-zinc-500" />
+                    {role === 'business' ? businessRole : creatorRole}
+                  </span>
+                  <span className="text-amber-300 font-medium">Pro • {trialDaysLeft}d left</span>
                 </div>
               </div>
 

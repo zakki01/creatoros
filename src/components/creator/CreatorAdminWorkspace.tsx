@@ -106,15 +106,12 @@ export const CreatorAdminWorkspace: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl sm:text-3xl font-bold text-zinc-100 font-display">
-              Creator Administration
+            <h1 className="text-xl sm:text-2xl font-bold text-zinc-100 font-display">
+              Settings
             </h1>
-            <Badge variant="brand" size="sm">
-              CreatorOS Studio
-            </Badge>
           </div>
-          <p className="text-xs text-zinc-400 mt-1">
-            Studio team management, content sign-off governance, financial payouts, and enterprise security.
+          <p className="text-xs text-zinc-400 mt-0.5">
+            Account, team, and security settings.
           </p>
         </div>
 

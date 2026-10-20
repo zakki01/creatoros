@@ -108,11 +108,16 @@ export const PostCard: React.FC<PostCardProps> = ({
 
   return (
     <article
-      className="rounded-2xl border border-white/[0.08] bg-zinc-950/70 backdrop-blur-sm overflow-hidden transition-all duration-200 hover:border-zinc-700/80 select-none shadow-lg"
+      className="relative rounded-3xl surface-2 overflow-hidden transition-all duration-200 hover:border-white/20 hover:-translate-y-0.5 select-none"
       aria-label={`Post by ${post.authorName}`}
     >
+      {/* Top specular highlight */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"
+      />
       {/* 1. CREATOR / BRAND HEADER (Author first) */}
-      <header className="p-3.5 sm:p-4 flex items-center justify-between gap-3 border-b border-white/[0.04]">
+      <header className="p-3.5 sm:p-4 flex items-center justify-between gap-3 border-b border-white/[0.06]">
         <div
           onClick={() => onOpenAuthorProfile && onOpenAuthorProfile(post.authorId, post.authorType)}
           className="flex items-center gap-3 cursor-pointer group min-w-0"

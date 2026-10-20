@@ -128,7 +128,7 @@ interface StateContextType {
   togglePostSave: (postId: string) => void;
   addPostComment: (postId: string, content: string, gifUrl?: string) => void;
   toggleCommentLike: (postId: string, commentId: string, reaction?: string) => void;
-  addCommentReply: (postId: string, parentCommentId: string, content: string) => void;
+  addCommentReply: (postId: string, parentCommentId: string, content: string, gifUrl?: string) => void;
   createSocialPost: (post: Partial<SocialPost>) => void;
   updateSocialPost: (postId: string, updates: Partial<SocialPost>) => void;
   deleteSocialPost: (postId: string) => void;
@@ -1205,7 +1205,7 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     );
   };
 
-  const addCommentReply = (postId: string, parentCommentId: string, content: string) => {
+  const addCommentReply = (postId: string, parentCommentId: string, content: string, gifUrl?: string) => {
     const newReply: PostComment = {
       id: `c-rep-${Date.now()}`,
       postId,
@@ -1216,6 +1216,7 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       authorType: role,
       authorVerified: true,
       content,
+      gifUrl,
       timestamp: 'Just now',
       likes: 0,
       likedByMe: false,

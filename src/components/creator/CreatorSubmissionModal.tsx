@@ -92,7 +92,7 @@ export const CreatorSubmissionModal: React.FC<CreatorSubmissionModalProps> = ({
           </div>
           <div>
             <h2 className="text-base font-bold text-zinc-100 font-display">
-              Submit Content Draft
+              Submit Work
             </h2>
             <p className="text-xs text-zinc-400">
               Upload creative asset for <strong className="text-zinc-200">"{activeCampaign.name}"</strong>
@@ -110,7 +110,7 @@ export const CreatorSubmissionModal: React.FC<CreatorSubmissionModalProps> = ({
             leftIcon={<Sparkles className="w-4 h-4 text-indigo-400" />}
             className="text-xs"
           >
-            Run Live AI Pre-Check
+            Pre-Check
           </Button>
 
           <div className="flex items-center gap-2">
@@ -124,11 +124,12 @@ export const CreatorSubmissionModal: React.FC<CreatorSubmissionModalProps> = ({
               leftIcon={<Upload className="w-4 h-4" />}
               className="bg-emerald-600 hover:bg-emerald-500 shadow-emerald-600/25"
             >
-              Submit for Brand Approval
+              Submit
             </Button>
           </div>
         </div>
       }
+
     >
       <div className="space-y-6">
         {/* Deliverable Type & Title */}

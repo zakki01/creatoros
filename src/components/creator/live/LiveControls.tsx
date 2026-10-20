@@ -31,19 +31,19 @@ export const LiveControls: React.FC<LiveControlsProps> = ({
   const isConnecting = connectionState === 'connecting';
 
   return (
-    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-zinc-950/90 border border-zinc-800/80 shadow-xl backdrop-blur-md">
+    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-3.5 rounded-2xl surface-3">
       {/* Aspect Ratio Switcher */}
-      <div className="flex items-center gap-1.5 p-1 rounded-xl bg-zinc-900/80 border border-zinc-800">
+      <div className="flex items-center gap-1 p-1 rounded-xl bg-black/40 border border-white/[0.08]">
         {(['9:16', '16:9', '1:1'] as AspectRatio[]).map((aspect) => (
           <button
             key={aspect}
             type="button"
             onClick={() => onSelectAspectRatio(aspect)}
             disabled={isLive || isRecording}
-            className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-colors ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-all ${
               aspectRatio === aspect
-                ? 'bg-zinc-800 text-white shadow-sm'
-                : 'text-zinc-500 hover:text-zinc-300'
+                ? 'bg-white/10 text-white border border-white/15 shadow-sm'
+                : 'text-zinc-500 hover:text-zinc-300 border border-transparent'
             } ${isLive || isRecording ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'}`}
           >
             {aspect}
@@ -52,32 +52,32 @@ export const LiveControls: React.FC<LiveControlsProps> = ({
       </div>
 
       {/* Main Action Buttons */}
-      <div className="flex items-center gap-3 w-full sm:w-auto justify-center">
+      <div className="flex items-center gap-2.5 w-full sm:w-auto justify-center">
         {/* Toggle Live AI Transformation */}
         <button
           type="button"
           onClick={onToggleLive}
           disabled={!hasCamera || isConnecting}
-          className={`flex-1 sm:flex-initial flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-xs font-semibold transition-all duration-200 shadow-md ${
+          className={`flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-200 ${
             isLive
-              ? 'bg-zinc-800 text-zinc-200 hover:bg-zinc-700 border border-zinc-700'
-              : 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-indigo-600/30'
+              ? 'depth-btn-secondary text-zinc-200'
+              : 'depth-btn-primary text-white'
           } ${!hasCamera || isConnecting ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
         >
           {isConnecting ? (
             <>
-              <RefreshCw className="w-4 h-4 animate-spin text-indigo-400" />
-              <span>Connecting AI...</span>
+              <RefreshCw className="w-3.5 h-3.5 animate-spin text-indigo-300" />
+              <span>Connecting...</span>
             </>
           ) : isLive ? (
             <>
-              <Sparkles className="w-4 h-4 text-amber-400" />
-              <span>Stop Live AI</span>
+              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+              <span>Stop AI</span>
             </>
           ) : (
             <>
-              <Sparkles className="w-4 h-4" />
-              <span>Start Live AI</span>
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Start Live</span>
             </>
           )}
         </button>
@@ -87,21 +87,21 @@ export const LiveControls: React.FC<LiveControlsProps> = ({
           type="button"
           onClick={onToggleRecording}
           disabled={!hasCamera}
-          className={`flex-1 sm:flex-initial flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-xs font-semibold transition-all duration-200 shadow-md ${
+          className={`flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-200 ${
             isRecording
-              ? 'bg-red-600 hover:bg-red-700 text-white animate-pulse'
-              : 'bg-zinc-900 hover:bg-zinc-800 text-zinc-200 border border-zinc-700/80'
+              ? 'bg-rose-600 hover:bg-rose-500 text-white shadow-[0_0_20px_-4px_rgba(244,63,94,0.6)] animate-pulse'
+              : 'depth-btn-secondary text-zinc-200'
           } ${!hasCamera ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
         >
           {isRecording ? (
             <>
-              <Square className="w-4 h-4 fill-white" />
+              <Square className="w-3.5 h-3.5 fill-white" />
               <span className="font-mono">Stop ({recordingSeconds}s)</span>
             </>
           ) : (
             <>
-              <Circle className="w-4 h-4 text-red-500 fill-red-500" />
-              <span>Record Clip</span>
+              <Circle className="w-3.5 h-3.5 text-rose-500 fill-rose-500" />
+              <span>Record</span>
             </>
           )}
         </button>
@@ -110,12 +110,12 @@ export const LiveControls: React.FC<LiveControlsProps> = ({
         <button
           type="button"
           onClick={onToggleAudio}
-          className={`p-2.5 rounded-xl border transition-colors ${
+          className={`p-2 rounded-xl border transition-all ${
             isAudioEnabled
-              ? 'bg-zinc-900 border-zinc-800 text-zinc-300 hover:text-white'
-              : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
+              ? 'depth-btn-secondary text-zinc-300 hover:text-white'
+              : 'bg-rose-500/15 border-rose-500/30 text-rose-400'
           }`}
-          title={isAudioEnabled ? 'Mute microphone' : 'Unmute microphone'}
+          title={isAudioEnabled ? 'Mute mic' : 'Unmute mic'}
         >
           {isAudioEnabled ? (
             <Mic className="w-4 h-4" />

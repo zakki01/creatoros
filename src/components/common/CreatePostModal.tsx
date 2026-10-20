@@ -214,63 +214,63 @@ Every production begins with intentional craft. In this article, we break down l
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-md animate-fade-in overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/80 backdrop-blur-xl animate-fade-in overflow-y-auto">
       <div
-        className="relative w-full max-w-2xl rounded-2xl bg-[#0c0c11] border border-white/[0.08] shadow-2xl text-zinc-100 overflow-hidden my-auto"
+        className="relative w-full max-w-2xl rounded-3xl surface-4 text-zinc-100 overflow-hidden my-auto"
         onClick={(e) => e.stopPropagation()}
       >
+        {/* Top Specular Edge */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent"
+        />
+
         {/* Header */}
-        <div className="p-4 sm:p-5 border-b border-white/[0.08] flex items-center justify-between">
+        <div className="px-5 py-4 border-b border-white/[0.08] bg-white/[0.02] flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-indigo-600/20 border border-indigo-500/30 text-indigo-400 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-xl bg-indigo-500/20 border border-indigo-500/35 text-indigo-300 flex items-center justify-center">
               <Sparkles className="w-4 h-4" />
             </div>
             <div>
-              <h2 className="text-base font-bold text-white font-display">Create Post</h2>
+              <h2 className="text-base font-bold text-white font-display">Create</h2>
               <p className="text-[11px] text-zinc-400">
-                Publishing as <strong className="text-zinc-200">{userProfile.name}</strong> ({role})
+                {userProfile.name}
               </p>
             </div>
           </div>
 
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition-all cursor-pointer"
+            className="p-1.5 rounded-xl text-zinc-400 hover:text-white hover:bg-white/[0.08] transition-all cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
-        {/* Content Type Selector */}
-        <div className="p-4 sm:p-5 border-b border-white/[0.06] bg-zinc-950/60">
-          <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 block mb-2 font-semibold">
-            Choose Content Format
-          </span>
-          <div className="grid grid-cols-3 gap-2.5">
+        {/* Visual Selection Cards for Format (Reel / Shot / Blog) */}
+        <div className="p-4 sm:p-5 border-b border-white/[0.06] bg-black/25">
+          <div className="grid grid-cols-3 gap-3">
             {[
               {
                 id: 'reel',
                 label: 'Reel',
-                badge: '🎬 Reel',
-                desc: 'Short vertical video & BTS',
+                sub: '9:16 Video',
+                preview: 'https://images.unsplash.com/photo-1552346154-21d32810aba3?w=400&auto=format&fit=crop&q=80',
                 icon: Film,
-                enabled: featureFlags.reels,
               },
               {
                 id: 'shot',
                 label: 'Shot',
-                badge: '📸 Shot',
-                desc: 'Photography & lookbook',
+                sub: 'Visual Frame',
+                preview: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=400&auto=format&fit=crop&q=80',
                 icon: Camera,
-                enabled: featureFlags.shots,
               },
               {
                 id: 'blog',
                 label: 'Blog',
-                badge: '✍ Blog',
-                desc: 'Long-form editorial',
+                sub: 'Editorial',
+                preview: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400&auto=format&fit=crop&q=80',
                 icon: PenTool,
-                enabled: featureFlags.blogs,
               },
             ].map((type) => {
               const Icon = type.icon;
@@ -280,24 +280,32 @@ Every production begins with intentional craft. In this article, we break down l
                   key={type.id}
                   type="button"
                   onClick={() => setContentType(type.id as PostContentType)}
-                  className={`p-3 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
+                  className={`group relative overflow-hidden rounded-2xl text-left transition-all cursor-pointer flex flex-col justify-between ${
                     isSelected
-                      ? 'bg-indigo-600/15 border-indigo-500/60 text-white shadow-sm ring-1 ring-indigo-500/30'
-                      : 'bg-zinc-900/60 border-white/[0.06] text-zinc-400 hover:border-zinc-700 hover:text-zinc-200'
+                      ? 'surface-3 border-indigo-500/70 ring-1 ring-indigo-500/40 shadow-[0_12px_24px_-6px_rgba(99,102,241,0.35)] -translate-y-0.5'
+                      : 'surface-2 hover:border-white/20 hover:-translate-y-0.5'
                   }`}
                 >
-                  <div className="flex items-center justify-between w-full">
-                    <span className="text-xs font-bold flex items-center gap-1.5">
-                      <Icon className="w-3.5 h-3.5 text-indigo-400" />
-                      <span>{type.label}</span>
-                    </span>
-                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-black/40 text-zinc-300">
-                      {type.badge}
-                    </span>
+                  <div className="relative h-14 w-full overflow-hidden">
+                    <img
+                      src={type.preview}
+                      alt={type.label}
+                      className="w-full h-full object-cover opacity-55 group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#12121B] via-black/30 to-transparent" />
+                    <div className="absolute top-2 left-2.5 p-1 rounded-lg bg-black/60 backdrop-blur-md border border-white/15 text-indigo-300">
+                      <Icon className="w-3.5 h-3.5" />
+                    </div>
+                    {isSelected && (
+                      <div className="absolute top-2 right-2 w-4 h-4 rounded-full bg-indigo-500 text-white flex items-center justify-center">
+                        <Check className="w-2.5 h-2.5" />
+                      </div>
+                    )}
                   </div>
-                  <span className="text-[10px] text-zinc-500 mt-1 block truncate">
-                    {type.desc}
-                  </span>
+                  <div className="p-2.5">
+                    <span className="text-xs font-bold text-white block">{type.label}</span>
+                    <span className="text-[10px] text-zinc-400 block truncate">{type.sub}</span>
+                  </div>
                 </button>
               );
             })}

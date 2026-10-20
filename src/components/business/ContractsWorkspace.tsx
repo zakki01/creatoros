@@ -40,7 +40,9 @@ export const ContractsWorkspace: React.FC<ContractsWorkspaceProps> = ({
   });
 
   const [activeContractId, setActiveContractId] = useState<string | null>(initialContractId);
-  const [activeTab, setActiveTab] = useState<'all' | 'drafts' | 'pending' | 'active' | 'completed' | 'disputed'>('all');
+  const [activeTab, setActiveTab] = useState<
+    'all' | 'drafts' | 'review' | 'awaiting_creator' | 'active' | 'review_work' | 'completed' | 'disputed'
+  >('all');
   const [searchQuery, setSearchQuery] = useState('');
 
   const [contracts, setContracts] = useState<BrandContract[]>(() =>
@@ -105,24 +107,33 @@ export const ContractsWorkspace: React.FC<ContractsWorkspaceProps> = ({
     if (!matchesSearch) return false;
 
     if (activeTab === 'all') return true;
-    if (activeTab === 'drafts') return c.status === 'draft' || c.status === 'under_review';
-    if (activeTab === 'pending')
-      return (
-        c.status === 'awaiting_creator' ||
-        c.status === 'client_review' ||
-        c.status === 'deliverable_submitted' ||
-        c.status === 'payout_pending'
-      );
-    if (activeTab === 'active')
-      return (
-        c.status === 'active' ||
-        c.status === 'funded' ||
-        c.status === 'revision_requested'
-      );
-    if (activeTab === 'completed') return c.status === 'completed' || c.status === 'paid';
+    if (activeTab === 'drafts') return c.status === 'draft';
+    if (activeTab === 'review') return c.status === 'under_review';
+    if (activeTab === 'awaiting_creator') return c.status === 'awaiting_creator';
+    if (activeTab === 'active') return c.status === 'active' || c.status === 'funded';
+    if (activeTab === 'review_work')
+      return c.status === 'client_review' || c.status === 'deliverable_submitted';
+    if (activeTab === 'completed')
+      return c.status === 'completed' || c.status === 'paid' || c.status === 'payout_pending';
     if (activeTab === 'disputed') return c.status === 'disputed' || c.status === 'cancelled';
     return true;
   });
+
+  // Tab counts
+  const tabCounts = {
+    all: contracts.length,
+    drafts: contracts.filter((c) => c.status === 'draft').length,
+    review: contracts.filter((c) => c.status === 'under_review').length,
+    awaiting_creator: contracts.filter((c) => c.status === 'awaiting_creator').length,
+    active: contracts.filter((c) => c.status === 'active' || c.status === 'funded').length,
+    review_work: contracts.filter(
+      (c) => c.status === 'client_review' || c.status === 'deliverable_submitted'
+    ).length,
+    completed: contracts.filter(
+      (c) => c.status === 'completed' || c.status === 'paid' || c.status === 'payout_pending'
+    ).length,
+    disputed: contracts.filter((c) => c.status === 'disputed' || c.status === 'cancelled').length,
+  };
 
   // Metric sums
   const activeCount = contracts.filter((c) => c.status === 'active' || c.status === 'funded').length;
@@ -140,14 +151,14 @@ export const ContractsWorkspace: React.FC<ContractsWorkspaceProps> = ({
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-xl sm:text-2xl font-bold text-white font-display">
-              Contracts & Commercial Agreements
+              Contracts
             </h1>
             <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-indigo-500/15 text-indigo-300 font-bold border border-indigo-500/25">
-              CreatorOS Protected
+              Protected Escrow
             </span>
           </div>
           <p className="text-xs text-zinc-400 mt-1">
-            End-to-end contract builder, deliverable milestone tracking, and guaranteed protected payments.
+            Commercial agreements, deliverable tracking, and escrow payments.
           </p>
         </div>
 
@@ -185,29 +196,42 @@ export const ContractsWorkspace: React.FC<ContractsWorkspaceProps> = ({
         </div>
       </div>
 
-      {/* 3. Navigation Filter Tabs (All, Drafts, Pending, Active, Completed, Disputed) */}
+      {/* 3. Navigation Filter Tabs (All, Drafts, Review, Awaiting Creator, Active, Review Work, Completed, Disputed) */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/[0.08] pb-3">
         <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
           {[
-            { id: 'all', label: 'All' },
-            { id: 'drafts', label: 'Drafts' },
-            { id: 'pending', label: 'Pending' },
-            { id: 'active', label: 'Active' },
-            { id: 'completed', label: 'Completed' },
-            { id: 'disputed', label: 'Disputed' },
+            { id: 'all', label: 'All', count: tabCounts.all },
+            { id: 'drafts', label: 'Drafts', count: tabCounts.drafts },
+            { id: 'review', label: 'Review', count: tabCounts.review },
+            { id: 'awaiting_creator', label: 'Awaiting Creator', count: tabCounts.awaiting_creator },
+            { id: 'active', label: 'Active', count: tabCounts.active },
+            { id: 'review_work', label: 'Review Work', count: tabCounts.review_work },
+            { id: 'completed', label: 'Completed', count: tabCounts.completed },
+            { id: 'disputed', label: 'Disputed', count: tabCounts.disputed },
           ].map((tab) => {
             const isCurrent = activeTab === tab.id;
             return (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as any)}
-                className={`min-h-[44px] px-3.5 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer shrink-0 ${
+                className={`min-h-[44px] px-3 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer shrink-0 flex items-center gap-1.5 ${
                   isCurrent
                     ? 'bg-zinc-800 text-white border border-white/10 shadow-sm'
                     : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/60'
                 }`}
               >
-                {tab.label}
+                <span>{tab.label}</span>
+                {tab.count > 0 && (
+                  <span
+                    className={`text-[10px] font-mono px-1.5 py-0.2 rounded-full ${
+                      isCurrent
+                        ? 'bg-indigo-600 text-white font-bold'
+                        : 'bg-zinc-800 text-zinc-400'
+                    }`}
+                  >
+                    {tab.count}
+                  </span>
+                )}
               </button>
             );
           })}
@@ -246,16 +270,22 @@ export const ContractsWorkspace: React.FC<ContractsWorkspaceProps> = ({
             <h3 className="text-sm font-bold text-white">
               {activeTab === 'drafts'
                 ? 'No saved drafts'
-                : activeTab === 'pending'
+                : activeTab === 'review'
+                ? 'No contracts under review'
+                : activeTab === 'awaiting_creator'
                 ? 'No contracts awaiting creator response'
                 : activeTab === 'active'
                 ? 'No active contracts currently running'
+                : activeTab === 'review_work'
+                ? 'No deliverables pending brand review'
+                : activeTab === 'completed'
+                ? 'No completed contracts yet'
                 : activeTab === 'disputed'
                 ? 'Zero disputes'
                 : 'No contracts found'}
             </h3>
             <p className="text-xs text-zinc-500 max-w-sm mx-auto">
-              Create your first verified contract to start collaborating with creators under guaranteed protection.
+              Create a contract to collaborate with creators under protected payments.
             </p>
           </div>
 

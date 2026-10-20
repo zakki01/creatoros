@@ -36,69 +36,64 @@ export const CreatorCampaigns: React.FC<{
   const [selectedCampaign, setSelectedCampaign] = useState<typeof confirmedCampaigns[0] | null>(null);
 
   return (
-    <div className="space-y-8 animate-fade-in pb-12">
+    <div className="space-y-5 animate-fade-in pb-12 max-w-5xl mx-auto">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-2">
-            <h1 className="text-2xl sm:text-3xl font-bold text-zinc-100 font-display">
-              My Active Campaigns
-            </h1>
-            <Badge variant="success" size="sm" dot>
-              {confirmedCampaigns.length} In Progress
-            </Badge>
-          </div>
-          <p className="text-sm text-zinc-400 mt-1">
-            Track your locked campaign deliverables, milestone progress, and brand requirements.
-          </p>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="flex items-center gap-2.5">
+          <h1 className="text-xl sm:text-2xl font-bold text-white font-display tracking-tight">
+            Campaigns
+          </h1>
+          <Badge variant="success" size="sm" dot>
+            {confirmedCampaigns.length} Active
+          </Badge>
         </div>
 
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2">
           {onNavigate && (
             <Button
               variant="outline"
-              size="md"
+              size="sm"
               onClick={() => onNavigate('live')}
-              leftIcon={<Video className="w-4 h-4 text-indigo-400" />}
+              leftIcon={<Video className="w-3.5 h-3.5 text-indigo-400" />}
               className="border-indigo-500/30 hover:border-indigo-500/60 text-zinc-200"
             >
-              Create with Live Studio
+              Live Studio
             </Button>
           )}
 
           <Button
             variant="primary"
-            size="md"
+            size="sm"
             onClick={onOpenSubmissionModal}
-            leftIcon={<Upload className="w-4 h-4" />}
+            leftIcon={<Upload className="w-3.5 h-3.5" />}
             className="bg-emerald-600 hover:bg-emerald-500 shadow-emerald-600/25"
           >
-            Submit Content Draft
+            Submit
           </Button>
         </div>
       </div>
 
       {/* Campaigns Grid */}
-      <div className="space-y-6">
+      <div className="space-y-4">
         {confirmedCampaigns.length === 0 ? (
-          <Card className="p-12 text-center text-zinc-500 text-xs">
-            No active confirmed campaigns. Accept invitations in Opportunities tab.
+          <Card className="p-10 text-center text-zinc-400 text-xs">
+            No active campaigns.
           </Card>
         ) : (
           confirmedCampaigns.map((camp) => (
-            <Card key={camp.id} className="p-6 space-y-6 border-zinc-800">
-              <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+            <Card key={camp.id} className="p-5 space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
                 <div>
                   <div className="flex items-center gap-2">
-                    <h2 className="text-lg font-bold text-zinc-100 font-display">
+                    <h2 className="text-base sm:text-lg font-bold text-white font-display">
                       {camp.campaignName}
                     </h2>
                     <Badge variant="success" size="sm" dot>
-                      Confirmed Collaboration
+                      Active
                     </Badge>
                   </div>
                   <p className="text-xs text-zinc-400 mt-0.5">
-                    Brand: <strong className="text-zinc-200">Aura Streetwear Co.</strong> • Compensation: <strong className="text-emerald-400 font-mono">₹{camp.proposedFee.toLocaleString()}</strong>
+                    Aura Streetwear Co. · <strong className="text-emerald-400 font-mono">₹{camp.proposedFee.toLocaleString()}</strong>
                   </p>
                 </div>
 
@@ -109,8 +104,9 @@ export const CreatorCampaigns: React.FC<{
                   leftIcon={<Eye className="w-3.5 h-3.5" />}
                   className="text-xs"
                 >
-                  View Full Brief & Contract
+                  View
                 </Button>
+
               </div>
 
               {/* Progress Milestones Tracker (As specified in prompt) */}

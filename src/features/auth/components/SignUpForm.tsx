@@ -56,17 +56,17 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({
       {/* Role Selector Pill */}
       <div className="space-y-1.5 text-left">
         <label className="text-xs font-medium text-zinc-300">Account Type</label>
-        <div className="grid grid-cols-2 gap-2 p-1 bg-zinc-900 border border-zinc-800 rounded-xl">
+        <div className="grid grid-cols-2 gap-2 p-1 bg-black/40 border border-white/[0.08] shadow-[inset_1px_1px_3px_rgba(0,0,0,0.6)] rounded-xl">
           <button
             type="button"
             onClick={() => setRole('creator')}
             className={`flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${
               role === 'creator'
-                ? 'bg-zinc-800 text-white font-semibold shadow-sm'
+                ? 'btn-soft-primary font-semibold shadow-sm'
                 : 'text-zinc-400 hover:text-zinc-200'
             }`}
           >
-            <UserCheck className="w-3.5 h-3.5 text-sky-400" />
+            <UserCheck className={`w-3.5 h-3.5 ${role === 'creator' ? 'text-zinc-950' : 'text-sky-400'}`} />
             <span>Content Creator</span>
           </button>
           <button
@@ -74,11 +74,11 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({
             onClick={() => setRole('business')}
             className={`flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${
               role === 'business'
-                ? 'bg-zinc-800 text-white font-semibold shadow-sm'
+                ? 'btn-soft-primary font-semibold shadow-sm'
                 : 'text-zinc-400 hover:text-zinc-200'
             }`}
           >
-            <Building2 className="w-3.5 h-3.5 text-indigo-400" />
+            <Building2 className={`w-3.5 h-3.5 ${role === 'business' ? 'text-zinc-950' : 'text-indigo-400'}`} />
             <span>Brand / Agency</span>
           </button>
         </div>
@@ -99,7 +99,7 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({
               onChange={(e) => setName(e.target.value)}
               placeholder="e.g. Alex Rivera"
               disabled={isLoading}
-              className="w-full pl-9 pr-3.5 py-2 rounded-xl bg-zinc-900 border border-zinc-800 text-xs text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-indigo-500 transition-colors"
+              className="input-soft-recessed w-full pl-9 pr-3.5 py-2.5 rounded-xl text-xs text-zinc-100 placeholder:text-zinc-500 focus:outline-none transition-all"
             />
             <User className="w-4 h-4 text-zinc-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
           </div>
@@ -114,7 +114,7 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({
               onChange={(e) => setHandle(e.target.value)}
               placeholder="@alexcreates"
               disabled={isLoading}
-              className="w-full pl-9 pr-3.5 py-2 rounded-xl bg-zinc-900 border border-zinc-800 text-xs text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-indigo-500 transition-colors font-mono"
+              className="input-soft-recessed w-full pl-9 pr-3.5 py-2.5 rounded-xl text-xs text-zinc-100 placeholder:text-zinc-500 focus:outline-none transition-all font-mono"
             />
             <AtSign className="w-4 h-4 text-zinc-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
           </div>
@@ -133,7 +133,7 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({
             placeholder="alex@domain.com"
             disabled={isLoading}
             autoComplete="username"
-            className="w-full pl-9 pr-3.5 py-2 rounded-xl bg-zinc-900 border border-zinc-800 text-xs text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-indigo-500 transition-colors"
+            className="input-soft-recessed w-full pl-9 pr-3.5 py-2.5 rounded-xl text-xs text-zinc-100 placeholder:text-zinc-500 focus:outline-none transition-all"
           />
           <Mail className="w-4 h-4 text-zinc-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
         </div>
@@ -154,19 +154,19 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({
       <button
         type="submit"
         disabled={isLoading}
-        className={`w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold shadow-lg shadow-emerald-600/25 transition-all ${
-          isLoading ? 'opacity-70 cursor-not-allowed' : 'cursor-pointer hover:shadow-emerald-600/35'
+        className={`btn-soft-primary w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-semibold cursor-pointer active:scale-[0.99] transition-all ${
+          isLoading ? 'opacity-70 cursor-not-allowed' : ''
         }`}
       >
         {isLoading ? (
           <>
-            <Loader2 className="w-4 h-4 animate-spin" />
+            <Loader2 className="w-4 h-4 animate-spin text-zinc-900" />
             <span>Creating account...</span>
           </>
         ) : (
           <>
-            <span>Create Account & Enter</span>
-            <ArrowRight className="w-3.5 h-3.5" />
+            <span>Create Account &amp; Enter</span>
+            <ArrowRight className="w-3.5 h-3.5 text-zinc-900" />
           </>
         )}
       </button>

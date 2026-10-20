@@ -36,13 +36,13 @@ import { Button } from '../ui/Button';
 import { Avatar } from '../ui/Avatar';
 import { IconButton } from '../ui/IconButton';
 import { useToast } from '../ui/Toast';
-import { EmojiPicker } from './EmojiPicker';
+import { EmojiPicker, SelectedGifPayload } from './EmojiPicker';
 import { ReactionPicker } from './ReactionPicker';
 import { validateGifFile } from '../../services/gifValidationService';
 import { ChatMediaService } from '../../services/chatMediaService';
 
 interface PendingGifState {
-  file: File;
+  file?: File;
   previewUrl: string;
   fileName: string;
   fileSizeBytes: number;
@@ -144,7 +144,7 @@ export const DirectMessagesView: React.FC = () => {
       finalContent = `[Replying to ${replyingTo.senderName}: "${replyingTo.content.substring(0, 45)}..."]\n${finalContent}`;
     }
 
-    // 1. Sending Native Device GIF (Optimistic UI Flow)
+    // 1. Sending GIF (Library GIF or Native Device GIF Upload)
     if (pendingGif && activeConv) {
       const optId = `msg-${Date.now()}`;
       const fileToUpload = pendingGif.file;
@@ -161,8 +161,8 @@ export const DirectMessagesView: React.FC = () => {
         'gif',
         {
           messageType: 'gif',
-          uploadStatus: 'uploading',
-          uploadProgress: 20,
+          uploadStatus: fileToUpload ? 'uploading' : 'sent',
+          uploadProgress: fileToUpload ? 20 : 100,
           customId: optId,
           mediaMetadata: {
             mimeType: 'image/gif',
@@ -170,7 +170,7 @@ export const DirectMessagesView: React.FC = () => {
             fileSize,
             width,
             height,
-            storagePath: '',
+            storagePath: previewUrl,
             storageUrl: previewUrl,
           },
         }
@@ -181,7 +181,11 @@ export const DirectMessagesView: React.FC = () => {
       setMessageInput('');
       setReplyingTo(null);
 
-      // Execute background storage upload
+      if (!fileToUpload) {
+        return;
+      }
+
+      // Execute background storage upload for local file
       try {
         const uploadResult = await ChatMediaService.uploadGif({
           conversationId: activeConv.id,
@@ -1016,9 +1020,9 @@ export const DirectMessagesView: React.FC = () => {
               </div>
             )}
 
-            {/* Modernized Composer Form: [ 📎 ] [ GIF ] [ 😊 ] [ Type your message... ] [ Send ] */}
+            {/* Clean Composer Form: [ 📎 ] [ 😊 ] [ Message... ] [ Send ] */}
             <form onSubmit={handleSend} className="flex items-center gap-2 relative">
-              {/* Attachment Button: 44px Hit Target (Fitts's Law) */}
+              {/* Attachment Button: 44px Hit Target */}
               <button
                 type="button"
                 onClick={triggerAttachment}
@@ -1033,33 +1037,19 @@ export const DirectMessagesView: React.FC = () => {
                 <Paperclip className="w-4 h-4" />
               </button>
 
-              {/* Dedicated Native Device GIF Button: 44px Hit Target */}
-              <button
-                type="button"
-                onClick={triggerGifPicker}
-                className={`min-w-[44px] min-h-[44px] rounded-xl border flex items-center justify-center transition-colors cursor-pointer shrink-0 font-bold text-xs font-sans tracking-wide ${
-                  pendingGif
-                    ? 'bg-indigo-600/30 border-indigo-500/50 text-indigo-300 shadow-sm shadow-indigo-600/30'
-                    : 'bg-white/[0.05] hover:bg-white/[0.1] active:bg-white/[0.15] border-white/[0.08] text-zinc-400 hover:text-zinc-200'
-                }`}
-                aria-label="Upload GIF"
-                title="Upload GIF"
-              >
-                GIF
-              </button>
-
-              {/* Emoji Button & Compact Dark Glass Popover: 44px Hit Target */}
+              {/* Unified Emoji & GIF Button + Dark Glass Popover: 44px Hit Target */}
               <div className="relative shrink-0">
                 <button
                   type="button"
                   onClick={() => setIsEmojiPickerOpen(!isEmojiPickerOpen)}
+                  data-testid="dm-emoji-gif-btn"
                   className={`min-w-[44px] min-h-[44px] rounded-xl border flex items-center justify-center transition-colors cursor-pointer ${
-                    isEmojiPickerOpen
+                    isEmojiPickerOpen || pendingGif
                       ? 'bg-indigo-600/20 border-indigo-500/50 text-indigo-300'
                       : 'bg-white/[0.05] hover:bg-white/[0.1] active:bg-white/[0.15] border-white/[0.08] text-zinc-400 hover:text-zinc-200'
                   }`}
-                  aria-label="Add emoji"
-                  title="Add emoji"
+                  aria-label="Emoji & GIF"
+                  title="Emoji & GIF"
                 >
                   <Smile className="w-4 h-4" />
                 </button>
@@ -1070,6 +1060,18 @@ export const DirectMessagesView: React.FC = () => {
                       onSelect={(emoji) => {
                         handleSelectEmoji(emoji);
                         setIsEmojiPickerOpen(false);
+                      }}
+                      onSelectGif={(gif: SelectedGifPayload) => {
+                        setPendingGif({
+                          file: gif.file,
+                          previewUrl: gif.url,
+                          fileName: `${gif.title || 'animated-gif'}.gif`,
+                          fileSizeBytes: gif.fileSizeBytes || 420 * 1024,
+                          width: gif.width || 360,
+                          height: gif.height || 260,
+                        });
+                        setIsEmojiPickerOpen(false);
+                        messageInputRef.current?.focus();
                       }}
                       onClose={() => setIsEmojiPickerOpen(false)}
                       position="top"

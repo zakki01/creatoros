@@ -47,6 +47,8 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
   const [selectedDeliverableId, setSelectedDeliverableId] = useState<string | null>(null);
   const [revisionFeedback, setRevisionFeedback] = useState('');
 
+  const [approvingDeliverableId, setApprovingDeliverableId] = useState<string | null>(null);
+
   const [isAmendmentModalOpen, setIsAmendmentModalOpen] = useState(false);
   const [amendmentReason, setAmendmentReason] = useState('');
   const [amendmentChanges, setAmendmentChanges] = useState('Add 1 additional Instagram Story');
@@ -393,11 +395,11 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
                         <div className="flex items-center gap-2 pt-2 border-t border-zinc-800">
                           <button
                             type="button"
-                            onClick={() => handleApprove(del.id)}
+                            onClick={() => setApprovingDeliverableId(del.id)}
                             className="min-h-[44px] px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center gap-1.5 cursor-pointer shadow-md shadow-emerald-600/20"
                           >
                             <CheckCircle2 className="w-4 h-4" />
-                            <span>Approve & Release Payment</span>
+                            <span>Approve</span>
                           </button>
 
                           <button
@@ -438,7 +440,7 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
               onClick={() => setIsAmendmentModalOpen(true)}
               className="min-h-[44px] px-3.5 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-semibold cursor-pointer"
             >
-              + Request Amendment
+              + Amend
             </button>
           </div>
 
@@ -522,7 +524,7 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
               onClick={() => setIsAmendmentModalOpen(true)}
               className="min-h-[44px] px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold cursor-pointer"
             >
-              + Propose Amendment
+              + Amend
             </button>
           </div>
 
@@ -597,19 +599,54 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
         </div>
       )}
 
+      {/* APPROVE DELIVERABLE CONFIRMATION MODAL */}
+      {approvingDeliverableId && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
+          <div className="w-full max-w-md p-6 rounded-2xl bg-zinc-950 border border-emerald-500/30 space-y-4 text-xs shadow-2xl">
+            <h3 className="text-base font-bold text-white font-display">Approve Deliverable</h3>
+            <p className="text-zinc-300 leading-relaxed">
+              Approve this submission? Protected payment will be released to{' '}
+              <strong className="text-white">{contract.creatorName}</strong>.
+            </p>
+
+            <div className="flex items-center justify-end gap-2.5 pt-2">
+              <button
+                type="button"
+                onClick={() => setApprovingDeliverableId(null)}
+                className="min-h-[44px] px-4 rounded-xl bg-zinc-800 text-zinc-300 font-semibold cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  const id = approvingDeliverableId;
+                  setApprovingDeliverableId(null);
+                  handleApprove(id);
+                }}
+                className="min-h-[44px] px-5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold cursor-pointer"
+              >
+                Approve
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* REVISION REQUEST MODAL */}
       {isRevisionModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
           <div className="w-full max-w-md p-6 rounded-2xl bg-zinc-950 border border-zinc-800 space-y-4 text-xs shadow-2xl">
-            <h3 className="text-base font-bold text-white">Request Deliverable Revision</h3>
+            <h3 className="text-base font-bold text-white font-display">Request Revision</h3>
             <p className="text-zinc-400">
-              Provide specific creative feedback. This will count toward the included{' '}
-              {contract.terms.includedRevisions} revision rounds.
+              Revision{' '}
+              {(contract.deliveries?.filter((d) => d.deliverableId === selectedDeliverableId)?.length || 0) + 1} of{' '}
+              {contract.terms.includedRevisions} rounds. Describe the required adjustments.
             </p>
 
             <textarea
               rows={4}
-              placeholder="e.g. Please trim the intro to 3 seconds and increase background music volume at 0:20..."
+              placeholder="e.g. Please trim intro to 3 seconds and highlight product texture..."
               value={revisionFeedback}
               onChange={(e) => setRevisionFeedback(e.target.value)}
               className="w-full p-3 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-100 text-xs focus:outline-none focus:border-indigo-500 resize-none"
@@ -626,9 +663,9 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
               <button
                 type="button"
                 onClick={handleRequestRevisionSubmit}
-                className="min-h-[44px] px-5 rounded-xl bg-indigo-600 text-white font-bold cursor-pointer"
+                className="min-h-[44px] px-5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold cursor-pointer"
               >
-                Send Revision Request
+                Request Revision
               </button>
             </div>
           </div>
@@ -639,18 +676,18 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
       {isAmendmentModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
           <div className="w-full max-w-md p-6 rounded-2xl bg-zinc-950 border border-zinc-800 space-y-4 text-xs shadow-2xl">
-            <h3 className="text-base font-bold text-white">Propose Contract Amendment</h3>
+            <h3 className="text-base font-bold text-white font-display">Propose Amendment</h3>
             <p className="text-zinc-400">
-              Contract amendments modify legally agreed terms and require explicit approval by both parties.
+              Contract amendments modify agreed terms and require approval by both parties.
             </p>
 
             <div>
               <label className="text-[11px] font-medium text-zinc-300 block mb-1">
-                Reason for Change
+                Reason
               </label>
               <input
                 type="text"
-                placeholder="e.g. Campaign scope expansion"
+                placeholder="e.g. Additional video requested"
                 value={amendmentReason}
                 onChange={(e) => setAmendmentReason(e.target.value)}
                 className="w-full min-h-[44px] px-3.5 py-2 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-100 text-xs focus:outline-none focus:border-indigo-500"
@@ -680,9 +717,9 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
               <button
                 type="button"
                 onClick={handleRequestAmendmentSubmit}
-                className="min-h-[44px] px-5 rounded-xl bg-indigo-600 text-white font-bold cursor-pointer"
+                className="min-h-[44px] px-5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold cursor-pointer"
               >
-                Submit Amendment
+                Submit
               </button>
             </div>
           </div>
@@ -693,14 +730,14 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
       {isDisputeModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
           <div className="w-full max-w-md p-6 rounded-2xl bg-zinc-950 border border-rose-500/30 space-y-4 text-xs shadow-2xl">
-            <h3 className="text-base font-bold text-rose-300">Open Formal Dispute</h3>
+            <h3 className="text-base font-bold text-rose-300 font-display">Dispute Resolution</h3>
             <p className="text-zinc-400">
-              Opening a dispute freezes protected payments and escalates this agreement to CreatorOS Super Admin arbitration.
+              Opening a dispute freezes funds and escalates this agreement to Super Admin arbitration.
             </p>
 
             <div>
               <label className="text-[11px] font-medium text-zinc-300 block mb-1">
-                Dispute Reason
+                Reason
               </label>
               <select
                 value={disputeReason}
@@ -719,11 +756,11 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
 
             <div>
               <label className="text-[11px] font-medium text-zinc-300 block mb-1">
-                Detailed Statement & Evidence
+                Details & Evidence
               </label>
               <textarea
                 rows={4}
-                placeholder="Explain the timeline and violation in detail..."
+                placeholder="Explain the issue in detail..."
                 value={disputeDescription}
                 onChange={(e) => setDisputeDescription(e.target.value)}
                 className="w-full p-3 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-100 text-xs focus:outline-none focus:border-rose-500 resize-none"
@@ -743,7 +780,7 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
                 onClick={handleOpenDisputeSubmit}
                 className="min-h-[44px] px-5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold cursor-pointer"
               >
-                File Dispute
+                Submit Dispute
               </button>
             </div>
           </div>

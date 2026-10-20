@@ -292,9 +292,6 @@ const MainApp: React.FC = () => {
           setAuthTab('login');
           setViewMode('auth');
         }}
-        onExploreLiveStudio={() => {
-          loginAsDemo('creator', 'live');
-        }}
         onDemoAccess={(demoRole) => {
           loginAsDemo(demoRole, 'home');
         }}

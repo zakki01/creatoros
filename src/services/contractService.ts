@@ -18,9 +18,9 @@ import {
 } from '../types/contract';
 import { PaymentProviderRegistry } from './paymentProvider';
 
-const STORAGE_CONTRACTS_KEY = 'creatoros_contracts_v1';
-const STORAGE_DRAFTS_KEY = 'creatoros_contract_drafts_v1';
-const STORAGE_ADMIN_CONFIG_KEY = 'creatoros_contract_admin_config_v1';
+const STORAGE_CONTRACTS_KEY = 'creatoros_contracts_v2';
+const STORAGE_DRAFTS_KEY = 'creatoros_contract_drafts_v2';
+const STORAGE_ADMIN_CONFIG_KEY = 'creatoros_contract_admin_config_v2';
 
 export const DEFAULT_PLATFORM_CONFIG: ContractPlatformConfig = {
   platformFeePercentage: 10, // 10%
@@ -298,7 +298,7 @@ const INITIAL_MOCK_CONTRACTS: BrandContract[] = [
       confidentiality: true,
       communicationGuidelines: 'Official communications logged within CreatorOS project workspace.',
     },
-    status: 'client_review',
+    status: 'active',
     risks: [],
     files: [
       {
@@ -397,11 +397,11 @@ const INITIAL_MOCK_CONTRACTS: BrandContract[] = [
     brandId: 'brand-01',
     brandName: 'Aura Streetwear Co.',
     brandLogo: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=100&auto=format&fit=crop&q=80',
-    creatorId: 'cr-02',
-    creatorName: 'Jordan Taylor',
-    creatorHandle: '@jordantaylor',
-    creatorAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
-    creatorCategory: 'Tech & Lifestyle',
+    creatorId: 'cr-01',
+    creatorName: 'Alex Morgan',
+    creatorHandle: '@alexmorgan',
+    creatorAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+    creatorCategory: 'Fashion & Sneakers',
     creatorVerified: true,
     campaignId: 'camp-01',
     campaignName: 'Summer Product Launch',
@@ -479,11 +479,11 @@ const INITIAL_MOCK_CONTRACTS: BrandContract[] = [
     brandId: 'brand-01',
     brandName: 'Aura Streetwear Co.',
     brandLogo: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=100&auto=format&fit=crop&q=80',
-    creatorId: 'cr-03',
-    creatorName: 'Maya Lin',
-    creatorHandle: '@mayalin_design',
-    creatorAvatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80',
-    creatorCategory: 'Visual Design',
+    creatorId: 'cr-01',
+    creatorName: 'Alex Morgan',
+    creatorHandle: '@alexmorgan',
+    creatorAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+    creatorCategory: 'Fashion & Sneakers',
     creatorVerified: true,
     campaignId: 'camp-02',
     campaignName: 'CreatorOS Ambassador Series',
@@ -576,12 +576,12 @@ const INITIAL_MOCK_CONTRACTS: BrandContract[] = [
     brandId: 'brand-01',
     brandName: 'Aura Streetwear Co.',
     brandLogo: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=100&auto=format&fit=crop&q=80',
-    creatorId: 'cr-04',
-    creatorName: 'Devon Vance',
-    creatorHandle: '@devonvance',
-    creatorAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80',
-    creatorCategory: 'Cinematography',
-    creatorVerified: false,
+    creatorId: 'cr-01',
+    creatorName: 'Alex Morgan',
+    creatorHandle: '@alexmorgan',
+    creatorAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+    creatorCategory: 'Fashion & Sneakers',
+    creatorVerified: true,
     campaignId: 'camp-01',
     campaignName: 'Summer Product Launch',
     projectName: 'High-Altitude Aerial Product Reel',
@@ -663,7 +663,104 @@ const INITIAL_MOCK_CONTRACTS: BrandContract[] = [
     acceptedAt: '2026-08-10T14:00:00Z',
     version: 1,
   },
+  {
+    id: 'contract-05',
+    contractNumber: 'CR-2026-5541',
+    brandId: 'brand-02',
+    brandName: 'Apex Studio',
+    brandLogo: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=100&auto=format&fit=crop&q=80',
+    creatorId: 'cr-01',
+    creatorName: 'Alex Morgan',
+    creatorHandle: '@alexmorgan',
+    creatorAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+    creatorCategory: 'Fashion & Sneakers',
+    creatorVerified: true,
+    campaignId: 'camp-03',
+    campaignName: 'Neon City Launch',
+    projectName: 'Cyberpunk Neon Capsule',
+    description: 'Night street-style reel with neon backlights and chromatic grade.',
+    startDate: '2026-10-01',
+    deadline: '2026-10-30',
+    deliverables: [
+      {
+        id: 'del-06',
+        type: 'Reel',
+        quantity: 1,
+        format: '9:16',
+        duration: '30s',
+        resolution: '1080x1920',
+        specifications: 'Product visible in first 5 seconds.',
+        referenceFiles: [],
+        dueDate: '2026-10-25',
+        status: 'revision',
+      },
+    ],
+    payment: {
+      creatorPayment: 1200,
+      platformFeeRate: 0.1,
+      platformFee: 120,
+      protectionAmountRate: 0.2,
+      protectionAmount: 240,
+      totalAmount: 1320,
+      currency: 'USD',
+      provider: 'stripe',
+      paymentStatus: 'escrow_funded',
+      fundedAt: '2026-10-05T10:00:00Z',
+    },
+    usageRights: {
+      usageTypes: ['Organic Social', 'Paid Ads'],
+      duration: '90 Days',
+      territory: 'Worldwide',
+      exclusivity: 'None',
+      ownership: 'creator_retains',
+    },
+    terms: {
+      includedRevisions: 2,
+      reviewPeriodDays: 3,
+      creatorResponseDeadlineDays: 3,
+      cancellationTerms: '50% compensation.',
+      lateDeliveryTerms: 'None.',
+      additionalWorkTerms: 'Formal amendment.',
+      confidentiality: true,
+      communicationGuidelines: 'CreatorOS messages.',
+    },
+    status: 'revision_requested',
+    risks: [],
+    files: [],
+    deliveries: [
+      {
+        id: 'dlv-04',
+        deliverableId: 'del-06',
+        version: 1,
+        submittedAt: '2026-10-20T12:00:00Z',
+        creatorNotes: 'V1 rough cut.',
+        files: [],
+        status: 'revision_requested',
+        brandFeedback: 'Show product in first 5 seconds. Lighting on neon sign is great.',
+        brandActionDate: '2026-10-21T16:00:00Z',
+      },
+    ],
+    amendments: [],
+    auditTrail: [
+      {
+        id: 'adt-401',
+        contractId: 'contract-05',
+        actorId: 'brand-02',
+        actorName: 'Apex Studio',
+        actorRole: 'brand',
+        action: 'Revision Requested',
+        timestamp: '2026-10-21T16:00:00Z',
+        details: 'Brand requested revision (Round 1 of 2): Show product in first 5 seconds.',
+      },
+    ],
+    createdAt: '2026-10-01T10:00:00Z',
+    updatedAt: '2026-10-21T16:00:00Z',
+    sentAt: '2026-10-02T10:00:00Z',
+    acceptedAt: '2026-10-03T11:00:00Z',
+    version: 1,
+  },
 ];
+
 
 export class ContractService {
   private static contracts: BrandContract[] | null = null;
@@ -1077,7 +1174,7 @@ export class ContractService {
     }
 
     const now = new Date().toISOString();
-    c.status = 'accepted';
+    c.status = 'active';
     c.acceptedAt = now;
     c.updatedAt = now;
     c.auditTrail.push({
@@ -1086,9 +1183,9 @@ export class ContractService {
       actorId: c.creatorId,
       actorName: c.creatorName,
       actorRole: 'creator',
-      action: 'Contract Accepted Digitally',
+      action: 'Contract Accepted',
       timestamp: now,
-      details: `${c.creatorName} accepted all deliverables, commercial rights, and compensation terms.`,
+      details: `${c.creatorName} accepted deliverables, deadline, and terms. Project is now active.`,
     });
 
     list[index] = c;

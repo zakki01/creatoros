@@ -6,7 +6,6 @@ import {
   Users,
   CheckCircle,
   BarChart3,
-  Sliders,
   Compass,
   ArrowRight,
   ShieldCheck,
@@ -25,7 +24,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
   onClose,
   onSelectAction,
 }) => {
-  const { role, setRole, campaigns, creators } = useAppState();
+  const { role, campaigns, creators } = useAppState();
   const [query, setQuery] = useState('');
 
   useEffect(() => {
@@ -46,30 +45,50 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
   if (!isOpen) return null;
 
   const businessActions = [
-    { id: 'home', title: 'Go to Business Overview & AI Attention Center', icon: Sparkles, category: 'Navigation' },
-    { id: 'campaigns', title: 'View All Campaigns', icon: Layers, category: 'Navigation' },
-    { id: 'creators', title: 'Creator Discovery with AI Match Scoring', icon: Users, category: 'Navigation' },
-    { id: 'discover', title: 'Open Social Discovery & Live Feed', icon: Compass, category: 'Navigation' },
-    { id: 'content', title: 'Review Pending Content Approvals', icon: CheckCircle, category: 'Action' },
-    { id: 'analytics', title: 'View Campaign Analytics & ROAS', icon: BarChart3, category: 'Analytics' },
-    { id: 'payments', title: 'Payments & Escrow Disbursal', icon: CreditCard, category: 'Financials' },
+    { id: 'home', title: 'Overview', icon: Sparkles, category: 'Workspace' },
+    { id: 'campaigns', title: 'Campaigns', icon: Layers, category: 'Workspace' },
+    { id: 'contracts', title: 'Contracts', icon: ShieldCheck, category: 'Workspace' },
+    { id: 'creators', title: 'Creators', icon: Users, category: 'Discover' },
+    { id: 'discover', title: 'Discover', icon: Compass, category: 'Social' },
+    { id: 'content', title: 'Content Reviews', icon: CheckCircle, category: 'Action' },
+    { id: 'analytics', title: 'Analytics', icon: BarChart3, category: 'Insights' },
+    { id: 'payments', title: 'Payments', icon: CreditCard, category: 'Finance' },
   ];
 
   const creatorActions = [
-    { id: 'home', title: 'Creator Dashboard & Today\'s Focus', icon: Sparkles, category: 'Navigation' },
-    { id: 'opportunities', title: 'View Incoming Brand Opportunities', icon: Compass, category: 'Opportunities' },
-    { id: 'campaigns', title: 'Active Campaigns & Deliverables', icon: Layers, category: 'Campaigns' },
-    { id: 'discover', title: 'Discover Brands, Casting Briefs & Reels', icon: Compass, category: 'Navigation' },
-    { id: 'content', title: 'Submit or Check Deliverables', icon: CheckCircle, category: 'Content' },
-    { id: 'profile', title: 'View Professional Creator Profile & Showcase', icon: ShieldCheck, category: 'Identity' },
-    { id: 'earnings', title: 'View Milestone Payments & Invoices', icon: CreditCard, category: 'Financials' },
+    { id: 'home', title: 'Home', icon: Sparkles, category: 'Studio' },
+    { id: 'live', title: 'Live Studio', icon: Sparkles, category: '3D Studio' },
+    { id: 'contracts', title: 'Contracts', icon: ShieldCheck, category: 'Business' },
+    { id: 'opportunities', title: 'Opportunities', icon: Compass, category: 'Deals' },
+    { id: 'campaigns', title: 'Campaigns', icon: Layers, category: 'Projects' },
+    { id: 'discover', title: 'Discover', icon: Compass, category: 'Social' },
+    { id: 'content', title: 'Content', icon: CheckCircle, category: 'Deliverables' },
+    { id: 'profile', title: 'Profile', icon: ShieldCheck, category: 'Portfolio' },
+    { id: 'earnings', title: 'Earnings', icon: CreditCard, category: 'Finance' },
   ];
 
   const actionPool = role === 'business' ? businessActions : creatorActions;
 
   const filtered = actionPool.filter((item) =>
-    item.title.toLowerCase().includes(query.toLowerCase())
+    item.title.toLowerCase().includes(query.toLowerCase()) ||
+    item.category.toLowerCase().includes(query.toLowerCase())
   );
+
+  const matchingCreators = query.trim()
+    ? creators
+        .filter(
+          (c) =>
+            c.name.toLowerCase().includes(query.toLowerCase()) ||
+            (c.niche || '').toLowerCase().includes(query.toLowerCase())
+        )
+        .slice(0, 3)
+    : [];
+
+  const matchingCampaigns = query.trim()
+    ? campaigns
+        .filter((c) => c.name.toLowerCase().includes(query.toLowerCase()))
+        .slice(0, 2)
+    : [];
 
   const handleSelect = (id: string) => {
     onSelectAction(id);
@@ -77,59 +96,110 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-24 p-4 animate-fade-in">
-      <div className="fixed inset-0 bg-black/75 backdrop-blur-md" onClick={onClose} />
-      <div className="relative w-full max-w-xl bg-zinc-900 border border-zinc-700/80 rounded-3xl shadow-2xl overflow-hidden z-10 animate-slide-up">
+    <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 sm:pt-24 p-4 animate-fade-in">
+      <div className="fixed inset-0 bg-black/80 backdrop-blur-xl" onClick={onClose} />
+      <div className="relative w-full max-w-xl surface-4 rounded-3xl overflow-hidden z-10 animate-slide-up">
+        {/* Top specular highlight */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent"
+        />
+
         {/* Search Input */}
-        <div className="flex items-center px-4 py-3.5 border-b border-zinc-800 bg-zinc-950/40">
-          <Search className="w-4 h-4 text-zinc-400 mr-3 shrink-0" />
+        <div className="flex items-center px-4 py-3.5 border-b border-white/[0.08] bg-white/[0.02]">
+          <Search className="w-4 h-4 text-indigo-400 mr-3 shrink-0" />
           <input
             type="text"
-            placeholder="Type a command or search (e.g. 'Approvals', 'Simulator', 'Discover')..."
+            placeholder="Jump to workspace, creator, or campaign..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             autoFocus
-            className="w-full bg-transparent text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none font-sans"
+            className="w-full bg-transparent text-sm text-white placeholder-zinc-500 focus:outline-none font-sans"
           />
-          <kbd className="text-[10px] bg-zinc-800 text-zinc-400 px-2 py-0.5 rounded font-mono shrink-0">
+          <kbd className="text-[10px] bg-white/[0.06] border border-white/10 text-zinc-400 px-2 py-0.5 rounded-md font-mono shrink-0">
             ESC
           </kbd>
         </div>
 
         {/* Options */}
         <div className="max-h-80 overflow-y-auto p-2 space-y-1">
-          {filtered.length === 0 ? (
+          {filtered.length === 0 && matchingCreators.length === 0 && matchingCampaigns.length === 0 ? (
             <div className="text-center py-8 text-xs text-zinc-500">
-              No actions found for "{query}"
+              No results for "{query}"
             </div>
           ) : (
-            filtered.map((item) => {
-              const Icon = item.icon;
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => handleSelect(item.id)}
-                  className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-zinc-800/80 text-left transition-colors text-zinc-200 group"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="p-1.5 rounded-lg bg-zinc-800 text-zinc-400 group-hover:text-indigo-400 group-hover:bg-indigo-950/40 transition-colors">
-                      <Icon className="w-4 h-4" />
+            <>
+              {filtered.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => handleSelect(item.id)}
+                    className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-white/[0.06] text-left transition-all text-zinc-200 group"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="p-1.5 rounded-lg bg-white/[0.05] border border-white/[0.08] text-zinc-400 group-hover:text-indigo-400 group-hover:border-indigo-500/30 transition-colors">
+                        <Icon className="w-4 h-4" />
+                      </div>
+                      <span className="text-xs font-medium text-white">{item.title}</span>
                     </div>
-                    <span className="text-xs font-medium">{item.title}</span>
-                  </div>
-                  <span className="text-[10px] text-zinc-500 bg-zinc-800/60 px-2 py-0.5 rounded">
-                    {item.category}
-                  </span>
-                </button>
-              );
-            })
-          )}
-        </div>
+                    <span className="text-[10px] text-zinc-400 bg-white/[0.04] border border-white/[0.06] px-2 py-0.5 rounded-md">
+                      {item.category}
+                    </span>
+                  </button>
+                );
+              })}
 
-        {/* Footer */}
-        <div className="px-4 py-2 border-t border-zinc-800/80 bg-zinc-950/60 flex items-center justify-between text-[11px] text-zinc-500">
-          <span>Tip: Switch between Brand and Creator anytime.</span>
-          <span>Role: <strong className="text-zinc-300 capitalize">{role}</strong></span>
+              {matchingCreators.length > 0 && (
+                <div className="pt-2">
+                  <p className="px-2.5 pb-1 text-[10px] font-semibold uppercase tracking-wider text-zinc-500">
+                    Creators
+                  </p>
+                  {matchingCreators.map((creator) => (
+                    <button
+                      key={creator.id}
+                      onClick={() => handleSelect(role === 'business' ? 'creators' : 'discover')}
+                      className="w-full flex items-center justify-between p-2 rounded-xl hover:bg-white/[0.06] text-left transition-all"
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <img
+                          src={creator.avatar}
+                          alt={creator.name}
+                          className="w-7 h-7 rounded-full object-cover border border-white/15"
+                        />
+                        <div>
+                          <p className="text-xs font-medium text-white">{creator.name}</p>
+                          <p className="text-[10px] text-zinc-400">{creator.niche}</p>
+                        </div>
+                      </div>
+                      <ArrowRight className="w-3.5 h-3.5 text-zinc-500" />
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {matchingCampaigns.length > 0 && (
+                <div className="pt-2">
+                  <p className="px-2.5 pb-1 text-[10px] font-semibold uppercase tracking-wider text-zinc-500">
+                    Campaigns
+                  </p>
+                  {matchingCampaigns.map((camp) => (
+                    <button
+                      key={camp.id}
+                      onClick={() => handleSelect(role === 'business' ? camp.id : 'campaigns')}
+                      className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-white/[0.06] text-left transition-all"
+                    >
+                      <div>
+                        <p className="text-xs font-medium text-white">{camp.name}</p>
+                        <p className="text-[10px] text-zinc-400">{camp.status}</p>
+                      </div>
+                      <ArrowRight className="w-3.5 h-3.5 text-zinc-500" />
+                    </button>
+                  ))}
+                </div>
+              )}
+            </>
+          )}
         </div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Sparkles, Info } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 import {
   AspectRatio,
   LiveConnectionState,
@@ -230,50 +230,34 @@ export const CreatorLiveStudio: React.FC = () => {
   const displayStream = transformedStream || cameraStream;
 
   return (
-    <div className="space-y-6 animate-fade-in pb-16 max-w-6xl mx-auto">
+    <div className="space-y-4 animate-fade-in pb-12 max-w-6xl mx-auto">
       {/* Studio Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div>
-          <div className="flex items-center gap-2">
-            <h1 className="text-xl sm:text-2xl font-bold text-zinc-100 font-display">
-              Live Creator Engine
-            </h1>
-            <span className="px-2 py-0.5 rounded text-[10px] font-mono uppercase bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
-              Decart Powered
-            </span>
-          </div>
-          <p className="text-xs text-zinc-400 mt-0.5">
-            Realtime AI camera transformation for TikTok, Reels & campaign deliverables.
-          </p>
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center gap-2.5">
+          <h1 className="text-xl sm:text-2xl font-bold text-white font-display tracking-tight">
+            Live Studio
+          </h1>
+          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-mono uppercase bg-indigo-500/15 text-indigo-300 border border-indigo-500/30">
+            <Sparkles className="w-3 h-3 text-indigo-400" />
+            Realtime AI
+          </span>
         </div>
+
+        {/* Status Bar inline on desktop */}
+        <LiveSessionStatus
+          connectionState={connectionState}
+          isProviderConfigured={isConfigured}
+          remainingSeconds={remainingSeconds}
+          maxDurationSeconds={config.maxSessionDurationSec || 30}
+          isRecording={isRecording}
+          recordingSeconds={recordingSeconds}
+        />
       </div>
 
-      {/* Unconfigured Decart Notice (Self-hosted commercial clarity) */}
-      {!isConfigured && (
-        <div className="flex items-center justify-between gap-3 p-3 rounded-xl bg-zinc-900/60 border border-zinc-800 text-xs text-zinc-400">
-          <div className="flex items-center gap-2">
-            <Info className="w-4 h-4 text-indigo-400 shrink-0" />
-            <span>
-              Decart Live Engine running in local Preview Mode. Configure your Decart API Key in Business Settings for full cloud inference.
-            </span>
-          </div>
-        </div>
-      )}
-
-      {/* Top Status & Cost Protection Bar */}
-      <LiveSessionStatus
-        connectionState={connectionState}
-        isProviderConfigured={isConfigured}
-        remainingSeconds={remainingSeconds}
-        maxDurationSeconds={config.maxSessionDurationSec || 30}
-        isRecording={isRecording}
-        recordingSeconds={recordingSeconds}
-      />
-
       {/* Main Studio Viewport & Side Configuration */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        {/* Center/Left: Live Camera Viewport */}
-        <div className="lg:col-span-7 flex flex-col items-center justify-center space-y-4">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
+        {/* Center/Left: Live Camera Viewport + Controls immediately below */}
+        <div className="lg:col-span-7 flex flex-col items-center justify-center space-y-3">
           <LiveCamera
             displayStream={displayStream}
             connectionState={connectionState}
@@ -301,31 +285,20 @@ export const CreatorLiveStudio: React.FC = () => {
         </div>
 
         {/* Right: Scene Picker & Reference Panel */}
-        <div className="lg:col-span-5 space-y-5">
+        <div className="lg:col-span-5 space-y-5 surface-2 p-5 rounded-3xl">
           <LiveScenePicker
             selectedScene={activeScene}
             onSelectScene={handleSelectScene}
             disabled={isRecording}
           />
 
+          <div className="h-px bg-white/[0.07]" />
+
           <LiveReferencePanel
             referenceImage={referenceImage}
             onReferenceImageChange={handleReferenceImageChange}
             disabled={isRecording}
           />
-
-          {/* Quick Tips */}
-          <div className="p-3.5 rounded-xl bg-zinc-900/40 border border-zinc-800/60 space-y-2 text-xs text-zinc-400">
-            <div className="font-semibold text-zinc-300 flex items-center gap-1.5">
-              <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
-              <span>Studio Pro-Tips</span>
-            </div>
-            <ul className="space-y-1 text-[11px] text-zinc-400 list-disc list-inside">
-              <li>Record 5 to 15-second clips for optimal social media hook retention.</li>
-              <li>Switch scenes dynamically to test cinematic looks before recording.</li>
-              <li>Submitting clips connects directly to brand campaigns with AI pre-checks.</li>
-            </ul>
-          </div>
         </div>
       </div>
 

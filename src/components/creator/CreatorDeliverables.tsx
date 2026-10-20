@@ -51,60 +51,55 @@ export const CreatorDeliverables: React.FC<{
   ];
 
   return (
-    <div className="space-y-8 animate-fade-in pb-12">
+    <div className="space-y-5 animate-fade-in pb-12 max-w-5xl mx-auto">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-2">
-            <h1 className="text-2xl sm:text-3xl font-bold text-zinc-100 font-display">
-              Deliverables & Submission Queue
-            </h1>
-            <Badge variant="brand" size="sm">
-              Creative Tracker
-            </Badge>
-          </div>
-          <p className="text-sm text-zinc-400 mt-1">
-            Review creative briefs, manage production deadlines, and upload video drafts for brand sign-off.
-          </p>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="flex items-center gap-2.5">
+          <h1 className="text-xl sm:text-2xl font-bold text-white font-display tracking-tight">
+            Content
+          </h1>
+          <Badge variant="brand" size="sm">
+            {deliverablesQueue.length} Due
+          </Badge>
         </div>
 
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2">
           {onNavigate && (
             <Button
               variant="outline"
-              size="md"
+              size="sm"
               onClick={() => onNavigate('live')}
-              leftIcon={<Video className="w-4 h-4 text-indigo-400" />}
+              leftIcon={<Video className="w-3.5 h-3.5 text-indigo-400" />}
               className="border-indigo-500/30 hover:border-indigo-500/60 text-zinc-200"
             >
-              Record with Live Studio
+              Live Studio
             </Button>
           )}
 
           <Button
             variant="primary"
-            size="md"
+            size="sm"
             onClick={onOpenSubmissionModal}
-            leftIcon={<Upload className="w-4 h-4" />}
+            leftIcon={<Upload className="w-3.5 h-3.5" />}
             className="bg-emerald-600 hover:bg-emerald-500 shadow-emerald-600/25"
           >
-            Submit Content Draft
+            Submit
           </Button>
         </div>
       </div>
 
       {/* Upcoming Deliverable Deadlines */}
-      <div className="space-y-4">
-        <h3 className="text-sm font-bold text-zinc-200 uppercase tracking-wider">
-          Action Required Deliverables ({deliverablesQueue.length})
+      <div className="space-y-3">
+        <h3 className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">
+          Due Soon ({deliverablesQueue.length})
         </h3>
 
         <div className="space-y-3">
           {deliverablesQueue.map((del) => (
-            <Card key={del.id} className="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <div className="space-y-1">
+            <Card key={del.id} className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="space-y-0.5">
                 <div className="flex items-center gap-2">
-                  <h4 className="text-sm font-bold text-zinc-100">{del.title}</h4>
+                  <h4 className="text-sm font-bold text-white">{del.title}</h4>
                   {del.urgent && (
                     <Badge variant="warning" size="sm" dot>
                       Due Soon
@@ -112,13 +107,8 @@ export const CreatorDeliverables: React.FC<{
                   )}
                 </div>
                 <p className="text-xs text-zinc-400">
-                  Campaign: <strong className="text-zinc-200">{del.campaignName}</strong> • Format: {del.type}
+                  {del.campaignName} · {del.type} · Due {del.deadline} · {del.compensation}
                 </p>
-                <div className="flex items-center gap-3 text-xs text-zinc-500 pt-1 font-mono">
-                  <span>Deadline: {del.deadline}</span>
-                  <span>•</span>
-                  <span>Comp: {del.compensation}</span>
-                </div>
               </div>
 
               <div className="flex items-center gap-2">
@@ -129,7 +119,7 @@ export const CreatorDeliverables: React.FC<{
                   leftIcon={<Upload className="w-3.5 h-3.5" />}
                   className="text-xs bg-emerald-600 hover:bg-emerald-500"
                 >
-                  Upload Draft
+                  Upload
                 </Button>
               </div>
             </Card>

@@ -33,7 +33,9 @@ import { useAppState } from '../../context/StateContext';
 import { Card } from '../ui/Card';
 import { Button } from '../ui/Button';
 import { Badge } from '../ui/Badge';
-import { Tabs } from '../ui/Tabs';
+import { Avatar } from '../ui/Avatar';
+import { SpatialCard } from '../ui/SpatialCard';
+import { SpatialEmptyState } from '../ui/SpatialEmptyState';
 import { InstagramIcon, YouTubeIcon } from '../common/PlatformIcons';
 import { AgeVerificationModal } from './AgeVerificationModal';
 import { ConnectModal } from '../common/ConnectModal';
@@ -57,7 +59,6 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
     socialPosts,
     togglePostPin,
     triggerCelebration,
-    logout,
     ageVerification,
     role,
     connections,
@@ -67,8 +68,8 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
 
   const creator = creatorData || creators[0]; // Default Rohan Sharma
 
-  // Tabs: Showcase, Reels, Shots, Blogs, About & Bio, Campaigns, Analytics
-  const [activeTab, setActiveTab] = useState<'showcase' | 'reels' | 'shots' | 'blogs' | 'about' | 'campaigns' | 'analytics'>('showcase');
+  // Tabs: Showcase, Reels, Shots, Blogs, Campaigns, About, Analytics
+  const [activeTab, setActiveTab] = useState<'showcase' | 'reels' | 'shots' | 'blogs' | 'campaigns' | 'about' | 'analytics'>('showcase');
   const [copied, setCopied] = useState(false);
   const [isAgeModalOpen, setIsAgeModalOpen] = useState(false);
   const [isConnectModalOpen, setIsConnectModalOpen] = useState(false);
@@ -142,8 +143,8 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
     { id: 'reels', label: 'Reels' },
     { id: 'shots', label: `Shots (${creatorShots.length})` },
     { id: 'blogs', label: `Blogs (${creatorBlogs.length})` },
-    { id: 'about', label: 'About & Bio' },
     { id: 'campaigns', label: 'Campaigns' },
+    { id: 'about', label: 'About' },
     { id: 'analytics', label: 'Analytics' },
   ];
 
@@ -180,68 +181,79 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
 
   return (
     <div className="space-y-6 animate-fade-in max-w-5xl mx-auto pb-16">
-      {/* Unified Hero Profile Header (Mobile-first, clean hierarchy) */}
-      <div className="p-4 sm:p-6 rounded-2xl bg-zinc-900/60 border border-zinc-800/80 space-y-4">
-        {/* Top: Avatar, Name, Handle, Badges */}
-        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
-          <div className="flex items-start gap-3.5 sm:gap-4">
-            <img
+      {/* 1. Digital Portfolio Spatial Hero Header */}
+      <SpatialCard
+        surface={3}
+        glowColor="purple"
+        className="p-5 sm:p-7 space-y-5 relative overflow-hidden"
+      >
+        <div
+          className="pointer-events-none absolute -top-24 -right-24 w-72 h-72 rounded-full opacity-25 blur-3xl"
+          style={{
+            background: 'radial-gradient(circle, rgba(124,92,255,0.45) 0%, rgba(56,189,248,0.15) 60%, transparent 80%)',
+          }}
+        />
+
+        {/* Top: 3D Avatar, Name, Category, Location & Availability */}
+        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 relative z-10">
+          <div className="flex items-start gap-4">
+            <Avatar
               src={creator.avatar}
-              alt={creator.name}
-              className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover ring-2 ring-indigo-500/30 shadow-lg shrink-0"
+              name={creator.name}
+              size="2xl"
+              verified={creator.verified}
+              ring="primary"
+              className="rounded-2xl"
             />
-            <div className="min-w-0">
+            <div className="min-w-0 pt-0.5">
               <div className="flex items-center gap-2 flex-wrap">
-                <h1 className="text-lg sm:text-xl font-bold text-white font-display">
+                <h1 className="text-xl sm:text-2xl font-bold text-white font-display tracking-tight">
                   {creator.name}
                 </h1>
                 {creator.verified && (
-                  <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
+                  <span className="text-emerald-400 font-bold text-sm" title="Verified Creator">
+                    ✓
+                  </span>
                 )}
-                <Badge variant="success" size="sm" dot>
-                  Verified Pro
-                </Badge>
               </div>
-              <p className="text-xs text-zinc-400 font-mono mt-0.5">
-                {creator.handle} • Sneaker historian
+              <p className="text-xs sm:text-sm text-zinc-300 font-medium mt-0.5">
+                {creator.category || 'Sneaker & Streetwear'} Creator
               </p>
-              <p className="text-xs text-zinc-500 mt-1 flex items-center gap-1.5 flex-wrap">
+              <p className="text-xs text-zinc-400 mt-1 flex items-center gap-1.5 flex-wrap">
                 <MapPin className="w-3.5 h-3.5 text-zinc-500 shrink-0" />
                 <span>{creator.location}</span>
-                <span>•</span>
-                <span className="text-emerald-400 font-medium">{creator.availability}</span>
+                <span>·</span>
+                <span className="text-emerald-400 font-semibold">{creator.availability}</span>
               </p>
             </div>
           </div>
 
-          {/* Action Buttons */}
+          {/* Concise Action Buttons */}
           <div className="flex items-center gap-2 flex-wrap self-stretch sm:self-auto justify-end">
             {isOwnProfile ? (
               <>
                 <button
-                  onClick={handleShare}
-                  className="flex-1 sm:flex-none min-h-[44px] px-4 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-xs text-zinc-200 font-medium flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                  onClick={() => setCreatorActiveTab('passport')}
+                  className="depth-btn-secondary flex-1 sm:flex-none min-h-[40px] px-3.5 py-2 rounded-xl text-xs font-semibold border border-emerald-500/30 text-emerald-300 flex items-center justify-center gap-1.5 cursor-pointer"
                 >
-                  <Share2 className="w-3.5 h-3.5 text-zinc-400" />
-                  <span>{copied ? 'Copied Link!' : 'Share Profile'}</span>
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>Passport</span>
                 </button>
 
-                <Button
-                  variant="outline"
-                  size="md"
-                  onClick={() => setIsAgeModalOpen(true)}
-                  leftIcon={<ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />}
-                  className="flex-1 sm:flex-none min-h-[44px] text-xs border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/10 cursor-pointer"
+                <button
+                  onClick={handleShare}
+                  className="depth-btn-secondary flex-1 sm:flex-none min-h-[40px] px-3.5 py-2 rounded-xl text-xs text-zinc-200 font-semibold flex items-center justify-center gap-1.5 cursor-pointer"
                 >
-                  {ageVerification.ageVerified ? '18+ Verified' : 'Verify Age'}
-                </Button>
+                  <Share2 className="w-3.5 h-3.5 text-zinc-400" />
+                  <span>{copied ? 'Copied' : 'Share'}</span>
+                </button>
 
                 <button
                   onClick={() => setIsAddShowcaseOpen(true)}
-                  className="flex-1 sm:flex-none min-h-[44px] px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold flex items-center justify-center gap-1.5 shadow-sm shadow-indigo-600/30 transition-all cursor-pointer"
+                  className="depth-btn-primary flex-1 sm:flex-none min-h-[40px] px-4 py-2 rounded-xl text-white text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer"
                 >
                   <Plus className="w-3.5 h-3.5" />
-                  <span>+ Add Work</span>
+                  <span>Add Work</span>
                 </button>
               </>
             ) : (
@@ -249,40 +261,32 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
                 {connectionState === 'connected' ? (
                   <button
                     disabled
-                    className="flex-1 sm:flex-none min-h-[44px] px-4 py-2.5 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs font-semibold flex items-center justify-center gap-1.5"
+                    className="flex-1 sm:flex-none min-h-[42px] px-3.5 py-2 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs font-semibold flex items-center justify-center gap-1.5"
                   >
                     <Check className="w-4 h-4" />
-                    <span>Connected ✓</span>
+                    <span>Connected</span>
                   </button>
                 ) : connectionState === 'pending' ? (
                   <button
                     disabled
-                    className="flex-1 sm:flex-none min-h-[44px] px-4 py-2.5 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-400 text-xs font-semibold flex items-center justify-center gap-1.5"
+                    className="flex-1 sm:flex-none min-h-[42px] px-3.5 py-2 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-400 text-xs font-semibold flex items-center justify-center gap-1.5"
                   >
                     <Clock className="w-4 h-4" />
                     <span>Pending</span>
                   </button>
-                ) : connectionState === 'active_campaign' ? (
-                  <button
-                    disabled
-                    className="flex-1 sm:flex-none min-h-[44px] px-4 py-2.5 rounded-xl bg-blue-500/15 border border-blue-500/30 text-blue-400 text-xs font-semibold flex items-center justify-center gap-1.5"
-                  >
-                    <Sparkles className="w-4 h-4" />
-                    <span>Active Campaign</span>
-                  </button>
                 ) : (
                   <button
                     onClick={() => setIsConnectModalOpen(true)}
-                    className="flex-1 sm:flex-none min-h-[44px] px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold flex items-center justify-center gap-1.5 shadow-sm shadow-indigo-600/30 transition-all cursor-pointer active:scale-95"
+                    className="depth-btn-primary flex-1 sm:flex-none min-h-[42px] px-4 py-2 rounded-xl text-white text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer"
                   >
-                    <UserPlus className="w-4 h-4" />
+                    <UserPlus className="w-3.5 h-3.5" />
                     <span>Connect</span>
                   </button>
                 )}
 
                 <button
                   onClick={handleMessageClick}
-                  className="flex-1 sm:flex-none min-h-[44px] px-4 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-white/[0.08] text-zinc-200 text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                  className="depth-btn-secondary flex-1 sm:flex-none min-h-[42px] px-3.5 py-2 rounded-xl text-zinc-200 text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer"
                 >
                   <MessageSquare className="w-3.5 h-3.5 text-zinc-400" />
                   <span>Message</span>
@@ -293,71 +297,57 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
                     window.history.pushState({}, '', `/brand/contracts/new?creatorId=${creator.id}`);
                     window.dispatchEvent(new PopStateEvent('popstate'));
                   }}
-                  className="flex-1 sm:flex-none min-h-[44px] px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold flex items-center justify-center gap-1.5 shadow-sm shadow-indigo-600/30 transition-all cursor-pointer active:scale-95"
+                  className="depth-btn-primary flex-1 sm:flex-none min-h-[42px] px-4 py-2 rounded-xl text-white text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer"
                 >
                   <FileText className="w-3.5 h-3.5" />
-                  <span>+ Create Contract</span>
-                </button>
-
-                <button
-                  onClick={handleShare}
-                  className="min-w-[44px] min-h-[44px] rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 hover:text-white transition-colors cursor-pointer flex items-center justify-center"
-                  title="Share profile link"
-                  aria-label="Share profile link"
-                >
-                  <Share2 className="w-4 h-4" />
+                  <span>Create Contract</span>
                 </button>
               </>
             )}
           </div>
         </div>
 
-        {/* Bio snippet */}
-        <p className="text-xs text-zinc-300 leading-relaxed max-w-3xl line-clamp-2 sm:line-clamp-none">
-          {creator.bio}
-        </p>
-
-        {/* Key Stats Bar */}
-        <div className="grid grid-cols-3 sm:grid-cols-4 gap-2 pt-1">
-          <div className="p-2.5 sm:p-3 rounded-xl bg-zinc-950/70 border border-zinc-800/80 text-center">
-            <span className="text-[10px] text-zinc-500 uppercase font-mono block">Followers</span>
-            <p className="text-sm sm:text-base font-bold font-mono text-zinc-100 mt-0.5">
+        {/* 4 Spatial Reputation & Portfolio Pills */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-1 relative z-10">
+          <div className="p-3 rounded-xl surface-2 text-center">
+            <span className="text-base sm:text-lg font-bold font-mono text-indigo-400 block">
+              96
+            </span>
+            <span className="text-[11px] text-zinc-400 font-medium">Reputation</span>
+          </div>
+          <div className="p-3 rounded-xl surface-2 text-center">
+            <span className="text-base sm:text-lg font-bold font-mono text-zinc-100 block">
               {(creator.totalFollowers / 1000).toFixed(0)}K
-            </p>
+            </span>
+            <span className="text-[11px] text-zinc-400 font-medium">Followers</span>
           </div>
-          <div className="p-2.5 sm:p-3 rounded-xl bg-zinc-950/70 border border-zinc-800/80 text-center">
-            <span className="text-[10px] text-zinc-500 uppercase font-mono block">Engagement</span>
-            <p className="text-sm sm:text-base font-bold font-mono text-emerald-400 mt-0.5">
+          <div className="p-3 rounded-xl surface-2 text-center">
+            <span className="text-base sm:text-lg font-bold font-mono text-emerald-400 block">
               {creator.avgEngagement}%
-            </p>
+            </span>
+            <span className="text-[11px] text-zinc-400 font-medium">Engagement</span>
           </div>
-          <div className="p-2.5 sm:p-3 rounded-xl bg-zinc-950/70 border border-zinc-800/80 text-center">
-            <span className="text-[10px] text-zinc-500 uppercase font-mono block">Est. Rate</span>
-            <p className="text-sm sm:text-base font-bold font-mono text-white mt-0.5">
-              ₹{(creator.rateCard?.Reel ? (creator.rateCard.Reel / 1000).toFixed(0) : '35')}K
-            </p>
-          </div>
-          <div className="hidden sm:block p-2.5 sm:p-3 rounded-xl bg-zinc-950/70 border border-zinc-800/80 text-center">
-            <span className="text-[10px] text-zinc-500 uppercase font-mono block">Commercial Score</span>
-            <p className="text-sm sm:text-base font-bold font-mono text-indigo-400 mt-0.5">
-              98/100
-            </p>
+          <div className="p-3 rounded-xl surface-2 text-center">
+            <span className="text-base sm:text-lg font-bold font-mono text-white block">
+              12
+            </span>
+            <span className="text-[11px] text-zinc-400 font-medium">Campaigns</span>
           </div>
         </div>
-      </div>
+      </SpatialCard>
 
-      {/* Tabs navigation: Showcase, Reels, Shots, Blogs, About & Bio, Campaigns, Analytics */}
-      <div className="flex items-center gap-1 sm:gap-2 border-b border-zinc-800/80 pb-px overflow-x-auto no-scrollbar">
+      {/* Spatial Tabs Pill Bar */}
+      <div className="flex items-center gap-1 p-1 rounded-xl surface-1 border border-white/[0.07] overflow-x-auto no-scrollbar">
         {tabs.map((tab) => {
           const isActive = activeTab === tab.id;
           return (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as any)}
-              className={`px-3 sm:px-4 py-2 border-b-2 text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
+              className={`px-3.5 py-2 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
                 isActive
-                  ? 'border-indigo-500 text-white font-bold'
-                  : 'border-transparent text-zinc-400 hover:text-zinc-200'
+                  ? 'surface-3 text-white shadow-sm'
+                  : 'text-zinc-400 hover:text-zinc-200'
               }`}
             >
               {tab.label}
@@ -366,13 +356,13 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
         })}
       </div>
 
-      {/* TAB 1: ABOUT (Bio placed here, after Latest Work) */}
+      {/* TAB 1: ABOUT */}
       {activeTab === 'about' && (
         <div className="space-y-6 animate-fade-in">
           {/* Bio & Badges Card */}
-          <div className="p-5 rounded-2xl bg-zinc-900/60 border border-zinc-800/80 space-y-3">
+          <div className="p-5 rounded-2xl surface-2 space-y-3">
             <h3 className="text-xs font-semibold text-zinc-300 uppercase tracking-wider font-mono">
-              Biography & Creative Direction
+              Biography
             </h3>
             <p className="text-xs text-zinc-300 leading-relaxed max-w-3xl">
               {creator.bio}
@@ -394,7 +384,7 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
             {creator.platforms.map((p, idx) => (
               <div
                 key={idx}
-                className="p-5 rounded-2xl bg-zinc-900/60 border border-zinc-800/80 space-y-3"
+                className="p-5 rounded-2xl surface-2 space-y-3"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2.5">
@@ -414,13 +404,13 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
                 </div>
 
                 <div className="grid grid-cols-2 gap-2 text-center pt-2">
-                  <div className="p-2.5 rounded-lg bg-zinc-950/60 border border-zinc-800/80">
+                  <div className="p-2.5 rounded-lg surface-1">
                     <span className="text-[10px] text-zinc-500 uppercase">Followers</span>
                     <p className="text-sm font-bold font-mono text-zinc-100">
                       {(p.followers / 1000).toFixed(0)}K
                     </p>
                   </div>
-                  <div className="p-2.5 rounded-lg bg-zinc-950/60 border border-zinc-800/80">
+                  <div className="p-2.5 rounded-lg surface-1">
                     <span className="text-[10px] text-zinc-500 uppercase">Engagement</span>
                     <p className="text-sm font-bold font-mono text-emerald-400">
                       {p.engagementRate}%
@@ -432,81 +422,82 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
           </div>
 
           {/* Audited Commercial Ledger */}
-          <div className="p-5 rounded-2xl bg-zinc-900/60 border border-zinc-800/80 space-y-4">
+          <div className="p-5 rounded-2xl surface-2 space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="text-xs font-semibold text-zinc-300 uppercase tracking-wider font-mono">
-                Audited Commercial Reputation
+                Reputation Metrics
               </h3>
               <span className="text-xs font-mono font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded-full">
-                Score: 98 / 100 (Tier 1)
+                96 Reputation
               </span>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
-              <div className="p-3.5 rounded-xl bg-zinc-950/60 border border-zinc-800/80">
+              <div className="p-3.5 rounded-xl surface-1">
                 <span className="text-[10px] text-zinc-500 uppercase font-mono block">On-Time Delivery</span>
                 <span className="text-lg font-bold text-zinc-100 font-mono mt-1 block">98%</span>
-                <span className="text-[10px] text-emerald-400 mt-1 block">Top 2% on platform</span>
               </div>
-              <div className="p-3.5 rounded-xl bg-zinc-950/60 border border-zinc-800/80">
+              <div className="p-3.5 rounded-xl surface-1">
                 <span className="text-[10px] text-zinc-500 uppercase font-mono block">Brief Compliance</span>
                 <span className="text-lg font-bold text-zinc-100 font-mono mt-1 block">99%</span>
-                <span className="text-[10px] text-indigo-400 mt-1 block">Zero revision penalties</span>
               </div>
-              <div className="p-3.5 rounded-xl bg-zinc-950/60 border border-zinc-800/80">
-                <span className="text-[10px] text-zinc-500 uppercase font-mono block">Response Velocity</span>
-                <span className="text-lg font-bold text-zinc-100 font-mono mt-1 block">2.1 Hours</span>
-                <span className="text-[10px] text-emerald-400 mt-1 block">Instant in-app messaging</span>
+              <div className="p-3.5 rounded-xl surface-1">
+                <span className="text-[10px] text-zinc-500 uppercase font-mono block">Response Time</span>
+                <span className="text-lg font-bold text-zinc-100 font-mono mt-1 block">2.1h</span>
               </div>
             </div>
           </div>
         </div>
       )}
 
-      {/* TAB 2: SHOWCASE */}
+      {/* TAB 2: SHOWCASE (Featured Work Gallery with 3D Spatial Depth) */}
       {activeTab === 'showcase' && (
         <div className="space-y-4 animate-fade-in">
           <div className="flex items-center justify-between pb-1">
-            <p className="text-xs text-zinc-400">
-              Showing {creator.portfolio.length} verified commercial deliverables and original cuts.
-            </p>
+            <h2 className="text-sm font-bold text-white font-display">
+              Featured Work
+            </h2>
             <button
               onClick={() => setIsAddShowcaseOpen(true)}
-              className="px-3 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold flex items-center gap-1 cursor-pointer"
+              className="depth-btn-primary px-3 py-1.5 rounded-lg text-white text-xs font-semibold flex items-center gap-1 cursor-pointer"
             >
-              <Plus className="w-3 h-3" />
+              <Plus className="w-3.5 h-3.5" />
               <span>Add Work</span>
             </button>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {creator.portfolio.map((p) => (
-              <div
+              <SpatialCard
                 key={p.id}
-                className="rounded-2xl bg-zinc-900/60 border border-zinc-800/80 overflow-hidden space-y-2 group hover:border-zinc-700 transition-all"
+                surface={2}
+                interactive
+                tilt
+                glare
+                className="overflow-hidden group"
               >
-                <div className="relative h-44 overflow-hidden bg-zinc-950">
+                <div className="relative h-48 overflow-hidden bg-zinc-950">
                   <img
                     src={p.thumbnail}
                     alt={p.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-                  <div className="absolute top-2.5 left-2.5">
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-black/60 backdrop-blur-sm text-indigo-300 border border-white/10">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
+                  <div className="absolute top-3 left-3">
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-black/60 backdrop-blur-md text-indigo-300 border border-white/15">
                       {p.type}
                     </span>
                   </div>
-                  <div className="absolute bottom-2.5 left-2.5 right-2.5 flex justify-between text-xs text-white">
-                    <span className="font-mono">{(p.views / 1000).toFixed(0)}K views</span>
-                    <span className="font-mono text-emerald-400">{(p.engagement / 1000).toFixed(1)}K</span>
+                  <div className="absolute bottom-3 left-3 right-3 flex justify-between text-xs text-white">
+                    <span className="font-mono font-semibold">{(p.views / 1000).toFixed(0)}K views</span>
+                    <span className="font-mono text-emerald-400 font-semibold">{(p.engagement / 1000).toFixed(1)}K</span>
                   </div>
                 </div>
-                <div className="p-3">
-                  <p className="text-xs font-semibold text-zinc-200 line-clamp-1">{p.title}</p>
-                  <p className="text-[10px] text-zinc-500 mt-0.5">{p.type} • {p.campaignName}</p>
+                <div className="p-3.5">
+                  <p className="text-xs font-bold text-zinc-100 line-clamp-1">{p.title}</p>
+                  <p className="text-[11px] text-zinc-400 mt-0.5 truncate">{p.campaignName}</p>
                 </div>
-              </div>
+              </SpatialCard>
             ))}
           </div>
         </div>
@@ -516,14 +507,17 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
       {activeTab === 'reels' && (
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 animate-fade-in">
           {reelsList.map((reel) => (
-            <div
+            <SpatialCard
               key={reel.id}
-              className="group relative rounded-2xl overflow-hidden bg-zinc-900/60 border border-zinc-800 aspect-[9/16] hover:border-zinc-700 transition-all"
+              surface={2}
+              interactive
+              tilt
+              className="group relative overflow-hidden aspect-[9/16]"
             >
               <img
                 src={reel.thumbnail}
                 alt={reel.title}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent flex flex-col justify-between p-3.5">
                 <div className="flex items-center justify-between">
@@ -546,7 +540,7 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
                   </div>
                 </div>
               </div>
-            </div>
+            </SpatialCard>
           ))}
         </div>
       )}
@@ -554,26 +548,18 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
       {/* TAB: SHOTS (High-Res Photography) */}
       {activeTab === 'shots' && (
         <div className="space-y-4 animate-fade-in">
-          <div className="flex items-center justify-between pb-1">
-            <p className="text-xs text-zinc-400">
-              Showing {creatorShots.length} high-resolution editorial photography captures &amp; aesthetics.
-            </p>
-          </div>
-
           {creatorShots.length === 0 ? (
-            <div className="p-12 rounded-2xl bg-zinc-900/40 border border-zinc-800 text-center space-y-2">
-              <Camera className="w-8 h-8 text-zinc-600 mx-auto" />
-              <h4 className="text-xs font-semibold text-zinc-300">No Shots Published Yet</h4>
-              <p className="text-[11px] text-zinc-500 max-w-sm mx-auto">
-                Photography shots published to Discover will appear here in the creator portfolio.
-              </p>
-            </div>
+            <SpatialEmptyState
+              objectType="gallery"
+              title="No Shots Yet"
+              subtitle="Publish high-resolution photography to showcase your visual style."
+            />
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
               {creatorShots.map((shot) => (
                 <div
                   key={shot.id}
-                  className="group relative rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-800/80 aspect-[4/5] hover:border-zinc-700 transition-all cursor-pointer"
+                  className="group relative rounded-2xl overflow-hidden surface-2 aspect-[4/5] hover:border-white/20 transition-all cursor-pointer"
                 >
                   <img
                     src={shot.mediaUrl}
@@ -622,20 +608,12 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
       {/* TAB: BLOGS (Editorial Long-Form Articles) */}
       {activeTab === 'blogs' && (
         <div className="space-y-4 animate-fade-in">
-          <div className="flex items-center justify-between pb-1">
-            <p className="text-xs text-zinc-400">
-              Showing {creatorBlogs.length} long-form articles, essays, and creative culture breakdowns.
-            </p>
-          </div>
-
           {creatorBlogs.length === 0 ? (
-            <div className="p-12 rounded-2xl bg-zinc-900/40 border border-zinc-800 text-center space-y-2">
-              <BookOpen className="w-8 h-8 text-zinc-600 mx-auto" />
-              <h4 className="text-xs font-semibold text-zinc-300">No Editorial Articles Yet</h4>
-              <p className="text-[11px] text-zinc-500 max-w-sm mx-auto">
-                Articles published through CreatorOS editorial studio will appear here.
-              </p>
-            </div>
+            <SpatialEmptyState
+              objectType="document"
+              title="No Blogs Yet"
+              subtitle="Write editorial breakdowns and creative essays."
+            />
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {creatorBlogs.map((blog) => (

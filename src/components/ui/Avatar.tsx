@@ -90,28 +90,28 @@ export const Avatar: React.FC<AvatarProps> = ({
   };
 
   const ringStyles = {
-    true: 'ring-2 ring-white/20',
-    primary: 'ring-2 ring-indigo-500 ring-offset-2 ring-offset-zinc-950',
-    success: 'ring-2 ring-emerald-500 ring-offset-2 ring-offset-zinc-950',
+    true: 'ring-2 ring-white/20 shadow-[0_6px_16px_-4px_rgba(0,0,0,0.65)]',
+    primary: 'ring-2 ring-indigo-500/80 ring-offset-2 ring-offset-[#07070A] shadow-[0_0_20px_-4px_rgba(99,102,241,0.45)]',
+    success: 'ring-2 ring-emerald-500/80 ring-offset-2 ring-offset-[#07070A] shadow-[0_0_20px_-4px_rgba(16,185,129,0.4)]',
   };
 
   const statusStyles: Record<AvatarStatus, string> = {
-    online: 'bg-emerald-500',
+    online: 'bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]',
     offline: 'bg-zinc-500',
-    busy: 'bg-rose-500',
+    busy: 'bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.8)]',
   };
 
   return (
     <div
       className={clsx(
-        'relative inline-flex shrink-0 select-none rounded-full',
+        'relative inline-flex shrink-0 select-none rounded-full shadow-[0_6px_14px_-3px_rgba(0,0,0,0.6)]',
         cfg.container,
         ring && typeof ring === 'string' ? ringStyles[ring] : ring ? ringStyles.true : '',
         className
       )}
       {...props}
     >
-      <div className="w-full h-full rounded-full overflow-hidden bg-zinc-800 border border-white/10 flex items-center justify-center font-semibold text-zinc-200">
+      <div className="w-full h-full rounded-full overflow-hidden bg-gradient-to-b from-zinc-800 to-zinc-900 border border-white/15 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.22)] flex items-center justify-center font-semibold text-zinc-200">
         {src && !hasError ? (
           <img
             src={src}
@@ -121,7 +121,7 @@ export const Avatar: React.FC<AvatarProps> = ({
             loading="lazy"
           />
         ) : (
-          <span className={clsx('tracking-wider font-medium text-zinc-300', cfg.text)}>
+          <span className={clsx('tracking-wider font-medium text-zinc-200', cfg.text)}>
             {getInitials(name || alt)}
           </span>
         )}
@@ -131,7 +131,7 @@ export const Avatar: React.FC<AvatarProps> = ({
       {status && (
         <span
           className={clsx(
-            'absolute rounded-full ring-2 ring-zinc-950',
+            'absolute rounded-full ring-2 ring-[#07070A]',
             cfg.badgeOffset,
             cfg.statusSize,
             statusStyles[status]
@@ -140,15 +140,15 @@ export const Avatar: React.FC<AvatarProps> = ({
         />
       )}
 
-      {/* Verified Badge */}
+      {/* Floating Dimensional Verified Badge */}
       {verified && (
         <span
           className={clsx(
-            'absolute flex items-center justify-center rounded-full bg-indigo-500 text-white ring-2 ring-zinc-950 shadow-sm',
+            'absolute flex items-center justify-center rounded-full bg-gradient-to-b from-indigo-400 to-indigo-600 text-white ring-2 ring-[#07070A] shadow-[0_2px_8px_rgba(99,102,241,0.65)]',
             cfg.badgeOffset,
             cfg.verifiedSize
           )}
-          title="Verified Account"
+          title="Verified"
         >
           <svg className="w-2/3 h-2/3 fill-current" viewBox="0 0 20 20">
             <path

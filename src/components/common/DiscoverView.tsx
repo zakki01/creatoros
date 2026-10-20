@@ -50,18 +50,17 @@ import { PostCard } from './PostCard';
 import { CommentsView } from './CommentsView';
 import { ShareModal } from './ShareModal';
 import { PostDetailModal } from './PostDetailModal';
+import { SpatialCard } from '../ui/SpatialCard';
+import { Avatar } from '../ui/Avatar';
 import { Creator } from '../../types';
 
 export const DiscoverView: React.FC = () => {
   const {
     socialPosts,
     togglePostLike,
-    addPostComment,
     togglePostSave,
     connections,
     creators,
-    role,
-    userProfile,
     triggerCelebration,
     setCreatorActiveTab,
     featureFlags,
@@ -77,7 +76,7 @@ export const DiscoverView: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [selectedLocation, setSelectedLocation] = useState<string>('All');
   const [selectedContentType, setSelectedContentType] = useState<string>('All');
-  const [selectedEngagement, setSelectedEngagement] = useState<string>('All');
+  const [, setSelectedEngagement] = useState<string>('All');
   const [verifiedOnly, setVerifiedOnly] = useState<boolean>(false);
   const [showFilterDrawer, setShowFilterDrawer] = useState<boolean>(false);
 
@@ -85,7 +84,7 @@ export const DiscoverView: React.FC = () => {
   const [activeCommentPost, setActiveCommentPost] = useState<SocialPost | null>(null);
   const [activeSharePost, setActiveSharePost] = useState<SocialPost | null>(null);
   const [selectedDetailPost, setSelectedDetailPost] = useState<SocialPost | null>(null);
-  const [copiedSharePostId, setCopiedSharePostId] = useState<string | null>(null);
+  const [, setCopiedSharePostId] = useState<string | null>(null);
   const [connectTarget, setConnectTarget] = useState<{
     id: string;
     name: string;
@@ -113,9 +112,8 @@ export const DiscoverView: React.FC = () => {
   // Video playback states
   const [playingVideoId, setPlayingVideoId] = useState<string | null>(null);
 
-  // Contextual More Menu & Progressive Information Disclosure (Hick's & Miller's Law)
+  // Contextual More Menu
   const [openMoreMenuPostId, setOpenMoreMenuPostId] = useState<string | null>(null);
-  const [expandedCaptions, setExpandedCaptions] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     const handleOutsideClick = () => {
@@ -137,14 +135,14 @@ export const DiscoverView: React.FC = () => {
       handle: '@aurastreetwear',
       logo: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=150&auto=format&fit=crop&q=80',
       coverUrl: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=1200&auto=format&fit=crop&q=80',
-      category: 'Streetwear & Urban Culture',
-      location: 'Mumbai & Bengaluru',
+      category: 'Streetwear',
+      location: 'Mumbai',
       bio: 'Contemporary streetwear and urban aesthetics crafted for modern subcultures.',
       activeCampaignsCount: 3,
       creatorsPartnered: 52,
-      avgBudget: '₹35,000 – ₹75,000',
-      openBrief: 'Summer Drop 2026 — 4K Transitions & Lookbooks',
-      badge: 'Looking for Creators',
+      avgBudget: '₹35K – ₹75K',
+      openBrief: 'Summer Drop 2026 — 4K Lookbooks',
+      badge: 'Hiring',
     },
     {
       id: 'brand-urbankicks',
@@ -152,14 +150,14 @@ export const DiscoverView: React.FC = () => {
       handle: '@urbankicks.in',
       logo: 'https://images.unsplash.com/photo-1552346154-21d32810aba3?w=150&auto=format&fit=crop&q=80',
       coverUrl: 'https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?w=1200&auto=format&fit=crop&q=80',
-      category: 'Sneakers & Streetstyle',
+      category: 'Sneakers',
       location: 'Mumbai',
       bio: 'Curated premium sneaker marketplace and community for collectors.',
       activeCampaignsCount: 2,
       creatorsPartnered: 38,
-      avgBudget: '₹30,000 – ₹50,000',
-      openBrief: 'Jordan Retro High Restomod Unboxing',
-      badge: 'New Campaign',
+      avgBudget: '₹30K – ₹50K',
+      openBrief: 'Jordan Retro High Unboxing',
+      badge: 'New Brief',
     },
     {
       id: 'brand-neonaudio',
@@ -167,30 +165,27 @@ export const DiscoverView: React.FC = () => {
       handle: '@neonaudio',
       logo: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=150&auto=format&fit=crop&q=80',
       coverUrl: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=1200&auto=format&fit=crop&q=80',
-      category: 'Audio Tech & Lifestyle',
+      category: 'Audio Tech',
       location: 'Bengaluru',
       bio: 'High-fidelity spatial audio and aesthetic headphone gear for creative producers.',
       activeCampaignsCount: 1,
       creatorsPartnered: 24,
-      avgBudget: '₹45,000 – ₹80,000',
-      openBrief: 'Studio Acoustics & Everyday Carry Beats',
-      badge: 'Great Match',
+      avgBudget: '₹45K – ₹80K',
+      openBrief: 'Studio Acoustics & EDC Beats',
+      badge: 'Top Match',
     },
   ];
 
   // Filtered Posts Calculation
   const filteredPosts = useMemo(() => {
     return socialPosts.filter((post) => {
-      // Exclude removed or hidden posts unless in admin mode
       if (post.moderationStatus === 'removed' || post.moderationStatus === 'hidden') {
         return false;
       }
-      // Only show published posts in public discover
       if (post.postStatus && post.postStatus !== 'published') {
         return false;
       }
 
-      // Sub-tab filter
       if (subTab === 'reels' && (post.contentType !== 'reel' && !post.isReel)) return false;
       if (subTab === 'shots' && post.contentType !== 'shot') return false;
       if (subTab === 'blogs' && post.contentType !== 'blog') return false;
@@ -201,7 +196,6 @@ export const DiscoverView: React.FC = () => {
         if (!isTrending) return false;
       }
 
-      // Content Type Filter
       if (selectedContentType !== 'All') {
         const mapped = selectedContentType.toLowerCase();
         if (mapped === 'reels' && post.contentType !== 'reel' && !post.isReel) return false;
@@ -209,7 +203,6 @@ export const DiscoverView: React.FC = () => {
         if (mapped === 'blogs' && post.contentType !== 'blog') return false;
       }
 
-      // Search Query
       if (searchQuery.trim()) {
         const query = searchQuery.toLowerCase();
         const matchesQuery =
@@ -222,14 +215,12 @@ export const DiscoverView: React.FC = () => {
         if (!matchesQuery) return false;
       }
 
-      // Location Filter
       if (selectedLocation !== 'All' && post.location) {
         if (!post.location.toLowerCase().includes(selectedLocation.toLowerCase())) {
           return false;
         }
       }
 
-      // Verified Filter
       if (verifiedOnly && !post.authorVerified) {
         return false;
       }
@@ -237,7 +228,6 @@ export const DiscoverView: React.FC = () => {
       return true;
     });
   }, [socialPosts, subTab, searchQuery, selectedLocation, selectedContentType, verifiedOnly]);
-
 
   const handleShareClick = (post: SocialPost) => {
     const shareUrl = `${window.location.origin}/discover/post/${post.id}`;
@@ -267,29 +257,22 @@ export const DiscoverView: React.FC = () => {
 
   return (
     <div className="max-w-4xl mx-auto space-y-6 pb-20 animate-fade-in font-sans relative">
-      {/* 1. DISCOVER HEADER WITH PROMINENT "+ Create Post" BUTTON */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-white/[0.08]">
-        <div>
-          <div className="flex items-center gap-2">
-            <h1 className="text-xl md:text-2xl font-bold tracking-tight text-white font-display flex items-center gap-2">
-              <span>Discover</span>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 font-normal">
-                Live Network
-              </span>
-            </h1>
-          </div>
-        </div>
+      {/* 1. MINIMAL SPATIAL DISCOVER TOP BAR */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-white font-display">
+          Discover
+        </h1>
 
-        {/* Action Controls: Search, My Posts, + Create Post */}
-        <div className="flex items-center gap-2.5 flex-wrap sm:flex-nowrap">
-          <div className="relative flex-1 sm:w-56 md:w-64">
+        {/* Action Controls: [Search] [Filters] [+ Create] */}
+        <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
+          <div className="relative flex-1 sm:w-56">
             <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search creators, brands, posts & campaigns..."
-              className="w-full pl-8 pr-3 py-2 rounded-xl bg-zinc-900/80 border border-white/[0.08] text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-indigo-500/60"
+              placeholder="Search..."
+              className="w-full pl-8 pr-3 py-2 rounded-xl surface-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-indigo-500/60"
             />
             {searchQuery && (
               <button
@@ -303,45 +286,43 @@ export const DiscoverView: React.FC = () => {
 
           <button
             onClick={() => setShowFilterDrawer(!showFilterDrawer)}
-            aria-label="Toggle discovery filters"
-            className={`min-h-[44px] min-w-[44px] px-3.5 py-2.5 rounded-xl border text-xs font-medium flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
+            aria-label="Filters"
+            className={`min-h-[38px] px-3 py-2 rounded-xl text-xs font-medium flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
               showFilterDrawer || selectedLocation !== 'All' || verifiedOnly || selectedContentType !== 'All'
-                ? 'bg-indigo-600/20 border-indigo-500/40 text-indigo-300'
-                : 'bg-zinc-900 border-white/[0.08] text-zinc-400 hover:text-zinc-200'
+                ? 'surface-3 border-indigo-500/50 text-indigo-300'
+                : 'surface-2 text-zinc-300 hover:text-white'
             }`}
-            title="Toggle filters"
+            title="Filters"
           >
             <SlidersHorizontal className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">Filters</span>
+            <span>Filters</span>
           </button>
 
           <button
             onClick={() => setIsMyPostsOpen(true)}
-            aria-label="My Published and Draft Posts"
-            className="min-h-[44px] min-w-[44px] px-3.5 py-2.5 rounded-xl border border-white/[0.08] bg-zinc-900 hover:bg-zinc-800 text-xs font-semibold text-zinc-300 hover:text-white transition-all cursor-pointer flex items-center justify-center gap-1.5"
-            title="My Published & Draft Posts"
+            aria-label="My Posts"
+            className="min-h-[38px] px-3 py-2 rounded-xl surface-2 text-xs font-medium text-zinc-300 hover:text-white transition-all cursor-pointer flex items-center justify-center gap-1.5"
+            title="My Posts"
           >
             <Bookmark className="w-3.5 h-3.5 text-zinc-400" />
-            <span className="hidden sm:inline">My Posts</span>
           </button>
 
           {featureFlags.posting && (
             <button
               onClick={() => setIsCreatePostOpen(true)}
-              aria-label="Create new post"
-              className="min-h-[44px] px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold flex items-center justify-center gap-1.5 shadow-sm shadow-indigo-600/30 transition-all cursor-pointer active:scale-95 shrink-0"
+              aria-label="Create post"
+              className="min-h-[38px] px-3.5 py-2 rounded-xl depth-btn-primary text-white text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer shrink-0"
             >
               <Plus className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Create</span>
-              <span className="sm:hidden">Post</span>
+              <span>Create</span>
             </button>
           )}
         </div>
       </div>
 
-      {/* 2. SUB-NAV TABS: For You, Creators, Brands, Reels, Shots, Blogs, Trending */}
+      {/* 2. SPATIAL SUB-NAV TABS: For You | Creators | Brands | Reels | Shots | Blogs | Trending */}
       <div className="flex items-center justify-between gap-2 overflow-x-auto pb-1 no-scrollbar">
-        <div className="flex items-center p-1 rounded-xl bg-zinc-900/80 border border-white/[0.08] gap-1 shrink-0">
+        <div className="flex items-center p-1 rounded-2xl surface-2 gap-1 shrink-0">
           {[
             { id: 'for_you', label: 'For You', icon: Sparkles },
             { id: 'creators', label: 'Creators', icon: Users },
@@ -357,10 +338,10 @@ export const DiscoverView: React.FC = () => {
               <button
                 key={tab.id}
                 onClick={() => setSubTab(tab.id as any)}
-                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
                   isActive
-                    ? 'bg-indigo-600 text-white shadow-sm shadow-indigo-600/20'
-                    : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40'
+                    ? 'depth-btn-primary text-white'
+                    : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.04]'
                 }`}
               >
                 <Icon className="w-3.5 h-3.5" />
@@ -376,10 +357,10 @@ export const DiscoverView: React.FC = () => {
             <button
               key={loc}
               onClick={() => setSelectedLocation(loc)}
-              className={`px-2.5 py-1 rounded-lg text-[11px] font-mono transition-all cursor-pointer ${
+              className={`px-2.5 py-1 rounded-xl text-[11px] font-mono transition-all cursor-pointer ${
                 selectedLocation === loc
-                  ? 'bg-white/10 text-white border border-white/20'
-                  : 'text-zinc-400 hover:text-zinc-200 bg-zinc-950 border border-white/[0.04]'
+                  ? 'surface-3 text-white border-indigo-500/40'
+                  : 'text-zinc-400 hover:text-zinc-200 bg-white/[0.02] border border-white/[0.06]'
               }`}
             >
               {loc}
@@ -388,13 +369,13 @@ export const DiscoverView: React.FC = () => {
         </div>
       </div>
 
-      {/* FILTER DRAWER / ACCORDION */}
+      {/* FILTER DRAWER */}
       {showFilterDrawer && (
-        <div className="p-4 rounded-2xl bg-zinc-950/90 border border-white/[0.08] space-y-3 animate-fade-in">
+        <div className="p-4 rounded-2xl surface-3 space-y-3 animate-fade-in">
           <div className="flex items-center justify-between pb-2 border-b border-white/[0.06]">
             <span className="text-xs font-bold text-white flex items-center gap-1.5">
               <Filter className="w-3.5 h-3.5 text-indigo-400" />
-              <span>Discovery Filters</span>
+              <span>Filters</span>
             </span>
             <button
               onClick={() => {
@@ -406,33 +387,31 @@ export const DiscoverView: React.FC = () => {
               }}
               className="text-[11px] text-zinc-400 hover:text-indigo-400"
             >
-              Reset all
+              Reset
             </button>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
-            {/* Format */}
             <div>
               <label className="text-[10px] uppercase font-mono text-zinc-500 block mb-1">Format</label>
               <select
                 value={selectedContentType}
                 onChange={(e) => setSelectedContentType(e.target.value)}
-                className="w-full bg-zinc-900 border border-white/[0.08] rounded-lg p-1.5 text-xs text-zinc-200"
+                className="w-full bg-zinc-900 border border-white/[0.08] rounded-xl p-1.5 text-xs text-zinc-200"
               >
-                <option value="All">All Formats</option>
-                <option value="Reels">🎬 Reels</option>
-                <option value="Shots">📸 Shots</option>
-                <option value="Blogs">✍ Blogs</option>
+                <option value="All">All</option>
+                <option value="Reels">Reels</option>
+                <option value="Shots">Shots</option>
+                <option value="Blogs">Blogs</option>
               </select>
             </div>
 
-            {/* Category */}
             <div>
               <label className="text-[10px] uppercase font-mono text-zinc-500 block mb-1">Niche</label>
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="w-full bg-zinc-900 border border-white/[0.08] rounded-lg p-1.5 text-xs text-zinc-200"
+                className="w-full bg-zinc-900 border border-white/[0.08] rounded-xl p-1.5 text-xs text-zinc-200"
               >
                 {categoryOptions.map((c) => (
                   <option key={c} value={c}>{c}</option>
@@ -440,13 +419,12 @@ export const DiscoverView: React.FC = () => {
               </select>
             </div>
 
-            {/* Location */}
             <div>
               <label className="text-[10px] uppercase font-mono text-zinc-500 block mb-1">Location</label>
               <select
                 value={selectedLocation}
                 onChange={(e) => setSelectedLocation(e.target.value)}
-                className="w-full bg-zinc-900 border border-white/[0.08] rounded-lg p-1.5 text-xs text-zinc-200"
+                className="w-full bg-zinc-900 border border-white/[0.08] rounded-xl p-1.5 text-xs text-zinc-200"
               >
                 {locationOptions.map((l) => (
                   <option key={l} value={l}>{l}</option>
@@ -454,16 +432,15 @@ export const DiscoverView: React.FC = () => {
               </select>
             </div>
 
-            {/* Verified Only */}
             <div className="flex flex-col justify-end">
-              <label className="flex items-center gap-2 cursor-pointer p-1.5 rounded-lg bg-zinc-900 border border-white/[0.08]">
+              <label className="flex items-center gap-2 cursor-pointer p-1.5 rounded-xl bg-zinc-900 border border-white/[0.08]">
                 <input
                   type="checkbox"
                   checked={verifiedOnly}
                   onChange={(e) => setVerifiedOnly(e.target.checked)}
                   className="rounded border-zinc-700 text-indigo-600 focus:ring-0"
                 />
-                <span className="text-xs text-zinc-300 font-medium">Verified Only</span>
+                <span className="text-xs text-zinc-300 font-medium">Verified</span>
               </label>
             </div>
           </div>
@@ -472,84 +449,85 @@ export const DiscoverView: React.FC = () => {
 
       {/* 3. SUB-TAB VIEWS */}
 
-      {/* A. CREATORS TAB VIEW */}
+      {/* A. CREATORS TAB VIEW (Section 10 Spatial Creator Cards) */}
       {subTab === 'creators' && (
         <div className="space-y-4 animate-fade-in">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {creators.map((c) => {
               const cState = connections[c.id] || 'connect';
+              const latestWorkImg =
+                c.portfolio?.[0]?.thumbnail ||
+                'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&auto=format&fit=crop&q=80';
+
               return (
-                <div
+                <SpatialCard
                   key={c.id}
-                  className="p-5 rounded-2xl bg-zinc-950/70 border border-white/[0.08] hover:border-zinc-700/80 transition-all flex flex-col justify-between space-y-4"
+                  surface={2}
+                  tilt
+                  glare
+                  glowColor="indigo"
+                  className="p-5 flex flex-col justify-between space-y-4"
                 >
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="flex items-center gap-3">
-                      <img
+                  {/* Top: [Avatar] Name ✓ + Category · Location */}
+                  <div className="flex items-center justify-between gap-3">
+                    <div
+                      onClick={() => setSelectedCreatorModal(c)}
+                      className="flex items-center gap-3 cursor-pointer group"
+                    >
+                      <Avatar
                         src={c.avatar}
-                        alt={c.name}
-                        onClick={() => setSelectedCreatorModal(c)}
-                        className="w-13 h-13 rounded-xl object-cover ring-1 ring-white/10 cursor-pointer hover:opacity-90"
+                        name={c.name}
+                        size="lg"
+                        verified
                       />
                       <div>
-                        <div className="flex items-center gap-1.5">
-                          <h3
-                            onClick={() => setSelectedCreatorModal(c)}
-                            className="text-sm font-bold text-white hover:text-indigo-400 cursor-pointer"
-                          >
-                            {c.name}
-                          </h3>
-                          <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                        </div>
-                        <p className="text-xs text-zinc-400 font-mono">{c.handle}</p>
-                        <p className="text-[11px] text-zinc-500 mt-0.5">{c.category} • {c.location}</p>
+                        <h3 className="text-sm font-bold text-white group-hover:text-indigo-300 transition-colors">
+                          {c.name}
+                        </h3>
+                        <p className="text-xs text-zinc-400 mt-0.5">
+                          {c.niche} · {c.location.split(',')[0]}
+                        </p>
                       </div>
                     </div>
+                  </div>
 
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                      {c.availability}
+                  {/* Concise Reputation & Projects Line */}
+                  <div className="flex items-center gap-2 text-xs font-mono text-zinc-300">
+                    <span className="text-emerald-400 font-semibold">96 Reputation</span>
+                    <span className="text-zinc-600">·</span>
+                    <span>{c.pastCampaignsCount || 12} Projects</span>
+                  </div>
+
+                  {/* Latest Work Visual Preview */}
+                  <div
+                    onClick={() => setSelectedCreatorModal(c)}
+                    className="relative h-40 w-full rounded-2xl overflow-hidden bg-zinc-900 border border-white/10 cursor-pointer group/img"
+                  >
+                    <img
+                      src={latestWorkImg}
+                      alt={`${c.name} latest work`}
+                      className="w-full h-full object-cover group-hover/img:scale-105 transition-transform duration-300"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+                    <span className="absolute bottom-2.5 left-3 text-[10px] font-mono text-zinc-200 bg-black/60 backdrop-blur-md px-2 py-0.5 rounded-full border border-white/10">
+                      Latest Work
                     </span>
                   </div>
 
-                  <p className="text-xs text-zinc-300 line-clamp-2 leading-relaxed">
-                    {c.bio}
-                  </p>
-
-                  {/* Creator Stats */}
-                  <div className="grid grid-cols-3 gap-2 p-2.5 rounded-xl bg-zinc-900/60 border border-white/[0.04] text-center">
-                    <div>
-                      <span className="text-[10px] uppercase font-mono text-zinc-500 block">Reach</span>
-                      <span className="text-xs font-bold font-mono text-white">
-                        {(c.totalFollowers / 1000).toFixed(0)}K
-                      </span>
-                    </div>
-                    <div>
-                      <span className="text-[10px] uppercase font-mono text-zinc-500 block">Engage</span>
-                      <span className="text-xs font-bold font-mono text-emerald-400">
-                        {c.avgEngagement}%
-                      </span>
-                    </div>
-                    <div>
-                      <span className="text-[10px] uppercase font-mono text-zinc-500 block">Est. Rate</span>
-                      <span className="text-xs font-bold font-mono text-white">
-                        ₹{(c.rateCard?.Reel ? (c.rateCard.Reel / 1000).toFixed(0) : '35')}K
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Actions: Section 67: [ View ] [ Connect ] */}
-                  <div className="flex items-center justify-between pt-2 border-t border-white/[0.06] gap-2">
+                  {/* Actions: [View] [Connect] */}
+                  <div className="flex items-center justify-between pt-1 gap-2">
                     <button
                       onClick={() => setSelectedCreatorModal(c)}
-                      className="px-3 py-1.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-xs font-semibold text-zinc-300 hover:text-white border border-white/[0.08] transition-all cursor-pointer"
+                      className="px-3.5 py-1.5 rounded-xl depth-btn-secondary text-xs font-semibold text-zinc-200 hover:text-white transition-all cursor-pointer"
                     >
                       View
                     </button>
 
                     {cState === 'connected' ? (
-                      <span className="px-3 py-1.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold flex items-center gap-1.5">
+                      <span className="px-3.5 py-1.5 rounded-xl bg-emerald-500/12 border border-emerald-500/30 text-emerald-300 text-xs font-semibold flex items-center gap-1.5">
                         <Check className="w-3.5 h-3.5" />
-                        <span>Connected ✓</span>
+                        <span>Connected</span>
                       </span>
                     ) : (
                       <button
@@ -563,86 +541,100 @@ export const DiscoverView: React.FC = () => {
                             category: c.category,
                           })
                         }
-                        className="px-3.5 py-1.5 rounded-xl bg-white text-zinc-950 hover:bg-zinc-200 text-xs font-semibold flex items-center gap-1.5 shadow-sm transition-all cursor-pointer active:scale-95"
+                        className="px-4 py-1.5 rounded-xl depth-btn-primary text-white text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer"
                       >
                         <UserPlus className="w-3.5 h-3.5" />
                         <span>Connect</span>
                       </button>
                     )}
                   </div>
-                </div>
+                </SpatialCard>
               );
             })}
           </div>
         </div>
       )}
 
-      {/* B. BRANDS TAB VIEW */}
+      {/* B. BRANDS TAB VIEW (Spatial Brand Cards) */}
       {subTab === 'brands' && (
         <div className="space-y-4 animate-fade-in">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {brandsDirectory.map((b) => {
               const bState = connections[b.id] || 'connect';
               return (
-                <div
+                <SpatialCard
                   key={b.id}
-                  className="p-5 rounded-2xl bg-zinc-950/70 border border-white/[0.08] hover:border-zinc-700/80 transition-all flex flex-col justify-between space-y-4"
+                  surface={2}
+                  tilt
+                  glare
+                  glowColor="indigo"
+                  className="p-5 flex flex-col justify-between space-y-4"
                 >
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="flex items-center gap-3">
-                      <img
+                  <div className="flex items-center justify-between gap-3">
+                    <div
+                      onClick={() => setSelectedBrandModalData(b)}
+                      className="flex items-center gap-3 cursor-pointer group"
+                    >
+                      <Avatar
                         src={b.logo}
-                        alt={b.name}
-                        onClick={() => setSelectedBrandModalData(b)}
-                        className="w-13 h-13 rounded-xl object-cover ring-1 ring-white/10 cursor-pointer hover:opacity-90"
+                        name={b.name}
+                        size="lg"
+                        verified
                       />
                       <div>
-                        <div className="flex items-center gap-1.5">
-                          <h3
-                            onClick={() => setSelectedBrandModalData(b)}
-                            className="text-sm font-bold text-white hover:text-indigo-400 cursor-pointer"
-                          >
-                            {b.name}
-                          </h3>
-                          <ShieldCheck className="w-3.5 h-3.5 text-indigo-400" />
-                        </div>
-                        <p className="text-xs text-zinc-400 font-mono">{b.handle}</p>
-                        <p className="text-[11px] text-zinc-500 mt-0.5">{b.category} • {b.location}</p>
+                        <h3 className="text-sm font-bold text-white group-hover:text-indigo-300 transition-colors">
+                          {b.name}
+                        </h3>
+                        <p className="text-xs text-zinc-400 mt-0.5">
+                          {b.category} · {b.location}
+                        </p>
                       </div>
                     </div>
 
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-300 border border-indigo-500/20">
+                    <span className="text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-indigo-500/15 text-indigo-300 border border-indigo-500/30">
                       {b.badge}
                     </span>
                   </div>
 
-                  <p className="text-xs text-zinc-300 line-clamp-2 leading-relaxed">
-                    {b.bio}
-                  </p>
-
-                  <div className="p-3 rounded-xl bg-zinc-900/60 border border-white/[0.04] space-y-1">
-                    <span className="text-[10px] font-mono uppercase text-amber-400 font-semibold block">
-                      Active Brief
-                    </span>
-                    <p className="text-xs font-semibold text-white line-clamp-1">{b.openBrief}</p>
-                    <div className="flex items-center justify-between text-[11px] text-zinc-400 pt-1">
-                      <span>Rate: <strong className="text-emerald-400">{b.avgBudget}</strong></span>
-                      <span>{b.activeCampaignsCount} Active Briefs</span>
+                  {/* Cover Image + Brief Overlay */}
+                  <div
+                    onClick={() => setSelectedBrandModalData(b)}
+                    className="relative h-36 w-full rounded-2xl overflow-hidden bg-zinc-900 border border-white/10 cursor-pointer group/cover"
+                  >
+                    <img
+                      src={b.coverUrl}
+                      alt={b.name}
+                      className="w-full h-full object-cover group-hover/cover:scale-105 transition-transform duration-300"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+                    <div className="absolute bottom-2.5 left-3 right-3 flex items-end justify-between gap-2">
+                      <div className="min-w-0">
+                        <span className="text-[10px] font-mono uppercase text-amber-300 block">
+                          Open Brief
+                        </span>
+                        <p className="text-xs font-semibold text-white truncate">
+                          {b.openBrief}
+                        </p>
+                      </div>
+                      <span className="text-xs font-mono font-bold text-emerald-400 shrink-0">
+                        {b.avgBudget}
+                      </span>
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between pt-2 border-t border-white/[0.06] gap-2">
+                  <div className="flex items-center justify-between pt-1 gap-2">
                     <button
                       onClick={() => setSelectedBrandModalData(b)}
-                      className="px-3 py-1.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-xs font-semibold text-zinc-300 hover:text-white border border-white/[0.08] transition-all cursor-pointer"
+                      className="px-3.5 py-1.5 rounded-xl depth-btn-secondary text-xs font-semibold text-zinc-200 hover:text-white transition-all cursor-pointer"
                     >
                       View
                     </button>
 
                     {bState === 'connected' ? (
-                      <span className="px-3 py-1.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold flex items-center gap-1.5">
+                      <span className="px-3.5 py-1.5 rounded-xl bg-emerald-500/12 border border-emerald-500/30 text-emerald-300 text-xs font-semibold flex items-center gap-1.5">
                         <Check className="w-3.5 h-3.5" />
-                        <span>Connected ✓</span>
+                        <span>Connected</span>
                       </span>
                     ) : (
                       <button
@@ -656,14 +648,14 @@ export const DiscoverView: React.FC = () => {
                             category: b.category,
                           })
                         }
-                        className="px-3.5 py-1.5 rounded-xl bg-white text-zinc-950 hover:bg-zinc-200 text-xs font-semibold flex items-center gap-1.5 shadow-sm transition-all cursor-pointer active:scale-95"
+                        className="px-4 py-1.5 rounded-xl depth-btn-primary text-white text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer"
                       >
                         <UserPlus className="w-3.5 h-3.5" />
                         <span>Connect</span>
                       </button>
                     )}
                   </div>
-                </div>
+                </SpatialCard>
               );
             })}
           </div>

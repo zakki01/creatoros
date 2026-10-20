@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, Film } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { WelcomeBannerItem } from '../../../data/welcomeBanners';
 import logoSrc from '../../../assets/creatoros-logo.png';
 
@@ -7,7 +7,6 @@ export interface DynamicWelcomeBannerProps {
   banner: WelcomeBannerItem;
   experienceMode: 'creator' | 'brand';
   onActionClick?: () => void;
-  onExploreStudioClick?: () => void;
   className?: string;
 }
 
@@ -15,7 +14,6 @@ export const DynamicWelcomeBanner: React.FC<DynamicWelcomeBannerProps> = ({
   banner,
   experienceMode,
   onActionClick,
-  onExploreStudioClick,
   className = '',
 }) => {
   const isCreator = experienceMode === 'creator';
@@ -118,17 +116,6 @@ export const DynamicWelcomeBanner: React.FC<DynamicWelcomeBannerProps> = ({
             <span>{banner.actionText}</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
-
-          {isCreator && onExploreStudioClick && (
-            <button
-              type="button"
-              onClick={onExploreStudioClick}
-              className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full text-xs font-medium text-white/90 hover:text-white bg-black/50 hover:bg-black/70 backdrop-blur-md border border-white/15 transition-all cursor-pointer"
-            >
-              <Film className="w-3.5 h-3.5 text-sky-400" />
-              <span>Explore Live Studio</span>
-            </button>
-          )}
         </div>
       </div>
     </div>

@@ -5,203 +5,377 @@ import {
   Share2,
   Download,
   MapPin,
-  Sparkles,
   Star,
   Eye,
   Heart,
-  Calendar,
-  DollarSign,
-  TrendingUp,
-  Award,
+  Check,
+  X,
+  ChevronDown,
+  ChevronUp,
 } from 'lucide-react';
 import { InstagramIcon, YouTubeIcon } from '../common/PlatformIcons';
 import { useAppState } from '../../context/StateContext';
-import { Card } from '../ui/Card';
-import { Button } from '../ui/Button';
-import { Badge } from '../ui/Badge';
+import { Avatar } from '../ui/Avatar';
+import { SpatialCard } from '../ui/SpatialCard';
 import { Tabs } from '../ui/Tabs';
+import { useToast } from '../ui/Toast';
+
+interface CredentialItem {
+  id: 'identity' | 'experience' | 'channels' | 'reputation';
+  label: string;
+  title: string;
+  summary: string;
+  meta: string;
+}
+
+const CREDENTIAL_INDICATORS: CredentialItem[] = [
+  {
+    id: 'identity',
+    label: 'Identity',
+    title: 'Identity Verified',
+    summary: 'Government ID & biometric liveness verified via CreatorOS Trust Layer.',
+    meta: 'KYC Level 3 · Active',
+  },
+  {
+    id: 'experience',
+    label: 'Experience',
+    title: 'Brand Experience',
+    summary: '24 completed commercial campaigns with 100% on-time delivery.',
+    meta: '24 Projects · 0 Disputes',
+  },
+  {
+    id: 'channels',
+    label: 'Channels',
+    title: 'Channels Verified',
+    summary: 'First-party OAuth API telemetry connected for Instagram & YouTube.',
+    meta: '449K Combined Reach · Live Sync',
+  },
+  {
+    id: 'reputation',
+    label: 'Reputation',
+    title: 'Reputation Score 96/100',
+    summary: 'Top 1% creator reliability, responsiveness, and brand repeat rate.',
+    meta: '4.9★ Brand Rating',
+  },
+];
 
 export const CreatorPassport: React.FC = () => {
   const { creators, triggerCelebration } = useAppState();
+  const toast = useToast();
   const creator = creators[0]; // Rohan Sharma
 
-  const [activeTab, setActiveTab] = useState('profile');
+  const [activeTab, setActiveTab] = useState('overview');
   const [copied, setCopied] = useState(false);
+  const [bioExpanded, setBioExpanded] = useState(false);
+  const [activeCredential, setActiveCredential] = useState<CredentialItem | null>(null);
 
   const handleShare = () => {
     navigator.clipboard?.writeText?.(window.location.href);
     setCopied(true);
     triggerCelebration();
-    setTimeout(() => setCopied(false), 3000);
+    toast.success('Passport link copied');
+    setTimeout(() => setCopied(false), 2500);
+  };
+
+  const handleExport = () => {
+    toast.success('Passport credential exported');
   };
 
   const tabs = [
-    { id: 'profile', label: 'Identity & Bio' },
-    { id: 'platforms', label: 'Verified Channels' },
-    { id: 'audience', label: 'Verified Demographics' },
-    { id: 'portfolio', label: 'Top Portfolio' },
-    { id: 'history', label: `Campaign History (${creator.pastCampaignsCount})` },
-    { id: 'testimonials', label: `Verified Reviews (${creator.testimonials.length})` },
+    { id: 'overview', label: 'Overview' },
+    { id: 'channels', label: 'Channels' },
+    { id: 'proof', label: 'Proof' },
+    { id: 'history', label: 'History' },
   ];
 
+  const reachFormatted = `${Math.round(creator.totalFollowers / 1000)}K`;
+
   return (
-    <div className="space-y-8 animate-fade-in pb-12">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-2">
-            <h1 className="text-2xl sm:text-3xl font-bold text-zinc-100 font-display">
-              Creator Passport™
-            </h1>
-            <Badge variant="success" size="sm" dot>
-              Cryptographically Verified
-            </Badge>
-          </div>
-          <p className="text-sm text-zinc-400 mt-1">
-            Your official universal influencer identity, verified channel metrics, and commercial reputation score.
-          </p>
-        </div>
-
+    <div className="space-y-5 animate-fade-in max-w-5xl mx-auto pb-12">
+      {/* Compact Page Title Bar */}
+      <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-2.5">
-          <Button
-            variant="outline"
-            size="sm"
+          <h1 className="text-xl sm:text-2xl font-bold text-white font-display tracking-tight">
+            Passport
+          </h1>
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 whitespace-nowrap shrink-0">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
+            Verified ID
+          </span>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
             onClick={handleShare}
-            leftIcon={<Share2 className="w-4 h-4 text-emerald-400" />}
+            data-testid="passport-share-btn"
+            className="depth-btn-secondary min-h-[38px] px-3.5 py-1.5 rounded-xl text-xs font-semibold text-zinc-100 flex items-center gap-1.5 cursor-pointer"
           >
-            {copied ? 'Passport Link Copied!' : 'Share Public Passport'}
-          </Button>
-          <Button
-            variant="primary"
-            size="sm"
-            className="bg-emerald-600 hover:bg-emerald-500"
-            leftIcon={<Award className="w-4 h-4" />}
+            {copied ? (
+              <Check className="w-3.5 h-3.5 text-emerald-400" />
+            ) : (
+              <Share2 className="w-3.5 h-3.5 text-emerald-400" />
+            )}
+            <span>{copied ? 'Copied' : 'Share'}</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={handleExport}
+            data-testid="passport-export-btn"
+            className="depth-btn-primary min-h-[38px] px-3.5 py-1.5 rounded-xl text-xs font-semibold text-white flex items-center gap-1.5 cursor-pointer"
           >
-            Export PDF Credential
-          </Button>
+            <Download className="w-3.5 h-3.5" />
+            <span>Export</span>
+          </button>
         </div>
       </div>
 
-      {/* Hero Passport Badge Card */}
-      <div className="relative rounded-3xl p-6 sm:p-8 bg-gradient-to-br from-zinc-900 via-zinc-900 to-emerald-950/30 border border-emerald-500/30 shadow-2xl overflow-hidden">
-        <div className="absolute top-0 right-0 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+      {/* 3D Spatial Identity Card Hero (Desktop & Mobile Intentional Layout) */}
+      <div
+        data-testid="passport-identity-card"
+        className="relative rounded-3xl p-5 sm:p-7 overflow-hidden border border-emerald-500/25 bg-gradient-to-br from-[#121521]/95 via-[#0F111A]/95 to-[#0B1917]/90 shadow-[0_24px_60px_-15px_rgba(0,0,0,0.85),0_0_40px_-10px_rgba(16,185,129,0.16),inset_0_1px_0_0_rgba(255,255,255,0.16)] backdrop-blur-2xl"
+      >
+        {/* Subtle Emerald Verification Glow + Soft Purple Ambient Light */}
+        <div
+          className="pointer-events-none absolute -top-24 -right-16 w-72 h-72 rounded-full opacity-35 blur-3xl"
+          style={{
+            background:
+              'radial-gradient(circle, rgba(16,185,129,0.45) 0%, rgba(16,185,129,0.05) 65%, transparent 80%)',
+          }}
+        />
+        <div
+          className="pointer-events-none absolute -bottom-24 -left-16 w-72 h-72 rounded-full opacity-30 blur-3xl"
+          style={{
+            background:
+              'radial-gradient(circle, rgba(124,92,255,0.42) 0%, rgba(56,189,248,0.08) 65%, transparent 80%)',
+          }}
+        />
 
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
-          <div className="flex items-center gap-5">
-            <div className="relative">
-              <img
-                src={creator.avatar}
-                alt={creator.name}
-                className="w-20 h-20 rounded-3xl object-cover ring-2 ring-emerald-500/50 shadow-xl"
-              />
-              <div className="absolute -bottom-1.5 -right-1.5 bg-emerald-500 text-black p-1 rounded-full ring-2 ring-zinc-950">
-                <ShieldCheck className="w-4 h-4" />
+        <div className="relative z-10 flex flex-col gap-5">
+          {/* Top Identity Row */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+              {/* 3D Avatar with Floating Verification Seal */}
+              <div className="relative shrink-0">
+                <Avatar
+                  src={creator.avatar}
+                  name={creator.name}
+                  size="2xl"
+                  ring="success"
+                  className="rounded-2xl shadow-[0_14px_30px_rgba(0,0,0,0.65)]"
+                />
+                <div
+                  className="absolute -bottom-1.5 -right-1.5 w-6 h-6 rounded-full bg-emerald-500 text-zinc-950 flex items-center justify-center ring-2 ring-[#0E1118] shadow-[0_4px_12px_rgba(16,185,129,0.5)]"
+                  title="Verified Identity"
+                >
+                  <ShieldCheck className="w-3.5 h-3.5 stroke-[2.5]" />
+                </div>
+              </div>
+
+              {/* Name, Handle, Category & Status */}
+              <div className="min-w-0 space-y-0.5">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <h2 className="text-xl sm:text-2xl font-bold text-white font-display tracking-tight truncate">
+                    {creator.name}
+                  </h2>
+                  <span
+                    className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-emerald-500/20 text-emerald-400 text-[11px] font-bold"
+                    title="Verified"
+                  >
+                    ✓
+                  </span>
+                </div>
+
+                <p className="text-xs font-mono text-zinc-400">
+                  @{creator.handle.replace('@', '')}
+                </p>
+
+                <p className="text-xs sm:text-sm font-medium text-zinc-200">
+                  Streetwear &amp; Sneaker Culture
+                </p>
+
+                {/* Status Line */}
+                <div className="flex items-center gap-2 pt-1 text-xs text-zinc-300 flex-wrap">
+                  <span className="inline-flex items-center gap-1.5 text-emerald-400 font-semibold">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.9)]" />
+                    Verified
+                  </span>
+                  <span className="text-zinc-600">·</span>
+                  <span className="font-medium text-zinc-200">96 Reputation</span>
+                  <span className="text-zinc-600">·</span>
+                  <span className="text-emerald-300 font-medium">{creator.availability}</span>
+                </div>
               </div>
             </div>
 
-            <div className="space-y-1">
-              <div className="flex items-center gap-2.5 flex-wrap">
-                <h2 className="text-xl sm:text-2xl font-bold text-zinc-100 font-display">
-                  {creator.name}
-                </h2>
-                <Badge variant="brand" size="sm">
-                  Top 1% Creator
-                </Badge>
-                <Badge variant="success" size="sm">
-                  Reputation 96/100
-                </Badge>
+            {/* Compact 4-Metric Spatial Row */}
+            <div className="grid grid-cols-4 gap-2 sm:gap-3 bg-black/35 border border-white/[0.08] rounded-2xl p-3 sm:px-4 sm:py-3 backdrop-blur-xl shrink-0">
+              <div className="text-center px-1 sm:px-2">
+                <p className="text-base sm:text-lg font-bold text-emerald-400 font-mono leading-tight">
+                  96
+                </p>
+                <span className="text-[10px] text-zinc-400 font-medium">Reputation</span>
               </div>
-              <p className="text-xs text-zinc-400 font-mono">@{creator.handle} • {creator.category}</p>
-              <div className="flex items-center gap-3 text-xs text-zinc-400 pt-1">
-                <span className="flex items-center gap-1">
-                  <MapPin className="w-3.5 h-3.5 text-zinc-500" />
-                  {creator.location}
-                </span>
-                <span>•</span>
-                <span>Languages: {creator.languages.join(', ')}</span>
-                <span>•</span>
-                <span className="text-emerald-400 font-medium">Status: {creator.availability}</span>
+              <div className="text-center px-1 sm:px-2 border-l border-white/[0.07]">
+                <p className="text-base sm:text-lg font-bold text-white font-mono leading-tight">
+                  {reachFormatted}
+                </p>
+                <span className="text-[10px] text-zinc-400 font-medium">Reach</span>
+              </div>
+              <div className="text-center px-1 sm:px-2 border-l border-white/[0.07]">
+                <p className="text-base sm:text-lg font-bold text-white font-mono leading-tight">
+                  {creator.avgEngagement}%
+                </p>
+                <span className="text-[10px] text-zinc-400 font-medium">Engagement</span>
+              </div>
+              <div className="text-center px-1 sm:px-2 border-l border-white/[0.07]">
+                <p className="text-base sm:text-lg font-bold text-white font-mono leading-tight">
+                  {creator.pastCampaignsCount}
+                </p>
+                <span className="text-[10px] text-zinc-400 font-medium">Projects</span>
               </div>
             </div>
           </div>
 
-          {/* Quick Key Metrics */}
-          <div className="flex items-center gap-4 bg-zinc-950/60 p-4 rounded-2xl border border-zinc-800 shrink-0">
-            <div className="text-center px-2">
-              <span className="text-[10px] text-zinc-500 uppercase font-medium">Total Reach</span>
-              <p className="text-lg font-bold text-zinc-100 font-mono">
-                {(creator.totalFollowers / 1000).toFixed(0)}K
-              </p>
+          {/* Compact Credential Indicators Row: ✓ Identity · ✓ Experience · ✓ Channels · ✓ Reputation */}
+          <div className="pt-3 border-t border-white/[0.08] flex flex-col gap-2.5">
+            <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+              {CREDENTIAL_INDICATORS.map((cred) => {
+                const isSelected = activeCredential?.id === cred.id;
+                return (
+                  <button
+                    key={cred.id}
+                    type="button"
+                    onClick={() =>
+                      setActiveCredential(isSelected ? null : cred)
+                    }
+                    data-testid={`passport-credential-${cred.id}`}
+                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition-all cursor-pointer border ${
+                      isSelected
+                        ? 'bg-emerald-500/20 text-emerald-200 border-emerald-500/45 shadow-[0_0_16px_rgba(16,185,129,0.25)]'
+                        : 'bg-white/[0.04] hover:bg-white/[0.08] text-zinc-200 border-white/[0.08]'
+                    }`}
+                  >
+                    <span className="text-emerald-400 font-bold">✓</span>
+                    <span>{cred.label}</span>
+                  </button>
+                );
+              })}
+
+              <span className="ml-auto hidden md:inline-flex items-center gap-1.5 text-[11px] text-zinc-400">
+                <MapPin className="w-3.5 h-3.5 text-zinc-500" />
+                {creator.location}
+              </span>
             </div>
-            <div className="h-8 w-px bg-zinc-800" />
-            <div className="text-center px-2">
-              <span className="text-[10px] text-zinc-500 uppercase font-medium">Avg Engagement</span>
-              <p className="text-lg font-bold text-emerald-400 font-mono">
-                {creator.avgEngagement}%
-              </p>
-            </div>
-            <div className="h-8 w-px bg-zinc-800" />
-            <div className="text-center px-2">
-              <span className="text-[10px] text-zinc-500 uppercase font-medium">Completed Drops</span>
-              <p className="text-lg font-bold text-zinc-100 font-mono">
-                {creator.pastCampaignsCount}
-              </p>
-            </div>
+
+            {/* Expandable Credential Detail Strip */}
+            {activeCredential && (
+              <div className="p-3 rounded-2xl bg-black/45 border border-emerald-500/30 flex items-center justify-between gap-3 animate-fade-in">
+                <div className="space-y-0.5 min-w-0">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-semibold text-emerald-300">
+                      {activeCredential.title}
+                    </span>
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300">
+                      {activeCredential.meta}
+                    </span>
+                  </div>
+                  <p className="text-xs text-zinc-300">{activeCredential.summary}</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setActiveCredential(null)}
+                  className="p-1 rounded-lg text-zinc-400 hover:text-white shrink-0"
+                  aria-label="Close credential details"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
 
-      {/* Tabs */}
+      {/* Short Secondary Tabs: Overview | Channels | Proof | History */}
       <Tabs tabs={tabs} activeTab={activeTab} onChange={setActiveTab} />
 
-      {/* TAB: PROFILE & BIO */}
-      {activeTab === 'profile' && (
-        <div className="space-y-6 animate-fade-in">
-          <Card className="p-6 space-y-4">
-            <h3 className="text-sm font-bold text-zinc-100 font-display">Biography & Creative Manifesto</h3>
-            <p className="text-xs text-zinc-300 leading-relaxed max-w-3xl">
-              {creator.bio}
-            </p>
-
-            <div className="pt-2">
-              <h4 className="text-xs font-semibold text-zinc-400 mb-2">Verified Badges & Accreditations</h4>
-              <div className="flex flex-wrap gap-2">
-                {creator.verifiedBadges.map((b, idx) => (
-                  <Badge key={idx} variant="success" size="md">
-                    <span className="inline-flex items-center gap-1">
-                      <CheckCircle className="w-3 h-3" />
-                      {b}
-                    </span>
-                  </Badge>
-                ))}
-              </div>
+      {/* TAB 1: OVERVIEW */}
+      {activeTab === 'overview' && (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 animate-fade-in">
+          {/* Bio Section (2-3 lines with More toggle) */}
+          <SpatialCard surface={2} className="md:col-span-2 p-5 space-y-3">
+            <div className="flex items-center justify-between">
+              <h3 className="text-sm font-semibold text-white font-display">Bio</h3>
+              <span className="text-[11px] text-zinc-400">
+                {creator.languages.join(' · ')}
+              </span>
             </div>
-          </Card>
 
-          <Card className="p-6 space-y-4">
-            <h3 className="text-sm font-bold text-zinc-100 font-display">Standard Deliverable Rates</h3>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div>
+              <p
+                className={`text-xs sm:text-sm text-zinc-300 leading-relaxed ${
+                  bioExpanded ? '' : 'line-clamp-2'
+                }`}
+              >
+                {creator.bio} Specialized in high-retention sneaker storytelling, 4K macro cinematography, and culturally grounded Gen-Z streetwear launches across India.
+              </p>
+              <button
+                type="button"
+                onClick={() => setBioExpanded(!bioExpanded)}
+                data-testid="passport-bio-more-btn"
+                className="mt-1.5 inline-flex items-center gap-1 text-xs font-semibold text-indigo-400 hover:text-indigo-300 cursor-pointer"
+              >
+                <span>{bioExpanded ? 'Less' : 'More'}</span>
+                {bioExpanded ? (
+                  <ChevronUp className="w-3.5 h-3.5" />
+                ) : (
+                  <ChevronDown className="w-3.5 h-3.5" />
+                )}
+              </button>
+            </div>
+
+            <div className="pt-2 flex flex-wrap gap-1.5">
+              {creator.verifiedBadges.map((b, idx) => (
+                <span
+                  key={idx}
+                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/25 text-[11px] font-medium text-emerald-300"
+                >
+                  <CheckCircle className="w-3 h-3" />
+                  {b}
+                </span>
+              ))}
+            </div>
+          </SpatialCard>
+
+          {/* Compact Rates Card */}
+          <SpatialCard surface={2} className="p-5 space-y-3">
+            <h3 className="text-sm font-semibold text-white font-display">Rates</h3>
+            <div className="grid grid-cols-2 gap-2.5">
               {Object.entries(creator.rateCard).map(([format, fee]) => (
-                <div key={format} className="p-3.5 rounded-2xl bg-zinc-950/60 border border-zinc-800 text-center">
-                  <p className="text-[11px] text-zinc-400">{format}</p>
-                  <p className="text-base font-bold font-mono text-zinc-100 mt-0.5">
+                <div
+                  key={format}
+                  className="p-2.5 rounded-xl bg-white/[0.03] border border-white/[0.07]"
+                >
+                  <p className="text-[11px] text-zinc-400 truncate">{format}</p>
+                  <p className="text-sm font-bold font-mono text-white mt-0.5">
                     ₹{fee?.toLocaleString()}
                   </p>
                 </div>
               ))}
             </div>
-          </Card>
+          </SpatialCard>
         </div>
       )}
 
-      {/* TAB: VERIFIED CHANNELS */}
-      {activeTab === 'platforms' && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 animate-fade-in">
+      {/* TAB 2: CHANNELS */}
+      {activeTab === 'channels' && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 animate-fade-in">
           {creator.platforms.map((p, idx) => (
-            <Card key={idx} className="p-6 space-y-4">
+            <SpatialCard key={idx} surface={2} className="p-5 space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-2xl bg-zinc-800 flex items-center justify-center text-zinc-200">
+                  <div className="w-10 h-10 rounded-xl bg-white/[0.06] border border-white/[0.08] flex items-center justify-center">
                     {p.platform === 'Instagram' ? (
                       <InstagramIcon className="w-5 h-5 text-pink-400" />
                     ) : (
@@ -210,42 +384,73 @@ export const CreatorPassport: React.FC = () => {
                   </div>
                   <div>
                     <div className="flex items-center gap-1.5">
-                      <h4 className="text-sm font-bold text-zinc-100">{p.platform}</h4>
+                      <h4 className="text-sm font-bold text-white">{p.platform}</h4>
                       {p.verified && <CheckCircle className="w-3.5 h-3.5 text-emerald-400" />}
                     </div>
-                    <span className="text-xs text-zinc-500 font-mono">{p.handle}</span>
+                    <span className="text-xs text-zinc-400 font-mono">{p.handle}</span>
                   </div>
                 </div>
-                <Badge variant="success" size="sm">
-                  Live API Sync
-                </Badge>
+                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+                  Synced
+                </span>
               </div>
 
-              <div className="grid grid-cols-2 gap-3 pt-2">
-                <div className="p-3 rounded-xl bg-zinc-950/60 border border-zinc-800 text-center">
-                  <span className="text-[10px] text-zinc-500 uppercase">Followers</span>
-                  <p className="text-base font-bold font-mono text-zinc-100 mt-0.5">
+              <div className="grid grid-cols-2 gap-2.5">
+                <div className="p-3 rounded-xl bg-white/[0.03] border border-white/[0.06]">
+                  <span className="text-[10px] text-zinc-400">Followers</span>
+                  <p className="text-base font-bold font-mono text-white mt-0.5">
                     {(p.followers / 1000).toFixed(0)}K
                   </p>
                 </div>
-                <div className="p-3 rounded-xl bg-zinc-950/60 border border-zinc-800 text-center">
-                  <span className="text-[10px] text-zinc-500 uppercase">Engagement Rate</span>
+                <div className="p-3 rounded-xl bg-white/[0.03] border border-white/[0.06]">
+                  <span className="text-[10px] text-zinc-400">Engagement</span>
                   <p className="text-base font-bold font-mono text-emerald-400 mt-0.5">
                     {p.engagementRate}%
                   </p>
                 </div>
               </div>
-            </Card>
+            </SpatialCard>
           ))}
         </div>
       )}
 
-      {/* TAB: AUDIENCE */}
-      {activeTab === 'audience' && (
-        <Card className="p-6 space-y-6 animate-fade-in">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div className="space-y-3">
-              <h4 className="text-xs font-semibold text-zinc-300">Geographic Audience Footprint</h4>
+      {/* TAB 3: PROOF (Portfolio + Verified Demographics) */}
+      {activeTab === 'proof' && (
+        <div className="space-y-4 animate-fade-in">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {creator.portfolio.map((p) => (
+              <SpatialCard key={p.id} surface={2} className="overflow-hidden group">
+                <div className="relative h-44 overflow-hidden">
+                  <img
+                    src={p.thumbnail}
+                    alt={p.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/10" />
+                  <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-xs text-white">
+                    <span className="flex items-center gap-1 font-mono">
+                      <Eye className="w-3.5 h-3.5" />
+                      {(p.views / 1000).toFixed(0)}K
+                    </span>
+                    <span className="flex items-center gap-1 font-mono text-pink-300">
+                      <Heart className="w-3.5 h-3.5 fill-current" />
+                      {(p.engagement / 1000).toFixed(1)}K
+                    </span>
+                  </div>
+                </div>
+                <div className="p-3.5">
+                  <p className="text-xs font-semibold text-white line-clamp-1">{p.title}</p>
+                  <p className="text-[11px] text-zinc-400 mt-0.5">
+                    {p.type} · {p.campaignName}
+                  </p>
+                </div>
+              </SpatialCard>
+            ))}
+          </div>
+
+          <SpatialCard surface={2} className="p-5 grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div className="space-y-2.5">
+              <h4 className="text-xs font-semibold text-zinc-200">Top Cities</h4>
               <div className="space-y-2">
                 {creator.audienceBreakdown.topLocations.map((loc, idx) => (
                   <div key={idx} className="space-y-1">
@@ -253,7 +458,7 @@ export const CreatorPassport: React.FC = () => {
                       <span className="text-zinc-300">{loc.city}</span>
                       <span className="font-mono text-zinc-400">{loc.pct}%</span>
                     </div>
-                    <div className="w-full bg-zinc-800 h-1.5 rounded-full overflow-hidden">
+                    <div className="w-full bg-zinc-800/80 h-1.5 rounded-full overflow-hidden">
                       <div
                         className="bg-emerald-500 h-full rounded-full"
                         style={{ width: `${loc.pct}%` }}
@@ -264,8 +469,8 @@ export const CreatorPassport: React.FC = () => {
               </div>
             </div>
 
-            <div className="space-y-3">
-              <h4 className="text-xs font-semibold text-zinc-300">Age Demographics</h4>
+            <div className="space-y-2.5">
+              <h4 className="text-xs font-semibold text-zinc-200">Age Split</h4>
               <div className="space-y-2">
                 {creator.audienceBreakdown.ageSplit.map((a, idx) => (
                   <div key={idx} className="space-y-1">
@@ -273,7 +478,7 @@ export const CreatorPassport: React.FC = () => {
                       <span className="text-zinc-300">{a.range}</span>
                       <span className="font-mono text-zinc-400">{a.pct}%</span>
                     </div>
-                    <div className="w-full bg-zinc-800 h-1.5 rounded-full overflow-hidden">
+                    <div className="w-full bg-zinc-800/80 h-1.5 rounded-full overflow-hidden">
                       <div
                         className="bg-indigo-500 h-full rounded-full"
                         style={{ width: `${a.pct}%` }}
@@ -283,63 +488,33 @@ export const CreatorPassport: React.FC = () => {
                 ))}
               </div>
             </div>
-          </div>
-        </Card>
-      )}
-
-      {/* TAB: PORTFOLIO */}
-      {activeTab === 'portfolio' && (
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 animate-fade-in">
-          {creator.portfolio.map((p) => (
-            <Card key={p.id} className="overflow-hidden group space-y-2">
-              <div className="relative h-48 overflow-hidden">
-                <img
-                  src={p.thumbnail}
-                  alt={p.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20" />
-                <div className="absolute bottom-2.5 left-2.5 right-2.5 flex items-center justify-between text-xs text-white">
-                  <span className="flex items-center gap-1 font-mono">
-                    <Eye className="w-3.5 h-3.5" />
-                    {(p.views / 1000).toFixed(0)}K
-                  </span>
-                  <span className="flex items-center gap-1 font-mono text-pink-300">
-                    <Heart className="w-3.5 h-3.5 fill-current" />
-                    {(p.engagement / 1000).toFixed(1)}K
-                  </span>
-                </div>
-              </div>
-              <div className="p-3">
-                <p className="text-xs font-semibold text-zinc-200 line-clamp-1">{p.title}</p>
-                <p className="text-[10px] text-zinc-500 mt-0.5">{p.type} • {p.campaignName}</p>
-              </div>
-            </Card>
-          ))}
+          </SpatialCard>
         </div>
       )}
 
-      {/* TAB: TESTIMONIALS */}
-      {activeTab === 'testimonials' && (
-        <div className="space-y-4 animate-fade-in">
+      {/* TAB 4: HISTORY (Verified Brand Reviews & Completed Projects) */}
+      {activeTab === 'history' && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 animate-fade-in">
           {creator.testimonials.map((t) => (
-            <Card key={t.id} className="p-5 space-y-2">
+            <SpatialCard key={t.id} surface={2} className="p-5 space-y-2.5">
               <div className="flex items-center justify-between">
                 <div>
-                  <h4 className="text-xs font-bold text-zinc-100">{t.brandName}</h4>
-                  <p className="text-[10px] text-zinc-500">{t.authorName} ({t.authorRole})</p>
+                  <h4 className="text-xs font-bold text-white">{t.brandName}</h4>
+                  <p className="text-[11px] text-zinc-400">
+                    {t.authorName} · {t.authorRole}
+                  </p>
                 </div>
                 <div className="flex items-center gap-1 text-amber-400">
                   <Star className="w-3.5 h-3.5 fill-current" />
                   <span className="text-xs font-bold font-mono">{t.rating}.0</span>
                 </div>
               </div>
-              <p className="text-xs text-zinc-300 italic leading-relaxed">"{t.comment}"</p>
+              <p className="text-xs text-zinc-300 leading-relaxed">"{t.comment}"</p>
               <div className="flex justify-between text-[10px] text-zinc-500 pt-1">
-                <span>Verified Campaign: {t.verifiedCampaign}</span>
+                <span>{t.verifiedCampaign}</span>
                 <span>{t.date}</span>
               </div>
-            </Card>
+            </SpatialCard>
           ))}
         </div>
       )}
