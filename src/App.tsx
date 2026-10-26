@@ -1,7 +1,6 @@
 import React, { Suspense, lazy, useState, useEffect } from 'react';
 import { StateProvider, useAppState } from './context/StateContext';
 import { WelcomePage } from './features/auth/components/WelcomePage';
-import { AuthPage } from './features/auth/components/AuthPage';
 import { BrandLogo } from './components/common/BrandLogo';
 import { AdminAuthService } from './features/auth/services/authService';
 import { ToastProvider } from './components/ui';
@@ -280,33 +279,19 @@ const MainApp: React.FC = () => {
   // 3. PUBLIC CREATOR & BRAND WORKSPACE
   // =========================================================================
 
-  // Unauthenticated -> Welcome Landing Experience
-  if (!isAuthenticated && viewMode === 'welcome') {
+  // Unauthenticated -> Focused Single Welcome & Authentication Experience
+  if (!isAuthenticated) {
     return (
       <WelcomePage
+        initialAuthTab={authTab}
         onGetStarted={() => {
           setAuthTab('signup');
-          setViewMode('auth');
         }}
         onSignIn={() => {
           setAuthTab('login');
-          setViewMode('auth');
         }}
         onDemoAccess={(demoRole) => {
           loginAsDemo(demoRole, 'home');
-        }}
-      />
-    );
-  }
-
-  // Unauthenticated -> Authentication Screen (Login / Sign-up)
-  if (!isAuthenticated && viewMode === 'auth') {
-    return (
-      <AuthPage
-        initialTab={authTab}
-        onBackToWelcome={() => setViewMode('welcome')}
-        onAuthSuccess={() => {
-          setViewMode('app');
         }}
       />
     );

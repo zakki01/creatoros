@@ -506,3 +506,89 @@ button:not(:disabled):active,
   }
 }
 
+/* ========================================================================= */
+/* PDF REFERENCE AUTHENTICATION CARD & CONTROL SYSTEM                        */
+/* ========================================================================= */
+.auth-pdf-card {
+  background: linear-gradient(160deg, #ECEFF3 0%, #DFE3E9 100%);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 
+    0 24px 60px -12px rgba(0, 0, 0, 0.4),
+    0 8px 24px -6px rgba(0, 0, 0, 0.25),
+    inset 0 1px 2px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -1px 2px 0 rgba(0, 0, 0, 0.08);
+}
+
+.auth-pdf-tab-track {
+  background: #CBD0D8;
+  box-shadow: 
+    inset 2px 2px 5px rgba(0, 0, 0, 0.22),
+    inset -1px -1px 3px rgba(255, 255, 255, 0.75);
+}
+
+.auth-pdf-pill-active {
+  background: linear-gradient(180deg, #78818E 0%, #4D5462 100%);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 
+    0 3px 8px rgba(0, 0, 0, 0.25),
+    inset 0 1px 1px rgba(255, 255, 255, 0.4);
+  color: #FFFFFF;
+}
+
+.auth-pdf-role-active {
+  background: linear-gradient(180deg, #00D2DE 0%, #00B4D8 100%);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 
+    0 3px 10px rgba(0, 210, 222, 0.35),
+    inset 0 1px 1px rgba(255, 255, 255, 0.6);
+  color: #09090B;
+}
+
+.auth-pdf-role-inactive {
+  background: linear-gradient(180deg, #E2E5E9 0%, #CFD3D9 100%);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.1),
+    inset 0 1px 1px rgba(255, 255, 255, 0.8);
+  color: #1F2937;
+}
+
+.auth-pdf-input-box {
+  background: #FFFFFF;
+  border: 1px solid #CBD1D8;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.auth-pdf-input-box:focus-within {
+  border-color: #00B4D8;
+  box-shadow: 
+    inset 0 1px 3px rgba(0, 0, 0, 0.08),
+    0 0 0 2px rgba(0, 180, 216, 0.25);
+}
+
+.auth-pdf-submit-btn {
+  background: linear-gradient(180deg, #DCE0E6 0%, #C7CCD5 50%, #B4BAC5 100%);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  border-top-color: #FFFFFF;
+  box-shadow: 
+    0 4px 14px rgba(0, 0, 0, 0.16),
+    inset 0 1px 2px rgba(255, 255, 255, 0.95),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.15);
+  color: #111827;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+.auth-pdf-submit-btn:hover:not(:disabled) {
+  filter: brightness(1.03);
+  transform: translateY(-1px);
+  box-shadow: 
+    0 6px 18px rgba(0, 0, 0, 0.2),
+    inset 0 1px 2px #FFFFFF,
+    inset 0 -1px 2px rgba(0, 0, 0, 0.15);
+}
+
+.auth-pdf-submit-btn:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.22);
+}
+

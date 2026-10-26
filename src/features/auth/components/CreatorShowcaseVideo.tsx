@@ -1,16 +1,27 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { Play, Pause, Volume2, VolumeX, RotateCcw } from 'lucide-react';
+import logoSrc from '../../../assets/creatoros-logo.png';
 
 /**
- * CreatorOS Showcase Video Asset Configuration
- * Source: https://flow.google.com/shared/video/012be85d-5fb6-45a7-a06b-881268ca72b5
- * Exported MP4 & Poster stored locally in public/assets/videos/ for reliable playback.
+ * CreatorOS Welcome Showcase Video Asset Configuration
+ * Desktop Share: https://flow.google.com/shared/video/3d4bb676-2898-4947-9fbf-f3e32d16bebd
+ * Mobile Share: https://flow.google.com/shared/video/012be85d-5fb6-45a7-a06b-881268ca72b5
  */
-export const SHOWCASE_VIDEO_CONFIG = {
-  flowShareUrl: 'https://flow.google.com/shared/video/012be85d-5fb6-45a7-a06b-881268ca72b5',
-  mp4Src: '/assets/videos/creatoros-showcase.mp4',
-  posterSrc: '/assets/videos/creatoros-showcase-poster.jpg',
+export const WELCOME_VIDEO_CONFIG = {
+  desktop: {
+    shareUrl: 'https://flow.google.com/shared/video/3d4bb676-2898-4947-9fbf-f3e32d16bebd',
+    src: '/assets/videos/creatoros-showcase.mp4',
+    poster: '/assets/videos/creatoros-showcase-poster.jpg',
+  },
+  mobile: {
+    shareUrl: 'https://flow.google.com/shared/video/012be85d-5fb6-45a7-a06b-881268ca72b5',
+    src: '/assets/videos/creatoros-showcase.mp4',
+    poster: '/assets/videos/creatoros-showcase-poster.jpg',
+  },
 };
+
+// Backward-compatibility export
+export const SHOWCASE_VIDEO_CONFIG = WELCOME_VIDEO_CONFIG.desktop;
 
 export interface CreatorShowcaseVideoProps {
   className?: string;
@@ -21,81 +32,58 @@ export const CreatorShowcaseVideo: React.FC<CreatorShowcaseVideoProps> = ({
   className = '',
   scrollY = 0,
 }) => {
-  const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const ambientVideoRef = useRef<HTMLVideoElement>(null);
+
+  const [isDesktop, setIsDesktop] = useState(() => {
+    if (typeof window === 'undefined') return true;
+    return window.innerWidth >= 1024;
+  });
 
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
   const [hasError, setHasError] = useState(false);
-  const [showMobileControls, setShowMobileControls] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
+  // Responsive Viewport Detection (Strictly one video mounted)
   useEffect(() => {
-    if (typeof window !== 'undefined' && window.matchMedia) {
+    if (typeof window === 'undefined') return;
+
+    const mql = window.matchMedia('(min-width: 1024px)');
+    const updateViewport = (e: MediaQueryListEvent | MediaQueryList) => {
+      setIsDesktop(e.matches);
+    };
+
+    updateViewport(mql);
+    const listener = (e: MediaQueryListEvent) => updateViewport(e);
+    mql.addEventListener('change', listener);
+
+    if (window.matchMedia) {
       setPrefersReducedMotion(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
     }
+
+    return () => mql.removeEventListener('change', listener);
   }, []);
 
-  // Compute subtle 3D spatial transformation driven by scroll
-  const videoTransform = prefersReducedMotion
-    ? undefined
-    : `perspective(1000px) translateY(-${Math.min(22, scrollY * 0.035).toFixed(1)}px) scale(${Math.max(0.975, 1 - scrollY * 0.00007).toFixed(3)}) rotateX(${Math.min(2.2, scrollY * 0.0035).toFixed(2)}deg)`;
+  const activeConfig = isDesktop ? WELCOME_VIDEO_CONFIG.desktop : WELCOME_VIDEO_CONFIG.mobile;
 
-  const syncAmbient = useCallback((playState: boolean) => {
-    const ambient = ambientVideoRef.current;
-    const primary = videoRef.current;
-    if (!ambient || !primary) return;
-
-    if (Math.abs(ambient.currentTime - primary.currentTime) > 0.3) {
-      try {
-        ambient.currentTime = primary.currentTime;
-      } catch {
-        // Ignore seek errors before metadata is loaded
-      }
-    }
-
-    if (playState) {
-      ambient.play().catch(() => {});
-    } else {
-      ambient.pause();
-    }
-  }, []);
-
-  // Handle initial autoplay, reduced-motion preference, and viewport visibility
+  // Autoplay and Intersection Observer
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
-    const prefersReducedMotion =
-      typeof window !== 'undefined' &&
-      window.matchMedia &&
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
     if (prefersReducedMotion) {
       video.pause();
       setIsPlaying(false);
-      syncAmbient(false);
       return;
     }
 
-    const attemptPlay = () => {
-      video.muted = true;
-      const playPromise = video.play();
-      if (playPromise !== undefined) {
-        playPromise
-          .then(() => {
-            setIsPlaying(true);
-            syncAmbient(true);
-          })
-          .catch(() => {
-            setIsPlaying(false);
-            syncAmbient(false);
-          });
-      }
-    };
-
-    attemptPlay();
+    video.muted = true;
+    const playPromise = video.play();
+    if (playPromise !== undefined) {
+      playPromise
+        .then(() => setIsPlaying(true))
+        .catch(() => setIsPlaying(false));
+    }
 
     if (typeof IntersectionObserver === 'undefined') return;
 
@@ -103,53 +91,39 @@ export const CreatorShowcaseVideo: React.FC<CreatorShowcaseVideoProps> = ({
       (entries) => {
         entries.forEach((entry) => {
           if (!videoRef.current) return;
-          if (entry.isIntersecting) {
+          if (entry.isIntersecting && !prefersReducedMotion) {
             videoRef.current
               .play()
-              .then(() => {
-                setIsPlaying(true);
-                syncAmbient(true);
-              })
-              .catch(() => {
-                setIsPlaying(false);
-              });
+              .then(() => setIsPlaying(true))
+              .catch(() => setIsPlaying(false));
           } else {
             videoRef.current.pause();
-            syncAmbient(false);
+            setIsPlaying(false);
           }
         });
       },
-      { threshold: 0.25 }
+      { threshold: 0.2 }
     );
 
     observer.observe(video);
     return () => observer.disconnect();
-  }, [syncAmbient]);
+  }, [isDesktop, prefersReducedMotion]);
 
-  const togglePlay = useCallback(
-    (e?: React.MouseEvent) => {
-      e?.stopPropagation();
-      const video = videoRef.current;
-      if (!video) return;
+  const togglePlay = useCallback((e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    const video = videoRef.current;
+    if (!video) return;
 
-      if (video.paused) {
-        video
-          .play()
-          .then(() => {
-            setIsPlaying(true);
-            syncAmbient(true);
-          })
-          .catch(() => {
-            setIsPlaying(false);
-          });
-      } else {
-        video.pause();
-        setIsPlaying(false);
-        syncAmbient(false);
-      }
-    },
-    [syncAmbient]
-  );
+    if (video.paused) {
+      video
+        .play()
+        .then(() => setIsPlaying(true))
+        .catch(() => setIsPlaying(false));
+    } else {
+      video.pause();
+      setIsPlaying(false);
+    }
+  }, []);
 
   const toggleMute = useCallback((e?: React.MouseEvent) => {
     e?.stopPropagation();
@@ -169,169 +143,111 @@ export const CreatorShowcaseVideo: React.FC<CreatorShowcaseVideoProps> = ({
     video.load();
     video
       .play()
-      .then(() => {
-        setIsPlaying(true);
-        syncAmbient(true);
-      })
-      .catch(() => {
-        setIsPlaying(false);
-      });
-  }, [syncAmbient]);
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === ' ' || e.key === 'Enter') {
-      if (e.target === containerRef.current) {
-        e.preventDefault();
-        togglePlay();
-      }
-    } else if (e.key.toLowerCase() === 'm') {
-      e.preventDefault();
-      toggleMute();
-    }
-  };
+      .then(() => setIsPlaying(true))
+      .catch(() => setIsPlaying(false));
+  }, []);
 
   return (
     <div
-      style={{ transform: videoTransform }}
-      className={`relative w-full mx-auto transition-transform duration-300 ease-out ${className}`}
+      className={`relative w-full h-full min-h-[460px] sm:min-h-[520px] lg:min-h-[600px] rounded-[32px] overflow-hidden bg-[#0A0A0E] shadow-[0_24px_64px_-16px_rgba(0,0,0,0.85)] border border-white/10 select-none group flex flex-col justify-center items-center ${className}`}
     >
-      {/* Subtle Ambient Spatial Glow Behind Video */}
+      {/* Background Video Player */}
+      {hasError ? (
+        <div className="absolute inset-0 w-full h-full bg-[#050508] flex items-center justify-center">
+          <img
+            src={activeConfig.poster}
+            alt="CreatorOS showcase stage"
+            className="w-full h-full object-cover"
+          />
+          <button
+            type="button"
+            onClick={handleRetry}
+            aria-label="Retry video"
+            className="absolute bottom-4 right-4 z-30 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/70 hover:bg-black/90 border border-white/20 text-xs font-medium text-white transition-all cursor-pointer"
+          >
+            <RotateCcw className="w-3.5 h-3.5" />
+            <span>Play</span>
+          </button>
+        </div>
+      ) : (
+        <video
+          key={isDesktop ? 'desktop-video' : 'mobile-video'}
+          ref={videoRef}
+          src={activeConfig.src}
+          poster={activeConfig.poster}
+          autoPlay
+          muted={isMuted}
+          loop
+          playsInline
+          preload="metadata"
+          onPlay={() => setIsPlaying(true)}
+          onPause={() => setIsPlaying(false)}
+          onError={() => setHasError(true)}
+          className="absolute inset-0 w-full h-full object-cover brightness-[0.75] contrast-[1.05]"
+        />
+      )}
+
+      {/* Atmospheric Vignette & Contrast Overlay */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -inset-3 sm:-inset-5 rounded-[32px] bg-gradient-to-b from-indigo-500/[0.12] via-sky-500/[0.08] to-purple-500/[0.05] blur-3xl opacity-80"
+        className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/55 pointer-events-none"
       />
 
-      {/* Layered Glass Bezel (Spatial 3D Frame) */}
-      <div className="relative p-1 sm:p-1.5 rounded-[28px] bg-white/[0.03] backdrop-blur-2xl border border-white/[0.12] shadow-[0_24px_64px_-16px_rgba(0,0,0,0.9),0_0_36px_-12px_rgba(56,189,248,0.12),inset_0_1px_0_0_rgba(255,255,255,0.22)]">
-        {/* Specular Top Edge Highlight */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent"
-        />
-
-        {/* Inner Video Canvas */}
-        <div
-          ref={containerRef}
-          tabIndex={0}
-          role="region"
-          aria-label="CreatorOS brand showcase video"
-          onKeyDown={handleKeyDown}
-          onClick={() => setShowMobileControls((prev) => !prev)}
-          className="group relative w-full h-[320px] sm:h-[380px] lg:h-[490px] xl:h-[510px] rounded-[22px] overflow-hidden bg-[#050507] border border-white/[0.08] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400/80 select-none"
-        >
-        {hasError ? (
-          /* Poster Fallback State if Video Fails */
-          <div className="relative w-full h-full bg-[#050507] flex items-center justify-center">
+      {/* ======================================================================= */}
+      {/* BRAND & HEADLINE OVERLAY (MATCHING PDF REFERENCE EXACTLY)                */}
+      {/* ======================================================================= */}
+      <div className="relative z-20 flex flex-col items-center justify-center p-6 sm:p-8 text-center space-y-5 max-w-md pointer-events-none">
+        {/* Creator Brand Wordmark & Emblem */}
+        <div className="flex items-center justify-center gap-3">
+          <span className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white font-display">
+            Creator
+          </span>
+          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center bg-black/50 border border-cyan-400/50 shadow-[0_0_24px_rgba(0,210,222,0.45)]">
             <img
-              src={SHOWCASE_VIDEO_CONFIG.posterSrc}
-              alt="CreatorOS showcase"
-              className="w-full h-full object-cover sm:object-contain"
+              src={logoSrc}
+              alt="CreatorOS symbol"
+              className="w-full h-full object-contain p-1 rounded-full"
             />
-            <button
-              type="button"
-              onClick={handleRetry}
-              aria-label="Retry playing showcase video"
-              className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/70 hover:bg-black/85 backdrop-blur-md border border-white/15 text-xs font-medium text-white transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400"
-            >
-              <RotateCcw className="w-3.5 h-3.5" />
-              <span>Play</span>
-            </button>
           </div>
-        ) : (
-          <>
-            {/* Desktop Widescreen Ambient Fill (Preserves Stage Without Cropping 9:16 Source Edges) */}
-            <video
-              ref={ambientVideoRef}
-              src={SHOWCASE_VIDEO_CONFIG.mp4Src}
-              poster={SHOWCASE_VIDEO_CONFIG.posterSrc}
-              muted
-              loop
-              playsInline
-              preload="metadata"
-              aria-hidden="true"
-              tabIndex={-1}
-              className="hidden sm:block absolute inset-0 w-full h-full object-cover scale-110 blur-2xl opacity-55 brightness-75 pointer-events-none"
-            />
-
-            {/* Subtle Side Vignette on Desktop Stage */}
-            <div
-              aria-hidden="true"
-              className="hidden sm:block absolute inset-0 bg-gradient-to-r from-[#050507]/70 via-transparent to-[#050507]/70 pointer-events-none"
-            />
-
-            {/* Primary Crisp Showcase Video */}
-            <video
-              ref={videoRef}
-              src={SHOWCASE_VIDEO_CONFIG.mp4Src}
-              poster={SHOWCASE_VIDEO_CONFIG.posterSrc}
-              autoPlay
-              muted={isMuted}
-              loop
-              playsInline
-              preload="metadata"
-              onPlay={() => {
-                setIsPlaying(true);
-                syncAmbient(true);
-              }}
-              onPause={() => {
-                setIsPlaying(false);
-                syncAmbient(false);
-              }}
-              onTimeUpdate={() => {
-                if (ambientVideoRef.current && videoRef.current) {
-                  const diff = Math.abs(
-                    ambientVideoRef.current.currentTime - videoRef.current.currentTime
-                  );
-                  if (diff > 0.35) {
-                    try {
-                      ambientVideoRef.current.currentTime = videoRef.current.currentTime;
-                    } catch {
-                      // Ignore seek error
-                    }
-                  }
-                }
-              }}
-              onError={() => setHasError(true)}
-              className="absolute inset-0 z-10 w-full h-full object-cover object-center sm:object-contain drop-shadow-[0_0_32px_rgba(0,0,0,0.85)]"
-            />
-
-            {/* Minimal Floating Controls (Play/Pause + Mute/Unmute) */}
-            <div
-              className={`absolute bottom-3 right-3 sm:bottom-4 sm:right-4 z-20 flex items-center gap-2 transition-opacity duration-200 ${
-                !isPlaying || showMobileControls
-                  ? 'opacity-100'
-                  : 'opacity-0 group-hover:opacity-100 focus-within:opacity-100'
-              }`}
-            >
-              <button
-                type="button"
-                onClick={togglePlay}
-                aria-label={isPlaying ? 'Pause showcase video' : 'Play showcase video'}
-                className="w-8 h-8 rounded-full bg-black/65 hover:bg-black/85 backdrop-blur-md border border-white/15 flex items-center justify-center text-white/90 hover:text-white transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400"
-              >
-                {isPlaying ? (
-                  <Pause className="w-3.5 h-3.5" />
-                ) : (
-                  <Play className="w-3.5 h-3.5 translate-x-[0.5px]" />
-                )}
-              </button>
-
-              <button
-                type="button"
-                onClick={toggleMute}
-                aria-label={isMuted ? 'Unmute showcase video' : 'Mute showcase video'}
-                className="w-8 h-8 rounded-full bg-black/65 hover:bg-black/85 backdrop-blur-md border border-white/15 flex items-center justify-center text-white/90 hover:text-white transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400"
-              >
-                {isMuted ? (
-                  <VolumeX className="w-3.5 h-3.5" />
-                ) : (
-                  <Volume2 className="w-3.5 h-3.5" />
-                )}
-              </button>
-            </div>
-          </>
-        )}
         </div>
+
+        {/* Center Tagline: "Creators & brands, connected to create better work." */}
+        <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white tracking-tight leading-snug font-display">
+          Creators &amp; brands,
+          <br />
+          connected to create
+          <br />
+          better work.
+        </h2>
+      </div>
+
+      {/* Subtle Floating Media Controls */}
+      <div className="absolute bottom-4 right-4 z-30 flex items-center gap-2 opacity-80 group-hover:opacity-100 transition-opacity">
+        <button
+          type="button"
+          onClick={togglePlay}
+          aria-label={isPlaying ? 'Pause video' : 'Play video'}
+          className="w-8 h-8 rounded-full bg-black/60 hover:bg-black/80 backdrop-blur-md border border-white/20 flex items-center justify-center text-white/90 hover:text-white transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
+        >
+          {isPlaying ? (
+            <Pause className="w-3.5 h-3.5" />
+          ) : (
+            <Play className="w-3.5 h-3.5 translate-x-[0.5px]" />
+          )}
+        </button>
+
+        <button
+          type="button"
+          onClick={toggleMute}
+          aria-label={isMuted ? 'Unmute video' : 'Mute video'}
+          className="w-8 h-8 rounded-full bg-black/60 hover:bg-black/80 backdrop-blur-md border border-white/20 flex items-center justify-center text-white/90 hover:text-white transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
+        >
+          {isMuted ? (
+            <VolumeX className="w-3.5 h-3.5" />
+          ) : (
+            <Volume2 className="w-3.5 h-3.5" />
+          )}
+        </button>
       </div>
     </div>
   );
