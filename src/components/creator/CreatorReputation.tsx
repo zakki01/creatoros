@@ -74,7 +74,7 @@ export const CreatorReputation: React.FC = () => {
           </p>
         </div>
 
-        <div className="flex items-center gap-2 text-xs text-zinc-400 bg-zinc-900 border border-zinc-800 px-3.5 py-1.5 rounded-xl">
+        <div className="flex items-center gap-2 text-xs text-zinc-400 bg-zinc-100 border border-zinc-200 text-zinc-600 px-3.5 py-1.5 rounded-xl">
           <Award className="w-3.5 h-3.5 text-emerald-400" />
           <span>Tier: Top 1% Verified Partner</span>
         </div>

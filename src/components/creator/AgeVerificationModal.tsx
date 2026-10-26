@@ -40,11 +40,11 @@ export const AgeVerificationModal: React.FC<AgeVerificationModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in">
-      <div className="relative w-full max-w-lg rounded-2xl bg-zinc-950 border border-zinc-800/90 p-6 md:p-8 shadow-2xl space-y-5">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/45 backdrop-blur-md animate-fade-in">
+      <div className="relative w-full max-w-lg rounded-2xl bg-white border border-black/[0.08] shadow-2xl p-6 md:p-8 shadow-2xl space-y-5">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-900 transition-colors"
+          className="absolute top-4 right-4 p-1.5 rounded-lg text-zinc-500 hover:text-white hover:bg-zinc-100 transition-colors"
         >
           <X className="w-5 h-5" />
         </button>
@@ -58,19 +58,19 @@ export const AgeVerificationModal: React.FC<AgeVerificationModalProps> = ({
             <h2 className="text-base font-bold text-white tracking-tight font-mono">
               18+ Age & Child Safety Verification
             </h2>
-            <p className="text-xs text-zinc-400 mt-0.5">
+            <p className="text-xs text-zinc-500 mt-0.5">
               CreatorOS enforces strict 18+ creator onboarding and automated child safety protections.
             </p>
           </div>
         </div>
 
         {/* Current Status Box */}
-        <div className="p-3.5 rounded-xl bg-zinc-900/60 border border-zinc-800 flex items-center justify-between text-xs">
+        <div className="p-3.5 rounded-xl bg-zinc-50 border border-zinc-200 flex items-center justify-between text-xs">
           <div>
             <span className="text-[11px] text-zinc-500 font-mono uppercase tracking-wider block">
               Passport Status
             </span>
-            <span className="font-semibold text-zinc-200 mt-0.5 block">
+            <span className="font-semibold text-zinc-800 mt-0.5 block">
               {ageVerification.ageVerified ? '18+ Verified Adult' : 'Verification Required'}
             </span>
           </div>
@@ -95,8 +95,8 @@ export const AgeVerificationModal: React.FC<AgeVerificationModalProps> = ({
         {/* Verification Form */}
         <form onSubmit={handleVerify} className="space-y-4">
           <div className="space-y-1">
-            <label className="text-xs font-medium text-zinc-300 flex items-center gap-1.5">
-              <Calendar className="w-3.5 h-3.5 text-indigo-400" />
+            <label className="text-xs font-medium text-zinc-700 flex items-center gap-1.5">
+              <Calendar className="w-3.5 h-3.5 text-[#0096C7]" />
               <span>Date of Birth (Must be 18+ to accept commercial brand campaigns)</span>
             </label>
             <input
@@ -104,17 +104,17 @@ export const AgeVerificationModal: React.FC<AgeVerificationModalProps> = ({
               required
               value={dob}
               onChange={(e) => setDob(e.target.value)}
-              className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-indigo-500"
+              className="w-full bg-white border border-zinc-300 rounded-xl px-3.5 py-2 text-xs text-zinc-900 focus:border-[#00B4D8] focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1">
-              <label className="text-xs font-medium text-zinc-300">Document Type</label>
+              <label className="text-xs font-medium text-zinc-700">Document Type</label>
               <select
                 value={docType}
                 onChange={(e) => setDocType(e.target.value)}
-                className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500"
+                className="w-full bg-white border border-zinc-300 rounded-xl px-3 py-2 text-xs text-zinc-900 focus:border-[#00B4D8] focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]"
               >
                 <option value="Passport">Passport</option>
                 <option value="National ID">National Identity Card</option>
@@ -122,21 +122,21 @@ export const AgeVerificationModal: React.FC<AgeVerificationModalProps> = ({
               </select>
             </div>
             <div className="space-y-1">
-              <label className="text-xs font-medium text-zinc-300">Document Number / Hash</label>
+              <label className="text-xs font-medium text-zinc-700">Document Number / Hash</label>
               <input
                 type="text"
                 required
                 value={docNumber}
                 onChange={(e) => setDocNumber(e.target.value)}
-                className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white font-mono focus:outline-none focus:border-indigo-500"
+                className="w-full bg-white border border-zinc-300 rounded-xl px-3 py-2 text-xs text-zinc-900 focus:border-[#00B4D8] font-mono focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]"
               />
             </div>
           </div>
 
           {/* Child Safety & Automated Moderation Note */}
-          <div className="p-3.5 rounded-xl bg-zinc-900/40 border border-zinc-800/80 text-[11px] text-zinc-400 space-y-1.5">
-            <div className="flex items-center gap-1.5 font-semibold text-zinc-300">
-              <Lock className="w-3.5 h-3.5 text-indigo-400" />
+          <div className="p-3.5 rounded-xl bg-zinc-50 border border-zinc-200 text-[11px] text-zinc-500 space-y-1.5">
+            <div className="flex items-center gap-1.5 font-semibold text-zinc-700">
+              <Lock className="w-3.5 h-3.5 text-[#0096C7]" />
               <span>Automated Deliverable Moderation Scan</span>
             </div>
             <p className="leading-relaxed">
@@ -156,7 +156,7 @@ export const AgeVerificationModal: React.FC<AgeVerificationModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 rounded-xl text-xs text-zinc-400 hover:text-white"
+              className="px-4 py-2 rounded-xl text-xs text-zinc-500 hover:text-white"
             >
               Close
             </button>

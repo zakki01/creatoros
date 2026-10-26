@@ -96,7 +96,7 @@ export const SupportPortal: React.FC<SupportPortalProps> = ({ onBack }) => {
         );
       case 'IN_PROGRESS':
         return (
-          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-indigo-500/20 text-[#0096C7] border border-[#00B4D8]/30">
             IN PROGRESS
           </span>
         );
@@ -114,7 +114,7 @@ export const SupportPortal: React.FC<SupportPortalProps> = ({ onBack }) => {
         );
       case 'CLOSED':
         return (
-          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-zinc-800 text-zinc-400 border border-zinc-700">
+          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-zinc-800 text-zinc-500 border border-zinc-300">
             CLOSED
           </span>
         );
@@ -135,21 +135,21 @@ export const SupportPortal: React.FC<SupportPortalProps> = ({ onBack }) => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#070709] text-zinc-100 font-sans selection:bg-indigo-500/30 selection:text-indigo-200">
+    <div className="min-h-screen bg-[#EAECEF] text-zinc-900 font-sans selection:bg-indigo-500/30 selection:text-indigo-200">
       {/* Header Bar */}
-      <header className="sticky top-0 z-40 border-b border-white/[0.08] bg-[#070709]/90 backdrop-blur-2xl">
+      <header className="sticky top-0 z-40 border-b border-black/[0.08] bg-[#EAECEF]/90 backdrop-blur-2xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <button
               onClick={onBack ? onBack : () => (window.location.href = '/')}
-              className="min-h-[44px] min-w-[44px] rounded-xl hover:bg-zinc-800 text-zinc-400 hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+              className="min-h-[44px] min-w-[44px] rounded-xl hover:bg-zinc-100 text-zinc-500 hover:text-zinc-900 flex items-center justify-center transition-colors cursor-pointer"
               aria-label="Back to dashboard"
             >
               <ArrowLeft className="w-4 h-4" />
             </button>
             <BrandLogo size="sm" />
             <span className="text-zinc-600 hidden sm:inline">•</span>
-            <span className="text-xs font-semibold text-zinc-300 hidden sm:inline">
+            <span className="text-xs font-semibold text-zinc-700 hidden sm:inline">
               Support Center
             </span>
           </div>
@@ -160,7 +160,7 @@ export const SupportPortal: React.FC<SupportPortalProps> = ({ onBack }) => {
                 setActiveTab('new_ticket');
                 setCreatedNotice(null);
               }}
-              className="min-h-[44px] px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm shadow-indigo-600/30 transition-all cursor-pointer active:scale-95"
+              className="min-h-[44px] px-3.5 py-2 rounded-xl bg-[#00B4D8] hover:bg-[#0096C7] text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm shadow-xs transition-all cursor-pointer active:scale-95"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Raise Ticket</span>
@@ -188,13 +188,13 @@ export const SupportPortal: React.FC<SupportPortalProps> = ({ onBack }) => {
         )}
 
         {/* View Switcher Tabs */}
-        <div className="flex items-center gap-2 mb-6 border-b border-white/[0.08] pb-3">
+        <div className="flex items-center gap-2 mb-6 border-b border-black/[0.08] pb-3">
           <button
             onClick={() => setActiveTab('my_tickets')}
             className={`min-h-[44px] px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center gap-2 ${
               activeTab === 'my_tickets'
-                ? 'bg-zinc-800 text-white border border-white/10'
-                : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900'
+                ? 'bg-zinc-800 text-white border border-black/[0.08]'
+                : 'text-zinc-500 hover:text-zinc-800 hover:bg-zinc-100'
             }`}
           >
             <MessageSquare className="w-3.5 h-3.5" />
@@ -205,8 +205,8 @@ export const SupportPortal: React.FC<SupportPortalProps> = ({ onBack }) => {
             onClick={() => setActiveTab('new_ticket')}
             className={`min-h-[44px] px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center gap-2 ${
               activeTab === 'new_ticket'
-                ? 'bg-zinc-800 text-white border border-white/10'
-                : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900'
+                ? 'bg-zinc-800 text-white border border-black/[0.08]'
+                : 'text-zinc-500 hover:text-zinc-800 hover:bg-zinc-100'
             }`}
           >
             <Plus className="w-3.5 h-3.5" />
@@ -216,10 +216,10 @@ export const SupportPortal: React.FC<SupportPortalProps> = ({ onBack }) => {
 
         {/* Tab 1: Raise Ticket Form */}
         {activeTab === 'new_ticket' && (
-          <div className="max-w-2xl mx-auto rounded-3xl bg-zinc-900/60 border border-white/[0.08] p-6 sm:p-8 backdrop-blur-xl animate-fade-in">
+          <div className="max-w-2xl mx-auto rounded-3xl bg-white shadow-sm border border-black/[0.08] p-6 sm:p-8 backdrop-blur-xl animate-fade-in">
             <div className="mb-6">
-              <h2 className="text-xl font-bold text-white font-display">Raise Support Ticket</h2>
-              <p className="text-xs text-zinc-400 mt-1">
+              <h2 className="text-xl font-bold text-zinc-900 font-display">Raise Support Ticket</h2>
+              <p className="text-xs text-zinc-500 mt-1">
                 Describe the problem and our operations team will triage your issue promptly.
               </p>
             </div>
@@ -227,13 +227,13 @@ export const SupportPortal: React.FC<SupportPortalProps> = ({ onBack }) => {
             <form onSubmit={handleCreateTicket} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs font-medium text-zinc-300 block mb-1.5">
+                  <label className="text-xs font-medium text-zinc-700 block mb-1.5">
                     Issue Category *
                   </label>
                   <select
                     value={issueType}
                     onChange={(e) => setIssueType(e.target.value as TicketIssueType)}
-                    className="w-full min-h-[44px] px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-xs text-zinc-200 focus:outline-none focus:border-indigo-500 cursor-pointer"
+                    className="w-full min-h-[44px] px-3.5 py-2.5 rounded-xl bg-white border border-zinc-200 text-xs text-zinc-800 focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] cursor-pointer"
                   >
                     {issueTypes.map((type) => (
                       <option key={type} value={type}>
@@ -244,13 +244,13 @@ export const SupportPortal: React.FC<SupportPortalProps> = ({ onBack }) => {
                 </div>
 
                 <div>
-                  <label className="text-xs font-medium text-zinc-300 block mb-1.5">
+                  <label className="text-xs font-medium text-zinc-700 block mb-1.5">
                     Urgency / Priority
                   </label>
                   <select
                     value={priority}
                     onChange={(e) => setPriority(e.target.value as TicketPriority)}
-                    className="w-full min-h-[44px] px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-xs text-zinc-200 focus:outline-none focus:border-indigo-500 cursor-pointer"
+                    className="w-full min-h-[44px] px-3.5 py-2.5 rounded-xl bg-white border border-zinc-200 text-xs text-zinc-800 focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] cursor-pointer"
                   >
                     <option value="low">Low (General guidance)</option>
                     <option value="medium">Medium (Standard request)</option>
@@ -261,7 +261,7 @@ export const SupportPortal: React.FC<SupportPortalProps> = ({ onBack }) => {
               </div>
 
               <div>
-                <label className="text-xs font-medium text-zinc-300 block mb-1.5">
+                <label className="text-xs font-medium text-zinc-700 block mb-1.5">
                   Subject *
                 </label>
                 <input
@@ -270,12 +270,12 @@ export const SupportPortal: React.FC<SupportPortalProps> = ({ onBack }) => {
                   value={subject}
                   onChange={(e) => setSubject(e.target.value)}
                   placeholder="Short, specific summary of the inquiry or issue..."
-                  className="w-full min-h-[44px] px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-xs text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:border-indigo-500"
+                  className="w-full min-h-[44px] px-3.5 py-2.5 rounded-xl bg-white border border-zinc-200 text-xs text-zinc-900 placeholder:text-zinc-600 focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]"
                 />
               </div>
 
               <div>
-                <label className="text-xs font-medium text-zinc-300 block mb-1.5">
+                <label className="text-xs font-medium text-zinc-700 block mb-1.5">
                   Description *
                 </label>
                 <textarea
@@ -284,14 +284,14 @@ export const SupportPortal: React.FC<SupportPortalProps> = ({ onBack }) => {
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="Provide context, relevant contract reference numbers (#CR-...), or steps to reproduce..."
-                  className="w-full p-3.5 rounded-xl bg-zinc-950 border border-zinc-800 text-xs text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:border-indigo-500 resize-y"
+                  className="w-full p-3.5 rounded-xl bg-white border border-zinc-200 text-xs text-zinc-900 placeholder:text-zinc-600 focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] resize-y"
                 />
               </div>
 
               <div className="flex items-center justify-between pt-2">
                 <button
                   type="button"
-                  className="text-xs text-zinc-400 hover:text-zinc-200 flex items-center gap-1.5 cursor-pointer"
+                  className="text-xs text-zinc-500 hover:text-zinc-800 flex items-center gap-1.5 cursor-pointer"
                 >
                   <Paperclip className="w-3.5 h-3.5" />
                   <span>Attach Screenshot or Log</span>
@@ -300,7 +300,7 @@ export const SupportPortal: React.FC<SupportPortalProps> = ({ onBack }) => {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="min-h-[44px] px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold flex items-center gap-2 shadow-sm shadow-indigo-600/30 transition-all cursor-pointer active:scale-95 disabled:opacity-50"
+                  className="min-h-[44px] px-6 py-2.5 rounded-xl bg-[#00B4D8] hover:bg-[#0096C7] text-white text-xs font-semibold flex items-center gap-2 shadow-sm shadow-xs transition-all cursor-pointer active:scale-95 disabled:opacity-50"
                 >
                   <Send className="w-3.5 h-3.5" />
                   <span>Submit Ticket</span>
@@ -315,16 +315,16 @@ export const SupportPortal: React.FC<SupportPortalProps> = ({ onBack }) => {
           <div>
             {userTickets.length === 0 ? (
               <div className="text-center py-16 space-y-3">
-                <div className="w-12 h-12 rounded-2xl bg-zinc-900 border border-white/10 text-zinc-400 flex items-center justify-center mx-auto">
+                <div className="w-12 h-12 rounded-2xl bg-white shadow-sm border border-black/[0.08] text-zinc-500 flex items-center justify-center mx-auto">
                   <LifeBuoy className="w-6 h-6" />
                 </div>
-                <h3 className="text-sm font-bold text-white">No tickets raised yet</h3>
-                <p className="text-xs text-zinc-400 max-w-sm mx-auto">
+                <h3 className="text-sm font-bold text-zinc-900">No tickets raised yet</h3>
+                <p className="text-xs text-zinc-500 max-w-sm mx-auto">
                   If you encounter payment queries, contract questions, or technical issues, raise a ticket and our team will assist you.
                 </p>
                 <button
                   onClick={() => setActiveTab('new_ticket')}
-                  className="min-h-[44px] px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold inline-flex items-center gap-1.5 transition-all cursor-pointer mt-2"
+                  className="min-h-[44px] px-4 py-2 rounded-xl bg-[#00B4D8] hover:bg-[#0096C7] text-white text-xs font-semibold inline-flex items-center gap-1.5 transition-all cursor-pointer mt-2"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   <span>Raise Your First Ticket</span>
@@ -342,22 +342,22 @@ export const SupportPortal: React.FC<SupportPortalProps> = ({ onBack }) => {
                         onClick={() => setSelectedTicketId(t.id)}
                         className={`p-4 rounded-2xl border transition-all cursor-pointer text-left ${
                           isSelected
-                            ? 'bg-zinc-800/90 border-indigo-500/50 shadow-md'
-                            : 'bg-zinc-900/60 border-white/[0.06] hover:bg-zinc-850 hover:border-white/10'
+                            ? 'bg-zinc-800/90 border-[#00B4D8]/50 shadow-md'
+                            : 'bg-white shadow-sm border-black/[0.06] hover:bg-zinc-850 hover:border-black/[0.08]'
                         }`}
                       >
                         <div className="flex items-center justify-between gap-2 mb-1.5">
-                          <span className="text-[11px] font-mono font-bold text-indigo-400">
+                          <span className="text-[11px] font-mono font-bold text-[#0096C7]">
                             #{t.ticketNumber}
                           </span>
                           {getStatusBadge(t.status)}
                         </div>
 
-                        <h4 className="text-xs font-bold text-white line-clamp-1 mb-1">
+                        <h4 className="text-xs font-bold text-zinc-900 line-clamp-1 mb-1">
                           {t.subject}
                         </h4>
 
-                        <div className="flex items-center justify-between text-[11px] text-zinc-400 pt-1">
+                        <div className="flex items-center justify-between text-[11px] text-zinc-500 pt-1">
                           <span>{t.issueType}</span>
                           <span className="font-mono text-[10px]">
                             {new Date(t.updatedAt).toLocaleDateString()}
@@ -371,25 +371,25 @@ export const SupportPortal: React.FC<SupportPortalProps> = ({ onBack }) => {
                 {/* Ticket Detail Conversation Column (7 cols) */}
                 <div className="lg:col-span-7">
                   {selectedTicket ? (
-                    <div className="rounded-3xl bg-zinc-900/70 border border-white/[0.08] p-5 sm:p-6 space-y-6 backdrop-blur-xl">
+                    <div className="rounded-3xl bg-white shadow-sm border border-black/[0.08] p-5 sm:p-6 space-y-6 backdrop-blur-xl">
                       {/* Ticket Header */}
-                      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 pb-4 border-b border-white/[0.08]">
+                      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 pb-4 border-b border-black/[0.08]">
                         <div>
                           <div className="flex items-center gap-2 mb-1">
-                            <span className="text-xs font-mono font-bold text-indigo-400">
+                            <span className="text-xs font-mono font-bold text-[#0096C7]">
                               Ticket #{selectedTicket.ticketNumber}
                             </span>
                             {getStatusBadge(selectedTicket.status)}
-                            <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-800 text-zinc-400">
+                            <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-800 text-zinc-500">
                               {selectedTicket.issueType}
                             </span>
                           </div>
-                          <h3 className="text-base font-bold text-white font-display">
+                          <h3 className="text-base font-bold text-zinc-900 font-display">
                             {selectedTicket.subject}
                           </h3>
                         </div>
 
-                        <div className="text-right sm:shrink-0 text-[11px] text-zinc-400">
+                        <div className="text-right sm:shrink-0 text-[11px] text-zinc-500">
                           <div>Created {new Date(selectedTicket.createdAt).toLocaleDateString()}</div>
                           <div className="font-mono text-[10px] text-zinc-500">
                             Priority: {selectedTicket.priority}
@@ -408,16 +408,16 @@ export const SupportPortal: React.FC<SupportPortalProps> = ({ onBack }) => {
                                 key={msg.id}
                                 className={`p-4 rounded-2xl border text-xs ${
                                   isStaff
-                                    ? 'bg-indigo-950/20 border-indigo-500/30 text-zinc-200 ml-4'
-                                    : 'bg-zinc-950 border-white/[0.06] text-zinc-300 mr-4'
+                                    ? 'bg-[#00B4D8]/10 border-[#00B4D8]/30 text-zinc-800 ml-4'
+                                    : 'bg-white border-black/[0.06] text-zinc-700 mr-4'
                                 }`}
                               >
-                                <div className="flex items-center justify-between gap-2 mb-2 pb-1.5 border-b border-white/[0.04]">
+                                <div className="flex items-center justify-between gap-2 mb-2 pb-1.5 border-b border-black/[0.04]">
                                   <span className="font-semibold text-white flex items-center gap-1.5">
-                                    {isStaff && <LifeBuoy className="w-3.5 h-3.5 text-indigo-400" />}
+                                    {isStaff && <LifeBuoy className="w-3.5 h-3.5 text-[#0096C7]" />}
                                     <span>{msg.senderName}</span>
                                     {isStaff && (
-                                      <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-indigo-500/20 text-indigo-300">
+                                      <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-indigo-500/20 text-[#0096C7]">
                                         Staff
                                       </span>
                                     )}
@@ -437,8 +437,8 @@ export const SupportPortal: React.FC<SupportPortalProps> = ({ onBack }) => {
 
                       {/* Reply Input Form */}
                       {selectedTicket.status !== 'CLOSED' ? (
-                        <form onSubmit={handleSendReply} className="pt-2 border-t border-white/[0.08] space-y-2.5">
-                          <label className="text-xs font-semibold text-zinc-300 block">
+                        <form onSubmit={handleSendReply} className="pt-2 border-t border-black/[0.08] space-y-2.5">
+                          <label className="text-xs font-semibold text-zinc-700 block">
                             Add Reply
                           </label>
                           <textarea
@@ -446,13 +446,13 @@ export const SupportPortal: React.FC<SupportPortalProps> = ({ onBack }) => {
                             value={replyText}
                             onChange={(e) => setReplyText(e.target.value)}
                             placeholder="Type your response to the support team..."
-                            className="w-full p-3 rounded-xl bg-zinc-950 border border-zinc-800 text-xs text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:border-indigo-500 resize-none"
+                            className="w-full p-3 rounded-xl bg-white border border-zinc-200 text-xs text-zinc-900 placeholder:text-zinc-600 focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] resize-none"
                           />
                           <div className="flex justify-end">
                             <button
                               type="submit"
                               disabled={!replyText.trim()}
-                              className="min-h-[44px] px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer disabled:opacity-50 active:scale-95"
+                              className="min-h-[44px] px-4 py-2 rounded-xl bg-[#00B4D8] hover:bg-[#0096C7] text-white text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer disabled:opacity-50 active:scale-95"
                             >
                               <Send className="w-3.5 h-3.5" />
                               <span>Send Reply</span>
@@ -460,7 +460,7 @@ export const SupportPortal: React.FC<SupportPortalProps> = ({ onBack }) => {
                           </div>
                         </form>
                       ) : (
-                        <div className="p-3 rounded-xl bg-zinc-950 border border-zinc-800 text-xs text-zinc-400 text-center font-mono">
+                        <div className="p-3 rounded-xl bg-white border border-zinc-200 text-xs text-zinc-500 text-center font-mono">
                           This ticket has been marked Closed. If you need further assistance, please raise a new ticket.
                         </div>
                       )}
@@ -474,7 +474,7 @@ export const SupportPortal: React.FC<SupportPortalProps> = ({ onBack }) => {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-white/[0.08] py-8 bg-zinc-950 text-xs text-zinc-500">
+      <footer className="border-t border-black/[0.08] py-8 bg-white text-xs text-zinc-500">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             <BrandLogo size="xs" />
@@ -482,10 +482,10 @@ export const SupportPortal: React.FC<SupportPortalProps> = ({ onBack }) => {
             <span>CreatorOS Help & Operations Desk</span>
           </div>
           <div className="flex items-center gap-6">
-            <a href="/terms" className="hover:text-zinc-300 transition-colors">Terms</a>
-            <a href="/privacy" className="hover:text-zinc-300 transition-colors">Privacy</a>
-            <a href="/support" className="text-zinc-300 hover:text-white transition-colors">Support</a>
-            <a href="mailto:support@creatoros.ai" className="hover:text-zinc-300 transition-colors">support@creatoros.ai</a>
+            <a href="/terms" className="hover:text-zinc-700 transition-colors">Terms</a>
+            <a href="/privacy" className="hover:text-zinc-700 transition-colors">Privacy</a>
+            <a href="/support" className="text-zinc-700 hover:text-zinc-900 transition-colors">Support</a>
+            <a href="mailto:support@creatoros.ai" className="hover:text-zinc-700 transition-colors">support@creatoros.ai</a>
           </div>
         </div>
       </footer>

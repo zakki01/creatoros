@@ -72,18 +72,18 @@ export const ShareModal: React.FC<ShareModalProps> = ({
       onClick={onClose}
     >
       <div
-        className="w-full sm:max-w-md bg-[#0c0c11] border border-white/[0.12] rounded-t-3xl sm:rounded-2xl shadow-2xl p-5 text-zinc-100 space-y-4 animate-slide-up"
+        className="w-full sm:max-w-md bg-white text-zinc-900 border border-black/[0.08] rounded-t-3xl sm:rounded-2xl shadow-2xl p-5 text-zinc-900 space-y-4 animate-slide-up"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-white/[0.08] pb-3">
+        <div className="flex items-center justify-between border-b border-black/[0.08] pb-3">
           <div className="flex items-center gap-2">
-            <Share2 className="w-4 h-4 text-indigo-400" />
+            <Share2 className="w-4 h-4 text-[#0096C7]" />
             <h3 className="text-sm font-bold text-white">Share Drop</h3>
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors cursor-pointer"
+            className="p-1 rounded-lg text-zinc-500 hover:text-white hover:bg-zinc-100 transition-colors cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
@@ -91,7 +91,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
 
         {/* Quick Send to Connected Messages */}
         <div className="space-y-2">
-          <span className="text-[10px] font-mono uppercase text-zinc-400 tracking-wider font-semibold block">
+          <span className="text-[10px] font-mono uppercase text-zinc-500 tracking-wider font-semibold block">
             Send via Direct Message
           </span>
           <div className="flex gap-2.5 overflow-x-auto pb-1 scrollbar-none">
@@ -99,7 +99,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
               <button
                 key={conv.id}
                 onClick={() => handleSendViaDM(conv.id)}
-                className="flex flex-col items-center gap-1.5 p-2 rounded-xl hover:bg-zinc-800/60 transition-colors cursor-pointer min-w-[64px]"
+                className="flex flex-col items-center gap-1.5 p-2 rounded-xl hover:bg-zinc-100/60 transition-colors cursor-pointer min-w-[64px]"
               >
                 <div className="relative">
                   <img
@@ -113,7 +113,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
                     </div>
                   )}
                 </div>
-                <span className="text-[10px] text-zinc-300 font-medium truncate max-w-[60px] text-center">
+                <span className="text-[10px] text-zinc-700 font-medium truncate max-w-[60px] text-center">
                   {conv.participantName.split(' ')[0]}
                 </span>
               </button>
@@ -122,21 +122,21 @@ export const ShareModal: React.FC<ShareModalProps> = ({
         </div>
 
         {/* Primary Share Action Rows */}
-        <div className="space-y-1.5 border-t border-white/[0.08] pt-3">
+        <div className="space-y-1.5 border-t border-black/[0.08] pt-3">
           {/* Copy Link */}
           <button
             onClick={handleCopyLink}
-            className="w-full flex items-center justify-between p-3 rounded-xl bg-zinc-900/60 hover:bg-zinc-800/80 border border-white/[0.06] transition-all cursor-pointer text-left"
+            className="w-full flex items-center justify-between p-3 rounded-xl bg-white shadow-sm hover:bg-zinc-100/80 border border-black/[0.06] transition-all cursor-pointer text-left"
           >
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-white/[0.06] flex items-center justify-center text-zinc-300">
+              <div className="w-8 h-8 rounded-lg bg-white/[0.06] flex items-center justify-center text-zinc-700">
                 {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
               </div>
               <div>
                 <span className="text-xs font-semibold text-white block">
                   {copied ? 'Link Copied to Clipboard!' : 'Copy Link'}
                 </span>
-                <span className="text-[10px] text-zinc-400 font-mono">
+                <span className="text-[10px] text-zinc-500 font-mono">
                   Direct permalink to this content
                 </span>
               </div>
@@ -147,17 +147,17 @@ export const ShareModal: React.FC<ShareModalProps> = ({
           {/* External Share */}
           <button
             onClick={handleExternalShare}
-            className="w-full flex items-center justify-between p-3 rounded-xl bg-zinc-900/60 hover:bg-zinc-800/80 border border-white/[0.06] transition-all cursor-pointer text-left"
+            className="w-full flex items-center justify-between p-3 rounded-xl bg-white shadow-sm hover:bg-zinc-100/80 border border-black/[0.06] transition-all cursor-pointer text-left"
           >
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-white/[0.06] flex items-center justify-center text-zinc-300">
+              <div className="w-8 h-8 rounded-lg bg-white/[0.06] flex items-center justify-center text-zinc-700">
                 <ExternalLink className="w-4 h-4" />
               </div>
               <div>
                 <span className="text-xs font-semibold text-white block">
                   Share Externally
                 </span>
-                <span className="text-[10px] text-zinc-400 font-mono">
+                <span className="text-[10px] text-zinc-500 font-mono">
                   WhatsApp, X, Instagram, Telegram
                 </span>
               </div>

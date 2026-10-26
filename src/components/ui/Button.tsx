@@ -21,28 +21,28 @@ export const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   const baseStyles =
-    'inline-flex items-center justify-center font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-zinc-950 disabled:opacity-50 disabled:cursor-not-allowed select-none active:scale-[0.98] cursor-pointer';
+    'inline-flex items-center justify-center font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white disabled:opacity-50 disabled:cursor-not-allowed select-none active:scale-[0.98] cursor-pointer';
 
   const sizeStyles = {
     sm: 'text-xs px-2.5 py-1.5 rounded-lg gap-1.5',
     md: 'text-sm px-3.5 py-2 rounded-xl gap-2',
     lg: 'text-base px-5 py-2.5 rounded-2xl gap-2.5',
-    icon: 'p-2 rounded-xl text-zinc-400 hover:text-zinc-100',
+    icon: 'p-2 rounded-xl text-zinc-500 hover:text-zinc-900 hover:bg-black/[0.05]',
   };
 
   const variantStyles = {
     primary:
-      'depth-btn-primary text-white focus:ring-indigo-500 active:translate-y-[1px]',
+      'depth-btn-primary text-slate-950 font-semibold focus:ring-[#00B4D8] active:translate-y-[1px]',
     secondary:
-      'depth-btn-secondary text-zinc-100 focus:ring-zinc-600 active:translate-y-[1px]',
+      'depth-btn-secondary text-zinc-900 font-medium focus:ring-zinc-400 active:translate-y-[1px]',
     outline:
-      'bg-white/[0.02] hover:bg-white/[0.06] text-zinc-200 hover:text-white border border-white/12 hover:border-white/25 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.08)] hover:-translate-y-[1px] active:translate-y-[1px] focus:ring-zinc-600',
+      'bg-white hover:bg-zinc-50 text-zinc-800 hover:text-zinc-950 border border-zinc-200/90 hover:border-zinc-300 shadow-sm active:translate-y-[1px] focus:ring-zinc-400',
     ghost:
-      'bg-transparent hover:bg-white/[0.06] text-zinc-400 hover:text-zinc-100 focus:ring-zinc-700',
+      'bg-transparent hover:bg-black/[0.05] text-zinc-600 hover:text-zinc-900 focus:ring-zinc-400',
     danger:
-      'bg-gradient-to-b from-rose-500/25 to-rose-600/30 hover:from-rose-500/35 hover:to-rose-600/40 text-rose-200 border border-rose-500/35 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.15),0_4px_12px_-2px_rgba(244,63,94,0.25)] hover:-translate-y-[1px] active:translate-y-[1px] focus:ring-rose-500',
+      'bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 shadow-sm hover:-translate-y-[1px] active:translate-y-[1px] focus:ring-rose-500',
     ai:
-      'bg-gradient-to-b from-indigo-500 via-purple-500 to-pink-600 text-white border border-white/25 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.35),0_8px_20px_-4px_rgba(168,85,247,0.45)] hover:-translate-y-[1px] active:translate-y-[1px] focus:ring-purple-500',
+      'bg-gradient-to-r from-cyan-600 via-sky-600 to-indigo-600 text-white border border-white/30 shadow-md hover:-translate-y-[1px] active:translate-y-[1px] focus:ring-cyan-500',
   };
 
   return (

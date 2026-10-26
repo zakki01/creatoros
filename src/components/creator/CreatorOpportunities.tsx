@@ -40,7 +40,7 @@ export const CreatorOpportunities: React.FC = () => {
       {/* Header */}
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-2.5">
-          <h1 className="text-xl sm:text-2xl font-bold text-white font-display tracking-tight">
+          <h1 className="text-xl sm:text-2xl font-bold text-zinc-900 font-display tracking-tight">
             Opportunities
           </h1>
           <Badge variant="brand" size="sm">
@@ -52,9 +52,9 @@ export const CreatorOpportunities: React.FC = () => {
       {/* Opportunities List */}
       <div className="space-y-4">
         {opportunities.length === 0 ? (
-          <div className="p-10 text-center rounded-3xl surface-2 space-y-1.5">
-            <p className="text-sm font-medium text-zinc-200">No pending opportunities</p>
-            <p className="text-xs text-zinc-400">New brand invitations appear here.</p>
+          <div className="p-10 text-center rounded-3xl bg-white border border-black/[0.08] shadow-xs space-y-1.5">
+            <p className="text-sm font-medium text-zinc-800">No pending opportunities</p>
+            <p className="text-xs text-zinc-500">New brand invitations appear here.</p>
           </div>
         ) : (
           opportunities.map((opp) => {
@@ -71,7 +71,7 @@ export const CreatorOpportunities: React.FC = () => {
                 <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
                   <div className="space-y-1">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <h3 className="text-base sm:text-lg font-bold text-white font-display">
+                      <h3 className="text-base sm:text-lg font-bold text-zinc-900 font-display">
                         {opp.campaignName}
                       </h3>
                       {isConfirmed ? (
@@ -88,7 +88,7 @@ export const CreatorOpportunities: React.FC = () => {
                         </Badge>
                       )}
                     </div>
-                    <p className="text-xs text-zinc-400">
+                    <p className="text-xs text-zinc-500">
                       Aura Streetwear Co. · Mumbai · 1x Reel + 2x Stories · Due Oct 12
                     </p>
                   </div>
@@ -98,15 +98,15 @@ export const CreatorOpportunities: React.FC = () => {
                     <span className="text-base sm:text-lg font-bold font-mono text-emerald-400">
                       ₹{opp.proposedFee.toLocaleString()}
                     </span>
-                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-indigo-500/15 border border-indigo-500/30 text-indigo-300 text-xs font-semibold">
-                      <Sparkles className="w-3 h-3 text-indigo-400" />
+                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-[#00B4D8]/10 border border-[#00B4D8]/30 text-[#0096C7] text-xs font-semibold">
+                      <Sparkles className="w-3 h-3 text-[#0096C7]" />
                       94% Match
                     </span>
                   </div>
                 </div>
 
                 {/* Action Buttons */}
-                <div className="flex items-center justify-between pt-2 border-t border-zinc-800">
+                <div className="flex items-center justify-between pt-2 border-t border-zinc-200">
                   <Button
                     variant="ghost"
                     size="sm"
@@ -123,7 +123,7 @@ export const CreatorOpportunities: React.FC = () => {
                         variant="outline"
                         size="sm"
                         onClick={() => declineOpportunity(opp.id)}
-                        className="text-xs text-zinc-400 hover:text-rose-400 hover:border-rose-500/30"
+                        className="text-xs text-zinc-500 hover:text-rose-400 hover:border-rose-500/30"
                       >
                         Decline
                       </Button>
@@ -180,12 +180,12 @@ export const CreatorOpportunities: React.FC = () => {
           }
         >
           <div className="space-y-4 text-xs">
-            <div className="p-4 rounded-2xl bg-zinc-950 border border-zinc-800 space-y-2">
-              <h4 className="font-semibold text-zinc-200">Creative Scope & Requirements</h4>
-              <p className="text-zinc-300 leading-relaxed">
+            <div className="p-4 rounded-2xl bg-zinc-50 border border-zinc-200 space-y-2">
+              <h4 className="font-semibold text-zinc-800">Creative Scope & Requirements</h4>
+              <p className="text-zinc-700 leading-relaxed">
                 Create 1x cinematic 4K Reel showcasing the reflective 3M details and comfort grip of the new Aura sneaker silhouette in an authentic urban setting.
               </p>
-              <ul className="space-y-1 text-zinc-400 pl-4 list-disc">
+              <ul className="space-y-1 text-zinc-500 pl-4 list-disc">
                 <li>Video length: 30 to 45 seconds</li>
                 <li>Tag @aurastreetwear in first two lines of caption</li>
                 <li>Include custom discount link in Instagram story highlight</li>
@@ -193,9 +193,9 @@ export const CreatorOpportunities: React.FC = () => {
               </ul>
             </div>
 
-            <div className="p-4 rounded-2xl bg-zinc-950/70 border border-zinc-800 space-y-2">
-              <h4 className="font-semibold text-zinc-200">Payment Escrow Terms</h4>
-              <p className="text-zinc-400">
+            <div className="p-4 rounded-2xl bg-zinc-50 border border-zinc-200 space-y-2">
+              <h4 className="font-semibold text-zinc-800">Payment Escrow Terms</h4>
+              <p className="text-zinc-500">
                 50% advance (₹17,500) released into your bank account upon digital contract signature; remaining 50% released immediately upon content approval.
               </p>
             </div>

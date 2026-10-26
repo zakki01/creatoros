@@ -1,40 +1,40 @@
 /**
  * CreatorOS Design System Tokens
  * Strict adherence to mobile-first UX, 44px touch targets,
- * high-contrast dark aesthetic, and container/breakpoint rules.
+ * Architectural Light Studio aesthetic, and container/breakpoint rules.
  */
 
 export const tokens = {
   colors: {
-    // Surface hierarchy
-    bgBase: '#070709',       // Deepest canvas background
-    bgSurface: '#0c0c11',    // Standard card & sheet surface
-    bgElevated: '#14141b',   // Popover & elevated card surface
-    bgSubtle: '#181822',     // Hover & subtle interactive fills
+    // Surface hierarchy (Light Studio Foundation)
+    bgBase: '#EAECEF',       // Soft gray studio canvas
+    bgSurface: '#FFFFFF',    // Crisp white card & sheet surface
+    bgElevated: '#F4F6F8',   // Popover & elevated card surface
+    bgSubtle: '#DFE3E8',     // Hover & subtle interactive fills
 
     // Borders & Dividers
-    borderSubtle: 'rgba(255, 255, 255, 0.08)',
-    borderMedium: 'rgba(255, 255, 255, 0.14)',
-    borderStrong: 'rgba(255, 255, 255, 0.24)',
+    borderSubtle: 'rgba(0, 0, 0, 0.08)',
+    borderMedium: 'rgba(0, 0, 0, 0.14)',
+    borderStrong: 'rgba(0, 0, 0, 0.22)',
 
     // Text Hierarchy
-    textPrimary: '#f4f4f5',   // zinc-100 (titles, prominent labels)
-    textSecondary: '#a1a1aa', // zinc-400 (descriptions, handles)
-    textMuted: '#71717a',     // zinc-500 (timestamps, inactive states)
+    textPrimary: '#0F172A',   // slate-900 (titles, prominent labels)
+    textSecondary: '#475569', // slate-600 (descriptions, handles)
+    textMuted: '#64748B',     // slate-500 (timestamps, inactive states)
 
-    // Semantic Accents
-    primary: '#6366f1',       // indigo-500
-    primaryHover: '#4f46e5',  // indigo-600
-    primaryLight: 'rgba(99, 102, 241, 0.12)',
+    // Semantic Accents (CreatorOS Electric Cyan + Balanced Accents)
+    primary: '#00B4D8',       // cyan-500 / brand accent
+    primaryHover: '#0096C7',  // cyan-600
+    primaryLight: 'rgba(0, 180, 216, 0.12)',
 
-    success: '#10b981',       // emerald-500
-    successLight: 'rgba(16, 185, 129, 0.12)',
+    success: '#059669',       // emerald-600
+    successLight: 'rgba(5, 150, 105, 0.12)',
 
-    danger: '#f43f5e',        // rose-500
-    dangerLight: 'rgba(244, 63, 94, 0.12)',
+    danger: '#E11D48',        // rose-600
+    dangerLight: 'rgba(225, 29, 72, 0.12)',
 
-    warning: '#f59e0b',       // amber-500
-    warningLight: 'rgba(245, 158, 11, 0.12)',
+    warning: '#D97706',       // amber-600
+    warningLight: 'rgba(217, 119, 6, 0.12)',
   },
 
   radius: {

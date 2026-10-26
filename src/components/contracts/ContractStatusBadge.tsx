@@ -17,107 +17,107 @@ export const ContractStatusBadge: React.FC<ContractStatusBadgeProps> = ({
       case 'draft':
         return {
           label: 'Draft',
-          className: 'bg-zinc-900/90 text-zinc-300 border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]',
-          dotColor: 'bg-zinc-400',
+          className: 'bg-zinc-100 text-zinc-700 border-zinc-200 shadow-xs',
+          dotColor: 'bg-zinc-500',
         };
       case 'under_review':
         return {
           label: 'Platform Review',
-          className: 'bg-amber-500/15 text-amber-300 border-amber-500/35 shadow-[0_0_14px_-3px_rgba(245,158,11,0.35)]',
-          dotColor: 'bg-amber-400 shadow-[0_0_6px_rgba(245,158,11,0.8)]',
+          className: 'bg-amber-50 text-amber-800 border-amber-200/90 shadow-xs',
+          dotColor: 'bg-amber-500',
         };
       case 'needs_changes':
         return {
           label: 'Changes Required',
-          className: 'bg-rose-500/15 text-rose-300 border-rose-500/35 shadow-[0_0_14px_-3px_rgba(244,63,94,0.35)]',
-          dotColor: 'bg-rose-400 shadow-[0_0_6px_rgba(244,63,94,0.8)]',
+          className: 'bg-rose-50 text-rose-800 border-rose-200/90 shadow-xs',
+          dotColor: 'bg-rose-500',
         };
       case 'awaiting_creator':
         return {
           label: viewerRole === 'creator' ? 'Awaiting Response' : 'Sent',
-          className: 'bg-amber-500/15 text-amber-300 border-amber-500/35 shadow-[0_0_14px_-3px_rgba(245,158,11,0.38)]',
-          dotColor: 'bg-amber-400 shadow-[0_0_6px_rgba(245,158,11,0.85)]',
+          className: 'bg-amber-50 text-amber-800 border-amber-200/90 shadow-xs',
+          dotColor: 'bg-amber-500',
         };
       case 'accepted':
         return {
           label: 'Signed',
-          className: 'bg-purple-500/15 text-purple-300 border-purple-500/35 shadow-[0_0_14px_-3px_rgba(168,85,247,0.4)]',
-          dotColor: 'bg-purple-400 shadow-[0_0_6px_rgba(168,85,247,0.85)]',
+          className: 'bg-purple-50 text-purple-800 border-purple-200/90 shadow-xs',
+          dotColor: 'bg-purple-500',
         };
       case 'funded':
       case 'active':
         return {
           label: 'Active',
-          className: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/35 shadow-[0_0_14px_-3px_rgba(16,185,129,0.38)]',
-          dotColor: 'bg-emerald-400 shadow-[0_0_6px_rgba(16,185,129,0.85)]',
+          className: 'bg-emerald-50 text-emerald-800 border-emerald-200/90 shadow-xs',
+          dotColor: 'bg-emerald-500',
         };
       case 'deliverable_submitted':
       case 'client_review':
         return {
           label: viewerRole === 'creator' ? 'Brand Review' : 'Review Work',
-          className: 'bg-amber-500/15 text-amber-300 border-amber-500/35 shadow-[0_0_14px_-3px_rgba(245,158,11,0.35)]',
-          dotColor: 'bg-amber-400 shadow-[0_0_6px_rgba(245,158,11,0.8)]',
+          className: 'bg-amber-50 text-amber-800 border-amber-200/90 shadow-xs',
+          dotColor: 'bg-amber-500',
         };
       case 'revision_requested':
         return {
           label: 'Revision',
-          className: 'bg-amber-500/15 text-amber-300 border-amber-500/35 shadow-[0_0_14px_-3px_rgba(245,158,11,0.35)]',
-          dotColor: 'bg-amber-400',
+          className: 'bg-amber-50 text-amber-800 border-amber-200/90 shadow-xs',
+          dotColor: 'bg-amber-500',
         };
       case 'approved':
         return {
           label: 'Approved',
-          className: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/35 shadow-[0_0_14px_-3px_rgba(16,185,129,0.38)]',
-          dotColor: 'bg-emerald-400 shadow-[0_0_6px_rgba(16,185,129,0.85)]',
+          className: 'bg-emerald-50 text-emerald-800 border-emerald-200/90 shadow-xs',
+          dotColor: 'bg-emerald-500',
         };
       case 'payout_pending':
         return {
           label: 'Payout Pending',
-          className: 'bg-purple-500/15 text-purple-300 border-purple-500/35 shadow-[0_0_14px_-3px_rgba(168,85,247,0.38)]',
-          dotColor: 'bg-purple-400 shadow-[0_0_6px_rgba(168,85,247,0.85)]',
+          className: 'bg-purple-50 text-purple-800 border-purple-200/90 shadow-xs',
+          dotColor: 'bg-purple-500',
         };
       case 'paid':
       case 'completed':
         return {
           label: 'Completed',
-          className: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40 shadow-[0_0_16px_-3px_rgba(16,185,129,0.42)]',
-          dotColor: 'bg-emerald-400 shadow-[0_0_6px_rgba(16,185,129,0.9)]',
+          className: 'bg-emerald-50 text-emerald-800 border-emerald-200/90 shadow-xs',
+          dotColor: 'bg-emerald-500',
         };
       case 'declined':
         return {
           label: 'Declined',
-          className: 'bg-rose-500/15 text-rose-300 border-rose-500/35 shadow-[0_0_14px_-3px_rgba(244,63,94,0.35)]',
-          dotColor: 'bg-rose-400 shadow-[0_0_6px_rgba(244,63,94,0.8)]',
+          className: 'bg-rose-50 text-rose-800 border-rose-200/90 shadow-xs',
+          dotColor: 'bg-rose-500',
         };
       case 'expired':
         return {
           label: 'Expired',
-          className: 'bg-zinc-900 text-zinc-400 border-white/10',
-          dotColor: 'bg-zinc-500',
+          className: 'bg-zinc-100 text-zinc-600 border-zinc-200',
+          dotColor: 'bg-zinc-400',
         };
       case 'disputed':
         return {
           label: 'Disputed',
-          className: 'bg-rose-500/15 text-rose-300 border-rose-500/35 shadow-[0_0_14px_-3px_rgba(244,63,94,0.38)]',
-          dotColor: 'bg-rose-400 shadow-[0_0_6px_rgba(244,63,94,0.85)]',
+          className: 'bg-rose-50 text-rose-800 border-rose-200/90 shadow-xs',
+          dotColor: 'bg-rose-500',
         };
       case 'cancelled':
         return {
           label: 'Cancelled',
-          className: 'bg-zinc-900 text-zinc-400 border-white/10',
-          dotColor: 'bg-zinc-500',
+          className: 'bg-zinc-100 text-zinc-600 border-zinc-200',
+          dotColor: 'bg-zinc-400',
         };
       case 'refunded':
         return {
           label: 'Refunded',
-          className: 'bg-zinc-900 text-zinc-400 border-white/10',
-          dotColor: 'bg-zinc-500',
+          className: 'bg-zinc-100 text-zinc-600 border-zinc-200',
+          dotColor: 'bg-zinc-400',
         };
       default:
         return {
           label: (s as string).replace(/_/g, ' '),
-          className: 'bg-zinc-800 text-zinc-300 border-zinc-700',
-          dotColor: 'bg-zinc-400',
+          className: 'bg-zinc-100 text-zinc-700 border-zinc-200',
+          dotColor: 'bg-zinc-500',
         };
     }
   };

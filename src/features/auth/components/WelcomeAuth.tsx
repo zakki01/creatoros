@@ -213,7 +213,7 @@ export const WelcomeAuth: React.FC<WelcomeAuthProps> = ({
             Email
           </label>
           <div className="studio-input-soft rounded-lg flex items-center px-3.5 py-2.5">
-            <Mail className="w-4 h-4 text-zinc-400 mr-2.5 shrink-0" />
+            <Mail className="w-4 h-4 text-zinc-500 mr-2.5 shrink-0" />
             <input
               type="email"
               required
@@ -222,7 +222,7 @@ export const WelcomeAuth: React.FC<WelcomeAuthProps> = ({
               placeholder="creator@demo.creatoros.ai"
               disabled={isLoading}
               autoComplete="email"
-              className="w-full text-xs sm:text-sm text-zinc-900 placeholder:text-zinc-400 bg-transparent outline-none font-sans"
+              className="w-full text-xs sm:text-sm text-zinc-900 placeholder:text-zinc-500 bg-transparent outline-none font-sans"
             />
           </div>
         </div>
@@ -245,13 +245,13 @@ export const WelcomeAuth: React.FC<WelcomeAuthProps> = ({
               placeholder="••••••••"
               disabled={isLoading}
               autoComplete={mode === 'signin' ? 'current-password' : 'new-password'}
-              className="w-full text-xs sm:text-sm text-zinc-900 placeholder:text-zinc-400 bg-transparent outline-none font-sans"
+              className="w-full text-xs sm:text-sm text-zinc-900 placeholder:text-zinc-500 bg-transparent outline-none font-sans"
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
               disabled={isLoading}
-              className="text-zinc-400 hover:text-zinc-600 p-1 cursor-pointer transition-colors focus:outline-none"
+              className="text-zinc-500 hover:text-zinc-600 p-1 cursor-pointer transition-colors focus:outline-none"
               tabIndex={-1}
               aria-label={showPassword ? 'Hide password' : 'Show password'}
             >

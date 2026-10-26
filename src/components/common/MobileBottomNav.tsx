@@ -23,19 +23,19 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
   accentColor = 'indigo',
 }) => {
   const activeColorStyles = {
-    indigo: 'text-indigo-400',
-    emerald: 'text-emerald-400',
+    indigo: 'text-[#0096C7]',
+    emerald: 'text-emerald-700',
   };
 
   const activePillStyles = {
-    indigo: 'bg-indigo-400 shadow-indigo-500/50',
-    emerald: 'bg-emerald-400 shadow-emerald-500/50',
+    indigo: 'bg-[#00B4D8]',
+    emerald: 'bg-emerald-600',
   };
 
   return (
     <nav
       aria-label="Mobile Bottom Navigation"
-      className="md:hidden fixed bottom-0 left-0 right-0 z-40 spatial-dock rounded-t-2xl border-b-0 px-1.5 pt-1 pb-[calc(0.25rem+env(safe-area-inset-bottom,0px))] flex items-center justify-around"
+      className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/92 backdrop-blur-2xl rounded-t-2xl border-t border-black/[0.08] shadow-lg px-1.5 pt-1 pb-[calc(0.25rem+env(safe-area-inset-bottom,0px))] flex items-center justify-around"
     >
       {items.map((item) => {
         const Icon = item.icon;
@@ -51,10 +51,10 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
             className={clsx(
               // Strict 44px minimum touch target hit-box
               'relative flex flex-col items-center justify-center min-w-[52px] min-h-[44px] py-1 px-1.5 rounded-xl transition-all cursor-pointer select-none',
-              'focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500',
+              'focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00B4D8]',
               isActive
-                ? clsx(activeColorStyles[accentColor], 'bg-white/[0.06] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1)]')
-                : 'text-zinc-400 hover:text-zinc-200'
+                ? clsx(activeColorStyles[accentColor], 'bg-black/[0.04] shadow-xs')
+                : 'text-zinc-500 hover:text-zinc-800'
             )}
           >
             <div className="relative flex items-center justify-center">
@@ -69,7 +69,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
               {item.badge !== undefined && item.badge !== false && (
                 <span
                   className={clsx(
-                    'absolute -top-1.5 -right-2.5 font-bold rounded-full bg-indigo-500 text-white flex items-center justify-center ring-2 ring-[#0c0c11] shadow-sm',
+                    'absolute -top-1.5 -right-2.5 font-bold rounded-full bg-[#00B4D8] text-slate-950 flex items-center justify-center ring-2 ring-white shadow-xs',
                     typeof item.badge === 'number'
                       ? 'min-w-[16px] h-4 px-1 text-[9px]'
                       : 'w-2 h-2'
@@ -87,7 +87,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
             <span
               className={clsx(
                 'text-[10px] tracking-tight mt-1 transition-colors leading-none',
-                isActive ? 'text-white font-semibold' : 'text-zinc-400 font-normal'
+                isActive ? 'text-zinc-900 font-semibold' : 'text-zinc-500 font-normal'
               )}
             >
               {item.label}
@@ -97,7 +97,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
             {isActive && (
               <span
                 className={clsx(
-                  'w-3.5 h-0.5 rounded-full mt-1 shadow-sm transition-all',
+                  'w-3.5 h-0.5 rounded-full mt-1 shadow-xs transition-all',
                   activePillStyles[accentColor]
                 )}
               />

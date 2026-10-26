@@ -62,14 +62,14 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({
       {/* Backdrop */}
       <div
         onClick={onClose}
-        className="fixed inset-0 bg-black/75 backdrop-blur-sm transition-opacity animate-in fade-in duration-200"
+        className="fixed inset-0 bg-black/45 backdrop-blur-sm transition-opacity animate-in fade-in duration-200"
       />
 
       {/* Sheet Container */}
       <div
         ref={sheetRef}
         className={clsx(
-          'relative w-full z-10 flex flex-col overflow-hidden bg-[#0c0c11] border border-white/10 shadow-2xl',
+          'relative w-full z-10 flex flex-col overflow-hidden bg-white text-zinc-900 border border-black/[0.08] shadow-2xl',
           // Mobile: Bottom Sheet appearance
           'rounded-t-[24px] md:rounded-2xl',
           maxHeight,
@@ -84,22 +84,22 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({
       >
         {/* Mobile Drag Indicator Bar */}
         <div className="flex md:hidden items-center justify-center pt-3 pb-1 shrink-0">
-          <div className="w-10 h-1.5 rounded-full bg-white/20 hover:bg-white/30 transition-colors" />
+          <div className="w-10 h-1.5 rounded-full bg-zinc-300 hover:bg-zinc-400 transition-colors" />
         </div>
 
         {/* Header */}
         {(title || showCloseButton) && (
-          <div className="flex items-center justify-between px-5 py-3 border-b border-white/[0.08] shrink-0">
+          <div className="flex items-center justify-between px-5 py-3 border-b border-zinc-200 shrink-0">
             <div className="min-w-0 flex-1 pr-3">
               {typeof title === 'string' ? (
-                <h3 className="text-base font-semibold text-zinc-100 truncate">
+                <h3 className="text-base font-semibold text-zinc-900 truncate">
                   {title}
                 </h3>
               ) : (
                 title
               )}
               {subtitle && (
-                <p className="text-xs text-zinc-400 truncate mt-0.5">{subtitle}</p>
+                <p className="text-xs text-zinc-500 truncate mt-0.5">{subtitle}</p>
               )}
             </div>
 
@@ -110,20 +110,20 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({
                 size="sm"
                 onClick={onClose}
               >
-                <X className="w-5 h-5 text-zinc-400 hover:text-zinc-200" />
+                <X className="w-5 h-5 text-zinc-400 hover:text-zinc-800" />
               </IconButton>
             )}
           </div>
         )}
 
         {/* Scrollable Body Content */}
-        <div className="flex-1 min-h-0 overflow-y-auto px-5 py-4 overscroll-contain">
+        <div className="flex-1 min-h-0 overflow-y-auto px-5 py-4 overscroll-contain text-zinc-900">
           {children}
         </div>
 
         {/* Optional Sticky Footer with Safe Area Support */}
         {footer && (
-          <div className="px-5 py-3 border-t border-white/[0.08] bg-[#09090d]/90 backdrop-blur-md pb-safe shrink-0">
+          <div className="px-5 py-3 border-t border-zinc-200 bg-zinc-50/90 backdrop-blur-md pb-safe shrink-0">
             {footer}
           </div>
         )}

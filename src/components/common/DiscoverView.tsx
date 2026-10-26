@@ -259,25 +259,25 @@ export const DiscoverView: React.FC = () => {
     <div className="max-w-4xl mx-auto space-y-6 pb-20 animate-fade-in font-sans relative">
       {/* 1. MINIMAL SPATIAL DISCOVER TOP BAR */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-white font-display">
+        <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 font-display">
           Discover
         </h1>
 
         {/* Action Controls: [Search] [Filters] [+ Create] */}
         <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
           <div className="relative flex-1 sm:w-56">
-            <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
+            <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search..."
-              className="w-full pl-8 pr-3 py-2 rounded-xl surface-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-indigo-500/60"
+              className="w-full pl-8 pr-3 py-2 rounded-xl surface-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]/60"
             />
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery('')}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300"
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-700"
               >
                 <X className="w-3 h-3" />
               </button>
@@ -289,8 +289,8 @@ export const DiscoverView: React.FC = () => {
             aria-label="Filters"
             className={`min-h-[38px] px-3 py-2 rounded-xl text-xs font-medium flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
               showFilterDrawer || selectedLocation !== 'All' || verifiedOnly || selectedContentType !== 'All'
-                ? 'surface-3 border-indigo-500/50 text-indigo-300'
-                : 'surface-2 text-zinc-300 hover:text-white'
+                ? 'surface-3 border-[#00B4D8]/50 text-[#0096C7]'
+                : 'surface-2 text-zinc-700 hover:text-white'
             }`}
             title="Filters"
           >
@@ -301,10 +301,10 @@ export const DiscoverView: React.FC = () => {
           <button
             onClick={() => setIsMyPostsOpen(true)}
             aria-label="My Posts"
-            className="min-h-[38px] px-3 py-2 rounded-xl surface-2 text-xs font-medium text-zinc-300 hover:text-white transition-all cursor-pointer flex items-center justify-center gap-1.5"
+            className="min-h-[38px] px-3 py-2 rounded-xl surface-2 text-xs font-medium text-zinc-700 hover:text-white transition-all cursor-pointer flex items-center justify-center gap-1.5"
             title="My Posts"
           >
-            <Bookmark className="w-3.5 h-3.5 text-zinc-400" />
+            <Bookmark className="w-3.5 h-3.5 text-zinc-500" />
           </button>
 
           {featureFlags.posting && (
@@ -341,7 +341,7 @@ export const DiscoverView: React.FC = () => {
                 className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
                   isActive
                     ? 'depth-btn-primary text-white'
-                    : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.04]'
+                    : 'text-zinc-500 hover:text-zinc-800 hover:bg-white/[0.04]'
                 }`}
               >
                 <Icon className="w-3.5 h-3.5" />
@@ -359,8 +359,8 @@ export const DiscoverView: React.FC = () => {
               onClick={() => setSelectedLocation(loc)}
               className={`px-2.5 py-1 rounded-xl text-[11px] font-mono transition-all cursor-pointer ${
                 selectedLocation === loc
-                  ? 'surface-3 text-white border-indigo-500/40'
-                  : 'text-zinc-400 hover:text-zinc-200 bg-white/[0.02] border border-white/[0.06]'
+                  ? 'surface-3 text-white border-[#00B4D8]/40'
+                  : 'text-zinc-500 hover:text-zinc-800 bg-white/[0.02] border border-black/[0.06]'
               }`}
             >
               {loc}
@@ -372,9 +372,9 @@ export const DiscoverView: React.FC = () => {
       {/* FILTER DRAWER */}
       {showFilterDrawer && (
         <div className="p-4 rounded-2xl surface-3 space-y-3 animate-fade-in">
-          <div className="flex items-center justify-between pb-2 border-b border-white/[0.06]">
+          <div className="flex items-center justify-between pb-2 border-b border-black/[0.06]">
             <span className="text-xs font-bold text-white flex items-center gap-1.5">
-              <Filter className="w-3.5 h-3.5 text-indigo-400" />
+              <Filter className="w-3.5 h-3.5 text-[#0096C7]" />
               <span>Filters</span>
             </span>
             <button
@@ -385,7 +385,7 @@ export const DiscoverView: React.FC = () => {
                 setSelectedEngagement('All');
                 setVerifiedOnly(false);
               }}
-              className="text-[11px] text-zinc-400 hover:text-indigo-400"
+              className="text-[11px] text-zinc-500 hover:text-[#0096C7]"
             >
               Reset
             </button>
@@ -397,7 +397,7 @@ export const DiscoverView: React.FC = () => {
               <select
                 value={selectedContentType}
                 onChange={(e) => setSelectedContentType(e.target.value)}
-                className="w-full bg-zinc-900 border border-white/[0.08] rounded-xl p-1.5 text-xs text-zinc-200"
+                className="w-full bg-white border border-black/[0.08] rounded-xl p-1.5 text-xs text-zinc-800"
               >
                 <option value="All">All</option>
                 <option value="Reels">Reels</option>
@@ -411,7 +411,7 @@ export const DiscoverView: React.FC = () => {
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="w-full bg-zinc-900 border border-white/[0.08] rounded-xl p-1.5 text-xs text-zinc-200"
+                className="w-full bg-white border border-black/[0.08] rounded-xl p-1.5 text-xs text-zinc-800"
               >
                 {categoryOptions.map((c) => (
                   <option key={c} value={c}>{c}</option>
@@ -424,7 +424,7 @@ export const DiscoverView: React.FC = () => {
               <select
                 value={selectedLocation}
                 onChange={(e) => setSelectedLocation(e.target.value)}
-                className="w-full bg-zinc-900 border border-white/[0.08] rounded-xl p-1.5 text-xs text-zinc-200"
+                className="w-full bg-white border border-black/[0.08] rounded-xl p-1.5 text-xs text-zinc-800"
               >
                 {locationOptions.map((l) => (
                   <option key={l} value={l}>{l}</option>
@@ -433,14 +433,14 @@ export const DiscoverView: React.FC = () => {
             </div>
 
             <div className="flex flex-col justify-end">
-              <label className="flex items-center gap-2 cursor-pointer p-1.5 rounded-xl bg-zinc-900 border border-white/[0.08]">
+              <label className="flex items-center gap-2 cursor-pointer p-1.5 rounded-xl bg-white shadow-sm border border-black/[0.08]">
                 <input
                   type="checkbox"
                   checked={verifiedOnly}
                   onChange={(e) => setVerifiedOnly(e.target.checked)}
-                  className="rounded border-zinc-700 text-indigo-600 focus:ring-0"
+                  className="rounded border-zinc-300 text-indigo-600 focus:ring-0"
                 />
-                <span className="text-xs text-zinc-300 font-medium">Verified</span>
+                <span className="text-xs text-zinc-700 font-medium">Verified</span>
               </label>
             </div>
           </div>
@@ -481,10 +481,10 @@ export const DiscoverView: React.FC = () => {
                         verified
                       />
                       <div>
-                        <h3 className="text-sm font-bold text-white group-hover:text-indigo-300 transition-colors">
+                        <h3 className="text-sm font-bold text-white group-hover:text-[#0096C7] transition-colors">
                           {c.name}
                         </h3>
-                        <p className="text-xs text-zinc-400 mt-0.5">
+                        <p className="text-xs text-zinc-500 mt-0.5">
                           {c.niche} · {c.location.split(',')[0]}
                         </p>
                       </div>
@@ -492,7 +492,7 @@ export const DiscoverView: React.FC = () => {
                   </div>
 
                   {/* Concise Reputation & Projects Line */}
-                  <div className="flex items-center gap-2 text-xs font-mono text-zinc-300">
+                  <div className="flex items-center gap-2 text-xs font-mono text-zinc-700">
                     <span className="text-emerald-400 font-semibold">96 Reputation</span>
                     <span className="text-zinc-600">·</span>
                     <span>{c.pastCampaignsCount || 12} Projects</span>
@@ -501,7 +501,7 @@ export const DiscoverView: React.FC = () => {
                   {/* Latest Work Visual Preview */}
                   <div
                     onClick={() => setSelectedCreatorModal(c)}
-                    className="relative h-40 w-full rounded-2xl overflow-hidden bg-zinc-900 border border-white/10 cursor-pointer group/img"
+                    className="relative h-40 w-full rounded-2xl overflow-hidden bg-white border border-black/[0.08] cursor-pointer group/img"
                   >
                     <img
                       src={latestWorkImg}
@@ -510,7 +510,7 @@ export const DiscoverView: React.FC = () => {
                       loading="lazy"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-                    <span className="absolute bottom-2.5 left-3 text-[10px] font-mono text-zinc-200 bg-black/60 backdrop-blur-md px-2 py-0.5 rounded-full border border-white/10">
+                    <span className="absolute bottom-2.5 left-3 text-[10px] font-mono text-zinc-800 bg-black/60 backdrop-blur-md px-2 py-0.5 rounded-full border border-black/[0.08]">
                       Latest Work
                     </span>
                   </div>
@@ -519,7 +519,7 @@ export const DiscoverView: React.FC = () => {
                   <div className="flex items-center justify-between pt-1 gap-2">
                     <button
                       onClick={() => setSelectedCreatorModal(c)}
-                      className="px-3.5 py-1.5 rounded-xl depth-btn-secondary text-xs font-semibold text-zinc-200 hover:text-white transition-all cursor-pointer"
+                      className="px-3.5 py-1.5 rounded-xl depth-btn-secondary text-xs font-semibold text-zinc-800 hover:text-white transition-all cursor-pointer"
                     >
                       View
                     </button>
@@ -582,16 +582,16 @@ export const DiscoverView: React.FC = () => {
                         verified
                       />
                       <div>
-                        <h3 className="text-sm font-bold text-white group-hover:text-indigo-300 transition-colors">
+                        <h3 className="text-sm font-bold text-white group-hover:text-[#0096C7] transition-colors">
                           {b.name}
                         </h3>
-                        <p className="text-xs text-zinc-400 mt-0.5">
+                        <p className="text-xs text-zinc-500 mt-0.5">
                           {b.category} · {b.location}
                         </p>
                       </div>
                     </div>
 
-                    <span className="text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-indigo-500/15 text-indigo-300 border border-indigo-500/30">
+                    <span className="text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-[#00B4D8]/10 text-[#0096C7] border border-[#00B4D8]/30">
                       {b.badge}
                     </span>
                   </div>
@@ -599,7 +599,7 @@ export const DiscoverView: React.FC = () => {
                   {/* Cover Image + Brief Overlay */}
                   <div
                     onClick={() => setSelectedBrandModalData(b)}
-                    className="relative h-36 w-full rounded-2xl overflow-hidden bg-zinc-900 border border-white/10 cursor-pointer group/cover"
+                    className="relative h-36 w-full rounded-2xl overflow-hidden bg-white border border-black/[0.08] cursor-pointer group/cover"
                   >
                     <img
                       src={b.coverUrl}
@@ -626,7 +626,7 @@ export const DiscoverView: React.FC = () => {
                   <div className="flex items-center justify-between pt-1 gap-2">
                     <button
                       onClick={() => setSelectedBrandModalData(b)}
-                      className="px-3.5 py-1.5 rounded-xl depth-btn-secondary text-xs font-semibold text-zinc-200 hover:text-white transition-all cursor-pointer"
+                      className="px-3.5 py-1.5 rounded-xl depth-btn-secondary text-xs font-semibold text-zinc-800 hover:text-white transition-all cursor-pointer"
                     >
                       View
                     </button>
@@ -675,7 +675,7 @@ export const DiscoverView: React.FC = () => {
                 return (
                   <div
                     key={reel.id}
-                    className="relative rounded-2xl overflow-hidden bg-zinc-950 border border-white/[0.08] aspect-[9/16] group shadow-xl flex flex-col justify-between"
+                    className="relative rounded-2xl overflow-hidden bg-white border border-black/[0.08] aspect-[9/16] group shadow-xl flex flex-col justify-between"
                   >
                     {isPlaying && reel.videoUrl ? (
                       <video
@@ -699,10 +699,10 @@ export const DiscoverView: React.FC = () => {
                     {/* Top Bar on Reel */}
                     <div className="relative z-10 p-3.5 flex items-center justify-between">
                       <div className="flex items-center gap-1.5">
-                        <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-black/60 backdrop-blur-md text-white border border-white/10">
+                        <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-black/60 backdrop-blur-md text-white border border-black/[0.08]">
                           🎬 Reel
                         </span>
-                        <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-black/60 backdrop-blur-md text-zinc-300 border border-white/10">
+                        <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-black/60 backdrop-blur-md text-zinc-700 border border-black/[0.08]">
                           {reel.duration || '0:30'}
                         </span>
                       </div>
@@ -723,7 +723,7 @@ export const DiscoverView: React.FC = () => {
                               e.stopPropagation();
                               setOpenMoreMenuPostId(openMoreMenuPostId === reel.id ? null : reel.id);
                             }}
-                            className="w-8 h-8 rounded-full bg-black/60 backdrop-blur-md text-zinc-300 hover:text-white flex items-center justify-center transition-all cursor-pointer"
+                            className="w-8 h-8 rounded-full bg-black/60 backdrop-blur-md text-zinc-700 hover:text-white flex items-center justify-center transition-all cursor-pointer"
                             title="More options"
                           >
                             <MoreHorizontal className="w-4 h-4" />
@@ -731,16 +731,16 @@ export const DiscoverView: React.FC = () => {
                           {openMoreMenuPostId === reel.id && (
                             <div
                               onClick={(e) => e.stopPropagation()}
-                              className="absolute right-0 top-9 w-44 rounded-xl bg-zinc-900 border border-white/10 shadow-2xl p-1 z-30 animate-slide-up text-left"
+                              className="absolute right-0 top-9 w-44 rounded-xl bg-white shadow-sm border border-black/[0.08] shadow-2xl p-1 z-30 animate-slide-up text-left"
                             >
                               <button
                                 onClick={() => {
                                   handleShareClick(reel);
                                   setOpenMoreMenuPostId(null);
                                 }}
-                                className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs text-zinc-300 hover:text-white hover:bg-zinc-800 transition-colors"
+                                className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs text-zinc-700 hover:text-white hover:bg-zinc-100 transition-colors"
                               >
-                                <Share2 className="w-3.5 h-3.5 text-zinc-400" />
+                                <Share2 className="w-3.5 h-3.5 text-zinc-500" />
                                 <span>Copy Link</span>
                               </button>
                               <button
@@ -778,21 +778,21 @@ export const DiscoverView: React.FC = () => {
                             className="w-8 h-8 rounded-full object-cover ring-1 ring-white/30"
                           />
                           <div className="min-w-0">
-                            <span className="text-xs font-bold text-white truncate block group-hover/author:text-indigo-300">
+                            <span className="text-xs font-bold text-white truncate block group-hover/author:text-[#0096C7]">
                               {reel.authorName}
                             </span>
-                            <span className="text-[10px] text-zinc-300 font-mono block">
+                            <span className="text-[10px] text-zinc-700 font-mono block">
                               {reel.authorHandle}
                             </span>
                           </div>
                         </div>
 
-                        <p className="text-xs text-zinc-200 line-clamp-2 leading-snug">
+                        <p className="text-xs text-zinc-800 line-clamp-2 leading-snug">
                           {reel.content}
                         </p>
 
-                        <div className="flex items-center gap-1.5 text-[10px] font-mono text-zinc-400 bg-black/40 px-2 py-1 rounded-md backdrop-blur-sm w-fit max-w-full truncate">
-                          <Volume2 className="w-3 h-3 shrink-0 text-indigo-400" />
+                        <div className="flex items-center gap-1.5 text-[10px] font-mono text-zinc-500 bg-black/40 px-2 py-1 rounded-md backdrop-blur-sm w-fit max-w-full truncate">
+                          <Volume2 className="w-3 h-3 shrink-0 text-[#0096C7]" />
                           <span className="truncate">Original Sound • Anamorphic Master</span>
                         </div>
                       </div>
@@ -846,7 +846,7 @@ export const DiscoverView: React.FC = () => {
                           <div
                             className={`w-9 h-9 rounded-full flex items-center justify-center backdrop-blur-md transition-all ${
                               reel.savedByMe
-                                ? 'bg-indigo-600 text-white'
+                                ? 'bg-[#00B4D8] text-white'
                                 : 'bg-black/60 text-white hover:bg-black/90'
                             }`}
                           >
@@ -869,7 +869,7 @@ export const DiscoverView: React.FC = () => {
                                 role: reel.authorType,
                               })
                             }
-                            className="w-9 h-9 rounded-full bg-indigo-600 hover:bg-indigo-500 text-white flex items-center justify-center shadow-lg shadow-indigo-600/40 cursor-pointer"
+                            className="w-9 h-9 rounded-full bg-[#00B4D8] hover:bg-[#0096C7] text-white flex items-center justify-center shadow-lg shadow-indigo-600/40 cursor-pointer"
                             title="Connect"
                           >
                             <UserPlus className="w-4 h-4" />
@@ -922,7 +922,7 @@ export const DiscoverView: React.FC = () => {
       {featureFlags.posting && (
         <button
           onClick={() => setIsCreatePostOpen(true)}
-          className="sm:hidden fixed bottom-6 right-6 z-40 w-13 h-13 rounded-full bg-indigo-600 text-white shadow-xl shadow-indigo-600/50 flex items-center justify-center hover:bg-indigo-500 active:scale-95 transition-all border border-indigo-400/40 cursor-pointer"
+          className="sm:hidden fixed bottom-6 right-6 z-40 w-13 h-13 rounded-full bg-[#00B4D8] text-white shadow-xl shadow-indigo-600/50 flex items-center justify-center hover:bg-[#0096C7] active:scale-95 transition-all border border-indigo-400/40 cursor-pointer"
           title="Create Post"
         >
           <Plus className="w-6 h-6" />
@@ -1014,14 +1014,14 @@ export const DiscoverView: React.FC = () => {
 
       {/* 11. CREATOR PROFILE MODAL */}
       {selectedCreatorModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-md animate-fade-in overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/45 backdrop-blur-md animate-fade-in overflow-y-auto">
           <div
-            className="relative w-full max-w-4xl rounded-2xl bg-[#0c0c11] border border-white/[0.08] p-6 shadow-2xl text-zinc-100 overflow-hidden my-auto"
+            className="relative w-full max-w-4xl rounded-2xl bg-white text-zinc-900 border border-black/[0.08] p-6 shadow-2xl text-zinc-900 overflow-hidden my-auto"
             onClick={(e) => e.stopPropagation()}
           >
             <button
               onClick={() => setSelectedCreatorModal(null)}
-              className="absolute top-4 right-4 z-20 p-2 rounded-full bg-black/60 text-zinc-300 hover:text-white hover:bg-black/90 transition-all cursor-pointer backdrop-blur-sm border border-white/10"
+              className="absolute top-4 right-4 z-20 p-2 rounded-full bg-black/60 text-zinc-700 hover:text-white hover:bg-black/90 transition-all cursor-pointer backdrop-blur-sm border border-black/[0.08]"
             >
               <X className="w-4 h-4" />
             </button>

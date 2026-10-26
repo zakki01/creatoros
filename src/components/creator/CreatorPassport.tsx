@@ -95,7 +95,7 @@ export const CreatorPassport: React.FC = () => {
       {/* Compact Page Title Bar */}
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-2.5">
-          <h1 className="text-xl sm:text-2xl font-bold text-white font-display tracking-tight">
+          <h1 className="text-xl sm:text-2xl font-bold text-zinc-900 font-display tracking-tight">
             Passport
           </h1>
           <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 whitespace-nowrap shrink-0">
@@ -176,7 +176,7 @@ export const CreatorPassport: React.FC = () => {
               {/* Name, Handle, Category & Status */}
               <div className="min-w-0 space-y-0.5">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <h2 className="text-xl sm:text-2xl font-bold text-white font-display tracking-tight truncate">
+                  <h2 className="text-xl sm:text-2xl font-bold text-zinc-900 font-display tracking-tight truncate">
                     {creator.name}
                   </h2>
                   <span
@@ -306,7 +306,7 @@ export const CreatorPassport: React.FC = () => {
           {/* Bio Section (2-3 lines with More toggle) */}
           <SpatialCard surface={2} className="md:col-span-2 p-5 space-y-3">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-semibold text-white font-display">Bio</h3>
+              <h3 className="text-sm font-semibold text-zinc-900 font-display">Bio</h3>
               <span className="text-[11px] text-zinc-400">
                 {creator.languages.join(' · ')}
               </span>
@@ -350,7 +350,7 @@ export const CreatorPassport: React.FC = () => {
 
           {/* Compact Rates Card */}
           <SpatialCard surface={2} className="p-5 space-y-3">
-            <h3 className="text-sm font-semibold text-white font-display">Rates</h3>
+            <h3 className="text-sm font-semibold text-zinc-900 font-display">Rates</h3>
             <div className="grid grid-cols-2 gap-2.5">
               {Object.entries(creator.rateCard).map(([format, fee]) => (
                 <div

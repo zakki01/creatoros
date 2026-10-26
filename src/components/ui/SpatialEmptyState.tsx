@@ -171,12 +171,12 @@ export const SpatialEmptyState: React.FC<SpatialEmptyStateProps> = ({
         {render3DObject(objectType)}
       </div>
 
-      <h3 className="relative z-10 text-base sm:text-lg font-semibold text-white tracking-tight">
+      <h3 className="relative z-10 text-base sm:text-lg font-semibold text-zinc-900 tracking-tight">
         {title}
       </h3>
 
       {subtitle && (
-        <p className="relative z-10 text-xs sm:text-sm text-zinc-400 mt-1 max-w-xs">
+        <p className="relative z-10 text-xs sm:text-sm text-zinc-500 mt-1 max-w-xs">
           {subtitle}
         </p>
       )}
@@ -184,7 +184,7 @@ export const SpatialEmptyState: React.FC<SpatialEmptyStateProps> = ({
       {actionLabel && onAction && (
         <button
           onClick={onAction}
-          className="relative z-10 mt-5 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-white depth-btn-primary transition-all"
+          className="relative z-10 mt-5 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-950 depth-btn-primary transition-all"
         >
           {actionLabel}
         </button>

@@ -67,24 +67,24 @@ export const DeliverableBuilderCard: React.FC<DeliverableBuilderCardProps> = ({
     <div
       className={`p-4 rounded-2xl border transition-all ${
         hasErrors
-          ? 'bg-zinc-900/80 border-amber-500/40'
-          : 'bg-zinc-900/60 border-white/[0.08] hover:border-white/[0.14]'
+          ? 'bg-amber-50/50 border-amber-300'
+          : 'bg-white border-black/[0.08] hover:border-black/15 shadow-xs'
       }`}
     >
       {/* Header bar */}
-      <div className="flex items-center justify-between gap-3 pb-3 border-b border-white/[0.06]">
+      <div className="flex items-center justify-between gap-3 pb-3 border-b border-black/[0.06]">
         <div className="flex items-center gap-2.5">
-          <span className="w-6 h-6 rounded-lg bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 font-mono text-xs font-bold flex items-center justify-center">
+          <span className="w-6 h-6 rounded-lg bg-[#00B4D8]/10 border border-[#00B4D8]/20 text-[#0096C7] font-mono text-xs font-bold flex items-center justify-center">
             {index + 1}
           </span>
           <div className="flex items-center gap-2">
-            <span className="text-xs font-bold text-zinc-100 uppercase tracking-wide">
+            <span className="text-xs font-bold text-zinc-900 uppercase tracking-wide">
               {deliverable.type}
             </span>
-            <span className="text-[11px] font-mono text-zinc-400">
+            <span className="text-[11px] font-mono text-zinc-500">
               × {deliverable.quantity || 1}
             </span>
-            <span className="text-[10px] px-2 py-0.5 rounded-full bg-zinc-800 text-zinc-300 font-mono">
+            <span className="text-[10px] px-2 py-0.5 rounded-full bg-zinc-100 text-zinc-700 font-mono border border-zinc-200">
               {deliverable.format}
             </span>
           </div>
@@ -94,17 +94,17 @@ export const DeliverableBuilderCard: React.FC<DeliverableBuilderCardProps> = ({
           <button
             type="button"
             onClick={() => setIsEditing(!isEditing)}
-            className="min-h-[44px] min-w-[44px] rounded-xl hover:bg-zinc-800 text-zinc-400 hover:text-zinc-200 flex items-center justify-center transition-colors cursor-pointer"
+            className="min-h-[44px] min-w-[44px] rounded-xl hover:bg-zinc-100 text-zinc-400 hover:text-zinc-700 flex items-center justify-center transition-colors cursor-pointer"
             title={isEditing ? 'Done editing' : 'Edit deliverable'}
             aria-label={isEditing ? 'Done editing' : 'Edit deliverable'}
           >
-            {isEditing ? <Check className="w-4 h-4 text-emerald-400" /> : <Edit2 className="w-3.5 h-3.5" />}
+            {isEditing ? <Check className="w-4 h-4 text-emerald-600" /> : <Edit2 className="w-3.5 h-3.5" />}
           </button>
 
           <button
             type="button"
             onClick={onDuplicate}
-            className="min-h-[44px] min-w-[44px] rounded-xl hover:bg-zinc-800 text-zinc-400 hover:text-zinc-200 flex items-center justify-center transition-colors cursor-pointer"
+            className="min-h-[44px] min-w-[44px] rounded-xl hover:bg-zinc-100 text-zinc-400 hover:text-zinc-700 flex items-center justify-center transition-colors cursor-pointer"
             title="Duplicate deliverable"
             aria-label="Duplicate deliverable"
           >
@@ -114,7 +114,7 @@ export const DeliverableBuilderCard: React.FC<DeliverableBuilderCardProps> = ({
           <button
             type="button"
             onClick={onDelete}
-            className="min-h-[44px] min-w-[44px] rounded-xl hover:bg-rose-500/10 text-zinc-400 hover:text-rose-400 flex items-center justify-center transition-colors cursor-pointer"
+            className="min-h-[44px] min-w-[44px] rounded-xl hover:bg-rose-50 text-zinc-400 hover:text-rose-600 flex items-center justify-center transition-colors cursor-pointer"
             title="Delete deliverable"
             aria-label="Delete deliverable"
           >
@@ -128,7 +128,7 @@ export const DeliverableBuilderCard: React.FC<DeliverableBuilderCardProps> = ({
         <div className="pt-3.5 space-y-3.5 text-xs">
           {/* Type Selector */}
           <div>
-            <label className="text-[11px] font-medium text-zinc-400 block mb-1.5">
+            <label className="text-[11px] font-medium text-zinc-700 block mb-1.5">
               Deliverable Format & Type
             </label>
             <div className="flex items-center gap-1.5 flex-wrap">
@@ -139,8 +139,8 @@ export const DeliverableBuilderCard: React.FC<DeliverableBuilderCardProps> = ({
                   onClick={() => onUpdate({ ...deliverable, type })}
                   className={`min-h-[36px] px-3 py-1.5 rounded-xl text-xs font-medium transition-all cursor-pointer ${
                     deliverable.type === type
-                      ? 'bg-indigo-600 text-white font-semibold shadow-sm shadow-indigo-600/30'
-                      : 'bg-zinc-800/80 text-zinc-300 hover:bg-zinc-700'
+                      ? 'bg-[#00B4D8] text-white font-semibold shadow-xs'
+                      : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200 hover:text-zinc-900 border border-zinc-200'
                   }`}
                 >
                   {type}
@@ -152,7 +152,7 @@ export const DeliverableBuilderCard: React.FC<DeliverableBuilderCardProps> = ({
           {/* Grid: Quantity, Aspect Ratio, Duration, Due Date */}
           <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
             <div>
-              <label className="text-[11px] font-medium text-zinc-400 block mb-1">Quantity</label>
+              <label className="text-[11px] font-medium text-zinc-700 block mb-1">Quantity</label>
               <input
                 type="number"
                 min="1"
@@ -161,21 +161,21 @@ export const DeliverableBuilderCard: React.FC<DeliverableBuilderCardProps> = ({
                 onChange={(e) =>
                   onUpdate({ ...deliverable, quantity: Math.max(1, parseInt(e.target.value) || 1) })
                 }
-                className="w-full min-h-[44px] px-3 py-2 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 text-xs focus:outline-none focus:border-indigo-500 font-mono"
+                className="w-full min-h-[44px] px-3 py-2 rounded-xl bg-white border border-zinc-300 text-zinc-900 text-xs focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] font-mono shadow-xs"
               />
               {errors.quantity && (
-                <span className="text-[10px] text-rose-400 mt-1 block flex items-center gap-1">
+                <span className="text-[10px] text-rose-600 mt-1 block flex items-center gap-1 font-medium">
                   <AlertCircle className="w-3 h-3" /> {errors.quantity}
                 </span>
               )}
             </div>
 
             <div>
-              <label className="text-[11px] font-medium text-zinc-400 block mb-1">Aspect Ratio</label>
+              <label className="text-[11px] font-medium text-zinc-700 block mb-1">Aspect Ratio</label>
               <select
                 value={deliverable.format}
                 onChange={(e) => onUpdate({ ...deliverable, format: e.target.value as DeliverableFormat })}
-                className="w-full min-h-[44px] px-3 py-2 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 text-xs focus:outline-none focus:border-indigo-500"
+                className="w-full min-h-[44px] px-3 py-2 rounded-xl bg-white border border-zinc-300 text-zinc-900 text-xs focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] shadow-xs"
               >
                 {formatOptions.map((f) => (
                   <option key={f} value={f}>
@@ -186,7 +186,7 @@ export const DeliverableBuilderCard: React.FC<DeliverableBuilderCardProps> = ({
             </div>
 
             <div>
-              <label className="text-[11px] font-medium text-zinc-400 block mb-1">
+              <label className="text-[11px] font-medium text-zinc-700 block mb-1">
                 Duration / Res (Opt)
               </label>
               <input
@@ -194,20 +194,20 @@ export const DeliverableBuilderCard: React.FC<DeliverableBuilderCardProps> = ({
                 placeholder="e.g. 30–60s, 4K"
                 value={deliverable.duration || ''}
                 onChange={(e) => onUpdate({ ...deliverable, duration: e.target.value })}
-                className="w-full min-h-[44px] px-3 py-2 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 text-xs focus:outline-none focus:border-indigo-500"
+                className="w-full min-h-[44px] px-3 py-2 rounded-xl bg-white border border-zinc-300 text-zinc-900 text-xs focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] shadow-xs"
               />
             </div>
 
             <div>
-              <label className="text-[11px] font-medium text-zinc-400 block mb-1">Milestone Deadline</label>
+              <label className="text-[11px] font-medium text-zinc-700 block mb-1">Milestone Deadline</label>
               <input
                 type="date"
                 value={deliverable.dueDate || ''}
                 onChange={(e) => onUpdate({ ...deliverable, dueDate: e.target.value })}
-                className="w-full min-h-[44px] px-3 py-2 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 text-xs focus:outline-none focus:border-indigo-500"
+                className="w-full min-h-[44px] px-3 py-2 rounded-xl bg-white border border-zinc-300 text-zinc-900 text-xs focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] shadow-xs"
               />
               {errors.dueDate && (
-                <span className="text-[10px] text-rose-400 mt-1 block flex items-center gap-1">
+                <span className="text-[10px] text-rose-600 mt-1 block flex items-center gap-1 font-medium">
                   <AlertCircle className="w-3 h-3" /> {errors.dueDate}
                 </span>
               )}
@@ -216,7 +216,7 @@ export const DeliverableBuilderCard: React.FC<DeliverableBuilderCardProps> = ({
 
           {/* Specifications */}
           <div>
-            <label className="text-[11px] font-medium text-zinc-400 block mb-1">
+            <label className="text-[11px] font-medium text-zinc-700 block mb-1">
               Creative Specifications & Requirements
             </label>
             <textarea
@@ -224,10 +224,10 @@ export const DeliverableBuilderCard: React.FC<DeliverableBuilderCardProps> = ({
               placeholder="e.g. Product must appear in first 5 seconds. Must clearly show logo and include swipe-up promo link."
               value={deliverable.specifications}
               onChange={(e) => onUpdate({ ...deliverable, specifications: e.target.value })}
-              className="w-full p-3 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 text-xs focus:outline-none focus:border-indigo-500 leading-relaxed resize-none"
+              className="w-full p-3 rounded-xl bg-white border border-zinc-300 text-zinc-900 text-xs focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] leading-relaxed resize-none shadow-xs"
             />
             {errors.specifications && (
-              <span className="text-[10px] text-rose-400 mt-0.5 block flex items-center gap-1">
+              <span className="text-[10px] text-rose-600 mt-0.5 block flex items-center gap-1 font-medium">
                 <AlertCircle className="w-3 h-3" /> {errors.specifications}
               </span>
             )}
@@ -237,25 +237,25 @@ export const DeliverableBuilderCard: React.FC<DeliverableBuilderCardProps> = ({
         /* Compact Readout View */
         <div className="pt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
           <div className="space-y-1">
-            <p className="text-zinc-200 font-medium leading-relaxed">
+            <p className="text-zinc-800 font-medium leading-relaxed">
               {deliverable.specifications || 'No specific creative guidelines provided.'}
             </p>
-            <div className="flex items-center gap-3 text-[11px] text-zinc-400 flex-wrap">
+            <div className="flex items-center gap-3 text-[11px] text-zinc-500 flex-wrap">
               {deliverable.duration && (
                 <span className="flex items-center gap-1">
-                  <Clock className="w-3 h-3 text-zinc-500" />
+                  <Clock className="w-3 h-3 text-zinc-400" />
                   {deliverable.duration}
                 </span>
               )}
               <span className="flex items-center gap-1">
-                <Calendar className="w-3 h-3 text-zinc-500" />
+                <Calendar className="w-3 h-3 text-zinc-400" />
                 Due {deliverable.dueDate || 'Unset'}
               </span>
             </div>
           </div>
 
           {hasErrors && (
-            <div className="flex items-center gap-1.5 text-amber-400 text-[11px] font-medium shrink-0">
+            <div className="flex items-center gap-1.5 text-amber-600 text-[11px] font-medium shrink-0">
               <AlertCircle className="w-3.5 h-3.5" />
               <span>Needs specifications</span>
             </div>

@@ -22,22 +22,22 @@ export const Badge: React.FC<BadgeProps> = ({
   };
 
   const variantStyles = {
-    brand: 'bg-indigo-500/15 text-indigo-300 border border-indigo-500/30',
-    purple: 'bg-purple-500/15 text-purple-300 border border-purple-500/30',
-    success: 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30',
-    warning: 'bg-amber-500/15 text-amber-300 border border-amber-500/30',
-    danger: 'bg-rose-500/15 text-rose-300 border border-rose-500/30',
-    neutral: 'bg-zinc-800/80 text-zinc-300 border border-zinc-700/60',
-    outline: 'bg-transparent text-zinc-400 border border-zinc-700',
+    brand: 'bg-sky-50 text-sky-800 border border-sky-200/90',
+    purple: 'bg-purple-50 text-purple-800 border border-purple-200/90',
+    success: 'bg-emerald-50 text-emerald-800 border border-emerald-200/90',
+    warning: 'bg-amber-50 text-amber-800 border border-amber-200/90',
+    danger: 'bg-rose-50 text-rose-800 border border-rose-200/90',
+    neutral: 'bg-zinc-100 text-zinc-700 border border-zinc-200',
+    outline: 'bg-transparent text-zinc-600 border border-zinc-300',
   };
 
   const dotColors = {
-    brand: 'bg-indigo-400',
-    purple: 'bg-purple-400',
-    success: 'bg-emerald-400',
-    warning: 'bg-amber-400',
-    danger: 'bg-rose-400',
-    neutral: 'bg-zinc-400',
+    brand: 'bg-sky-500',
+    purple: 'bg-purple-500',
+    success: 'bg-emerald-500',
+    warning: 'bg-amber-500',
+    danger: 'bg-rose-500',
+    neutral: 'bg-zinc-500',
     outline: 'bg-zinc-400',
   };
 

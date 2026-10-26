@@ -14,7 +14,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className="w-full space-y-1.5">
         {label && (
-          <label className="block text-xs font-medium text-zinc-300">
+          <label className="block text-xs font-medium text-zinc-700">
             {label}
           </label>
         )}
@@ -27,7 +27,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           <input
             ref={ref}
             className={clsx(
-              'w-full bg-zinc-900/90 text-zinc-100 placeholder-zinc-500 text-sm rounded-xl border border-zinc-700/70 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none transition-colors duration-150 py-2.5 px-3.5',
+              'w-full bg-white text-zinc-900 placeholder-zinc-400 text-sm rounded-xl border border-zinc-300 shadow-sm focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] focus:outline-none transition-colors duration-150 py-2.5 px-3.5',
               leftIcon && 'pl-10',
               rightIcon && 'pr-10',
               error && 'border-rose-500 focus:border-rose-500 focus:ring-rose-500',
@@ -42,7 +42,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           )}
         </div>
         {error ? (
-          <p className="text-xs text-rose-400 mt-1">{error}</p>
+          <p className="text-xs text-rose-600 mt-1">{error}</p>
         ) : helperText ? (
           <p className="text-xs text-zinc-500 mt-1">{helperText}</p>
         ) : null}

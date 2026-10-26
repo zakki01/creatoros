@@ -91,13 +91,13 @@ export const CampaignDetail: React.FC<CampaignDetailProps> = ({
         <div className="space-y-1">
           <button
             onClick={onBack}
-            className="inline-flex items-center gap-1.5 text-xs text-zinc-400 hover:text-zinc-200 transition-colors mb-1"
+            className="inline-flex items-center gap-1.5 text-xs text-zinc-500 hover:text-zinc-800 transition-colors mb-1"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>Back to Campaigns</span>
           </button>
           <div className="flex items-center gap-3">
-            <h1 className="text-2xl sm:text-3xl font-bold text-zinc-100 font-display">
+            <h1 className="text-2xl sm:text-3xl font-bold text-zinc-900 font-display">
               {campaign.name}
             </h1>
             <Badge
@@ -108,7 +108,7 @@ export const CampaignDetail: React.FC<CampaignDetailProps> = ({
               {campaign.health === 'Healthy' ? 'On track' : 'Needs attention'}
             </Badge>
           </div>
-          <p className="text-xs text-zinc-400">
+          <p className="text-xs text-zinc-500">
             {campaign.objective} • Ends {campaign.timeline.endDate}
           </p>
         </div>
@@ -130,28 +130,28 @@ export const CampaignDetail: React.FC<CampaignDetailProps> = ({
       </div>
 
       {/* Campaign Summary Strip (Requested: Budget, Creators, Content, Published, Revenue) */}
-      <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 p-4 rounded-2xl bg-zinc-900/60 border border-zinc-800/80">
+      <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 p-4 rounded-2xl bg-white shadow-xs border border-zinc-200">
         <div>
           <span className="text-[11px] text-zinc-500 uppercase tracking-wider block">Budget</span>
-          <span className="text-sm font-semibold font-mono text-zinc-200 mt-0.5 block">
+          <span className="text-sm font-semibold font-mono text-zinc-800 mt-0.5 block">
             ₹{(campaign.budgetSpent / 100000).toFixed(1)}L / ₹{(campaign.budgetTotal / 100000).toFixed(1)}L
           </span>
         </div>
         <div>
           <span className="text-[11px] text-zinc-500 uppercase tracking-wider block">Creators</span>
-          <span className="text-sm font-semibold font-mono text-zinc-200 mt-0.5 block">
+          <span className="text-sm font-semibold font-mono text-zinc-800 mt-0.5 block">
             {campaign.creators.confirmed} <span className="text-zinc-500 text-xs font-normal">/ {campaign.creators.target}</span>
           </span>
         </div>
         <div>
           <span className="text-[11px] text-zinc-500 uppercase tracking-wider block">Content</span>
-          <span className="text-sm font-semibold font-mono text-zinc-200 mt-0.5 block">
+          <span className="text-sm font-semibold font-mono text-zinc-800 mt-0.5 block">
             {campaign.content.submitted} <span className="text-zinc-500 text-xs font-normal">/ {campaign.content.target}</span>
           </span>
         </div>
         <div>
           <span className="text-[11px] text-zinc-500 uppercase tracking-wider block">Published</span>
-          <span className="text-sm font-semibold font-mono text-zinc-200 mt-0.5 block">
+          <span className="text-sm font-semibold font-mono text-zinc-800 mt-0.5 block">
             {campaign.published.published} <span className="text-zinc-500 text-xs font-normal">/ {campaign.published.target}</span>
           </span>
         </div>
@@ -170,20 +170,20 @@ export const CampaignDetail: React.FC<CampaignDetailProps> = ({
       {activeTab === 'overview' && (
         <div className="space-y-6 animate-fade-in">
           {/* Progress */}
-          <div className="p-5 rounded-2xl bg-zinc-900/60 border border-zinc-800/80 space-y-2">
+          <div className="p-5 rounded-2xl bg-white shadow-xs border border-zinc-200 space-y-2">
             <div className="flex justify-between items-center text-xs">
-              <span className="text-zinc-300 font-medium">Campaign Overall Progress</span>
-              <span className="font-mono font-semibold text-zinc-200">{campaign.progress}%</span>
+              <span className="text-zinc-700 font-medium">Campaign Overall Progress</span>
+              <span className="font-mono font-semibold text-zinc-800">{campaign.progress}%</span>
             </div>
             <Progress value={campaign.progress} size="md" color="brand" />
           </div>
 
           {/* Contextual AI Insight Card (As specified in prompt) */}
-          <div className="p-4 rounded-xl bg-indigo-950/20 border border-indigo-500/20 flex items-start gap-3">
-            <Sparkles className="w-4 h-4 text-indigo-400 shrink-0 mt-0.5" />
+          <div className="p-4 rounded-xl bg-[#00B4D8]/10 border border-[#00B4D8]/20 flex items-start gap-3">
+            <Sparkles className="w-4 h-4 text-[#0096C7] shrink-0 mt-0.5" />
             <div className="space-y-0.5">
-              <span className="text-xs font-semibold text-indigo-300">Campaign AI Insight</span>
-              <p className="text-xs text-zinc-300 leading-relaxed">
+              <span className="text-xs font-semibold text-[#0096C7]">Campaign AI Insight</span>
+              <p className="text-xs text-zinc-700 leading-relaxed">
                 {campaign.aiInsight}
               </p>
             </div>
@@ -191,11 +191,11 @@ export const CampaignDetail: React.FC<CampaignDetailProps> = ({
 
           {/* Audience & Guidelines Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="p-5 rounded-2xl bg-zinc-900/60 border border-zinc-800/80 space-y-3">
-              <h3 className="text-xs font-semibold text-zinc-300 uppercase tracking-wider">
+            <div className="p-5 rounded-2xl bg-white shadow-xs border border-zinc-200 space-y-3">
+              <h3 className="text-xs font-semibold text-zinc-700 uppercase tracking-wider">
                 Target Audience
               </h3>
-              <div className="space-y-2 text-xs text-zinc-400">
+              <div className="space-y-2 text-xs text-zinc-500">
                 <p>• <strong>Locations:</strong> {campaign.targetAudience.location.join(', ')}</p>
                 <p>• <strong>Age Range:</strong> {campaign.targetAudience.ageRange}</p>
                 <p>• <strong>Affinity / Interests:</strong> {campaign.targetAudience.interests.join(', ')}</p>
@@ -203,16 +203,16 @@ export const CampaignDetail: React.FC<CampaignDetailProps> = ({
               </div>
             </div>
 
-            <div className="p-5 rounded-2xl bg-zinc-900/60 border border-zinc-800/80 space-y-3">
-              <h3 className="text-xs font-semibold text-zinc-300 uppercase tracking-wider">
+            <div className="p-5 rounded-2xl bg-white shadow-xs border border-zinc-200 space-y-3">
+              <h3 className="text-xs font-semibold text-zinc-700 uppercase tracking-wider">
                 Creative Guidelines
               </h3>
-              <p className="text-xs text-zinc-300 leading-relaxed">
+              <p className="text-xs text-zinc-700 leading-relaxed">
                 {campaign.brandGuidelines}
               </p>
               <div className="pt-2 flex flex-wrap gap-1.5">
                 {campaign.platforms.map((p) => (
-                  <span key={p} className="text-[11px] bg-zinc-800 text-zinc-300 px-2 py-0.5 rounded-md">
+                  <span key={p} className="text-[11px] bg-zinc-800 text-zinc-700 px-2 py-0.5 rounded-md">
                     {p}
                   </span>
                 ))}
@@ -226,7 +226,7 @@ export const CampaignDetail: React.FC<CampaignDetailProps> = ({
       {activeTab === 'creators' && (
         <div className="space-y-4 animate-fade-in">
           <div className="flex items-center justify-between">
-            <p className="text-xs text-zinc-400">
+            <p className="text-xs text-zinc-500">
               Creators assigned and confirmed for {campaign.name}.
             </p>
             {onNavigateToCreators && (
@@ -245,7 +245,7 @@ export const CampaignDetail: React.FC<CampaignDetailProps> = ({
             {creators.slice(0, 4).map((creator) => (
               <div
                 key={creator.id}
-                className="p-4 rounded-2xl bg-zinc-900/60 border border-zinc-800/80 flex items-center justify-between gap-3"
+                className="p-4 rounded-2xl bg-white shadow-xs border border-zinc-200 flex items-center justify-between gap-3"
               >
                 <div className="flex items-center gap-3">
                   <img
@@ -255,17 +255,17 @@ export const CampaignDetail: React.FC<CampaignDetailProps> = ({
                   />
                   <div>
                     <div className="flex items-center gap-1.5">
-                      <h4 className="text-xs font-bold text-zinc-200">{creator.name}</h4>
-                      {creator.verified && <ShieldCheck className="w-3.5 h-3.5 text-indigo-400" />}
+                      <h4 className="text-xs font-bold text-zinc-800">{creator.name}</h4>
+                      {creator.verified && <ShieldCheck className="w-3.5 h-3.5 text-[#0096C7]" />}
                     </div>
                     <p className="text-[11px] text-zinc-500 font-mono">@{creator.handle}</p>
-                    <p className="text-[11px] text-zinc-400">{creator.location}</p>
+                    <p className="text-[11px] text-zinc-500">{creator.location}</p>
                   </div>
                 </div>
 
                 <div className="flex flex-col items-end gap-1.5 shrink-0">
                   <div className="text-right">
-                    <span className="text-xs font-bold font-mono text-zinc-200">
+                    <span className="text-xs font-bold font-mono text-zinc-800">
                       ${(creator.estimatedRate).toLocaleString()}
                     </span>
                     <span className="text-[10px] text-emerald-400 block font-mono">
@@ -282,7 +282,7 @@ export const CampaignDetail: React.FC<CampaignDetailProps> = ({
                       );
                       window.dispatchEvent(new PopStateEvent('popstate'));
                     }}
-                    className="min-h-[36px] px-2.5 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-[10px] flex items-center gap-1 transition-all cursor-pointer shadow-sm shadow-indigo-600/30"
+                    className="min-h-[36px] px-2.5 py-1 rounded-lg bg-[#00B4D8] hover:bg-[#0096C7] text-white font-semibold text-[10px] flex items-center gap-1 transition-all cursor-pointer shadow-sm shadow-indigo-600/30"
                   >
                     <FileText className="w-3 h-3" />
                     <span>Create Contract</span>
@@ -297,7 +297,7 @@ export const CampaignDetail: React.FC<CampaignDetailProps> = ({
       {/* TAB: MESSAGES */}
       {activeTab === 'messages' && (
         <div className="space-y-4 animate-fade-in">
-          <div className="flex items-center justify-between text-xs text-zinc-400">
+          <div className="flex items-center justify-between text-xs text-zinc-500">
             <span>Conversations & Contract Negotiations for this campaign</span>
           </div>
 
@@ -306,7 +306,7 @@ export const CampaignDetail: React.FC<CampaignDetailProps> = ({
               <div
                 key={item.id}
                 onClick={() => setSelectedOutreach(item)}
-                className="p-4 rounded-xl bg-zinc-900/60 border border-zinc-800/80 hover:border-zinc-700 cursor-pointer transition-all flex items-center justify-between gap-4"
+                className="p-4 rounded-xl bg-white shadow-xs border border-zinc-200 hover:border-zinc-300 cursor-pointer transition-all flex items-center justify-between gap-4"
               >
                 <div className="flex items-center gap-3">
                   <img
@@ -315,21 +315,21 @@ export const CampaignDetail: React.FC<CampaignDetailProps> = ({
                     className="w-8 h-8 rounded-lg object-cover ring-1 ring-zinc-700"
                   />
                   <div>
-                    <h4 className="text-xs font-bold text-zinc-200">{item.creator.name}</h4>
-                    <p className="text-[11px] text-zinc-400 mt-0.5">
-                      Next: <span className="text-zinc-300">{item.nextAction}</span>
+                    <h4 className="text-xs font-bold text-zinc-800">{item.creator.name}</h4>
+                    <p className="text-[11px] text-zinc-500 mt-0.5">
+                      Next: <span className="text-zinc-700">{item.nextAction}</span>
                     </p>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <span className="text-xs font-mono font-bold text-zinc-200">
+                  <span className="text-xs font-mono font-bold text-zinc-800">
                     ₹{item.proposedFee.toLocaleString()}
                   </span>
                   <Badge variant="brand" size="sm">
                     {item.stage}
                   </Badge>
-                  <Button variant="ghost" size="sm" className="text-xs text-indigo-400">
+                  <Button variant="ghost" size="sm" className="text-xs text-[#0096C7]">
                     Open Thread
                   </Button>
                 </div>
@@ -342,7 +342,7 @@ export const CampaignDetail: React.FC<CampaignDetailProps> = ({
       {/* TAB 4: CONTENT & APPROVALS (With AI Brief Check) */}
       {activeTab === 'content' && (
         <div className="space-y-6 animate-fade-in">
-          <div className="flex items-center justify-between text-xs text-zinc-400">
+          <div className="flex items-center justify-between text-xs text-zinc-500">
             <span>Creator video & image draft submissions for review</span>
           </div>
 
@@ -357,7 +357,7 @@ export const CampaignDetail: React.FC<CampaignDetailProps> = ({
                       className="w-8 h-8 rounded-xl object-cover ring-1 ring-zinc-700"
                     />
                     <div>
-                      <h4 className="text-xs font-bold text-zinc-200">{sub.creatorName}</h4>
+                      <h4 className="text-xs font-bold text-zinc-800">{sub.creatorName}</h4>
                       <p className="text-[11px] text-zinc-500 font-mono">@{sub.creatorHandle}</p>
                     </div>
                   </div>
@@ -370,15 +370,15 @@ export const CampaignDetail: React.FC<CampaignDetailProps> = ({
                   </Badge>
                 </div>
 
-                <p className="text-xs font-semibold text-zinc-100">{sub.title}</p>
+                <p className="text-xs font-semibold text-zinc-900">{sub.title}</p>
 
                 {/* AI Brief Check Checklist (As specified in prompt) */}
-                <div className="p-3 rounded-xl bg-zinc-950/70 border border-zinc-800 text-xs space-y-1.5">
-                  <span className="font-semibold text-zinc-300 text-[11px] uppercase tracking-wider block">
+                <div className="p-3 rounded-xl bg-white shadow-xs border border-zinc-200 text-xs space-y-1.5">
+                  <span className="font-semibold text-zinc-700 text-[11px] uppercase tracking-wider block">
                     AI Brief Check
                   </span>
                   <div className="grid grid-cols-2 gap-1.5 text-[11px]">
-                    <div className="flex items-center gap-1.5 text-zinc-300">
+                    <div className="flex items-center gap-1.5 text-zinc-700">
                       {sub.aiPreCheck.productVisible ? (
                         <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
                       ) : (
@@ -386,7 +386,7 @@ export const CampaignDetail: React.FC<CampaignDetailProps> = ({
                       )}
                       <span>Product Visible</span>
                     </div>
-                    <div className="flex items-center gap-1.5 text-zinc-300">
+                    <div className="flex items-center gap-1.5 text-zinc-700">
                       {sub.aiPreCheck.brandMention ? (
                         <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
                       ) : (
@@ -394,7 +394,7 @@ export const CampaignDetail: React.FC<CampaignDetailProps> = ({
                       )}
                       <span>Brand Tagged</span>
                     </div>
-                    <div className="flex items-center gap-1.5 text-zinc-300">
+                    <div className="flex items-center gap-1.5 text-zinc-700">
                       {sub.aiPreCheck.requiredCta ? (
                         <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
                       ) : (
@@ -402,7 +402,7 @@ export const CampaignDetail: React.FC<CampaignDetailProps> = ({
                       )}
                       <span>Required CTA</span>
                     </div>
-                    <div className="flex items-center gap-1.5 text-zinc-300">
+                    <div className="flex items-center gap-1.5 text-zinc-700">
                       {sub.aiPreCheck.durationCompliant ? (
                         <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
                       ) : (
@@ -413,7 +413,7 @@ export const CampaignDetail: React.FC<CampaignDetailProps> = ({
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between pt-2 border-t border-zinc-800">
+                <div className="flex items-center justify-between pt-2 border-t border-zinc-200">
                   <span className="text-[11px] text-zinc-500 font-mono">{sub.deliverableType}</span>
                   {sub.status !== 'approved' ? (
                     <div className="flex items-center gap-2">
@@ -450,8 +450,8 @@ export const CampaignDetail: React.FC<CampaignDetailProps> = ({
       {/* TAB 5: TIMELINE */}
       {activeTab === 'timeline' && (
         <div className="space-y-4 animate-fade-in">
-          <div className="p-4 rounded-xl bg-zinc-900/60 border border-zinc-800/80 space-y-3">
-            <h3 className="text-xs font-semibold text-zinc-300 uppercase tracking-wider">
+          <div className="p-4 rounded-xl bg-white shadow-xs border border-zinc-200 space-y-3">
+            <h3 className="text-xs font-semibold text-zinc-700 uppercase tracking-wider">
               Execution Roadmap
             </h3>
 
@@ -465,9 +465,9 @@ export const CampaignDetail: React.FC<CampaignDetailProps> = ({
               ].map((p, idx) => (
                 <div
                   key={idx}
-                  className="p-3 rounded-lg bg-zinc-950/60 border border-zinc-800/80 flex items-center justify-between"
+                  className="p-3 rounded-lg bg-zinc-50 border border-zinc-200 flex items-center justify-between"
                 >
-                  <span className="font-medium text-zinc-200">{p.phase}</span>
+                  <span className="font-medium text-zinc-800">{p.phase}</span>
                   <div className="flex items-center gap-3">
                     <span className="text-zinc-500 font-mono text-[11px]">{p.date}</span>
                     <Badge variant={p.status.includes('Completed') ? 'success' : p.status.includes('Active') ? 'brand' : 'neutral'} size="sm">
@@ -485,21 +485,21 @@ export const CampaignDetail: React.FC<CampaignDetailProps> = ({
       {activeTab === 'analytics' && (
         <div className="space-y-6 animate-fade-in">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            <div className="p-4 rounded-xl bg-zinc-900/60 border border-zinc-800/80">
+            <div className="p-4 rounded-xl bg-white shadow-xs border border-zinc-200">
               <span className="text-[10px] text-zinc-500 uppercase">Tracked Reach</span>
-              <p className="text-lg font-bold font-mono text-zinc-100 mt-0.5">2.42M</p>
+              <p className="text-lg font-bold font-mono text-zinc-900 mt-0.5">2.42M</p>
             </div>
-            <div className="p-4 rounded-xl bg-zinc-900/60 border border-zinc-800/80">
+            <div className="p-4 rounded-xl bg-white shadow-xs border border-zinc-200">
               <span className="text-[10px] text-zinc-500 uppercase">Avg CTR</span>
-              <p className="text-lg font-bold font-mono text-zinc-100 mt-0.5">3.6%</p>
+              <p className="text-lg font-bold font-mono text-zinc-900 mt-0.5">3.6%</p>
             </div>
-            <div className="p-4 rounded-xl bg-zinc-900/60 border border-zinc-800/80">
+            <div className="p-4 rounded-xl bg-white shadow-xs border border-zinc-200">
               <span className="text-[10px] text-zinc-500 uppercase">Effective CPA</span>
               <p className="text-lg font-bold font-mono text-emerald-400 mt-0.5">₹228</p>
             </div>
-            <div className="p-4 rounded-xl bg-zinc-900/60 border border-zinc-800/80">
+            <div className="p-4 rounded-xl bg-white shadow-xs border border-zinc-200">
               <span className="text-[10px] text-zinc-500 uppercase">Blended ROAS</span>
-              <p className="text-lg font-bold font-mono text-indigo-400 mt-0.5">3.82x</p>
+              <p className="text-lg font-bold font-mono text-[#0096C7] mt-0.5">3.82x</p>
             </div>
           </div>
         </div>
@@ -509,9 +509,9 @@ export const CampaignDetail: React.FC<CampaignDetailProps> = ({
       {activeTab === 'payments' && (
         <div className="space-y-6 animate-fade-in">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div className="p-4 rounded-2xl bg-zinc-900/60 border border-zinc-800 space-y-1">
-              <span className="text-[11px] font-mono text-zinc-400 uppercase">Allocated Campaign Budget</span>
-              <p className="text-xl font-bold font-mono text-zinc-100">₹{campaign.budgetTotal.toLocaleString()}</p>
+            <div className="p-4 rounded-2xl bg-white shadow-xs border border-zinc-200 space-y-1">
+              <span className="text-[11px] font-mono text-zinc-500 uppercase">Allocated Campaign Budget</span>
+              <p className="text-xl font-bold font-mono text-zinc-900">₹{campaign.budgetTotal.toLocaleString()}</p>
               <span className="text-[10px] text-zinc-500 font-mono">100% Escrow Funded</span>
             </div>
             <div className="p-4 rounded-2xl bg-emerald-950/20 border border-emerald-500/30 space-y-1">
@@ -526,9 +526,9 @@ export const CampaignDetail: React.FC<CampaignDetailProps> = ({
             </div>
           </div>
 
-          <div className="p-5 rounded-2xl bg-zinc-900/60 border border-zinc-800/80 space-y-4">
+          <div className="p-5 rounded-2xl bg-white shadow-xs border border-zinc-200 space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-semibold text-zinc-200">Creator Milestone Payouts</h3>
+              <h3 className="text-sm font-semibold text-zinc-800">Creator Milestone Payouts</h3>
               <Badge variant="brand" size="sm">Smart Escrow Locked</Badge>
             </div>
 
@@ -537,19 +537,19 @@ export const CampaignDetail: React.FC<CampaignDetailProps> = ({
                 const milestoneAmount = idx === 0 ? 35000 : idx === 1 ? 40000 : 30000;
                 const isPaid = idx === 1;
                 return (
-                  <div key={creator.id} className="p-3.5 rounded-xl bg-zinc-950/60 border border-zinc-800/80 flex items-center justify-between gap-4">
+                  <div key={creator.id} className="p-3.5 rounded-xl bg-zinc-50 border border-zinc-200 flex items-center justify-between gap-4">
                     <div className="flex items-center gap-3">
                       <img src={creator.avatar} alt={creator.name} className="w-8 h-8 rounded-lg object-cover ring-1 ring-zinc-700" />
                       <div>
-                        <h4 className="font-semibold text-zinc-200">{creator.name}</h4>
-                        <span className="text-[11px] text-zinc-400 font-mono">
+                        <h4 className="font-semibold text-zinc-800">{creator.name}</h4>
+                        <span className="text-[11px] text-zinc-500 font-mono">
                           Deliverable: {idx === 0 ? '1 Reel + 2 Stories' : idx === 1 ? '1 Skit Reel' : '1 Reel Draft'}
                         </span>
                       </div>
                     </div>
 
                     <div className="flex items-center gap-3">
-                      <span className="font-mono font-bold text-zinc-100">₹{milestoneAmount.toLocaleString()}</span>
+                      <span className="font-mono font-bold text-zinc-900">₹{milestoneAmount.toLocaleString()}</span>
                       {isPaid ? (
                         <span className="text-xs font-mono text-emerald-400 font-semibold flex items-center gap-1">
                           <CheckCircle2 className="w-3.5 h-3.5" /> Disbursed
@@ -579,22 +579,22 @@ export const CampaignDetail: React.FC<CampaignDetailProps> = ({
       {/* TAB: SETTINGS & STRATEGY */}
       {activeTab === 'settings' && (
         <div className="space-y-6 animate-fade-in">
-          <div className="p-5 rounded-2xl bg-zinc-900/60 border border-zinc-800/80 space-y-4">
+          <div className="p-5 rounded-2xl bg-white shadow-xs border border-zinc-200 space-y-4">
             <div>
-              <h3 className="text-sm font-semibold text-zinc-200">Campaign Parameters & Governance</h3>
-              <p className="text-xs text-zinc-400 mt-0.5">Configure campaign briefing, legal agreements, and simulated creator mix.</p>
+              <h3 className="text-sm font-semibold text-zinc-800">Campaign Parameters & Governance</h3>
+              <p className="text-xs text-zinc-500 mt-0.5">Configure campaign briefing, legal agreements, and simulated creator mix.</p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-              <div className="p-3.5 rounded-xl bg-zinc-950/60 border border-zinc-800 space-y-2">
-                <span className="font-semibold text-zinc-200 block">Brief Objective</span>
-                <p className="text-zinc-400">{campaign.objective}</p>
+              <div className="p-3.5 rounded-xl bg-zinc-50 border border-zinc-200 space-y-2">
+                <span className="font-semibold text-zinc-800 block">Brief Objective</span>
+                <p className="text-zinc-500">{campaign.objective}</p>
               </div>
-              <div className="p-3.5 rounded-xl bg-zinc-950/60 border border-zinc-800 space-y-2">
-                <span className="font-semibold text-zinc-200 block">Category & Niches</span>
+              <div className="p-3.5 rounded-xl bg-zinc-50 border border-zinc-200 space-y-2">
+                <span className="font-semibold text-zinc-800 block">Category & Niches</span>
                 <div className="flex flex-wrap gap-1.5">
                   {(campaign.targetAudience?.interests || ['Sneakers', 'Streetwear', 'Fashion']).map((cat: string) => (
-                    <span key={cat} className="px-2 py-0.5 rounded-full text-[10px] font-mono bg-indigo-500/10 text-indigo-300 border border-indigo-500/20">
+                    <span key={cat} className="px-2 py-0.5 rounded-full text-[10px] font-mono bg-indigo-500/10 text-[#0096C7] border border-[#00B4D8]/20">
                       {cat}
                     </span>
                   ))}
@@ -604,7 +604,7 @@ export const CampaignDetail: React.FC<CampaignDetailProps> = ({
 
             {/* AI Architecture Simulation */}
             <div className="pt-2">
-              <h4 className="text-xs font-semibold text-zinc-300 uppercase tracking-wider mb-2">
+              <h4 className="text-xs font-semibold text-zinc-700 uppercase tracking-wider mb-2">
                 AI Strategic Campaign Architecture
               </h4>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -613,13 +613,13 @@ export const CampaignDetail: React.FC<CampaignDetailProps> = ({
                   { title: 'Scenario B: 5 Mid-Tier Creators', reach: '1.3M - 2.0M', cpa: '₹270 - ₹340', note: 'Best for brand prestige' },
                   { title: 'Scenario C: Hybrid (Adopted)', reach: '2.2M - 3.6M', cpa: '₹240 - ₹310', note: 'Balanced flagship hype' },
                 ].map((s, idx) => (
-                  <div key={idx} className="p-3.5 rounded-xl bg-zinc-950/60 border border-zinc-800/80 space-y-1.5 text-xs">
-                    <span className="font-semibold text-zinc-200">{s.title}</span>
-                    <div className="text-[11px] text-zinc-400 space-y-0.5 font-mono">
+                  <div key={idx} className="p-3.5 rounded-xl bg-zinc-50 border border-zinc-200 space-y-1.5 text-xs">
+                    <span className="font-semibold text-zinc-800">{s.title}</span>
+                    <div className="text-[11px] text-zinc-500 space-y-0.5 font-mono">
                       <p>Reach: {s.reach}</p>
                       <p>CPA: {s.cpa}</p>
                     </div>
-                    <span className="text-[10px] text-indigo-400 block pt-1">{s.note}</span>
+                    <span className="text-[10px] text-[#0096C7] block pt-1">{s.note}</span>
                   </div>
                 ))}
               </div>
@@ -637,7 +637,7 @@ export const CampaignDetail: React.FC<CampaignDetailProps> = ({
           maxWidth="2xl"
         >
           <div className="space-y-4 text-xs">
-            <div className="p-4 rounded-xl bg-zinc-950 border border-zinc-800 space-y-2 max-h-60 overflow-y-auto">
+            <div className="p-4 rounded-xl bg-zinc-50 border border-zinc-200 space-y-2 max-h-60 overflow-y-auto">
               {selectedOutreach.messages.map((m) => (
                 <div
                   key={m.id}
@@ -646,8 +646,8 @@ export const CampaignDetail: React.FC<CampaignDetailProps> = ({
                   <div
                     className={`max-w-md p-3 rounded-xl leading-relaxed ${
                       m.sender === 'brand'
-                        ? 'bg-indigo-600 text-white'
-                        : 'bg-zinc-800 text-zinc-200'
+                        ? 'bg-[#00B4D8] text-white'
+                        : 'bg-zinc-800 text-zinc-800'
                     }`}
                   >
                     <p>{m.message}</p>
@@ -663,7 +663,7 @@ export const CampaignDetail: React.FC<CampaignDetailProps> = ({
                 value={outreachReply}
                 onChange={(e) => setOutreachReply(e.target.value)}
                 placeholder="Type reply to creator..."
-                className="flex-1 bg-zinc-900 text-zinc-100 text-xs px-3.5 py-2.5 rounded-xl border border-zinc-800 focus:outline-none focus:border-indigo-500"
+                className="flex-1 bg-white text-zinc-900 text-xs px-3.5 py-2.5 rounded-xl border border-zinc-200 focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]"
               />
               <Button variant="primary" size="sm" onClick={handleSendMessage}>
                 Send

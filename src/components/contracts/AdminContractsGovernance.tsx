@@ -107,20 +107,20 @@ export const AdminContractsGovernance: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-xl sm:text-2xl font-bold text-white font-display">
+            <h1 className="text-xl sm:text-2xl font-bold text-zinc-900 font-display">
               Commercial Contract Governance
             </h1>
             <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 font-bold border border-rose-500/30">
               Super Admin Enclave
             </span>
           </div>
-          <p className="text-xs text-zinc-400 mt-1">
+          <p className="text-xs text-zinc-500 mt-1">
             Arbitrate contract disputes, inspect immutable audit trails, and manage global fee and protection policies.
           </p>
         </div>
 
         {/* View Switcher Pills */}
-        <div className="flex items-center gap-1.5 p-1 rounded-xl bg-zinc-900 border border-zinc-800 self-start sm:self-auto">
+        <div className="flex items-center gap-1.5 p-1 rounded-xl bg-[#DFE3E8]/60 border border-black/[0.08] self-start sm:self-auto">
           {[
             { id: 'contracts', label: `All Agreements (${contracts.length})` },
             { id: 'disputes', label: `Disputes Queue (${disputedContracts.length})` },
@@ -131,8 +131,8 @@ export const AdminContractsGovernance: React.FC = () => {
               onClick={() => setActiveView(v.id as any)}
               className={`min-h-[36px] px-3.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${
                 activeView === v.id
-                  ? 'bg-zinc-800 text-white font-bold shadow-sm'
-                  : 'text-zinc-400 hover:text-zinc-200'
+                  ? 'bg-zinc-100 text-zinc-700 border border-zinc-200 text-white font-bold shadow-sm'
+                  : 'text-zinc-500 hover:text-zinc-800'
               }`}
             >
               {v.label}
@@ -159,14 +159,14 @@ export const AdminContractsGovernance: React.FC = () => {
                 placeholder="Search by contract ID, brand, creator, or project..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full min-h-[44px] pl-9 pr-3 rounded-xl bg-zinc-900/60 border border-zinc-800 text-zinc-100 text-xs focus:outline-none focus:border-indigo-500"
+                className="w-full min-h-[44px] pl-9 pr-3 rounded-xl bg-white border border-zinc-300 text-zinc-900 focus:border-[#00B4D8] text-xs focus:outline-none focus:border-indigo-500"
               />
             </div>
 
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="min-h-[44px] px-3 rounded-xl bg-zinc-900/60 border border-zinc-800 text-zinc-300 text-xs focus:outline-none focus:border-indigo-500"
+              className="min-h-[44px] px-3 rounded-xl bg-white border border-zinc-300 text-zinc-800 focus:border-[#00B4D8] text-xs focus:outline-none focus:border-indigo-500"
             >
               <option value="all">All Statuses</option>
               <option value="active">Active</option>
@@ -177,10 +177,10 @@ export const AdminContractsGovernance: React.FC = () => {
             </select>
           </div>
 
-          <div className="rounded-2xl bg-zinc-900/60 border border-white/[0.08] overflow-hidden">
+          <div className="rounded-2xl bg-white border border-black/[0.08] shadow-sm overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
-                <thead className="bg-zinc-950/80 text-zinc-400 border-b border-zinc-800 uppercase text-[10px] font-semibold tracking-wider font-mono">
+                <thead className="bg-zinc-50 text-zinc-600 border-b border-zinc-200 uppercase text-[10px] font-semibold tracking-wider font-mono">
                   <tr>
                     <th className="py-3 px-4">Contract ID</th>
                     <th className="py-3 px-4">Brand</th>
@@ -194,8 +194,8 @@ export const AdminContractsGovernance: React.FC = () => {
                 <tbody className="divide-y divide-zinc-800/60 font-sans">
                   {filteredContracts.map((c) => (
                     <tr key={c.id} className="hover:bg-zinc-850/50 transition-colors">
-                      <td className="py-3.5 px-4 font-mono text-zinc-400">{c.contractNumber}</td>
-                      <td className="py-3.5 px-4 font-semibold text-zinc-200">{c.brandName}</td>
+                      <td className="py-3.5 px-4 font-mono text-zinc-500">{c.contractNumber}</td>
+                      <td className="py-3.5 px-4 font-semibold text-zinc-800">{c.brandName}</td>
                       <td className="py-3.5 px-4">
                         <div className="flex items-center gap-2">
                           <img
@@ -203,10 +203,10 @@ export const AdminContractsGovernance: React.FC = () => {
                             alt={c.creatorName}
                             className="w-6 h-6 rounded-md object-cover"
                           />
-                          <span className="text-zinc-200">{c.creatorName}</span>
+                          <span className="text-zinc-800">{c.creatorName}</span>
                         </div>
                       </td>
-                      <td className="py-3.5 px-4 text-zinc-300 max-w-xs truncate">
+                      <td className="py-3.5 px-4 text-zinc-700 max-w-xs truncate">
                         {c.projectName}
                       </td>
                       <td className="py-3.5 px-4 font-mono font-bold text-emerald-400">
@@ -244,7 +244,7 @@ export const AdminContractsGovernance: React.FC = () => {
               {disputedContracts.map((c) => (
                 <div
                   key={c.id}
-                  className="p-5 rounded-2xl bg-zinc-900/60 border border-rose-500/30 space-y-4 text-xs"
+                  className="p-5 rounded-2xl bg-white border border-rose-300 shadow-sm space-y-4 text-xs"
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div>
@@ -255,9 +255,9 @@ export const AdminContractsGovernance: React.FC = () => {
                         <ContractStatusBadge status={c.status} size="sm" />
                       </div>
                       <h4 className="text-sm font-bold text-white mt-1">{c.projectName}</h4>
-                      <p className="text-zinc-400 text-[11px]">
-                        Brand: <strong className="text-zinc-200">{c.brandName}</strong> • Creator:{' '}
-                        <strong className="text-zinc-200">{c.creatorName}</strong>
+                      <p className="text-zinc-500 text-[11px]">
+                        Brand: <strong className="text-zinc-800">{c.brandName}</strong> • Creator:{' '}
+                        <strong className="text-zinc-800">{c.creatorName}</strong>
                       </p>
                     </div>
 
@@ -270,18 +270,18 @@ export const AdminContractsGovernance: React.FC = () => {
                   </div>
 
                   {c.dispute && (
-                    <div className="p-3.5 rounded-xl bg-zinc-950 border border-zinc-800 space-y-1.5">
+                    <div className="p-3.5 rounded-xl bg-zinc-50 border border-zinc-200 space-y-1.5">
                       <span className="font-bold text-rose-300 font-mono text-[11px]">
                         Dispute Reason: {c.dispute.reason}
                       </span>
-                      <p className="text-zinc-300 leading-relaxed">{c.dispute.description}</p>
+                      <p className="text-zinc-700 leading-relaxed">{c.dispute.description}</p>
                     </div>
                   )}
                 </div>
               ))}
             </div>
           ) : (
-            <div className="p-8 rounded-2xl bg-zinc-950 border border-zinc-800 text-center space-y-2">
+            <div className="p-8 rounded-2xl bg-zinc-50 border border-zinc-200 text-center space-y-2">
               <CheckCircle2 className="w-8 h-8 text-emerald-400 mx-auto" />
               <h4 className="text-sm font-bold text-white">Dispute Queue Empty</h4>
               <p className="text-xs text-zinc-500">
@@ -296,20 +296,20 @@ export const AdminContractsGovernance: React.FC = () => {
       {activeView === 'config' && (
         <form
           onSubmit={handleSaveConfig}
-          className="p-6 rounded-2xl bg-zinc-900/60 border border-white/[0.08] space-y-6 text-xs max-w-3xl"
+          className="p-6 rounded-2xl bg-white border border-black/[0.08] shadow-sm space-y-6 text-xs max-w-3xl"
         >
           <div>
-            <h3 className="text-base font-bold text-white font-display">
+            <h3 className="text-base font-bold text-zinc-900 font-display">
               Contract Platform Policies & Financial Rules
             </h3>
-            <p className="text-xs text-zinc-400 mt-1">
+            <p className="text-xs text-zinc-500 mt-1">
               Configure dynamic platform fees, project protection ratios, and default governance windows.
             </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="text-[11px] font-medium text-zinc-300 block mb-1">
+              <label className="text-[11px] font-medium text-zinc-700 block mb-1">
                 Platform Fee Percentage (%)
               </label>
               <input
@@ -323,13 +323,13 @@ export const AdminContractsGovernance: React.FC = () => {
                     platformFeePercentage: parseFloat(e.target.value) || 0,
                   }))
                 }
-                className="w-full min-h-[44px] px-3.5 py-2 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 font-mono text-xs focus:outline-none focus:border-indigo-500"
+                className="w-full min-h-[44px] px-3.5 py-2 rounded-xl bg-zinc-50 border border-zinc-200 text-zinc-900 font-mono text-xs focus:outline-none focus:border-indigo-500"
               />
               <span className="text-[10px] text-zinc-500 mt-1 block">Default: 10%</span>
             </div>
 
             <div>
-              <label className="text-[11px] font-medium text-zinc-300 block mb-1">
+              <label className="text-[11px] font-medium text-zinc-700 block mb-1">
                 Project Protection Escrow Percentage (%)
               </label>
               <input
@@ -343,13 +343,13 @@ export const AdminContractsGovernance: React.FC = () => {
                     protectionPercentage: parseFloat(e.target.value) || 0,
                   }))
                 }
-                className="w-full min-h-[44px] px-3.5 py-2 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 font-mono text-xs focus:outline-none focus:border-indigo-500"
+                className="w-full min-h-[44px] px-3.5 py-2 rounded-xl bg-zinc-50 border border-zinc-200 text-zinc-900 font-mono text-xs focus:outline-none focus:border-indigo-500"
               />
               <span className="text-[10px] text-zinc-500 mt-1 block">Default: 20%</span>
             </div>
 
             <div>
-              <label className="text-[11px] font-medium text-zinc-300 block mb-1">
+              <label className="text-[11px] font-medium text-zinc-700 block mb-1">
                 Default Brand Review Window (Days)
               </label>
               <input
@@ -363,12 +363,12 @@ export const AdminContractsGovernance: React.FC = () => {
                     defaultApprovalWindowDays: parseInt(e.target.value) || 3,
                   }))
                 }
-                className="w-full min-h-[44px] px-3.5 py-2 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 font-mono text-xs focus:outline-none focus:border-indigo-500"
+                className="w-full min-h-[44px] px-3.5 py-2 rounded-xl bg-zinc-50 border border-zinc-200 text-zinc-900 font-mono text-xs focus:outline-none focus:border-indigo-500"
               />
             </div>
 
             <div>
-              <label className="text-[11px] font-medium text-zinc-300 block mb-1">
+              <label className="text-[11px] font-medium text-zinc-700 block mb-1">
                 Default Revision Limit (Rounds)
               </label>
               <input
@@ -382,15 +382,15 @@ export const AdminContractsGovernance: React.FC = () => {
                     defaultRevisionLimit: parseInt(e.target.value) || 2,
                   }))
                 }
-                className="w-full min-h-[44px] px-3.5 py-2 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 font-mono text-xs focus:outline-none focus:border-indigo-500"
+                className="w-full min-h-[44px] px-3.5 py-2 rounded-xl bg-zinc-50 border border-zinc-200 text-zinc-900 font-mono text-xs focus:outline-none focus:border-indigo-500"
               />
             </div>
           </div>
 
-          <div className="pt-2 border-t border-zinc-800 flex justify-end">
+          <div className="pt-2 border-t border-zinc-200 flex justify-end">
             <button
               type="submit"
-              className="min-h-[44px] px-6 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs cursor-pointer shadow-md shadow-indigo-600/30"
+              className="min-h-[44px] px-6 rounded-xl bg-[#00B4D8] hover:bg-[#0096C7] text-white font-bold text-xs cursor-pointer shadow-md shadow-indigo-600/30"
             >
               Save Platform Policies
             </button>
@@ -400,43 +400,43 @@ export const AdminContractsGovernance: React.FC = () => {
 
       {/* ARBITRATION WORKBENCH MODAL */}
       {selectedDisputeContract && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-sm animate-fade-in">
-          <div className="w-full max-w-lg p-6 rounded-2xl bg-zinc-950 border border-rose-500/30 space-y-4 text-xs shadow-2xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/45 backdrop-blur-md animate-fade-in">
+          <div className="w-full max-w-lg p-6 rounded-2xl bg-white border border-black/[0.08] shadow-2xl text-zinc-900 space-y-4 text-xs shadow-2xl">
             <div className="flex justify-between items-start">
               <div>
                 <span className="text-[10px] uppercase font-mono text-rose-400 font-bold block">
                   Dispute Arbitration Workbench
                 </span>
-                <h3 className="text-base font-bold text-white font-display mt-0.5">
+                <h3 className="text-base font-bold text-zinc-900 font-display mt-0.5">
                   {selectedDisputeContract.contractNumber}: {selectedDisputeContract.projectName}
                 </h3>
               </div>
               <ContractStatusBadge status="disputed" size="sm" />
             </div>
 
-            <div className="p-3.5 rounded-xl bg-zinc-900 border border-zinc-800 space-y-2">
-              <div className="flex justify-between text-zinc-400 font-mono">
+            <div className="p-3.5 rounded-xl bg-zinc-50 border border-zinc-200 space-y-2">
+              <div className="flex justify-between text-zinc-500 font-mono">
                 <span>Total Protected Escrow:</span>
                 <span className="text-emerald-400 font-bold">
                   ${selectedDisputeContract.payment.totalAmount.toLocaleString()}
                 </span>
               </div>
-              <div className="flex justify-between text-zinc-400 font-mono">
+              <div className="flex justify-between text-zinc-500 font-mono">
                 <span>Creator Payment:</span>
-                <span className="text-zinc-200">
+                <span className="text-zinc-800">
                   ${selectedDisputeContract.payment.creatorPayment.toLocaleString()}
                 </span>
               </div>
             </div>
 
             <div>
-              <label className="text-[11px] font-medium text-zinc-300 block mb-1">
+              <label className="text-[11px] font-medium text-zinc-700 block mb-1">
                 Arbitration Resolution Ruling
               </label>
               <select
                 value={disputeOutcome}
                 onChange={(e) => setDisputeOutcome(e.target.value as any)}
-                className="w-full min-h-[44px] px-3.5 py-2 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-100 text-xs focus:outline-none focus:border-rose-500"
+                className="w-full min-h-[44px] px-3.5 py-2 rounded-xl bg-white border border-zinc-200 text-zinc-900 text-xs focus:outline-none focus:border-rose-500"
               >
                 <option value="partial_split">
                   Partial Split Settlement (50% Creator / 50% Brand Refund)
@@ -454,7 +454,7 @@ export const AdminContractsGovernance: React.FC = () => {
             </div>
 
             <div>
-              <label className="text-[11px] font-medium text-zinc-300 block mb-1">
+              <label className="text-[11px] font-medium text-zinc-700 block mb-1">
                 Super Admin Determination Statement
               </label>
               <textarea
@@ -462,7 +462,7 @@ export const AdminContractsGovernance: React.FC = () => {
                 placeholder="Document the legal and factual basis for this determination..."
                 value={resolutionNotes}
                 onChange={(e) => setResolutionNotes(e.target.value)}
-                className="w-full p-3 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-100 text-xs focus:outline-none focus:border-rose-500 resize-none"
+                className="w-full p-3 rounded-xl bg-white border border-zinc-200 text-zinc-900 text-xs focus:outline-none focus:border-rose-500 resize-none"
               />
             </div>
 
@@ -470,7 +470,7 @@ export const AdminContractsGovernance: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setSelectedDisputeContract(null)}
-                className="min-h-[44px] px-4 rounded-xl bg-zinc-800 text-zinc-300 font-semibold cursor-pointer"
+                className="min-h-[44px] px-4 rounded-xl bg-zinc-100 text-zinc-700 border border-zinc-200 text-zinc-700 font-semibold cursor-pointer"
               >
                 Close
               </button>

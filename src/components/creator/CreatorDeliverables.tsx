@@ -55,7 +55,7 @@ export const CreatorDeliverables: React.FC<{
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex items-center gap-2.5">
-          <h1 className="text-xl sm:text-2xl font-bold text-white font-display tracking-tight">
+          <h1 className="text-xl sm:text-2xl font-bold text-zinc-900 font-display tracking-tight">
             Content
           </h1>
           <Badge variant="brand" size="sm">
@@ -69,8 +69,8 @@ export const CreatorDeliverables: React.FC<{
               variant="outline"
               size="sm"
               onClick={() => onNavigate('live')}
-              leftIcon={<Video className="w-3.5 h-3.5 text-indigo-400" />}
-              className="border-indigo-500/30 hover:border-indigo-500/60 text-zinc-200"
+              leftIcon={<Video className="w-3.5 h-3.5 text-[#0096C7]" />}
+              className="border-[#00B4D8]/30 hover:border-indigo-500/60 text-zinc-800"
             >
               Live Studio
             </Button>
@@ -90,7 +90,7 @@ export const CreatorDeliverables: React.FC<{
 
       {/* Upcoming Deliverable Deadlines */}
       <div className="space-y-3">
-        <h3 className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">
+        <h3 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider">
           Due Soon ({deliverablesQueue.length})
         </h3>
 
@@ -99,14 +99,14 @@ export const CreatorDeliverables: React.FC<{
             <Card key={del.id} className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div className="space-y-0.5">
                 <div className="flex items-center gap-2">
-                  <h4 className="text-sm font-bold text-white">{del.title}</h4>
+                  <h4 className="text-sm font-bold text-zinc-900">{del.title}</h4>
                   {del.urgent && (
                     <Badge variant="warning" size="sm" dot>
                       Due Soon
                     </Badge>
                   )}
                 </div>
-                <p className="text-xs text-zinc-400">
+                <p className="text-xs text-zinc-500">
                   {del.campaignName} · {del.type} · Due {del.deadline} · {del.compensation}
                 </p>
               </div>
@@ -129,7 +129,7 @@ export const CreatorDeliverables: React.FC<{
 
       {/* Submitted Drafts Review Queue */}
       <div className="space-y-4 pt-4">
-        <h3 className="text-sm font-bold text-zinc-200 uppercase tracking-wider">
+        <h3 className="text-sm font-bold text-zinc-800 uppercase tracking-wider">
           My Submitted Drafts ({mySubmissions.length})
         </h3>
 
@@ -138,8 +138,8 @@ export const CreatorDeliverables: React.FC<{
             <Card key={sub.id} className="p-5 space-y-3">
               <div className="flex items-start justify-between gap-2">
                 <div>
-                  <h4 className="text-sm font-semibold text-zinc-100">{sub.title}</h4>
-                  <p className="text-xs text-zinc-400">{sub.campaignName}</p>
+                  <h4 className="text-sm font-semibold text-zinc-900">{sub.title}</h4>
+                  <p className="text-xs text-zinc-500">{sub.campaignName}</p>
                 </div>
                 <Badge
                   variant={sub.status === 'approved' ? 'success' : 'warning'}
@@ -150,11 +150,11 @@ export const CreatorDeliverables: React.FC<{
                 </Badge>
               </div>
 
-              <div className="p-3 rounded-xl bg-zinc-950/60 border border-zinc-800 text-xs text-zinc-300">
+              <div className="p-3 rounded-xl bg-zinc-50 border border-zinc-200 text-xs text-zinc-700">
                 <p className="line-clamp-2 italic">"{sub.caption}"</p>
               </div>
 
-              <div className="flex items-center justify-between text-[11px] text-zinc-500 pt-1 border-t border-zinc-800">
+              <div className="flex items-center justify-between text-[11px] text-zinc-500 pt-1 border-t border-zinc-200">
                 <span>Submitted: {sub.submittedAt.split(' ')[0]}</span>
                 {sub.status === 'approved' ? (
                   <span className="text-emerald-400 font-medium inline-flex items-center gap-1">

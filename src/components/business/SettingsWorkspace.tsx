@@ -63,22 +63,22 @@ export const SettingsWorkspace: React.FC = () => {
     <div className="space-y-8 animate-fade-in max-w-4xl pb-16">
       {/* Header */}
       <div>
-        <h1 className="text-xl font-bold text-zinc-100 font-display">
+        <h1 className="text-xl font-bold text-zinc-900 font-display">
           Settings
         </h1>
-        <p className="text-xs text-zinc-400 mt-1">
+        <p className="text-xs text-zinc-500 mt-1">
           Manage workspace preferences, AI assistance behaviors, and team access.
         </p>
       </div>
 
       {/* AI ASSISTANCE SECTION (Clean & Uncluttered as required) */}
       <div className="space-y-4">
-        <div className="flex items-center justify-between pb-3 border-b border-zinc-800/80">
+        <div className="flex items-center justify-between pb-3 border-b border-zinc-200">
           <div>
-            <h2 className="text-sm font-semibold text-zinc-200">
+            <h2 className="text-sm font-semibold text-zinc-800">
               AI Assistance
             </h2>
-            <p className="text-xs text-zinc-400 mt-0.5">
+            <p className="text-xs text-zinc-500 mt-0.5">
               CreatorOS helps with recommendations, reminders, content checks and reporting.
             </p>
           </div>
@@ -88,7 +88,7 @@ export const SettingsWorkspace: React.FC = () => {
             type="button"
             onClick={() => setAiEnabled(!aiEnabled)}
             className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-              aiEnabled ? 'bg-indigo-600' : 'bg-zinc-800'
+              aiEnabled ? 'bg-[#00B4D8]' : 'bg-zinc-800'
             }`}
           >
             <span
@@ -102,11 +102,11 @@ export const SettingsWorkspace: React.FC = () => {
         {aiEnabled && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-1 animate-fade-in">
             {/* Automatic Actions */}
-            <div className="p-4 rounded-xl bg-zinc-900/60 border border-zinc-800/80 space-y-3">
-              <h3 className="text-xs font-semibold text-zinc-300">
+            <div className="p-4 rounded-xl bg-white shadow-xs border border-zinc-200 space-y-3">
+              <h3 className="text-xs font-semibold text-zinc-700">
                 Automatic Actions
               </h3>
-              <ul className="space-y-2 text-xs text-zinc-400">
+              <ul className="space-y-2 text-xs text-zinc-500">
                 {autoActions.map((item, idx) => (
                   <li key={idx} className="flex items-center gap-2">
                     <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
@@ -117,14 +117,14 @@ export const SettingsWorkspace: React.FC = () => {
             </div>
 
             {/* Always Ask Before */}
-            <div className="p-4 rounded-xl bg-zinc-900/60 border border-zinc-800/80 space-y-3">
-              <h3 className="text-xs font-semibold text-zinc-300">
+            <div className="p-4 rounded-xl bg-white shadow-xs border border-zinc-200 space-y-3">
+              <h3 className="text-xs font-semibold text-zinc-700">
                 Always Ask Before
               </h3>
-              <ul className="space-y-2 text-xs text-zinc-400">
+              <ul className="space-y-2 text-xs text-zinc-500">
                 {alwaysAskActions.map((item, idx) => (
                   <li key={idx} className="flex items-center gap-2">
-                    <Lock className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
+                    <Lock className="w-3.5 h-3.5 text-zinc-500 shrink-0" />
                     <span>{item}</span>
                   </li>
                 ))}
@@ -135,40 +135,40 @@ export const SettingsWorkspace: React.FC = () => {
       </div>
 
       {/* Brand Profile Details */}
-      <div className="space-y-4 pt-4 border-t border-zinc-800/80">
+      <div className="space-y-4 pt-4 border-t border-zinc-200">
         <div>
-          <h2 className="text-sm font-semibold text-zinc-200">Brand Profile</h2>
-          <p className="text-xs text-zinc-400 mt-0.5">
+          <h2 className="text-sm font-semibold text-zinc-800">Brand Profile</h2>
+          <p className="text-xs text-zinc-500 mt-0.5">
             Default workspace identity displayed on creator contracts and outreach.
           </p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="p-3.5 rounded-xl bg-zinc-900/60 border border-zinc-800/80">
+          <div className="p-3.5 rounded-xl bg-white shadow-xs border border-zinc-200">
             <span className="text-[11px] text-zinc-500 uppercase tracking-wider block">Company Name</span>
-            <span className="text-xs font-medium text-zinc-200 mt-1 block">{workspace.name}</span>
+            <span className="text-xs font-medium text-zinc-800 mt-1 block">{workspace.name}</span>
           </div>
 
-          <div className="p-3.5 rounded-xl bg-zinc-900/60 border border-zinc-800/80">
+          <div className="p-3.5 rounded-xl bg-white shadow-xs border border-zinc-200">
             <span className="text-[11px] text-zinc-500 uppercase tracking-wider block">Operating Currency</span>
-            <span className="text-xs font-medium text-zinc-200 mt-1 block">INR (₹)</span>
+            <span className="text-xs font-medium text-zinc-800 mt-1 block">INR (₹)</span>
           </div>
         </div>
       </div>
 
       {/* LIVE CREATOR ENGINE (DECART) */}
-      <div className="space-y-4 pt-4 border-t border-zinc-800/80">
-        <div className="flex items-center justify-between pb-3 border-b border-zinc-800/80">
+      <div className="space-y-4 pt-4 border-t border-zinc-200">
+        <div className="flex items-center justify-between pb-3 border-b border-zinc-200">
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-sm font-semibold text-zinc-200">
+              <h2 className="text-sm font-semibold text-zinc-800">
                 Live Creator Engine (Decart Realtime)
               </h2>
-              <span className="px-2 py-0.2 rounded-full text-[10px] font-mono bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+              <span className="px-2 py-0.2 rounded-full text-[10px] font-mono bg-indigo-500/20 text-[#0096C7] border border-[#00B4D8]/30">
                 Self-Hosted / Optional
               </span>
             </div>
-            <p className="text-xs text-zinc-400 mt-0.5">
+            <p className="text-xs text-zinc-500 mt-0.5">
               Enables creators to transform camera feeds into cinematic AI scenes in realtime. Configure your Decart API credentials.
             </p>
           </div>
@@ -182,7 +182,7 @@ export const SettingsWorkspace: React.FC = () => {
               saveStoredLiveEngineConfig(updated);
             }}
             className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-              liveConfig.enabled ? 'bg-indigo-600' : 'bg-zinc-800'
+              liveConfig.enabled ? 'bg-[#00B4D8]' : 'bg-zinc-800'
             }`}
           >
             <span
@@ -194,13 +194,13 @@ export const SettingsWorkspace: React.FC = () => {
         </div>
 
         {liveConfig.enabled && (
-          <div className="p-4 sm:p-5 rounded-xl bg-zinc-900/60 border border-zinc-800/80 space-y-4 animate-fade-in">
+          <div className="p-4 sm:p-5 rounded-xl bg-white shadow-xs border border-zinc-200 space-y-4 animate-fade-in">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* API Key */}
               <div className="space-y-1.5 sm:col-span-2">
-                <label className="text-xs font-medium text-zinc-300 flex items-center justify-between">
+                <label className="text-xs font-medium text-zinc-700 flex items-center justify-between">
                   <span className="flex items-center gap-1.5">
-                    <Key className="w-3.5 h-3.5 text-indigo-400" />
+                    <Key className="w-3.5 h-3.5 text-[#0096C7]" />
                     <span>Decart API Key</span>
                   </span>
                   <span className="text-[11px] text-zinc-500 font-normal">
@@ -215,12 +215,12 @@ export const SettingsWorkspace: React.FC = () => {
                       setLiveConfig({ ...liveConfig, apiKey: e.target.value })
                     }
                     placeholder="sk_decart_..."
-                    className="w-full px-3 py-2 pr-10 rounded-lg bg-zinc-950 border border-zinc-800 text-xs text-zinc-200 font-mono focus:outline-none focus:border-indigo-500"
+                    className="w-full px-3 py-2 pr-10 rounded-lg bg-white border border-zinc-200 text-xs text-zinc-800 font-mono focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]"
                   />
                   <button
                     type="button"
                     onClick={() => setShowApiKey(!showApiKey)}
-                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-200"
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-800"
                   >
                     {showApiKey ? (
                       <EyeOff className="w-4 h-4" />
@@ -233,7 +233,7 @@ export const SettingsWorkspace: React.FC = () => {
 
               {/* Realtime Model */}
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-zinc-300">
+                <label className="text-xs font-medium text-zinc-700">
                   Default Realtime Model
                 </label>
                 <select
@@ -241,7 +241,7 @@ export const SettingsWorkspace: React.FC = () => {
                   onChange={(e) =>
                     setLiveConfig({ ...liveConfig, defaultModel: e.target.value })
                   }
-                  className="w-full px-3 py-2 rounded-lg bg-zinc-950 border border-zinc-800 text-xs text-zinc-200 focus:outline-none focus:border-indigo-500"
+                  className="w-full px-3 py-2 rounded-lg bg-white border border-zinc-200 text-xs text-zinc-800 focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]"
                 >
                   <option value="mirage-realtime-v1">
                     mirage-realtime-v1 (Low Latency)
@@ -257,7 +257,7 @@ export const SettingsWorkspace: React.FC = () => {
 
               {/* Max Session Duration (Cost Protection) */}
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-zinc-300 flex items-center justify-between">
+                <label className="text-xs font-medium text-zinc-700 flex items-center justify-between">
                   <span className="flex items-center gap-1.5">
                     <Shield className="w-3.5 h-3.5 text-emerald-400" />
                     <span>Max Session Duration (Cost Limit)</span>
@@ -271,7 +271,7 @@ export const SettingsWorkspace: React.FC = () => {
                       maxSessionDurationSec: Number(e.target.value),
                     })
                   }
-                  className="w-full px-3 py-2 rounded-lg bg-zinc-950 border border-zinc-800 text-xs text-zinc-200 focus:outline-none focus:border-indigo-500"
+                  className="w-full px-3 py-2 rounded-lg bg-white border border-zinc-200 text-xs text-zinc-800 focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]"
                 >
                   <option value={15}>15 Seconds (Budget Friendly)</option>
                   <option value={30}>30 Seconds (Default Recommended)</option>
@@ -282,7 +282,7 @@ export const SettingsWorkspace: React.FC = () => {
             </div>
 
             {/* Test Connection & Save Action */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-3 border-t border-zinc-800/80">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-3 border-t border-zinc-200">
               <div className="flex items-center gap-2">
                 <Button
                   variant="outline"
@@ -318,7 +318,7 @@ export const SettingsWorkspace: React.FC = () => {
                   variant="primary"
                   size="sm"
                   onClick={handleSaveLiveConfig}
-                  className="text-xs bg-indigo-600 hover:bg-indigo-500 shadow-indigo-600/20"
+                  className="text-xs bg-[#00B4D8] hover:bg-[#0096C7] shadow-indigo-600/20"
                 >
                   Save Live Engine Settings
                 </Button>
@@ -335,10 +335,10 @@ export const SettingsWorkspace: React.FC = () => {
       <ByokAiSettings />
 
       {/* Connected Channels */}
-      <div className="space-y-3 pt-4 border-t border-zinc-800/80">
+      <div className="space-y-3 pt-4 border-t border-zinc-200">
         <div>
-          <h2 className="text-sm font-semibold text-zinc-200">Connected Services</h2>
-          <p className="text-xs text-zinc-400 mt-0.5">
+          <h2 className="text-sm font-semibold text-zinc-800">Connected Services</h2>
+          <p className="text-xs text-zinc-500 mt-0.5">
             Integrations used to verify posts and track conversion analytics.
           </p>
         </div>
@@ -351,9 +351,9 @@ export const SettingsWorkspace: React.FC = () => {
           ].map((item, idx) => (
             <div
               key={idx}
-              className="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800/80 flex items-center justify-between text-xs"
+              className="p-3 rounded-xl bg-white shadow-xs border border-zinc-200 flex items-center justify-between text-xs"
             >
-              <span className="text-zinc-300 font-medium">{item.name}</span>
+              <span className="text-zinc-700 font-medium">{item.name}</span>
               <span className="text-[11px] text-emerald-400 font-mono">
                 {item.status}
               </span>
@@ -363,9 +363,9 @@ export const SettingsWorkspace: React.FC = () => {
       </div>
 
       {/* Reset State */}
-      <div className="pt-6 border-t border-zinc-800/80 flex items-center justify-between text-xs">
+      <div className="pt-6 border-t border-zinc-200 flex items-center justify-between text-xs">
         <div>
-          <p className="text-zinc-300 font-medium">Reset Demo Sandbox</p>
+          <p className="text-zinc-700 font-medium">Reset Demo Sandbox</p>
           <p className="text-zinc-500 text-[11px] mt-0.5">
             Restores campaigns, creators, and approvals to initial demo data.
           </p>
@@ -378,7 +378,7 @@ export const SettingsWorkspace: React.FC = () => {
             resetDemoData();
             triggerCelebration();
           }}
-          className="text-xs text-zinc-400 hover:text-zinc-200"
+          className="text-xs text-zinc-500 hover:text-zinc-800"
         >
           Reset Data
         </Button>

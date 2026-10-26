@@ -170,14 +170,14 @@ export const CampaignCreationModal: React.FC<CampaignCreationModalProps> = ({
       maxWidth="3xl"
       title={
         <div className="flex items-center gap-2.5">
-          <div className="p-1.5 rounded-xl bg-indigo-600/20 text-indigo-400 border border-indigo-500/30">
+          <div className="p-1.5 rounded-xl bg-[#00B4D8]/20 text-[#0096C7] border border-[#00B4D8]/30">
             <Sparkles className="w-4 h-4" />
           </div>
           <div>
-            <h2 className="text-base font-semibold text-zinc-100 font-display">
+            <h2 className="text-base font-semibold text-zinc-900 font-display">
               Create New Campaign
             </h2>
-            <p className="text-xs text-zinc-400">
+            <p className="text-xs text-zinc-500">
               Step {step} of {totalSteps}:{' '}
               {step === 1 && 'Campaign Objective'}
               {step === 2 && 'Target Audience'}
@@ -260,7 +260,7 @@ export const CampaignCreationModal: React.FC<CampaignCreationModalProps> = ({
               placeholder="e.g. Mumbai Sneaker Capsule Launch"
             />
             <div>
-              <label className="block text-xs font-medium text-zinc-300 mb-2">
+              <label className="block text-xs font-medium text-zinc-700 mb-2">
                 Primary Campaign Objective
               </label>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
@@ -271,13 +271,13 @@ export const CampaignCreationModal: React.FC<CampaignCreationModalProps> = ({
                     onClick={() => setObjective(obj)}
                     className={`p-3.5 rounded-2xl border text-left transition-all ${
                       objective === obj
-                        ? 'bg-indigo-950/40 border-indigo-500 text-white shadow-sm'
-                        : 'bg-zinc-900/60 border-zinc-800 hover:border-zinc-700 text-zinc-300'
+                        ? 'bg-indigo-950/40 border-[#00B4D8] text-white shadow-sm'
+                        : 'bg-white shadow-xs border-zinc-200 hover:border-zinc-300 text-zinc-700'
                     }`}
                   >
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-semibold">{obj}</span>
-                      {objective === obj && <Check className="w-3.5 h-3.5 text-indigo-400" />}
+                      {objective === obj && <Check className="w-3.5 h-3.5 text-[#0096C7]" />}
                     </div>
                   </button>
                 ))}
@@ -328,17 +328,17 @@ export const CampaignCreationModal: React.FC<CampaignCreationModalProps> = ({
         {step === 3 && (
           <div className="space-y-5">
             <div>
-              <label className="block text-xs font-medium text-zinc-300 mb-1.5">
+              <label className="block text-xs font-medium text-zinc-700 mb-1.5">
                 Total Campaign Budget (₹ INR)
               </label>
               <div className="relative">
-                <span className="absolute left-4 top-3 text-zinc-400 font-semibold">₹</span>
+                <span className="absolute left-4 top-3 text-zinc-500 font-semibold">₹</span>
                 <input
                   type="number"
                   value={budget}
                   onChange={(e) => setBudget(Number(e.target.value))}
                   step={50000}
-                  className="w-full bg-zinc-900 text-zinc-100 pl-8 pr-4 py-3 text-lg font-mono font-semibold rounded-2xl border border-zinc-700/80 focus:border-indigo-500 focus:outline-none"
+                  className="w-full bg-white text-zinc-900 pl-8 pr-4 py-3 text-lg font-mono font-semibold rounded-2xl border border-zinc-300 focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] focus:outline-none"
                 />
               </div>
               <p className="text-xs text-zinc-500 mt-2">
@@ -354,8 +354,8 @@ export const CampaignCreationModal: React.FC<CampaignCreationModalProps> = ({
                   onClick={() => setBudget(preset)}
                   className={`p-3 rounded-xl border text-center text-xs font-mono font-medium transition-colors ${
                     budget === preset
-                      ? 'bg-indigo-900/30 border-indigo-500 text-indigo-300'
-                      : 'bg-zinc-900/60 border-zinc-800 text-zinc-400 hover:text-zinc-200'
+                      ? 'bg-indigo-900/30 border-[#00B4D8] text-[#0096C7]'
+                      : 'bg-white shadow-xs border-zinc-200 text-zinc-500 hover:text-zinc-800'
                   }`}
                 >
                   ₹{(preset / 100000).toFixed(1)}L Preset
@@ -368,7 +368,7 @@ export const CampaignCreationModal: React.FC<CampaignCreationModalProps> = ({
         {/* STEP 4: PLATFORMS */}
         {step === 4 && (
           <div className="space-y-4">
-            <label className="block text-xs font-medium text-zinc-300">
+            <label className="block text-xs font-medium text-zinc-700">
               Select Platforms for Campaign Rollout
             </label>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -381,13 +381,13 @@ export const CampaignCreationModal: React.FC<CampaignCreationModalProps> = ({
                     onClick={() => togglePlatform(plat)}
                     className={`p-4 rounded-2xl border text-left transition-all ${
                       isSelected
-                        ? 'bg-indigo-950/40 border-indigo-500 text-white'
-                        : 'bg-zinc-900/60 border-zinc-800 text-zinc-400 hover:border-zinc-700'
+                        ? 'bg-indigo-950/40 border-[#00B4D8] text-white'
+                        : 'bg-white shadow-xs border-zinc-200 text-zinc-500 hover:border-zinc-300'
                     }`}
                   >
                     <div className="flex items-center justify-between">
                       <span className="text-sm font-semibold">{plat}</span>
-                      {isSelected && <Check className="w-4 h-4 text-indigo-400" />}
+                      {isSelected && <Check className="w-4 h-4 text-[#0096C7]" />}
                     </div>
                   </button>
                 );
@@ -400,7 +400,7 @@ export const CampaignCreationModal: React.FC<CampaignCreationModalProps> = ({
         {step === 5 && (
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <label className="text-xs font-medium text-zinc-300">
+              <label className="text-xs font-medium text-zinc-700">
                 Deliverable Types & Volume
               </label>
               <span className="text-xs text-zinc-500">Add key formats requested in brief</span>
@@ -410,7 +410,7 @@ export const CampaignCreationModal: React.FC<CampaignCreationModalProps> = ({
               {deliverables.map((item, idx) => (
                 <div
                   key={idx}
-                  className="flex items-center gap-3 p-3.5 rounded-2xl bg-zinc-900/80 border border-zinc-800"
+                  className="flex items-center gap-3 p-3.5 rounded-2xl bg-white shadow-xs border border-zinc-200"
                 >
                   <select
                     value={item.type}
@@ -419,7 +419,7 @@ export const CampaignCreationModal: React.FC<CampaignCreationModalProps> = ({
                       updated[idx].type = e.target.value as DeliverableType;
                       setDeliverables(updated);
                     }}
-                    className="bg-zinc-800 text-zinc-100 text-xs px-3 py-2 rounded-xl border border-zinc-700 focus:outline-none"
+                    className="bg-zinc-800 text-zinc-900 text-xs px-3 py-2 rounded-xl border border-zinc-300 focus:outline-none"
                   >
                     {deliverableTypesList.map((t) => (
                       <option key={t} value={t}>
@@ -429,7 +429,7 @@ export const CampaignCreationModal: React.FC<CampaignCreationModalProps> = ({
                   </select>
 
                   <div className="flex items-center gap-2">
-                    <span className="text-xs text-zinc-400">Qty:</span>
+                    <span className="text-xs text-zinc-500">Qty:</span>
                     <input
                       type="number"
                       value={item.count}
@@ -438,12 +438,12 @@ export const CampaignCreationModal: React.FC<CampaignCreationModalProps> = ({
                         updated[idx].count = Number(e.target.value);
                         setDeliverables(updated);
                       }}
-                      className="w-16 bg-zinc-800 text-zinc-100 text-xs font-mono px-2.5 py-1.5 rounded-xl border border-zinc-700 text-center"
+                      className="w-16 bg-zinc-800 text-zinc-900 text-xs font-mono px-2.5 py-1.5 rounded-xl border border-zinc-300 text-center"
                     />
                   </div>
 
                   <div className="flex items-center gap-2 flex-1 justify-end">
-                    <span className="text-xs text-zinc-400">Avg Unit Rate: ₹</span>
+                    <span className="text-xs text-zinc-500">Avg Unit Rate: ₹</span>
                     <input
                       type="number"
                       value={item.rate}
@@ -452,7 +452,7 @@ export const CampaignCreationModal: React.FC<CampaignCreationModalProps> = ({
                         updated[idx].rate = Number(e.target.value);
                         setDeliverables(updated);
                       }}
-                      className="w-24 bg-zinc-800 text-zinc-100 text-xs font-mono px-2.5 py-1.5 rounded-xl border border-zinc-700 text-right"
+                      className="w-24 bg-zinc-800 text-zinc-900 text-xs font-mono px-2.5 py-1.5 rounded-xl border border-zinc-300 text-right"
                     />
                   </div>
                 </div>
@@ -502,7 +502,7 @@ export const CampaignCreationModal: React.FC<CampaignCreationModalProps> = ({
         {/* STEP 7: BRAND GUIDELINES */}
         {step === 7 && (
           <div className="space-y-3">
-            <label className="block text-xs font-medium text-zinc-300">
+            <label className="block text-xs font-medium text-zinc-700">
               Brand Guidelines & Creative Do's and Don'ts
             </label>
             <textarea
@@ -510,7 +510,7 @@ export const CampaignCreationModal: React.FC<CampaignCreationModalProps> = ({
               value={guidelines}
               onChange={(e) => setGuidelines(e.target.value)}
               placeholder="e.g. Focus on product silhouettes. Film in natural sunlight. Avoid competitor brands in shot."
-              className="w-full bg-zinc-900 text-zinc-100 p-4 text-xs rounded-2xl border border-zinc-700/80 focus:border-indigo-500 focus:outline-none leading-relaxed"
+              className="w-full bg-white text-zinc-900 p-4 text-xs rounded-2xl border border-zinc-300 focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] focus:outline-none leading-relaxed"
             />
             <p className="text-xs text-zinc-500">
               These guidelines are ingested by the AI Pre-Check Engine to automatically evaluate creator video drafts upon upload.
@@ -523,8 +523,8 @@ export const CampaignCreationModal: React.FC<CampaignCreationModalProps> = ({
           <div className="space-y-6">
             {isGeneratingPlan || !aiPlan ? (
               <div className="py-16 text-center space-y-3">
-                <Sparkles className="w-8 h-8 text-indigo-400 animate-spin mx-auto" />
-                <p className="text-sm font-semibold text-zinc-200">
+                <Sparkles className="w-8 h-8 text-[#0096C7] animate-spin mx-auto" />
+                <p className="text-sm font-semibold text-zinc-800">
                   AI Campaign Architect Synthesizing Optimal Strategy...
                 </p>
                 <p className="text-xs text-zinc-500">
@@ -534,14 +534,14 @@ export const CampaignCreationModal: React.FC<CampaignCreationModalProps> = ({
             ) : (
               <div className="space-y-6 animate-fade-in">
                 {/* Strategic summary */}
-                <div className="p-4 rounded-2xl bg-indigo-950/30 border border-indigo-500/30">
+                <div className="p-4 rounded-2xl bg-[#00B4D8]/10 border border-[#00B4D8]/30">
                   <div className="flex items-center gap-2 mb-1">
-                    <Sparkles className="w-4 h-4 text-indigo-400" />
-                    <h4 className="text-xs font-semibold text-indigo-300 uppercase tracking-wider">
+                    <Sparkles className="w-4 h-4 text-[#0096C7]" />
+                    <h4 className="text-xs font-semibold text-[#0096C7] uppercase tracking-wider">
                       Strategic AI Blueprint
                     </h4>
                   </div>
-                  <p className="text-xs text-zinc-300 leading-relaxed">
+                  <p className="text-xs text-zinc-700 leading-relaxed">
                     {aiPlan.strategicNote}
                   </p>
                 </div>
@@ -549,8 +549,8 @@ export const CampaignCreationModal: React.FC<CampaignCreationModalProps> = ({
                 {/* Creator Mix (Editable) */}
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <h4 className="text-xs font-semibold text-zinc-200 flex items-center gap-1.5">
-                      <Users className="w-4 h-4 text-zinc-400" />
+                    <h4 className="text-xs font-semibold text-zinc-800 flex items-center gap-1.5">
+                      <Users className="w-4 h-4 text-zinc-500" />
                       <span>Recommended Creator Mix (Editable)</span>
                     </h4>
                     <span className="text-[11px] text-zinc-500">Click quantities to adjust</span>
@@ -560,16 +560,16 @@ export const CampaignCreationModal: React.FC<CampaignCreationModalProps> = ({
                     {editableMix.map((mix, idx) => (
                       <div
                         key={idx}
-                        className="p-3.5 rounded-2xl bg-zinc-900 border border-zinc-800 space-y-2"
+                        className="p-3.5 rounded-2xl bg-white shadow-xs border border-zinc-200 space-y-2"
                       >
                         <div className="flex items-center justify-between">
-                          <span className="text-xs font-semibold text-zinc-200">{mix.tier}</span>
-                          <span className="text-[10px] text-indigo-400 font-mono font-medium">
+                          <span className="text-xs font-semibold text-zinc-800">{mix.tier}</span>
+                          <span className="text-[10px] text-[#0096C7] font-mono font-medium">
                             {mix.percentage}% budget
                           </span>
                         </div>
                         <div className="flex items-center gap-2">
-                          <label className="text-xs text-zinc-400">Target:</label>
+                          <label className="text-xs text-zinc-500">Target:</label>
                           <input
                             type="number"
                             value={mix.count}
@@ -578,9 +578,9 @@ export const CampaignCreationModal: React.FC<CampaignCreationModalProps> = ({
                               updated[idx].count = Math.max(1, Number(e.target.value));
                               setEditableMix(updated);
                             }}
-                            className="w-16 bg-zinc-800 text-zinc-100 text-xs font-mono px-2 py-1 rounded-lg border border-zinc-700 text-center"
+                            className="w-16 bg-zinc-800 text-zinc-900 text-xs font-mono px-2 py-1 rounded-lg border border-zinc-300 text-center"
                           />
-                          <span className="text-xs text-zinc-400">creators</span>
+                          <span className="text-xs text-zinc-500">creators</span>
                         </div>
                         <p className="text-[11px] text-zinc-500 leading-tight">
                           {mix.description}
@@ -592,30 +592,30 @@ export const CampaignCreationModal: React.FC<CampaignCreationModalProps> = ({
 
                 {/* Projected KPIs */}
                 <div className="space-y-3">
-                  <h4 className="text-xs font-semibold text-zinc-200 flex items-center gap-1.5">
-                    <Target className="w-4 h-4 text-zinc-400" />
+                  <h4 className="text-xs font-semibold text-zinc-800 flex items-center gap-1.5">
+                    <Target className="w-4 h-4 text-zinc-500" />
                     <span>Projected Algorithmic KPIs</span>
                   </h4>
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
                     {aiPlan.kpis.map((kpi, idx) => (
                       <div
                         key={idx}
-                        className="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800 text-center"
+                        className="p-3 rounded-xl bg-white shadow-xs border border-zinc-200 text-center"
                       >
                         <p className="text-[10px] text-zinc-500 uppercase">{kpi.metric}</p>
-                        <p className="text-sm font-bold text-zinc-100 font-mono mt-0.5">
+                        <p className="text-sm font-bold text-zinc-900 font-mono mt-0.5">
                           {kpi.target}
                         </p>
-                        <p className="text-[10px] text-indigo-400/80 mt-0.5">{kpi.benchmark}</p>
+                        <p className="text-[10px] text-[#0096C7]/80 mt-0.5">{kpi.benchmark}</p>
                       </div>
                     ))}
                   </div>
                 </div>
 
                 {/* Tracking & Attribution */}
-                <div className="p-3.5 rounded-2xl bg-zinc-900 border border-zinc-800 text-xs">
-                  <span className="font-semibold text-zinc-300">Attribution Strategy: </span>
-                  <span className="text-zinc-400">{aiPlan.trackingStrategy}</span>
+                <div className="p-3.5 rounded-2xl bg-white shadow-xs border border-zinc-200 text-xs">
+                  <span className="font-semibold text-zinc-700">Attribution Strategy: </span>
+                  <span className="text-zinc-500">{aiPlan.trackingStrategy}</span>
                 </div>
               </div>
             )}

@@ -110,7 +110,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
         className={`relative flex items-center justify-center shrink-0 ${conf.iconSize} ${conf.containerPadding} ${conf.imgRounded} ${
           isLight
             ? 'bg-white/90 border border-black/10 shadow-[0_2px_8px_rgba(0,0,0,0.06)]'
-            : 'bg-black/40 border border-white/10 shadow-sm'
+            : 'bg-black/40 border border-black/[0.08] shadow-sm'
         }`}
         style={{
           boxShadow: isLight
@@ -149,7 +149,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
                 className={`font-mono font-medium rounded ${
                   isLight
                     ? 'text-zinc-600 bg-zinc-200 border border-zinc-300'
-                    : 'text-zinc-400 bg-zinc-900 border border-zinc-800'
+                    : 'text-zinc-500 bg-white border border-zinc-200'
                 } ${conf.badgeSize}`}
               >
                 {badgeText}
@@ -160,7 +160,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
           {subtitle && (
             <span
               className={`text-[10px] tracking-wider font-mono uppercase mt-0.5 ${
-                isLight ? 'text-zinc-500' : 'text-zinc-400'
+                isLight ? 'text-zinc-500' : 'text-zinc-500'
               }`}
             >
               {subtitle}

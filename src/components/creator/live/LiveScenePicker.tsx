@@ -41,7 +41,7 @@ export const LiveScenePicker: React.FC<LiveScenePickerProps> = ({
               } ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
             >
               {/* Visual Preview Thumbnail */}
-              <div className="relative h-20 w-full overflow-hidden bg-zinc-900">
+              <div className="relative h-20 w-full overflow-hidden bg-[#DFE3E8]">
                 {scene.thumbnailUrl && (
                   <img
                     src={scene.thumbnailUrl}

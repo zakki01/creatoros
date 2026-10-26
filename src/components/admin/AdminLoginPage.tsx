@@ -89,7 +89,7 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({
   };
 
   return (
-    <div className="min-h-screen w-full bg-[#070709] text-zinc-100 flex flex-col justify-between p-4 sm:p-8 font-sans selection:bg-rose-500 selection:text-white relative overflow-hidden">
+    <div className="min-h-screen w-full bg-[#EAECEF] text-zinc-900 flex flex-col justify-between p-4 sm:p-8 font-sans selection:bg-rose-500 selection:text-white relative overflow-hidden">
       {/* Background Ambience - High Security Grid & Pulse */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-rose-950/20 rounded-full blur-[150px]" />
@@ -102,7 +102,7 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({
         <div className="flex items-center gap-3">
           <BrandLogo size="sm" iconOnly />
           <div className="flex items-center gap-2">
-            <span className="text-xs font-mono font-bold tracking-widest text-zinc-300 uppercase">
+            <span className="text-xs font-mono font-bold tracking-widest text-zinc-700 uppercase">
               CreatorOS
             </span>
             <span className="px-1.5 py-0.5 rounded text-[9px] font-mono uppercase bg-rose-500/20 text-rose-300 border border-rose-500/30 font-bold">
@@ -114,7 +114,7 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({
         <button
           type="button"
           onClick={onExitToPublic}
-          className="inline-flex items-center gap-1.5 text-xs font-mono text-zinc-500 hover:text-zinc-300 transition-colors cursor-pointer"
+          className="inline-flex items-center gap-1.5 text-xs font-mono text-zinc-500 hover:text-zinc-700 transition-colors cursor-pointer"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>Exit to Public Portal</span>
@@ -123,7 +123,7 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({
 
       {/* Main Authentication Card */}
       <main className="relative z-10 max-w-md mx-auto w-full my-auto py-8">
-        <div className="rounded-2xl bg-zinc-950/90 border border-zinc-800/90 backdrop-blur-2xl shadow-2xl p-6 sm:p-8 space-y-6">
+        <div className="rounded-2xl bg-white shadow-sm border border-zinc-200 backdrop-blur-2xl shadow-2xl p-6 sm:p-8 space-y-6">
           {/* Header */}
           <div className="space-y-2 text-center">
             <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 mb-1">
@@ -161,7 +161,7 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Admin Email */}
             <div className="space-y-1.5 text-left">
-              <label className="text-xs font-mono font-medium text-zinc-300 flex items-center justify-between">
+              <label className="text-xs font-mono font-medium text-zinc-700 flex items-center justify-between">
                 <span>Admin Email</span>
                 <span className="text-[10px] text-zinc-500">Root Account</span>
               </label>
@@ -174,14 +174,14 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({
                   placeholder="admin@creatoros.ai"
                   required
                   disabled={isLoading || (lockoutTimer !== null && lockoutTimer > 0)}
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-zinc-900/80 border border-zinc-800 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500/40 transition-all font-mono"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white shadow-sm border border-zinc-200 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500/40 transition-all font-mono"
                 />
               </div>
             </div>
 
             {/* Password */}
             <div className="space-y-1.5 text-left">
-              <label className="text-xs font-mono font-medium text-zinc-300 flex items-center justify-between">
+              <label className="text-xs font-mono font-medium text-zinc-700 flex items-center justify-between">
                 <span>Password</span>
                 <span className="text-[10px] text-zinc-500">Encrypted Key</span>
               </label>
@@ -194,12 +194,12 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({
                   placeholder="••••••••••••"
                   required
                   disabled={isLoading || (lockoutTimer !== null && lockoutTimer > 0)}
-                  className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-zinc-900/80 border border-zinc-800 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500/40 transition-all font-mono"
+                  className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-white shadow-sm border border-zinc-200 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500/40 transition-all font-mono"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300 p-1 cursor-pointer"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-700 p-1 cursor-pointer"
                 >
                   {showPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
                 </button>
@@ -208,7 +208,7 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({
 
             {/* Optional 2FA Code */}
             <div className="space-y-1.5 text-left">
-              <label className="text-xs font-mono font-medium text-zinc-300 flex items-center justify-between">
+              <label className="text-xs font-mono font-medium text-zinc-700 flex items-center justify-between">
                 <span>2FA Verification Code</span>
                 <span className="text-[10px] text-zinc-500">(Optional for Sandbox)</span>
               </label>
@@ -221,7 +221,7 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({
                   onChange={(e) => setTwoFactorCode(e.target.value.replace(/\D/g, ''))}
                   placeholder="6-digit code e.g. 849201"
                   disabled={isLoading || (lockoutTimer !== null && lockoutTimer > 0)}
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-zinc-900/80 border border-zinc-800 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500/40 transition-all font-mono tracking-widest"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white shadow-sm border border-zinc-200 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500/40 transition-all font-mono tracking-widest"
                 />
               </div>
             </div>
@@ -261,7 +261,7 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({
         </div>
 
         {/* Security telemetry notice */}
-        <div className="mt-4 p-3 rounded-xl bg-zinc-950/60 border border-zinc-900 text-center font-mono text-[10px] text-zinc-600 space-y-1">
+        <div className="mt-4 p-3 rounded-xl bg-zinc-50 border border-zinc-900 text-center font-mono text-[10px] text-zinc-600 space-y-1">
           <p className="flex items-center justify-center gap-1.5 text-zinc-500">
             <Terminal className="w-3 h-3 text-rose-500/70" />
             <span>CR-SEC-KERNEL • Strict RBAC Boundary Enforced</span>

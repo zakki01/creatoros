@@ -129,20 +129,20 @@ export const SuperAdminLayout: React.FC<SuperAdminLayoutProps> = ({
   ];
 
   return (
-    <div className="flex h-screen w-full bg-[#070709] text-zinc-100 overflow-hidden font-sans">
+    <div className="flex h-screen w-full bg-[#EAECEF] text-zinc-900 overflow-hidden font-sans">
       {/* Sidebar */}
       <aside
-        className={`h-full border-r border-white/[0.08] bg-zinc-950/90 backdrop-blur-xl flex flex-col justify-between transition-all duration-200 z-30 shrink-0 ${
+        className={`h-full border-r border-black/[0.08] bg-[#DFE3E8]/90 backdrop-blur-xl flex flex-col justify-between transition-all duration-200 z-30 shrink-0 ${
           isSidebarCollapsed ? 'w-16' : 'w-60'
         }`}
       >
         {/* Brand / Admin Header */}
         <div>
-          <div className="p-3.5 border-b border-white/[0.08] flex items-center justify-between">
+          <div className="p-3.5 border-b border-black/[0.06] flex items-center justify-between">
             <div className="flex items-center gap-2.5">
               <BrandLogo size="sm" iconOnly={isSidebarCollapsed} />
               {!isSidebarCollapsed && (
-                <span className="px-1.5 py-0.5 rounded text-[9px] font-mono uppercase bg-rose-500/20 text-rose-300 border border-rose-500/30 font-bold">
+                <span className="px-1.5 py-0.5 rounded text-[9px] font-mono uppercase bg-rose-100 text-rose-800 border border-rose-300 font-bold">
                   ADMIN
                 </span>
               )}
@@ -150,7 +150,7 @@ export const SuperAdminLayout: React.FC<SuperAdminLayoutProps> = ({
 
             <button
               onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
-              className="p-1 rounded-md text-zinc-500 hover:text-zinc-200 hover:bg-zinc-800/60 transition-all cursor-pointer"
+              className="p-1 rounded-md text-zinc-500 hover:text-zinc-900 hover:bg-black/[0.05] transition-all cursor-pointer"
               title={isSidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
             >
               {isSidebarCollapsed ? (
@@ -173,14 +173,14 @@ export const SuperAdminLayout: React.FC<SuperAdminLayoutProps> = ({
                   onClick={() => handleTabChange(item.id)}
                   className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-sans font-medium transition-all cursor-pointer group ${
                     isActive
-                      ? 'bg-rose-500/15 text-rose-200 border border-rose-500/30 shadow-sm'
-                      : 'text-zinc-400 hover:text-zinc-100 hover:bg-white/[0.04]'
+                      ? 'bg-white text-rose-950 border border-rose-200 shadow-xs font-semibold'
+                      : 'text-zinc-600 hover:text-zinc-900 hover:bg-black/[0.04]'
                   } ${isSidebarCollapsed ? 'justify-center px-0' : ''}`}
                   title={isSidebarCollapsed ? item.label : undefined}
                 >
                   <Icon
                     className={`w-4 h-4 shrink-0 transition-colors ${
-                      isActive ? 'text-rose-400' : 'text-zinc-400 group-hover:text-zinc-200'
+                      isActive ? 'text-rose-600' : 'text-zinc-500 group-hover:text-zinc-900'
                     }`}
                   />
 
@@ -205,10 +205,10 @@ export const SuperAdminLayout: React.FC<SuperAdminLayoutProps> = ({
         </div>
 
         {/* Bottom Profile / Exit */}
-        <div className="p-3 border-t border-white/[0.08] space-y-2">
+        <div className="p-3 border-t border-black/[0.06] space-y-2">
           {!isSidebarCollapsed && (
-            <div className="p-2.5 rounded-xl bg-zinc-900/60 border border-white/[0.06] flex items-center gap-2.5">
-              <div className="w-7 h-7 rounded-lg bg-rose-500/20 text-rose-300 flex items-center justify-center font-bold text-xs shrink-0 font-mono">
+            <div className="p-2.5 rounded-xl bg-white/80 border border-black/[0.08] flex items-center gap-2.5 shadow-xs">
+              <div className="w-7 h-7 rounded-lg bg-rose-100 text-rose-800 flex items-center justify-center font-bold text-xs shrink-0 font-mono">
                 {(adminSession?.name || 'Alex Vance')
                   .split(' ')
                   .map((n) => n[0])
@@ -217,7 +217,7 @@ export const SuperAdminLayout: React.FC<SuperAdminLayoutProps> = ({
                   .slice(0, 2) || 'AV'}
               </div>
               <div className="min-w-0 truncate">
-                <span className="text-xs font-medium text-white block truncate">
+                <span className="text-xs font-medium text-zinc-900 block truncate">
                   {adminSession?.name || 'Alex Vance'}
                 </span>
                 <span className="text-[10px] font-mono text-zinc-500 block truncate">Root Authority</span>
@@ -227,7 +227,7 @@ export const SuperAdminLayout: React.FC<SuperAdminLayoutProps> = ({
 
           <button
             onClick={handleSignOut}
-            className={`w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-sans text-zinc-400 hover:text-rose-300 hover:bg-rose-950/20 border border-transparent hover:border-rose-500/20 transition-all cursor-pointer ${
+            className={`w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-sans text-zinc-600 hover:text-rose-700 hover:bg-rose-50 border border-transparent hover:border-rose-200 transition-all cursor-pointer ${
               isSidebarCollapsed ? 'justify-center px-0' : ''
             }`}
             title="Sign Out"
@@ -241,9 +241,9 @@ export const SuperAdminLayout: React.FC<SuperAdminLayoutProps> = ({
       {/* Main Workspace Frame */}
       <div className="flex-1 flex flex-col h-full min-w-0 overflow-hidden">
         {/* Top Bar */}
-        <header className="sticky top-0 z-30 w-full h-14 border-b border-white/[0.08] bg-[#070709]/85 backdrop-blur-xl px-4 lg:px-6 flex items-center justify-between gap-4">
+        <header className="sticky top-0 z-30 w-full h-14 border-b border-black/[0.08] bg-white/85 backdrop-blur-xl px-4 lg:px-6 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <span className="text-xs font-semibold text-white tracking-wide">
+            <span className="text-xs font-semibold text-zinc-900 tracking-wide">
               {navigationItems.find((n) => n.id === activeTab)?.label || 'Command Center'}
             </span>
             <span className="text-[10px] text-zinc-500 font-mono hidden sm:inline">
@@ -253,13 +253,13 @@ export const SuperAdminLayout: React.FC<SuperAdminLayoutProps> = ({
             {/* Quick Command Trigger */}
             <button
               onClick={() => setIsCommandPaletteOpen(true)}
-              className="hidden md:flex items-center gap-2 ml-4 px-2.5 py-1.5 rounded-lg bg-zinc-900/70 hover:bg-zinc-800/80 border border-zinc-800 hover:border-zinc-700 text-zinc-400 text-xs transition-all w-52 justify-between cursor-pointer"
+              className="hidden md:flex items-center gap-2 ml-4 px-2.5 py-1.5 rounded-lg bg-[#E2E5E9]/60 hover:bg-[#E2E5E9] border border-black/[0.08] text-zinc-600 text-xs transition-all w-52 justify-between cursor-pointer"
             >
               <div className="flex items-center gap-2">
                 <Search className="w-3.5 h-3.5 text-zinc-500" />
-                <span className="text-zinc-500">Quick action...</span>
+                <span className="text-zinc-600">Quick action...</span>
               </div>
-              <div className="flex items-center gap-0.5 text-[10px] bg-zinc-800/80 px-1.5 py-0.5 rounded text-zinc-400 font-mono">
+              <div className="flex items-center gap-0.5 text-[10px] bg-white px-1.5 py-0.5 rounded text-zinc-700 font-mono border border-black/10">
                 <Command className="w-2.5 h-2.5" />
                 <span>K</span>
               </div>
@@ -268,21 +268,21 @@ export const SuperAdminLayout: React.FC<SuperAdminLayoutProps> = ({
 
           <div className="flex items-center gap-3">
             {/* Super Admin Badge */}
-            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-500/15 border border-rose-500/30 text-rose-300 text-xs font-medium">
-              <ShieldAlert className="w-3.5 h-3.5 text-rose-400" />
+            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-50 border border-rose-200 text-rose-800 text-xs font-medium">
+              <ShieldAlert className="w-3.5 h-3.5 text-rose-600" />
               <span>Super Admin Authority</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-rose-400 animate-pulse ml-0.5" />
+              <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse ml-0.5" />
             </div>
 
             {/* Notifications */}
             <button
               onClick={() => setIsNotificationsOpen(true)}
-              className="relative p-1.5 rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/80 transition-all cursor-pointer"
+              className="relative p-1.5 rounded-lg text-zinc-500 hover:text-zinc-900 hover:bg-black/[0.05] transition-all cursor-pointer"
               title="Notifications"
             >
               <Bell className="w-4 h-4" />
               {pendingReportsCount > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-rose-500 text-[9px] font-bold text-white flex items-center justify-center ring-2 ring-zinc-950">
+                <span className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-rose-500 text-[9px] font-bold text-white flex items-center justify-center ring-2 ring-white">
                   {pendingReportsCount}
                 </span>
               )}

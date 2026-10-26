@@ -337,7 +337,7 @@ export const EmojiPicker: React.FC<EmojiPickerProps> = ({
   return (
     <div
       ref={pickerRef}
-      className={`z-50 w-[330px] sm:w-[350px] max-w-[94vw] bg-[#0c0c12]/98 border border-white/[0.12] rounded-2xl shadow-[0_24px_60px_rgba(0,0,0,0.85),0_0_0_1px_rgba(255,255,255,0.06)] backdrop-blur-2xl text-zinc-100 p-3 select-none animate-slide-up flex flex-col gap-2.5 ${
+      className={`z-50 w-[330px] sm:w-[350px] max-w-[94vw] bg-white/98 border border-zinc-200 rounded-2xl shadow-[0_24px_60px_rgba(0,0,0,0.85),0_0_0_1px_rgba(255,255,255,0.06)] backdrop-blur-2xl text-zinc-900 p-3 select-none animate-slide-up flex flex-col gap-2.5 ${
         position === 'top'
           ? 'bottom-full mb-2 origin-bottom'
           : position === 'bottom'
@@ -359,8 +359,8 @@ export const EmojiPicker: React.FC<EmojiPickerProps> = ({
       />
 
       {/* Top Switcher Tabs: [😀 Emoji | GIF] + Close */}
-      <div className="flex items-center justify-between gap-2 pb-1.5 border-b border-white/[0.08]">
-        <div className="flex items-center gap-1 bg-zinc-900/90 p-1 rounded-xl border border-white/[0.07] flex-1">
+      <div className="flex items-center justify-between gap-2 pb-1.5 border-b border-black/[0.08]">
+        <div className="flex items-center gap-1 bg-white/90 p-1 rounded-xl border border-white/[0.07] flex-1">
           <button
             type="button"
             onClick={() => {
@@ -371,7 +371,7 @@ export const EmojiPicker: React.FC<EmojiPickerProps> = ({
             className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
               activeTab === 'emoji'
                 ? 'bg-gradient-to-b from-indigo-500 to-indigo-600 text-white shadow-[0_4px_12px_rgba(99,102,241,0.35)]'
-                : 'text-zinc-400 hover:text-zinc-200'
+                : 'text-zinc-500 hover:text-zinc-800'
             }`}
           >
             <span>😀</span>
@@ -387,7 +387,7 @@ export const EmojiPicker: React.FC<EmojiPickerProps> = ({
             className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
               activeTab === 'gif'
                 ? 'bg-gradient-to-b from-indigo-500 to-indigo-600 text-white shadow-[0_4px_12px_rgba(99,102,241,0.35)]'
-                : 'text-zinc-400 hover:text-zinc-200'
+                : 'text-zinc-500 hover:text-zinc-800'
             }`}
           >
             <Film className="w-3.5 h-3.5" />
@@ -398,7 +398,7 @@ export const EmojiPicker: React.FC<EmojiPickerProps> = ({
         <button
           type="button"
           onClick={onClose}
-          className="w-7 h-7 rounded-lg flex items-center justify-center text-zinc-400 hover:text-white hover:bg-white/[0.06] transition-colors cursor-pointer shrink-0"
+          className="w-7 h-7 rounded-lg flex items-center justify-center text-zinc-500 hover:text-white hover:bg-white/[0.06] transition-colors cursor-pointer shrink-0"
           title="Close"
         >
           <X className="w-4 h-4" />
@@ -409,20 +409,20 @@ export const EmojiPicker: React.FC<EmojiPickerProps> = ({
         <>
           {/* Emoji Search Bar */}
           <div className="relative flex items-center">
-            <Search className="w-3.5 h-3.5 text-zinc-400 absolute left-2.5" />
+            <Search className="w-3.5 h-3.5 text-zinc-500 absolute left-2.5" />
             <input
               ref={searchInputRef}
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search emojis..."
-              className="w-full bg-zinc-900/80 border border-white/[0.08] rounded-xl pl-8 pr-7 py-1.5 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-indigo-500/60 transition-all"
+              className="w-full bg-white shadow-sm border border-black/[0.08] rounded-xl pl-8 pr-7 py-1.5 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]/60 transition-all"
             />
             {search && (
               <button
                 type="button"
                 onClick={() => setSearch('')}
-                className="absolute right-2 text-zinc-400 hover:text-zinc-200"
+                className="absolute right-2 text-zinc-500 hover:text-zinc-800"
               >
                 <X className="w-3.5 h-3.5" />
               </button>
@@ -431,14 +431,14 @@ export const EmojiPicker: React.FC<EmojiPickerProps> = ({
 
           {/* Emoji Category Pills */}
           {!search && (
-            <div className="flex items-center gap-1 border-b border-white/[0.06] pb-1.5 overflow-x-auto no-scrollbar">
+            <div className="flex items-center gap-1 border-b border-black/[0.06] pb-1.5 overflow-x-auto no-scrollbar">
               <button
                 type="button"
                 onClick={() => setActiveCategory('recent')}
                 className={`p-1.5 rounded-lg text-xs transition-colors cursor-pointer ${
                   activeCategory === 'recent'
-                    ? 'bg-indigo-600/20 text-indigo-400 border border-indigo-500/30'
-                    : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/60'
+                    ? 'bg-[#00B4D8]/20 text-[#0096C7] border border-[#00B4D8]/30'
+                    : 'text-zinc-500 hover:text-zinc-800 hover:bg-zinc-100/60'
                 }`}
                 title="Recent"
               >
@@ -454,8 +454,8 @@ export const EmojiPicker: React.FC<EmojiPickerProps> = ({
                     onClick={() => setActiveCategory(cat.id)}
                     className={`p-1.5 rounded-lg text-xs transition-colors cursor-pointer ${
                       isActive
-                        ? 'bg-indigo-600/20 text-indigo-400 border border-indigo-500/30'
-                        : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/60'
+                        ? 'bg-[#00B4D8]/20 text-[#0096C7] border border-[#00B4D8]/30'
+                        : 'text-zinc-500 hover:text-zinc-800 hover:bg-zinc-100/60'
                     }`}
                     title={cat.name}
                   >
@@ -475,7 +475,7 @@ export const EmojiPicker: React.FC<EmojiPickerProps> = ({
                     type="button"
                     key={idx}
                     onClick={() => handleSelectEmoji(emoji)}
-                    className="w-9 h-9 rounded-xl flex items-center justify-center text-lg hover:bg-zinc-800/80 active:scale-90 transition-all cursor-pointer"
+                    className="w-9 h-9 rounded-xl flex items-center justify-center text-lg hover:bg-zinc-100/80 active:scale-90 transition-all cursor-pointer"
                   >
                     {emoji}
                   </button>
@@ -483,14 +483,14 @@ export const EmojiPicker: React.FC<EmojiPickerProps> = ({
               </div>
             ) : activeCategory === 'recent' ? (
               <div>
-                <div className="text-[10px] font-medium text-zinc-400 mb-1 px-1">Recent</div>
+                <div className="text-[10px] font-medium text-zinc-500 mb-1 px-1">Recent</div>
                 <div className="grid grid-cols-7 gap-1">
                   {recentEmojis.map((emoji, idx) => (
                     <button
                       type="button"
                       key={idx}
                       onClick={() => handleSelectEmoji(emoji)}
-                      className="w-9 h-9 rounded-xl flex items-center justify-center text-lg hover:bg-zinc-800/80 active:scale-90 transition-all cursor-pointer"
+                      className="w-9 h-9 rounded-xl flex items-center justify-center text-lg hover:bg-zinc-100/80 active:scale-90 transition-all cursor-pointer"
                     >
                       {emoji}
                     </button>
@@ -503,14 +503,14 @@ export const EmojiPicker: React.FC<EmojiPickerProps> = ({
                 if (!cat) return null;
                 return (
                   <div>
-                    <div className="text-[10px] font-medium text-zinc-400 mb-1 px-1">{cat.name}</div>
+                    <div className="text-[10px] font-medium text-zinc-500 mb-1 px-1">{cat.name}</div>
                     <div className="grid grid-cols-7 gap-1">
                       {cat.emojis.map((emoji, idx) => (
                         <button
                           type="button"
                           key={idx}
                           onClick={() => handleSelectEmoji(emoji)}
-                          className="w-9 h-9 rounded-xl flex items-center justify-center text-lg hover:bg-zinc-800/80 active:scale-90 transition-all cursor-pointer"
+                          className="w-9 h-9 rounded-xl flex items-center justify-center text-lg hover:bg-zinc-100/80 active:scale-90 transition-all cursor-pointer"
                         >
                           {emoji}
                         </button>
@@ -528,7 +528,7 @@ export const EmojiPicker: React.FC<EmojiPickerProps> = ({
           {/* Search + Upload GIF Action Bar */}
           <div className="flex items-center gap-1.5">
             <div className="relative flex-1 flex items-center">
-              <Search className="w-3.5 h-3.5 text-zinc-400 absolute left-2.5" />
+              <Search className="w-3.5 h-3.5 text-zinc-500 absolute left-2.5" />
               <input
                 ref={searchInputRef}
                 type="text"
@@ -536,13 +536,13 @@ export const EmojiPicker: React.FC<EmojiPickerProps> = ({
                 onChange={(e) => setGifSearch(e.target.value)}
                 placeholder="Search GIFs..."
                 data-testid="picker-gif-search"
-                className="w-full bg-zinc-900/90 border border-white/[0.08] rounded-xl pl-8 pr-6 py-1.5 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-indigo-500/60 transition-all"
+                className="w-full bg-white/90 border border-black/[0.08] rounded-xl pl-8 pr-6 py-1.5 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]/60 transition-all"
               />
               {gifSearch && (
                 <button
                   type="button"
                   onClick={() => setGifSearch('')}
-                  className="absolute right-2 text-zinc-400 hover:text-zinc-200"
+                  className="absolute right-2 text-zinc-500 hover:text-zinc-800"
                 >
                   <X className="w-3 h-3" />
                 </button>
@@ -553,7 +553,7 @@ export const EmojiPicker: React.FC<EmojiPickerProps> = ({
               type="button"
               onClick={() => gifFileInputRef.current?.click()}
               data-testid="picker-upload-gif-btn"
-              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-indigo-500/15 hover:bg-indigo-500/25 border border-indigo-500/30 text-indigo-300 text-[11px] font-semibold transition-all cursor-pointer shrink-0"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-[#00B4D8]/10 hover:bg-[#0096C7]/25 border border-[#00B4D8]/30 text-[#0096C7] text-[11px] font-semibold transition-all cursor-pointer shrink-0"
               title="Upload a .gif from your device"
             >
               <Upload className="w-3.5 h-3.5" />
@@ -563,8 +563,8 @@ export const EmojiPicker: React.FC<EmojiPickerProps> = ({
 
           {/* Upload Progress or Error Banner */}
           {uploadingGif && (
-            <div className="p-2.5 rounded-xl bg-zinc-900/90 border border-indigo-500/30 flex flex-col gap-1.5">
-              <div className="flex items-center justify-between text-[11px] text-indigo-300 font-medium">
+            <div className="p-2.5 rounded-xl bg-white shadow-sm/90 border border-[#00B4D8]/30 flex flex-col gap-1.5">
+              <div className="flex items-center justify-between text-[11px] text-[#0096C7] font-medium">
                 <span className="flex items-center gap-1.5">
                   <Loader2 className="w-3.5 h-3.5 animate-spin" />
                   Validating & preparing GIF...
@@ -598,25 +598,25 @@ export const EmojiPicker: React.FC<EmojiPickerProps> = ({
 
           {/* Staged Local GIF Preview before sending */}
           {stagedUploadGif ? (
-            <div className="p-2.5 rounded-xl bg-zinc-900/95 border border-indigo-500/35 flex flex-col gap-2">
+            <div className="p-2.5 rounded-xl bg-white shadow-sm/95 border border-[#00B4D8]/35 flex flex-col gap-2">
               <div className="flex items-center justify-between">
                 <span className="text-[11px] font-semibold text-white truncate max-w-[180px]">
                   {stagedUploadGif.title}.gif
                 </span>
-                <span className="text-[10px] text-zinc-400">
+                <span className="text-[10px] text-zinc-500">
                   {stagedUploadGif.width}×{stagedUploadGif.height}
                   {stagedUploadGif.fileSizeBytes
                     ? ` · ${formatGifFileSize(stagedUploadGif.fileSizeBytes)}`
                     : ''}
                 </span>
               </div>
-              <div className="relative rounded-lg overflow-hidden bg-black/60 max-h-36 flex items-center justify-center border border-white/[0.06]">
+              <div className="relative rounded-lg overflow-hidden bg-black/60 max-h-36 flex items-center justify-center border border-black/[0.06]">
                 <img
                   src={stagedUploadGif.url}
                   alt={stagedUploadGif.title || 'GIF Preview'}
                   className="max-h-36 w-auto object-contain"
                 />
-                <span className="absolute top-1.5 left-1.5 px-1.5 py-0.5 rounded bg-black/75 text-[9px] font-bold text-indigo-300 border border-white/10">
+                <span className="absolute top-1.5 left-1.5 px-1.5 py-0.5 rounded bg-black/75 text-[9px] font-bold text-[#0096C7] border border-black/[0.08]">
                   GIF PREVIEW
                 </span>
               </div>
@@ -624,7 +624,7 @@ export const EmojiPicker: React.FC<EmojiPickerProps> = ({
                 <button
                   type="button"
                   onClick={() => setStagedUploadGif(null)}
-                  className="px-2.5 py-1 rounded-lg text-xs text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors cursor-pointer"
+                  className="px-2.5 py-1 rounded-lg text-xs text-zinc-500 hover:text-white hover:bg-zinc-100 transition-colors cursor-pointer"
                 >
                   Cancel
                 </button>
@@ -632,7 +632,7 @@ export const EmojiPicker: React.FC<EmojiPickerProps> = ({
                   type="button"
                   onClick={handleConfirmStagedGif}
                   data-testid="picker-confirm-uploaded-gif"
-                  className="flex items-center gap-1 px-3 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow-sm transition-all cursor-pointer"
+                  className="flex items-center gap-1 px-3 py-1 rounded-lg bg-[#00B4D8] hover:bg-[#0096C7] text-white text-xs font-semibold shadow-sm transition-all cursor-pointer"
                 >
                   <Check className="w-3.5 h-3.5" />
                   <span>Use GIF</span>
@@ -649,14 +649,14 @@ export const EmojiPicker: React.FC<EmojiPickerProps> = ({
                       type="button"
                       key={sug}
                       onClick={() => setGifSearch(sug)}
-                      className="px-2 py-0.5 rounded-full bg-zinc-800/90 hover:bg-zinc-700 text-[10px] text-zinc-300 whitespace-nowrap transition-colors cursor-pointer"
+                      className="px-2 py-0.5 rounded-full bg-zinc-800/90 hover:bg-zinc-700 text-[10px] text-zinc-700 whitespace-nowrap transition-colors cursor-pointer"
                     >
                       {sug}
                     </button>
                   ))}
                 </div>
               ) : (
-                <div className="flex items-center gap-1 overflow-x-auto no-scrollbar pb-1 border-b border-white/[0.06]">
+                <div className="flex items-center gap-1 overflow-x-auto no-scrollbar pb-1 border-b border-black/[0.06]">
                   {GIF_CATEGORIES.map((cat) => {
                     const active = !gifSearch.trim() && gifCategory === cat.id;
                     return (
@@ -669,8 +669,8 @@ export const EmojiPicker: React.FC<EmojiPickerProps> = ({
                         }}
                         className={`px-2.5 py-1 rounded-lg text-[11px] font-medium whitespace-nowrap transition-all cursor-pointer flex items-center gap-1 ${
                           active
-                            ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/35'
-                            : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/60'
+                            ? 'bg-indigo-500/20 text-[#0096C7] border border-[#00B4D8]/35'
+                            : 'text-zinc-500 hover:text-zinc-800 hover:bg-zinc-100/60'
                         }`}
                       >
                         {cat.id === 'trending' && <Flame className="w-3 h-3 text-amber-400" />}
@@ -687,16 +687,16 @@ export const EmojiPicker: React.FC<EmojiPickerProps> = ({
                   Array.from({ length: 6 }).map((_, idx) => (
                     <div
                       key={idx}
-                      className="h-24 rounded-xl bg-zinc-900/90 border border-white/[0.05] animate-pulse"
+                      className="h-24 rounded-xl bg-white shadow-sm/90 border border-white/[0.05] animate-pulse"
                     />
                   ))
                 ) : gifItems.length === 0 ? (
-                  <div className="col-span-2 py-8 text-center text-xs text-zinc-400 flex flex-col items-center gap-2">
+                  <div className="col-span-2 py-8 text-center text-xs text-zinc-500 flex flex-col items-center gap-2">
                     <span>No GIFs found</span>
                     <button
                       type="button"
                       onClick={() => gifFileInputRef.current?.click()}
-                      className="px-3 py-1.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-medium transition-colors"
+                      className="px-3 py-1.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-800 text-xs font-medium transition-colors"
                     >
                       Upload your own .gif
                     </button>
@@ -708,7 +708,7 @@ export const EmojiPicker: React.FC<EmojiPickerProps> = ({
                       key={gif.id}
                       onClick={() => handlePickGifItem(gif)}
                       data-testid={`picker-gif-item-${gif.id}`}
-                      className="group relative h-24 rounded-xl overflow-hidden bg-zinc-900 border border-white/[0.07] hover:border-indigo-500/60 transition-all cursor-pointer focus:outline-none"
+                      className="group relative h-24 rounded-xl overflow-hidden bg-white border border-white/[0.07] hover:border-[#00B4D8]/60 transition-all cursor-pointer focus:outline-none"
                     >
                       <img
                         src={gif.previewUrl || gif.url}
@@ -719,7 +719,7 @@ export const EmojiPicker: React.FC<EmojiPickerProps> = ({
                         <span className="text-[10px] font-medium text-white truncate">
                           {gif.title}
                         </span>
-                        <span className="text-[8px] font-bold px-1 py-0.2 rounded bg-black/70 text-indigo-300 border border-white/10 shrink-0">
+                        <span className="text-[8px] font-bold px-1 py-0.2 rounded bg-black/70 text-[#0096C7] border border-black/[0.08] shrink-0">
                           GIF
                         </span>
                       </div>

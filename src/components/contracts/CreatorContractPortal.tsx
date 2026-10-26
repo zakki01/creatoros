@@ -209,29 +209,29 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
   };
 
   return (
-    <div className="space-y-5 animate-fade-in font-sans pb-24 md:pb-12 text-zinc-100">
+    <div className="space-y-5 animate-fade-in font-sans pb-24 md:pb-12 text-zinc-900">
       {/* 1. Header: Clean title, zero marketing blurbs */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight font-display">
+          <h1 className="text-xl sm:text-2xl font-bold text-zinc-900 tracking-tight font-display">
             Contracts
           </h1>
-          <p className="text-xs text-zinc-400 mt-0.5">
-            Manage your partnerships.
+          <p className="text-xs text-zinc-500 mt-0.5">
+            Manage your brand partnerships and active agreements.
           </p>
         </div>
 
         {/* Global Action Feedback Alert */}
         {actionFeedback && (
-          <div className="px-3.5 py-2 rounded-xl bg-emerald-950/60 border border-emerald-500/40 text-emerald-300 text-xs font-medium flex items-center gap-2 animate-fade-in shadow-lg">
-            <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+          <div className="px-3.5 py-2 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-800 text-xs font-medium flex items-center gap-2 animate-fade-in shadow-xs">
+            <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
             <span>{actionFeedback}</span>
           </div>
         )}
       </div>
 
       {/* 2. Role-Aware Spatial Tabs Bar */}
-      <div className="flex items-center gap-1 p-1 rounded-xl surface-1 border border-white/[0.07] overflow-x-auto scrollbar-none">
+      <div className="flex items-center gap-1 p-1 rounded-xl bg-[#E2E5E9]/80 border border-black/[0.08] overflow-x-auto scrollbar-none shadow-inner">
         {[
           { id: 'all', label: 'All', count: counts.all },
           { id: 'pending', label: 'Pending', count: counts.pending },
@@ -245,8 +245,8 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
             onClick={() => setActiveTab(tab.id as TabType)}
             className={`min-h-[38px] px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap ${
               activeTab === tab.id
-                ? 'surface-3 text-white shadow-sm'
-                : 'text-zinc-400 hover:text-zinc-200'
+                ? 'bg-white text-zinc-900 shadow-xs border border-black/[0.06]'
+                : 'text-zinc-600 hover:text-zinc-900'
             }`}
           >
             <span>{tab.label}</span>
@@ -254,8 +254,8 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
               <span
                 className={`px-1.5 py-0.2 rounded-full text-[10px] font-mono ${
                   activeTab === tab.id
-                    ? 'bg-indigo-500/30 text-indigo-300'
-                    : 'bg-zinc-800/80 text-zinc-400'
+                    ? 'bg-sky-50 text-sky-800 font-bold'
+                    : 'bg-zinc-200 text-zinc-600'
                 }`}
               >
                 {tab.count}
@@ -284,26 +284,25 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
                 <div
                   key={c.id}
                   onClick={() => setSelectedContractId(c.id)}
-                  className={`group p-4 rounded-2xl transition-all cursor-pointer relative overflow-hidden ${
+                  className={`group p-4 rounded-2xl transition-all cursor-pointer relative overflow-hidden bg-white border ${
                     isSelected
-                      ? 'surface-3 border-indigo-500/50 ring-1 ring-indigo-500/30'
-                      : 'surface-2 hover:border-white/[0.15]'
+                      ? 'border-[#00B4D8] ring-2 ring-[#00B4D8]/30 shadow-md'
+                      : 'border-black/[0.08] hover:border-black/20 shadow-xs'
                   }`}
                 >
-                  <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent" />
                   {/* Top: Brand Logo, Brand Name & Status Badge */}
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex items-center gap-2.5 min-w-0">
                       <img
                         src={c.brandLogo}
                         alt={c.brandName}
-                        className="w-9 h-9 rounded-xl object-cover ring-1 ring-white/15 shrink-0"
+                        className="w-9 h-9 rounded-xl object-cover ring-1 ring-black/10 shrink-0"
                       />
                       <div className="min-w-0">
-                        <h4 className="text-xs font-bold text-zinc-100 truncate">
+                        <h4 className="text-xs font-bold text-zinc-900 truncate">
                           {c.brandName}
                         </h4>
-                        <p className="text-[10px] text-zinc-400 font-mono truncate">
+                        <p className="text-[10px] text-zinc-500 font-mono truncate">
                           {c.contractNumber}
                         </p>
                       </div>
@@ -313,17 +312,17 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
                   </div>
 
                   {/* Project Name */}
-                  <h3 className="text-xs sm:text-sm font-bold text-white mt-2.5 truncate">
+                  <h3 className="text-xs sm:text-sm font-bold text-zinc-900 mt-2.5 truncate">
                     {c.projectName}
                   </h3>
 
                   {/* Bottom: Money, Due Date & Quick Actions */}
-                  <div className="pt-2.5 mt-2.5 border-t border-white/[0.06] flex items-center justify-between text-xs font-mono">
+                  <div className="pt-2.5 mt-2.5 border-t border-zinc-200 flex items-center justify-between text-xs font-mono">
                     <div className="flex items-center gap-2">
-                      <span className="font-bold text-emerald-400 text-sm">
+                      <span className="font-bold text-emerald-700 text-sm">
                         ${c.payment.creatorPayment.toLocaleString()}
                       </span>
-                      <span className="text-[11px] text-zinc-400 font-sans">
+                      <span className="text-[11px] text-zinc-500 font-sans">
                         · Due {new Date(c.deadline).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                       </span>
                     </div>
@@ -338,7 +337,7 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
                               setSelectedContractId(c.id);
                               setIsAcceptModalOpen(true);
                             }}
-                            className="depth-btn-primary px-2.5 py-1 rounded-lg text-white text-[11px] font-sans font-semibold cursor-pointer"
+                            className="depth-btn-primary px-2.5 py-1 rounded-lg text-slate-950 text-[11px] font-sans font-semibold cursor-pointer"
                           >
                             Accept
                           </button>
@@ -349,7 +348,7 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
                               setSelectedContractId(c.id);
                               setIsDeclineModalOpen(true);
                             }}
-                            className="depth-btn-secondary px-2.5 py-1 rounded-lg text-zinc-300 hover:text-white text-[11px] font-sans font-semibold cursor-pointer"
+                            className="depth-btn-secondary px-2.5 py-1 rounded-lg text-zinc-700 hover:text-zinc-950 text-[11px] font-sans font-semibold cursor-pointer"
                           >
                             Decline
                           </button>
@@ -361,7 +360,7 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
                             e.stopPropagation();
                             setSelectedContractId(c.id);
                           }}
-                          className="depth-btn-secondary px-3 py-1 rounded-lg text-zinc-200 hover:text-white text-[11px] font-sans font-semibold cursor-pointer"
+                          className="depth-btn-secondary px-3 py-1 rounded-lg text-zinc-700 hover:text-zinc-950 text-[11px] font-sans font-semibold cursor-pointer"
                         >
                           View
                         </button>
@@ -376,20 +375,20 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
 
         {/* Right Column: Progressive Disclosure Detail View (7 Cols) */}
         {selectedContract ? (
-          <div className="lg:col-span-7 rounded-2xl surface-2 p-4 sm:p-6 space-y-6 text-xs text-zinc-300 relative overflow-hidden">
+          <div className="lg:col-span-7 rounded-2xl bg-white border border-black/[0.08] shadow-sm p-4 sm:p-6 space-y-6 text-xs text-zinc-700 relative overflow-hidden">
             {/* Header: Brand, Project, Status */}
-            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 border-b border-white/[0.06] pb-4">
+            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 border-b border-zinc-200 pb-4">
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-mono uppercase text-indigo-400 font-semibold">
+                  <span className="text-[10px] font-mono uppercase text-[#0096C7] font-semibold">
                     {selectedContract.contractNumber}
                   </span>
-                  <span className="text-zinc-500">•</span>
-                  <span className="text-[11px] text-zinc-400 font-medium">
+                  <span className="text-zinc-400">•</span>
+                  <span className="text-[11px] text-zinc-500 font-medium">
                     {selectedContract.brandName}
                   </span>
                 </div>
-                <h2 className="text-base sm:text-lg font-bold text-white font-display mt-0.5">
+                <h2 className="text-base sm:text-lg font-bold text-zinc-900 font-display mt-0.5">
                   {selectedContract.projectName}
                 </h2>
               </div>
@@ -399,7 +398,7 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
                 {onOpenMessages && (
                   <button
                     onClick={() => onOpenMessages(selectedContract.brandId)}
-                    className="p-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-white/[0.08] text-zinc-300 hover:text-white transition-colors cursor-pointer"
+                    className="p-2 rounded-xl bg-zinc-100 hover:bg-zinc-200 border border-zinc-300 text-zinc-700 hover:text-zinc-900 transition-colors cursor-pointer"
                     title="Message Brand"
                     aria-label="Message Brand"
                   >
@@ -411,18 +410,18 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
 
             {/* Awaiting Acceptance Decision Card */}
             {selectedContract.status === 'awaiting_creator' && (
-              <div className="p-4 rounded-xl bg-indigo-950/30 border border-indigo-500/40 space-y-3">
+              <div className="p-4 rounded-xl bg-sky-50/70 border border-sky-300/80 space-y-3">
                 <div className="flex items-center justify-between gap-2">
-                  <div className="flex items-center gap-1.5 text-indigo-300 font-bold text-xs">
-                    <Sparkles className="w-4 h-4 text-indigo-400" />
+                  <div className="flex items-center gap-1.5 text-sky-900 font-bold text-xs">
+                    <Sparkles className="w-4 h-4 text-[#0096C7]" />
                     <span>Response Needed</span>
                   </div>
-                  <span className="text-[11px] font-mono text-amber-400 font-semibold bg-amber-500/10 px-2 py-0.5 rounded-full border border-amber-500/20">
+                  <span className="text-[11px] font-mono text-amber-800 font-semibold bg-amber-100 px-2.5 py-0.5 rounded-full border border-amber-300">
                     Expires in 2d 8h
                   </span>
                 </div>
 
-                <p className="text-zinc-300 text-[11px] leading-relaxed">
+                <p className="text-zinc-700 text-[11px] leading-relaxed">
                   Review terms, deliverables, and guaranteed payment below. Accepting locks this project into your active workspace.
                 </p>
 
@@ -430,7 +429,7 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
                   <button
                     type="button"
                     onClick={() => setIsDeclineModalOpen(true)}
-                    className="min-h-[44px] px-4 rounded-xl bg-zinc-850 hover:bg-zinc-800 text-zinc-300 hover:text-white text-xs font-semibold cursor-pointer border border-white/[0.08] transition-colors"
+                    className="min-h-[44px] px-4 rounded-xl bg-white hover:bg-zinc-100 text-zinc-700 hover:text-zinc-900 text-xs font-semibold cursor-pointer border border-zinc-300 transition-colors shadow-xs"
                   >
                     Decline
                   </button>
@@ -438,7 +437,7 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
                   <button
                     type="button"
                     onClick={() => setIsAcceptModalOpen(true)}
-                    className="min-h-[44px] px-5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow-md shadow-emerald-600/30 cursor-pointer flex items-center gap-1.5 transition-all"
+                    className="min-h-[44px] px-5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-xs cursor-pointer flex items-center gap-1.5 transition-all"
                   >
                     <Check className="w-4 h-4" />
                     <span>Accept</span>
@@ -449,19 +448,19 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
 
             {/* Revision Requested Callout */}
             {selectedContract.status === 'revision_requested' && (
-              <div className="p-4 rounded-xl bg-orange-950/30 border border-orange-500/40 space-y-2">
+              <div className="p-4 rounded-xl bg-amber-50 border border-amber-300/90 space-y-2">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-1.5 text-orange-300 font-bold text-xs">
-                    <RefreshCw className="w-4 h-4 text-orange-400" />
+                  <div className="flex items-center gap-1.5 text-amber-900 font-bold text-xs">
+                    <RefreshCw className="w-4 h-4 text-amber-600" />
                     <span>Revision Requested</span>
                   </div>
-                  <span className="text-[10px] font-mono text-orange-400">
+                  <span className="text-[10px] font-mono text-amber-800">
                     Round 1 of {selectedContract.terms.includedRevisions}
                   </span>
                 </div>
 
                 {selectedContract.deliveries[0]?.brandFeedback && (
-                  <p className="text-zinc-200 text-xs italic bg-zinc-900/60 p-2.5 rounded-lg border border-orange-500/20">
+                  <p className="text-zinc-800 text-xs italic bg-white p-2.5 rounded-lg border border-amber-200">
                     "{selectedContract.deliveries[0].brandFeedback}"
                   </p>
                 )}
@@ -473,7 +472,7 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
                       setSelectedDeliverableId(selectedContract.deliverables[0]?.id || null);
                       setIsSubmitModalOpen(true);
                     }}
-                    className="min-h-[44px] px-4 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs cursor-pointer shadow-md"
+                    className="min-h-[44px] px-4 rounded-xl bg-[#00B4D8] hover:bg-[#0096C7] text-slate-950 font-bold text-xs cursor-pointer shadow-xs"
                   >
                     Submit Revision
                   </button>
@@ -484,7 +483,7 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
             {/* Deliverables Section (Level 2) */}
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <h3 className="text-xs font-bold text-white uppercase tracking-wider font-mono">
+                <h3 className="text-xs font-bold text-zinc-900 uppercase tracking-wider font-mono">
                   Deliverables
                 </h3>
                 {selectedContract.status === 'active' && (
@@ -495,7 +494,7 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
                       setSelectedDeliverableId(firstPending?.id || selectedContract.deliverables[0]?.id || null);
                       setIsSubmitModalOpen(true);
                     }}
-                    className="min-h-[36px] px-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs flex items-center gap-1.5 cursor-pointer shadow-sm"
+                    className="min-h-[36px] px-3.5 rounded-xl bg-[#00B4D8] hover:bg-[#0096C7] text-slate-950 font-bold text-xs flex items-center gap-1.5 cursor-pointer shadow-xs"
                   >
                     <Upload className="w-3.5 h-3.5" />
                     <span>Submit Work</span>
@@ -510,29 +509,29 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
                   return (
                     <div
                       key={del.id}
-                      className="p-3.5 rounded-xl bg-zinc-900/70 border border-white/[0.06] space-y-2"
+                      className="p-3.5 rounded-xl bg-zinc-50 border border-zinc-200 space-y-2"
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                          <span className="font-bold text-white text-xs">
+                          <span className="font-bold text-zinc-900 text-xs">
                             {del.type} × {del.quantity}
                           </span>
-                          <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-800 text-zinc-400">
+                          <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-200 text-zinc-700">
                             {del.format}
                           </span>
                         </div>
-                        <span className="text-[10px] text-zinc-400 font-mono">
+                        <span className="text-[10px] text-zinc-500 font-mono">
                           Due {new Date(del.dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                         </span>
                       </div>
 
-                      <p className="text-[11px] text-zinc-400 leading-relaxed">
+                      <p className="text-[11px] text-zinc-600 leading-relaxed">
                         {del.specifications}
                       </p>
 
                       {hasDelivery && (
-                        <div className="p-2 rounded-lg bg-zinc-950 border border-white/[0.04] flex items-center justify-between text-[11px]">
-                          <span className="font-mono text-indigo-300">
+                        <div className="p-2 rounded-lg bg-white border border-zinc-200 flex items-center justify-between text-[11px]">
+                          <span className="font-mono text-[#0096C7] font-semibold">
                             Version {hasDelivery.version} Submitted
                           </span>
                           <span className="text-zinc-500 font-mono text-[10px]">
@@ -548,12 +547,12 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
 
             {/* Payment & Terms (Level 2 & 3) */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 font-mono text-xs">
-              <div className="p-3.5 rounded-xl bg-zinc-900/60 border border-white/[0.06] space-y-1">
+              <div className="p-3.5 rounded-xl bg-zinc-50 border border-zinc-200 space-y-1">
                 <span className="text-[10px] uppercase text-zinc-500 block">Payment</span>
-                <span className="text-base font-bold text-emerald-400">
+                <span className="text-base font-bold text-emerald-700">
                   ${selectedContract.payment.creatorPayment.toLocaleString()}
                 </span>
-                <p className="text-[10px] text-zinc-400 font-sans">
+                <p className="text-[10px] text-zinc-500 font-sans">
                   {selectedContract.payment.paymentStatus === 'escrow_funded'
                     ? 'Protection funded ✓'
                     : selectedContract.payment.paymentStatus === 'paid'
@@ -562,20 +561,20 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
                 </p>
               </div>
 
-              <div className="p-3.5 rounded-xl bg-zinc-900/60 border border-white/[0.06] space-y-1">
+              <div className="p-3.5 rounded-xl bg-zinc-50 border border-zinc-200 space-y-1">
                 <span className="text-[10px] uppercase text-zinc-500 block">Terms</span>
-                <p className="text-zinc-200 text-[11px] font-sans truncate">
+                <p className="text-zinc-900 text-[11px] font-sans truncate">
                   Usage: {selectedContract.usageRights.duration} • {selectedContract.usageRights.territory}
                 </p>
-                <p className="text-[10px] text-zinc-400 font-sans">
+                <p className="text-[10px] text-zinc-500 font-sans">
                   Revisions: {selectedContract.terms.includedRevisions} rounds included
                 </p>
               </div>
             </div>
 
             {/* Visual Progress Stepper (Section 17, 56) */}
-            <div className="space-y-2 pt-2 border-t border-white/[0.06]">
-              <h3 className="text-xs font-bold text-white uppercase tracking-wider font-mono">
+            <div className="space-y-2 pt-2 border-t border-zinc-200">
+              <h3 className="text-xs font-bold text-zinc-900 uppercase tracking-wider font-mono">
                 Timeline
               </h3>
 
@@ -585,10 +584,10 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
                     <div
                       className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] mb-1 font-bold ${
                         step.state === 'done'
-                          ? 'bg-emerald-500 text-black'
+                          ? 'bg-emerald-600 text-white'
                           : step.state === 'current'
-                          ? 'bg-indigo-500 text-white animate-pulse'
-                          : 'bg-zinc-800 text-zinc-500'
+                          ? 'bg-[#00B4D8] text-slate-950 font-bold animate-pulse'
+                          : 'bg-zinc-200 text-zinc-600'
                       }`}
                     >
                       {step.state === 'done' ? '✓' : idx + 1}
@@ -596,10 +595,10 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
                     <span
                       className={`text-[10px] font-medium truncate ${
                         step.state === 'done'
-                          ? 'text-zinc-300'
+                          ? 'text-zinc-700'
                           : step.state === 'current'
-                          ? 'text-indigo-400 font-bold'
-                          : 'text-zinc-500'
+                          ? 'text-[#0096C7] font-bold'
+                          : 'text-zinc-400'
                       }`}
                     >
                       {step.label}
@@ -610,21 +609,21 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
             </div>
 
             {/* Raise Issue / Support Action */}
-            <div className="pt-2 border-t border-white/[0.06] flex items-center justify-between">
+            <div className="pt-2 border-t border-zinc-200 flex items-center justify-between">
               <span className="text-[11px] text-zinc-500">
                 Need to amend scope or report a delivery issue?
               </span>
               <button
                 type="button"
                 onClick={() => setIsDisputeModalOpen(true)}
-                className="text-xs font-semibold text-rose-400 hover:text-rose-300 cursor-pointer"
+                className="text-xs font-semibold text-rose-600 hover:text-rose-700 cursor-pointer"
               >
                 Raise Issue
               </button>
             </div>
           </div>
         ) : (
-          <div className="lg:col-span-7 p-12 text-center rounded-2xl bg-zinc-950/60 border border-white/[0.08] text-xs text-zinc-500">
+          <div className="lg:col-span-7 p-12 text-center rounded-2xl bg-white border border-zinc-200 text-xs text-zinc-500">
             Select a contract to review details.
           </div>
         )}
@@ -632,18 +631,18 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
 
       {/* 4. Sticky Mobile Action Bar (Section 13) */}
       {selectedContract && selectedContract.status === 'awaiting_creator' && (
-        <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 p-3 bg-zinc-950/95 backdrop-blur-xl border-t border-white/[0.1] flex items-center gap-3">
+        <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 p-3 bg-white/95 backdrop-blur-xl border-t border-zinc-200 flex items-center gap-3 shadow-lg">
           <button
             type="button"
             onClick={() => setIsDeclineModalOpen(true)}
-            className="flex-1 min-h-[44px] rounded-xl bg-zinc-850 hover:bg-zinc-800 text-zinc-300 font-semibold text-xs border border-white/[0.08] cursor-pointer"
+            className="flex-1 min-h-[44px] rounded-xl bg-zinc-100 hover:bg-zinc-200 text-zinc-800 font-semibold text-xs border border-zinc-300 cursor-pointer"
           >
             Decline
           </button>
           <button
             type="button"
             onClick={() => setIsAcceptModalOpen(true)}
-            className="flex-1 min-h-[44px] rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-lg shadow-emerald-600/30 cursor-pointer"
+            className="flex-1 min-h-[44px] rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md cursor-pointer"
           >
             Accept
           </button>
@@ -652,24 +651,24 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
 
       {/* 5. Accept Confirmation Dialog (Section 14) */}
       {isAcceptModalOpen && selectedContract && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
-          <div className="w-full max-w-sm p-5 rounded-2xl bg-zinc-950 border border-white/[0.1] space-y-4 text-xs shadow-2xl">
-            <h3 className="text-sm font-bold text-white">Accept this contract?</h3>
-            <p className="text-zinc-400 leading-relaxed text-[11px]">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/45 backdrop-blur-sm animate-fade-in">
+          <div className="w-full max-w-sm p-5 rounded-2xl bg-white border border-zinc-200 space-y-4 text-xs shadow-2xl text-zinc-900">
+            <h3 className="text-sm font-bold text-zinc-900">Accept this contract?</h3>
+            <p className="text-zinc-600 leading-relaxed text-[11px]">
               You'll commit to the listed deliverables, deadline and terms for <strong>${selectedContract.payment.creatorPayment.toLocaleString()} USD</strong>.
             </p>
             <div className="flex items-center justify-end gap-2.5 pt-2">
               <button
                 type="button"
                 onClick={() => setIsAcceptModalOpen(false)}
-                className="min-h-[44px] px-4 rounded-xl bg-zinc-850 hover:bg-zinc-800 text-zinc-300 font-semibold cursor-pointer"
+                className="min-h-[44px] px-4 rounded-xl bg-zinc-100 hover:bg-zinc-200 text-zinc-700 font-semibold cursor-pointer"
               >
                 Cancel
               </button>
               <button
                 type="button"
                 onClick={handleAcceptConfirm}
-                className="min-h-[44px] px-5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold cursor-pointer shadow-md"
+                className="min-h-[44px] px-5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold cursor-pointer shadow-md"
               >
                 Accept
               </button>
@@ -680,15 +679,15 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
 
       {/* 6. Decline Reason Dialog (Section 15) */}
       {isDeclineModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
-          <div className="w-full max-w-sm p-5 rounded-2xl bg-zinc-950 border border-white/[0.1] space-y-4 text-xs shadow-2xl">
-            <h3 className="text-sm font-bold text-white">Decline contract?</h3>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/45 backdrop-blur-sm animate-fade-in">
+          <div className="w-full max-w-sm p-5 rounded-2xl bg-white border border-zinc-200 space-y-4 text-xs shadow-2xl text-zinc-900">
+            <h3 className="text-sm font-bold text-zinc-900">Decline contract?</h3>
             <div className="space-y-2">
-              <label className="text-[11px] text-zinc-400 block font-medium">Reason (optional)</label>
+              <label className="text-[11px] text-zinc-600 block font-medium">Reason (optional)</label>
               {['Budget', 'Timeline', 'Scope', 'Terms', 'Other'].map((reason) => (
                 <label
                   key={reason}
-                  className="flex items-center gap-2 p-2 rounded-lg bg-zinc-900 border border-white/[0.04] cursor-pointer hover:bg-zinc-850"
+                  className="flex items-center gap-2 p-2 rounded-lg bg-zinc-50 border border-zinc-200 cursor-pointer hover:bg-zinc-100"
                 >
                   <input
                     type="radio"
@@ -696,9 +695,9 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
                     value={reason}
                     checked={declineReason === reason}
                     onChange={(e) => setDeclineReason(e.target.value)}
-                    className="text-indigo-600 focus:ring-0"
+                    className="text-[#00B4D8] focus:ring-0"
                   />
-                  <span className="text-zinc-200 text-xs">{reason}</span>
+                  <span className="text-zinc-800 text-xs">{reason}</span>
                 </label>
               ))}
             </div>
@@ -707,14 +706,14 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
               <button
                 type="button"
                 onClick={() => setIsDeclineModalOpen(false)}
-                className="min-h-[44px] px-4 rounded-xl bg-zinc-850 text-zinc-300 font-semibold cursor-pointer"
+                className="min-h-[44px] px-4 rounded-xl bg-zinc-100 hover:bg-zinc-200 text-zinc-700 font-semibold cursor-pointer"
               >
                 Cancel
               </button>
               <button
                 type="button"
                 onClick={handleDeclineConfirm}
-                className="min-h-[44px] px-5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold cursor-pointer"
+                className="min-h-[44px] px-5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold cursor-pointer"
               >
                 Decline
               </button>
@@ -725,17 +724,17 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
 
       {/* 7. Deliverable Submission Modal (Section 19-20) */}
       {isSubmitModalOpen && selectedContract && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
-          <div className="w-full max-w-md p-5 rounded-2xl bg-zinc-950 border border-white/[0.1] space-y-4 text-xs shadow-2xl">
-            <h3 className="text-sm font-bold text-white">Submit Work</h3>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/45 backdrop-blur-sm animate-fade-in">
+          <div className="w-full max-w-md p-5 rounded-2xl bg-white border border-zinc-200 space-y-4 text-xs shadow-2xl text-zinc-900">
+            <h3 className="text-sm font-bold text-zinc-900">Submit Work</h3>
 
             {/* Deliverable Picker */}
             <div className="space-y-1.5">
-              <label className="text-[11px] text-zinc-400 font-medium">Deliverable</label>
+              <label className="text-[11px] text-zinc-600 font-medium">Deliverable</label>
               <select
                 value={selectedDeliverableId || ''}
                 onChange={(e) => setSelectedDeliverableId(e.target.value)}
-                className="w-full p-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-200 text-xs focus:outline-none"
+                className="w-full p-2.5 rounded-xl bg-white border border-zinc-300 text-zinc-900 text-xs focus:outline-none focus:border-[#00B4D8]"
               >
                 {selectedContract.deliverables.map((del) => (
                   <option key={del.id} value={del.id}>
@@ -746,10 +745,10 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
             </div>
 
             {/* Attached Files Simulation */}
-            <div className="p-3.5 rounded-xl border border-dashed border-zinc-700 bg-zinc-900/60 text-center space-y-1.5">
-              <Upload className="w-5 h-5 text-indigo-400 mx-auto" />
-              <p className="text-xs font-semibold text-zinc-200">2 files attached</p>
-              <ul className="text-[10px] text-zinc-400 font-mono space-y-0.5">
+            <div className="p-3.5 rounded-xl border border-dashed border-zinc-300 bg-zinc-50 text-center space-y-1.5">
+              <Upload className="w-5 h-5 text-[#0096C7] mx-auto" />
+              <p className="text-xs font-semibold text-zinc-900">2 files attached</p>
+              <ul className="text-[10px] text-zinc-500 font-mono space-y-0.5">
                 {uploadedFiles.map((fn, i) => (
                   <li key={i}>{fn}</li>
                 ))}
@@ -758,13 +757,13 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
 
             {/* Notes */}
             <div className="space-y-1.5">
-              <label className="text-[11px] text-zinc-400 font-medium">Notes (optional)</label>
+              <label className="text-[11px] text-zinc-600 font-medium">Notes (optional)</label>
               <textarea
                 rows={2}
                 placeholder="Notes for brand review..."
                 value={deliveryNotes}
                 onChange={(e) => setDeliveryNotes(e.target.value)}
-                className="w-full p-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-200 text-xs focus:outline-none resize-none"
+                className="w-full p-2.5 rounded-xl bg-white border border-zinc-300 text-zinc-900 text-xs focus:outline-none focus:border-[#00B4D8] resize-none"
               />
             </div>
 
@@ -772,14 +771,14 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
               <button
                 type="button"
                 onClick={() => setIsSubmitModalOpen(false)}
-                className="min-h-[44px] px-4 rounded-xl bg-zinc-850 text-zinc-300 font-semibold cursor-pointer"
+                className="min-h-[44px] px-4 rounded-xl bg-zinc-100 hover:bg-zinc-200 text-zinc-700 font-semibold cursor-pointer"
               >
                 Cancel
               </button>
               <button
                 type="button"
                 onClick={handleSubmitWorkConfirm}
-                className="min-h-[44px] px-5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold cursor-pointer"
+                className="min-h-[44px] px-5 rounded-xl bg-[#00B4D8] hover:bg-[#0096C7] text-slate-950 font-bold cursor-pointer"
               >
                 Submit Work
               </button>
@@ -790,16 +789,16 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
 
       {/* 8. Raise Issue (Dispute) Modal (Section 30) */}
       {isDisputeModalOpen && selectedContract && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
-          <div className="w-full max-w-sm p-5 rounded-2xl bg-zinc-950 border border-white/[0.1] space-y-4 text-xs shadow-2xl">
-            <h3 className="text-sm font-bold text-white">Raise Issue</h3>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/45 backdrop-blur-sm animate-fade-in">
+          <div className="w-full max-w-sm p-5 rounded-2xl bg-white border border-zinc-200 space-y-4 text-xs shadow-2xl text-zinc-900">
+            <h3 className="text-sm font-bold text-zinc-900">Raise Issue</h3>
 
             <div className="space-y-1.5">
-              <label className="text-[11px] text-zinc-400 font-medium">Category</label>
+              <label className="text-[11px] text-zinc-600 font-medium">Category</label>
               <select
                 value={disputeCategory}
                 onChange={(e) => setDisputeCategory(e.target.value)}
-                className="w-full p-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-200 text-xs focus:outline-none"
+                className="w-full p-2.5 rounded-xl bg-white border border-zinc-300 text-zinc-900 text-xs focus:outline-none focus:border-[#00B4D8]"
               >
                 {['Payment', 'Scope', 'Deadline', 'Deliverable', 'Revision', 'Usage', 'Other'].map((cat) => (
                   <option key={cat} value={cat}>
@@ -810,13 +809,13 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-[11px] text-zinc-400 font-medium">Describe issue</label>
+              <label className="text-[11px] text-zinc-600 font-medium">Describe issue</label>
               <textarea
                 rows={3}
                 placeholder="Explain the issue for platform arbitration..."
                 value={disputeDescription}
                 onChange={(e) => setDisputeDescription(e.target.value)}
-                className="w-full p-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-200 text-xs focus:outline-none resize-none"
+                className="w-full p-2.5 rounded-xl bg-white border border-zinc-300 text-zinc-900 text-xs focus:outline-none focus:border-[#00B4D8] resize-none"
               />
             </div>
 
@@ -824,7 +823,7 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
               <button
                 type="button"
                 onClick={() => setIsDisputeModalOpen(false)}
-                className="min-h-[44px] px-4 rounded-xl bg-zinc-850 text-zinc-300 font-semibold cursor-pointer"
+                className="min-h-[44px] px-4 rounded-xl bg-zinc-100 hover:bg-zinc-200 text-zinc-700 font-semibold cursor-pointer"
               >
                 Cancel
               </button>
@@ -832,7 +831,7 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
                 type="button"
                 disabled={!disputeDescription.trim()}
                 onClick={handleOpenDisputeConfirm}
-                className="min-h-[44px] px-5 rounded-xl bg-rose-600 hover:bg-rose-500 disabled:opacity-50 text-white font-bold cursor-pointer"
+                className="min-h-[44px] px-5 rounded-xl bg-rose-600 hover:bg-rose-700 disabled:opacity-50 text-white font-bold cursor-pointer"
               >
                 Submit
               </button>

@@ -78,10 +78,10 @@ export const AdminModerationView: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl sm:text-2xl font-display font-medium text-white tracking-tight">
+          <h2 className="text-xl sm:text-2xl font-display font-medium text-zinc-900 tracking-tight">
             Content Moderation Hub
           </h2>
-          <p className="text-xs text-zinc-400 font-sans font-light">
+          <p className="text-xs text-zinc-500 font-sans font-light">
             Review, approve, hide, or take down published Reels, Shots, and Editorial Blogs across CreatorOS.
           </p>
         </div>
@@ -94,7 +94,7 @@ export const AdminModerationView: React.FC = () => {
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="p-4 rounded-2xl bg-zinc-950/80 border border-white/10 backdrop-blur-xl flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+      <div className="p-4 rounded-2xl bg-white shadow-sm border border-black/[0.08] backdrop-blur-xl flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
         {/* Search */}
         <div className="relative flex-1">
           <Search className="w-4 h-4 text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
@@ -103,7 +103,7 @@ export const AdminModerationView: React.FC = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search by caption, blog title, or creator handle..."
-            className="w-full pl-10 pr-4 py-2 rounded-xl bg-zinc-900/80 border border-white/10 text-xs text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-sky-500/50"
+            className="w-full pl-10 pr-4 py-2 rounded-xl bg-white shadow-sm border border-black/[0.08] text-xs text-zinc-900 placeholder-zinc-500 focus:outline-none focus:border-sky-500/50"
           />
         </div>
 
@@ -122,8 +122,8 @@ export const AdminModerationView: React.FC = () => {
               onClick={() => setTypeFilter(tab.id)}
               className={`px-3 py-1.5 rounded-lg text-xs font-sans font-medium transition-all shrink-0 cursor-pointer ${
                 typeFilter === tab.id
-                  ? 'bg-white text-zinc-950 shadow-sm'
-                  : 'bg-zinc-900 text-zinc-400 hover:text-white'
+                  ? 'bg-[#00B4D8] text-white shadow-xs'
+                  : 'bg-zinc-100 text-zinc-600 hover:text-zinc-900'
               }`}
             >
               {tab.label}
@@ -148,7 +148,7 @@ export const AdminModerationView: React.FC = () => {
               className={`px-2.5 py-1.5 rounded-lg text-xs font-sans font-medium transition-all cursor-pointer ${
                 statusFilter === st.id
                   ? 'bg-rose-500/20 text-rose-300 border border-rose-500/30'
-                  : 'text-zinc-500 hover:text-zinc-300'
+                  : 'text-zinc-500 hover:text-zinc-700'
               }`}
             >
               {st.label}
@@ -167,14 +167,14 @@ export const AdminModerationView: React.FC = () => {
           return (
             <div
               key={post.id}
-              className={`rounded-2xl bg-zinc-950/80 border p-4 flex flex-col justify-between space-y-4 transition-all ${
+              className={`rounded-2xl bg-white shadow-sm border p-4 flex flex-col justify-between space-y-4 transition-all ${
                 isFlagged
                   ? 'border-rose-500/50 shadow-lg shadow-rose-950/20'
                   : isRemoved
-                  ? 'border-zinc-800 opacity-60'
+                  ? 'border-zinc-200 opacity-60'
                   : isHidden
                   ? 'border-amber-500/40'
-                  : 'border-white/10 hover:border-white/20'
+                  : 'border-black/[0.08] hover:border-black/15'
               }`}
             >
               {/* Card Header: Author info & Format Badge */}
@@ -196,7 +196,7 @@ export const AdminModerationView: React.FC = () => {
                 </div>
 
                 {/* Content Type Badge */}
-                <span className="px-2 py-0.5 rounded text-[10px] font-mono uppercase bg-zinc-900 border border-white/10 text-zinc-300 shrink-0">
+                <span className="px-2 py-0.5 rounded text-[10px] font-mono uppercase bg-white border border-black/[0.08] text-zinc-700 shrink-0">
                   {post.contentType === 'reel' ? '🎬 REEL' : post.contentType === 'shot' ? '📸 SHOT' : '✍ BLOG'}
                 </span>
               </div>
@@ -204,7 +204,7 @@ export const AdminModerationView: React.FC = () => {
               {/* Media Thumbnail / Preview */}
               <div
                 onClick={() => setPreviewPost(post)}
-                className="relative rounded-xl overflow-hidden bg-zinc-900 aspect-video group cursor-pointer"
+                className="relative rounded-xl overflow-hidden bg-white aspect-video group cursor-pointer"
               >
                 <img
                   src={post.mediaUrl || post.blogCoverImage || 'https://images.unsplash.com/photo-1552346154-21d32810aba3?w=800'}
@@ -229,7 +229,7 @@ export const AdminModerationView: React.FC = () => {
                     </span>
                   )}
                   {post.moderationStatus === 'removed' && (
-                    <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-zinc-800 text-zinc-400 font-bold">
+                    <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-zinc-800 text-zinc-500 font-bold">
                       REMOVED
                     </span>
                   )}
@@ -244,11 +244,11 @@ export const AdminModerationView: React.FC = () => {
               {/* Caption or Article Title */}
               <div className="space-y-1">
                 {post.blogTitle && (
-                  <h4 className="text-xs font-semibold text-white line-clamp-1">
+                  <h4 className="text-xs font-semibold text-zinc-900 line-clamp-1">
                     {post.blogTitle}
                   </h4>
                 )}
-                <p className="text-xs text-zinc-300 line-clamp-2 font-light">
+                <p className="text-xs text-zinc-700 line-clamp-2 font-light">
                   {post.content || post.caption}
                 </p>
                 <div className="flex items-center gap-3 text-[10px] text-zinc-500 font-mono pt-1">
@@ -259,7 +259,7 @@ export const AdminModerationView: React.FC = () => {
               </div>
 
               {/* Action Toolbar */}
-              <div className="pt-3 border-t border-white/[0.08] flex items-center justify-between gap-1.5">
+              <div className="pt-3 border-t border-black/[0.08] flex items-center justify-between gap-1.5">
                 <div className="flex items-center gap-1">
                   {/* Approve */}
                   <button
@@ -292,7 +292,7 @@ export const AdminModerationView: React.FC = () => {
                   {(isHidden || isRemoved) && (
                     <button
                       onClick={() => handleUpdateStatus(post, 'approved')}
-                      className="p-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs transition-all cursor-pointer"
+                      className="p-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-700 text-xs transition-all cursor-pointer"
                       title="Restore to Active Feed"
                     >
                       <RotateCcw className="w-3.5 h-3.5" />
@@ -303,7 +303,7 @@ export const AdminModerationView: React.FC = () => {
                 {/* Warn Author Button */}
                 <button
                   onClick={() => handleWarnAuthor(post)}
-                  className="px-2.5 py-1 rounded-lg bg-zinc-900 hover:bg-rose-950/30 border border-white/10 hover:border-rose-500/30 text-zinc-400 hover:text-rose-300 text-[11px] font-sans transition-all flex items-center gap-1 cursor-pointer"
+                  className="px-2.5 py-1 rounded-lg bg-white hover:bg-rose-950/30 border border-black/[0.08] hover:border-rose-500/30 text-zinc-500 hover:text-rose-300 text-[11px] font-sans transition-all flex items-center gap-1 cursor-pointer"
                 >
                   <AlertTriangle className="w-3 h-3 text-rose-400" />
                   <span>Warn</span>

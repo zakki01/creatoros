@@ -35,7 +35,7 @@ export const CreatorPayments: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-xl sm:text-2xl font-bold text-white font-display tracking-tight">
+            <h1 className="text-xl sm:text-2xl font-bold text-zinc-900 font-display tracking-tight">
               Earnings
             </h1>
             <Badge variant="success" size="sm" dot>

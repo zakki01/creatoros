@@ -12,14 +12,14 @@ export const Card: React.FC<CardProps> = ({
   ...props
 }) => {
   const variantStyles = {
-    default: 'surface-1 text-zinc-100 rounded-2xl',
-    glass: 'glass-card text-zinc-100 rounded-2xl',
+    default: 'surface-1 text-zinc-900 rounded-2xl',
+    glass: 'glass-card text-zinc-900 rounded-2xl',
     interactive:
-      'glass-card text-zinc-100 rounded-2xl cursor-pointer hover:-translate-y-0.5 hover:border-white/20 transition-all duration-200 active:scale-[0.99]',
-    active: 'glass-card-active text-zinc-100 rounded-2xl',
-    bento: 'glass-bento text-zinc-100 rounded-3xl cursor-pointer hover:-translate-y-0.5',
-    elevated: 'surface-3 text-zinc-100 rounded-2xl',
-    floating: 'surface-4 text-zinc-100 rounded-3xl',
+      'glass-card text-zinc-900 rounded-2xl cursor-pointer hover:-translate-y-0.5 hover:border-black/15 transition-all duration-200 active:scale-[0.99]',
+    active: 'glass-card-active text-zinc-900 rounded-2xl',
+    bento: 'glass-bento text-zinc-900 rounded-3xl cursor-pointer hover:-translate-y-0.5',
+    elevated: 'surface-2 text-zinc-900 rounded-2xl',
+    floating: 'surface-4 text-zinc-900 rounded-3xl',
   };
 
   return (

@@ -108,7 +108,7 @@ export const PostCard: React.FC<PostCardProps> = ({
 
   return (
     <article
-      className="relative rounded-3xl surface-2 overflow-hidden transition-all duration-200 hover:border-white/20 hover:-translate-y-0.5 select-none"
+      className="relative rounded-3xl surface-2 overflow-hidden transition-all duration-200 hover:border-black/15 hover:-translate-y-0.5 select-none"
       aria-label={`Post by ${post.authorName}`}
     >
       {/* Top specular highlight */}
@@ -117,7 +117,7 @@ export const PostCard: React.FC<PostCardProps> = ({
         className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"
       />
       {/* 1. CREATOR / BRAND HEADER (Author first) */}
-      <header className="p-3.5 sm:p-4 flex items-center justify-between gap-3 border-b border-white/[0.06]">
+      <header className="p-3.5 sm:p-4 flex items-center justify-between gap-3 border-b border-black/[0.06]">
         <div
           onClick={() => onOpenAuthorProfile && onOpenAuthorProfile(post.authorId, post.authorType)}
           className="flex items-center gap-3 cursor-pointer group min-w-0"
@@ -129,17 +129,17 @@ export const PostCard: React.FC<PostCardProps> = ({
           />
           <div className="min-w-0">
             <div className="flex items-center gap-1.5 flex-wrap">
-              <span className="font-bold text-xs text-white group-hover:text-indigo-300 transition-colors truncate">
+              <span className="font-bold text-xs text-white group-hover:text-[#0096C7] transition-colors truncate">
                 {post.authorName}
               </span>
               {post.authorVerified && (
-                <ShieldCheck className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
+                <ShieldCheck className="w-3.5 h-3.5 text-[#0096C7] shrink-0" />
               )}
-              <span className="text-[11px] text-zinc-400 font-mono truncate">
+              <span className="text-[11px] text-zinc-500 font-mono truncate">
                 {post.authorHandle}
               </span>
             </div>
-            <div className="flex items-center gap-2 text-[10px] text-zinc-400 font-mono mt-0.5">
+            <div className="flex items-center gap-2 text-[10px] text-zinc-500 font-mono mt-0.5">
               <span>{post.timestamp}</span>
               {post.location && (
                 <>
@@ -152,7 +152,7 @@ export const PostCard: React.FC<PostCardProps> = ({
               )}
               {/* Content format pill */}
               <span>•</span>
-              <span className="text-zinc-300 font-semibold">
+              <span className="text-zinc-700 font-semibold">
                 {isReel ? '🎬 Reel' : isBlog ? '✍ Blog' : '📸 Shot'}
               </span>
             </div>
@@ -191,7 +191,7 @@ export const PostCard: React.FC<PostCardProps> = ({
                 e.stopPropagation();
                 setShowMoreMenu(!showMoreMenu);
               }}
-              className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors cursor-pointer"
+              className="p-1.5 rounded-lg text-zinc-500 hover:text-white hover:bg-zinc-100 transition-colors cursor-pointer"
               aria-label="More post options"
             >
               <MoreHorizontal className="w-4 h-4" />
@@ -200,16 +200,16 @@ export const PostCard: React.FC<PostCardProps> = ({
             {showMoreMenu && (
               <div
                 onClick={(e) => e.stopPropagation()}
-                className="absolute right-0 top-8 w-44 rounded-xl bg-zinc-900 border border-white/10 shadow-2xl p-1 z-30 animate-slide-up text-left"
+                className="absolute right-0 top-8 w-44 rounded-xl bg-white shadow-sm border border-black/[0.08] shadow-2xl p-1 z-30 animate-slide-up text-left"
               >
                 <button
                   onClick={() => {
                     onOpenShare(post);
                     setShowMoreMenu(false);
                   }}
-                  className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs text-zinc-300 hover:text-white hover:bg-zinc-800 transition-colors cursor-pointer"
+                  className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs text-zinc-700 hover:text-white hover:bg-zinc-100 transition-colors cursor-pointer"
                 >
-                  <Share2 className="w-3.5 h-3.5 text-zinc-400" />
+                  <Share2 className="w-3.5 h-3.5 text-zinc-500" />
                   <span>Share Post</span>
                 </button>
                 <button
@@ -217,9 +217,9 @@ export const PostCard: React.FC<PostCardProps> = ({
                     onOpenDetail(post);
                     setShowMoreMenu(false);
                   }}
-                  className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs text-zinc-300 hover:text-white hover:bg-zinc-800 transition-colors cursor-pointer"
+                  className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs text-zinc-700 hover:text-white hover:bg-zinc-100 transition-colors cursor-pointer"
                 >
-                  <ExternalLink className="w-3.5 h-3.5 text-zinc-400" />
+                  <ExternalLink className="w-3.5 h-3.5 text-zinc-500" />
                   <span>View Details</span>
                 </button>
                 {onReportPost && (
@@ -228,7 +228,7 @@ export const PostCard: React.FC<PostCardProps> = ({
                       onReportPost(post);
                       setShowMoreMenu(false);
                     }}
-                    className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 transition-colors cursor-pointer border-t border-white/[0.04] mt-1 pt-1"
+                    className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 transition-colors cursor-pointer border-t border-black/[0.04] mt-1 pt-1"
                   >
                     <Flag className="w-3.5 h-3.5 text-rose-400" />
                     <span>Report Post</span>
@@ -259,7 +259,7 @@ export const PostCard: React.FC<PostCardProps> = ({
             {/* Play/Pause Center Indicator */}
             {!isPlaying && (
               <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-                <div className="w-14 h-14 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-white flex items-center justify-center group-hover:scale-110 transition-transform shadow-xl">
+                <div className="w-14 h-14 rounded-full bg-black/60 backdrop-blur-md border border-black/15 text-white flex items-center justify-center group-hover:scale-110 transition-transform shadow-xl">
                   <Play className="w-6 h-6 fill-current ml-1" />
                 </div>
               </div>
@@ -270,7 +270,7 @@ export const PostCard: React.FC<PostCardProps> = ({
                 e.stopPropagation();
                 setIsMuted(!isMuted);
               }}
-              className="absolute bottom-3 right-3 p-2 rounded-full bg-black/60 backdrop-blur-md text-white border border-white/20 hover:bg-black/90 transition-all cursor-pointer z-10"
+              className="absolute bottom-3 right-3 p-2 rounded-full bg-black/60 backdrop-blur-md text-white border border-black/15 hover:bg-black/90 transition-all cursor-pointer z-10"
               title={isMuted ? 'Unmute' : 'Mute'}
             >
               {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
@@ -291,7 +291,7 @@ export const PostCard: React.FC<PostCardProps> = ({
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
             <div className="absolute bottom-3 left-4 right-4">
-              <span className="text-[10px] font-mono text-indigo-300 uppercase tracking-wider block mb-1">
+              <span className="text-[10px] font-mono text-[#0096C7] uppercase tracking-wider block mb-1">
                 {post.blogReadingTime || '4 min read'}
               </span>
               <h3 className="text-sm sm:text-base font-bold text-white line-clamp-1 font-display">
@@ -333,7 +333,7 @@ export const PostCard: React.FC<PostCardProps> = ({
                 setShowReactionPicker(!showReactionPicker);
               }}
               className={`min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl transition-all active:scale-90 cursor-pointer ${
-                post.likedByMe ? 'text-rose-400 font-semibold' : 'text-zinc-300 hover:text-white'
+                post.likedByMe ? 'text-rose-400 font-semibold' : 'text-zinc-700 hover:text-white'
               }`}
               title="Like / React (Press & hold for reaction tray)"
               aria-label="Like post"
@@ -363,7 +363,7 @@ export const PostCard: React.FC<PostCardProps> = ({
           {/* Comment Button (44px hit-box) */}
           <button
             onClick={() => onOpenComments(post)}
-            className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl text-zinc-300 hover:text-white transition-all active:scale-90 cursor-pointer"
+            className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl text-zinc-700 hover:text-white transition-all active:scale-90 cursor-pointer"
             title="Comments"
             aria-label="View comments"
           >
@@ -373,7 +373,7 @@ export const PostCard: React.FC<PostCardProps> = ({
           {/* Share Button (44px hit-box) */}
           <button
             onClick={() => onOpenShare(post)}
-            className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl text-zinc-300 hover:text-white transition-all active:scale-90 cursor-pointer"
+            className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl text-zinc-700 hover:text-white transition-all active:scale-90 cursor-pointer"
             title="Share"
             aria-label="Share post"
           >
@@ -385,7 +385,7 @@ export const PostCard: React.FC<PostCardProps> = ({
         <button
           onClick={() => togglePostSave(post.id)}
           className={`min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl transition-all active:scale-90 cursor-pointer ${
-            post.savedByMe ? 'text-indigo-400' : 'text-zinc-400 hover:text-white'
+            post.savedByMe ? 'text-[#0096C7]' : 'text-zinc-500 hover:text-white'
           }`}
           title={post.savedByMe ? 'Remove from saved' : 'Save drop'}
           aria-label="Save post"
@@ -402,14 +402,14 @@ export const PostCard: React.FC<PostCardProps> = ({
         </div>
 
         {/* Short Caption with 'more' opening Detail View (Strictly single excerpt, zero duplicate) */}
-        <div className="text-zinc-300 leading-relaxed">
+        <div className="text-zinc-700 leading-relaxed">
           <strong className="text-white mr-1.5 font-medium">{post.authorName}</strong>
           <span className="line-clamp-2 inline">
             {post.shortExcerpt || post.content}
           </span>
           <button
             onClick={() => onOpenDetail(post)}
-            className="text-zinc-500 hover:text-zinc-300 ml-1.5 font-medium cursor-pointer"
+            className="text-zinc-500 hover:text-zinc-700 ml-1.5 font-medium cursor-pointer"
           >
             more
           </button>
@@ -421,7 +421,7 @@ export const PostCard: React.FC<PostCardProps> = ({
             {post.tags.slice(0, 3).map((tag, idx) => (
               <span
                 key={idx}
-                className="text-[11px] font-mono text-indigo-400 hover:text-indigo-300 cursor-pointer"
+                className="text-[11px] font-mono text-[#0096C7] hover:text-[#0096C7] cursor-pointer"
               >
                 {tag}
               </span>
@@ -431,18 +431,18 @@ export const PostCard: React.FC<PostCardProps> = ({
 
         {/* 5. COMPACT CAMPAIGN BRIEF (Section 16: Casting Call / Opportunity) */}
         {opp && (
-          <div className="mt-2 p-2.5 rounded-xl bg-zinc-900/80 border border-white/[0.08] flex items-center justify-between gap-3">
+          <div className="mt-2 p-2.5 rounded-xl bg-white shadow-sm border border-black/[0.08] flex items-center justify-between gap-3">
             <div className="min-w-0 space-y-0.5">
               <span className="text-[10px] font-mono uppercase text-amber-400 font-semibold flex items-center gap-1">
                 <Sparkles className="w-3 h-3 text-amber-400" />
                 Casting Call
               </span>
               <h4 className="text-xs font-bold text-white truncate">{opp.title}</h4>
-              <p className="text-[10px] text-zinc-400 font-mono truncate">{opp.requiredNiche} • {opp.budgetFormatted}</p>
+              <p className="text-[10px] text-zinc-500 font-mono truncate">{opp.requiredNiche} • {opp.budgetFormatted}</p>
             </div>
             <button
               onClick={() => onOpenDetail(post)}
-              className="text-[11px] font-semibold text-indigo-400 hover:text-indigo-300 shrink-0 cursor-pointer flex items-center gap-1"
+              className="text-[11px] font-semibold text-[#0096C7] hover:text-[#0096C7] shrink-0 cursor-pointer flex items-center gap-1"
             >
               <span>View Brief</span>
               <ArrowRight className="w-3 h-3" />
@@ -454,7 +454,7 @@ export const PostCard: React.FC<PostCardProps> = ({
         <div className="pt-1">
           <button
             onClick={() => onOpenComments(post)}
-            className="text-[11px] text-zinc-500 hover:text-zinc-400 font-mono cursor-pointer transition-colors block"
+            className="text-[11px] text-zinc-500 hover:text-zinc-500 font-mono cursor-pointer transition-colors block"
           >
             View all {post.commentsCount || 0} comments
           </button>

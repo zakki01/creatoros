@@ -90,10 +90,10 @@ export const SpatialCard: React.FC<SpatialCardProps> = ({
         transform: transformStyle || style?.transform,
       }}
       className={clsx(
-        'relative overflow-hidden text-zinc-100 transition-all duration-200 ease-out',
+        'relative overflow-hidden text-zinc-900 transition-all duration-200 ease-out',
         surfaceClasses[surface],
         (interactive || tilt) &&
-          'cursor-pointer hover:-translate-y-0.5 hover:border-white/20 active:scale-[0.99]',
+          'cursor-pointer hover:-translate-y-0.5 hover:border-black/15 active:scale-[0.99]',
         glowClasses[glowColor],
         className
       )}

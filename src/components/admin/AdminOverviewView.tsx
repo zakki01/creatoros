@@ -76,7 +76,7 @@ export const AdminOverviewView: React.FC<AdminOverviewViewProps> = ({ onNavigate
   return (
     <div className="space-y-8 animate-fadeIn">
       {/* 1. Command Center Telemetry Banner */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-950 border border-white/10 p-6 sm:p-8 backdrop-blur-2xl">
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-white via-[#F8FAFC] to-white border border-black/[0.08] p-6 sm:p-8 backdrop-blur-2xl">
         <div className="absolute top-0 right-0 w-96 h-96 bg-rose-500/10 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-1/3 w-80 h-80 bg-sky-500/10 rounded-full blur-3xl pointer-events-none" />
 
@@ -96,10 +96,10 @@ export const AdminOverviewView: React.FC<AdminOverviewViewProps> = ({ onNavigate
               </span>
             </div>
 
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-display font-medium text-white tracking-tight">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-display font-medium text-zinc-900 tracking-tight">
               CreatorOS Command Center
             </h1>
-            <p className="text-sm text-zinc-400 font-sans max-w-2xl font-light">
+            <p className="text-sm text-zinc-500 font-sans max-w-2xl font-light">
               Real-time platform oversight, autonomous trust &amp; safety enforcement, content moderation, and distributed system controls.
             </p>
           </div>
@@ -108,7 +108,7 @@ export const AdminOverviewView: React.FC<AdminOverviewViewProps> = ({ onNavigate
           <div className="flex flex-wrap items-center gap-2.5 shrink-0">
             <button
               onClick={handleSimulateHealthCheck}
-              className="px-3.5 py-2 rounded-xl text-xs font-sans font-medium bg-zinc-900 hover:bg-zinc-800 border border-white/10 text-zinc-300 hover:text-white transition-all flex items-center gap-2 cursor-pointer"
+              className="px-3.5 py-2 rounded-xl text-xs font-sans font-medium bg-white hover:bg-zinc-100 border border-black/[0.08] text-zinc-700 hover:text-zinc-900 transition-all flex items-center gap-2 cursor-pointer"
             >
               <RefreshCw className="w-3.5 h-3.5 text-sky-400" />
               <span>Run Health Check</span>
@@ -119,7 +119,7 @@ export const AdminOverviewView: React.FC<AdminOverviewViewProps> = ({ onNavigate
               className={`px-3.5 py-2 rounded-xl text-xs font-sans font-semibold transition-all flex items-center gap-2 cursor-pointer shadow-sm ${
                 platformSettings.maintenanceMode
                   ? 'bg-amber-500 hover:bg-amber-400 text-zinc-950 ring-2 ring-amber-400/40'
-                  : 'bg-zinc-900 hover:bg-rose-950/40 border border-rose-500/30 text-rose-300'
+                  : 'bg-white hover:bg-rose-950/40 border border-rose-500/30 text-rose-300'
               }`}
             >
               <AlertTriangle className="w-3.5 h-3.5" />
@@ -133,44 +133,44 @@ export const AdminOverviewView: React.FC<AdminOverviewViewProps> = ({ onNavigate
 
       {/* 2. Realtime Telemetry Strip (Telemetry & Health) */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
-        <div className="p-4 rounded-2xl bg-zinc-950/70 border border-white/[0.08] backdrop-blur-xl flex items-center justify-between">
+        <div className="p-4 rounded-2xl bg-white shadow-sm border border-black/[0.08] backdrop-blur-xl flex items-center justify-between">
           <div className="space-y-1">
             <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-500">API Response</span>
             <div className="text-xl font-bold font-mono text-emerald-400">14.2 ms</div>
-            <span className="text-[10px] text-zinc-400 font-sans">99.99% under 50ms</span>
+            <span className="text-[10px] text-zinc-500 font-sans">99.99% under 50ms</span>
           </div>
           <div className="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center">
             <Zap className="w-4 h-4" />
           </div>
         </div>
 
-        <div className="p-4 rounded-2xl bg-zinc-950/70 border border-white/[0.08] backdrop-blur-xl flex items-center justify-between">
+        <div className="p-4 rounded-2xl bg-white shadow-sm border border-black/[0.08] backdrop-blur-xl flex items-center justify-between">
           <div className="space-y-1">
             <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-500">Escrow Security</span>
             <div className="text-xl font-bold font-mono text-sky-400">100% OK</div>
-            <span className="text-[10px] text-zinc-400 font-sans">0 disputes unhandled</span>
+            <span className="text-[10px] text-zinc-500 font-sans">0 disputes unhandled</span>
           </div>
           <div className="w-9 h-9 rounded-xl bg-sky-500/10 border border-sky-500/20 text-sky-400 flex items-center justify-center">
             <Lock className="w-4 h-4" />
           </div>
         </div>
 
-        <div className="p-4 rounded-2xl bg-zinc-950/70 border border-white/[0.08] backdrop-blur-xl flex items-center justify-between">
+        <div className="p-4 rounded-2xl bg-white shadow-sm border border-black/[0.08] backdrop-blur-xl flex items-center justify-between">
           <div className="space-y-1">
             <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-500">CDN Cache Ratio</span>
-            <div className="text-xl font-bold font-mono text-indigo-400">99.4%</div>
-            <span className="text-[10px] text-zinc-400 font-sans">Edge hit rate optimal</span>
+            <div className="text-xl font-bold font-mono text-[#0096C7]">99.4%</div>
+            <span className="text-[10px] text-zinc-500 font-sans">Edge hit rate optimal</span>
           </div>
-          <div className="w-9 h-9 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 flex items-center justify-center">
+          <div className="w-9 h-9 rounded-xl bg-[#00B4D8]/10 border border-[#00B4D8]/20 text-[#0096C7] flex items-center justify-center">
             <Globe className="w-4 h-4" />
           </div>
         </div>
 
-        <div className="p-4 rounded-2xl bg-zinc-950/70 border border-white/[0.08] backdrop-blur-xl flex items-center justify-between">
+        <div className="p-4 rounded-2xl bg-white shadow-sm border border-black/[0.08] backdrop-blur-xl flex items-center justify-between">
           <div className="space-y-1">
             <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-500">Moderation AI</span>
             <div className="text-xl font-bold font-mono text-purple-400">Active</div>
-            <span className="text-[10px] text-zinc-400 font-sans">Automated filters online</span>
+            <span className="text-[10px] text-zinc-500 font-sans">Automated filters online</span>
           </div>
           <div className="w-9 h-9 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-400 flex items-center justify-center">
             <Radio className="w-4 h-4" />
@@ -183,23 +183,23 @@ export const AdminOverviewView: React.FC<AdminOverviewViewProps> = ({ onNavigate
         {/* Metric 1: Users & Network */}
         <div
           onClick={() => onNavigateTab('users')}
-          className="p-5 rounded-2xl bg-zinc-950/80 border border-white/10 hover:border-white/20 transition-all cursor-pointer group space-y-3"
+          className="p-5 rounded-2xl bg-white shadow-sm border border-black/[0.08] hover:border-black/15 transition-all cursor-pointer group space-y-3"
         >
           <div className="flex items-center justify-between">
             <div className="w-8 h-8 rounded-lg bg-sky-500/15 text-sky-400 flex items-center justify-center">
               <Users className="w-4 h-4" />
             </div>
-            <ArrowUpRight className="w-4 h-4 text-zinc-600 group-hover:text-zinc-300 transition-colors" />
+            <ArrowUpRight className="w-4 h-4 text-zinc-600 group-hover:text-zinc-700 transition-colors" />
           </div>
           <div>
-            <div className="text-2xl font-bold font-mono text-white tracking-tight">
+            <div className="text-2xl font-bold font-mono text-zinc-900 tracking-tight">
               {totalUsers} Accounts
             </div>
-            <p className="text-xs text-zinc-400 font-light mt-0.5">
+            <p className="text-xs text-zinc-500 font-light mt-0.5">
               {totalCreators} creators ({verifiedCreators} verified) • {suspendedUserIds.length} suspended
             </p>
           </div>
-          <div className="pt-2 border-t border-white/[0.06] flex items-center justify-between text-[11px] text-zinc-500">
+          <div className="pt-2 border-t border-black/[0.06] flex items-center justify-between text-[11px] text-zinc-500">
             <span>Identity verification</span>
             <span className="text-emerald-400 font-medium">96.8% valid</span>
           </div>
@@ -208,25 +208,25 @@ export const AdminOverviewView: React.FC<AdminOverviewViewProps> = ({ onNavigate
         {/* Metric 2: Content Network (Reels, Shots, Blogs) */}
         <div
           onClick={() => onNavigateTab('moderation')}
-          className="p-5 rounded-2xl bg-zinc-950/80 border border-white/10 hover:border-white/20 transition-all cursor-pointer group space-y-3"
+          className="p-5 rounded-2xl bg-white shadow-sm border border-black/[0.08] hover:border-black/15 transition-all cursor-pointer group space-y-3"
         >
           <div className="flex items-center justify-between">
-            <div className="w-8 h-8 rounded-lg bg-indigo-500/15 text-indigo-400 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-[#00B4D8]/10 text-[#0096C7] flex items-center justify-center">
               <Film className="w-4 h-4" />
             </div>
-            <ArrowUpRight className="w-4 h-4 text-zinc-600 group-hover:text-zinc-300 transition-colors" />
+            <ArrowUpRight className="w-4 h-4 text-zinc-600 group-hover:text-zinc-700 transition-colors" />
           </div>
           <div>
-            <div className="text-2xl font-bold font-mono text-white tracking-tight">
+            <div className="text-2xl font-bold font-mono text-zinc-900 tracking-tight">
               {socialPosts.length} Live Posts
             </div>
-            <p className="text-xs text-zinc-400 font-light mt-0.5">
+            <p className="text-xs text-zinc-500 font-light mt-0.5">
               {reelPosts.length} Reels • {shotPosts.length} Shots • {blogPosts.length} Blogs
             </p>
           </div>
-          <div className="pt-2 border-t border-white/[0.06] flex items-center justify-between text-[11px] text-zinc-500">
+          <div className="pt-2 border-t border-black/[0.06] flex items-center justify-between text-[11px] text-zinc-500">
             <span>Flagged for review</span>
-            <span className={flaggedPosts.length > 0 ? 'text-amber-400 font-medium' : 'text-zinc-400'}>
+            <span className={flaggedPosts.length > 0 ? 'text-amber-400 font-medium' : 'text-zinc-500'}>
               {flaggedPosts.length} flagged
             </span>
           </div>
@@ -235,23 +235,23 @@ export const AdminOverviewView: React.FC<AdminOverviewViewProps> = ({ onNavigate
         {/* Metric 3: Campaigns & Capital Escrow */}
         <div
           onClick={() => onNavigateTab('overview')}
-          className="p-5 rounded-2xl bg-zinc-950/80 border border-white/10 hover:border-white/20 transition-all cursor-pointer group space-y-3"
+          className="p-5 rounded-2xl bg-white shadow-sm border border-black/[0.08] hover:border-black/15 transition-all cursor-pointer group space-y-3"
         >
           <div className="flex items-center justify-between">
             <div className="w-8 h-8 rounded-lg bg-emerald-500/15 text-emerald-400 flex items-center justify-center">
               <Layers className="w-4 h-4" />
             </div>
-            <ArrowUpRight className="w-4 h-4 text-zinc-600 group-hover:text-zinc-300 transition-colors" />
+            <ArrowUpRight className="w-4 h-4 text-zinc-600 group-hover:text-zinc-700 transition-colors" />
           </div>
           <div>
             <div className="text-2xl font-bold font-mono text-emerald-400 tracking-tight">
               ₹{(totalEscrowSecured / 100000).toFixed(1)}L Escrow
             </div>
-            <p className="text-xs text-zinc-400 font-light mt-0.5">
+            <p className="text-xs text-zinc-500 font-light mt-0.5">
               {campaigns.length} campaigns ({activeCampaigns.length} active in market)
             </p>
           </div>
-          <div className="pt-2 border-t border-white/[0.06] flex items-center justify-between text-[11px] text-zinc-500">
+          <div className="pt-2 border-t border-black/[0.06] flex items-center justify-between text-[11px] text-zinc-500">
             <span>Milestone payout success</span>
             <span className="text-emerald-400 font-medium">99.8%</span>
           </div>
@@ -260,16 +260,16 @@ export const AdminOverviewView: React.FC<AdminOverviewViewProps> = ({ onNavigate
         {/* Metric 4: Trust & Reports Queue */}
         <div
           onClick={() => onNavigateTab('reports')}
-          className="p-5 rounded-2xl bg-zinc-950/80 border border-white/10 hover:border-white/20 transition-all cursor-pointer group space-y-3"
+          className="p-5 rounded-2xl bg-white shadow-sm border border-black/[0.08] hover:border-black/15 transition-all cursor-pointer group space-y-3"
         >
           <div className="flex items-center justify-between">
             <div className="w-8 h-8 rounded-lg bg-rose-500/15 text-rose-400 flex items-center justify-center">
               <ShieldAlert className="w-4 h-4" />
             </div>
-            <ArrowUpRight className="w-4 h-4 text-zinc-600 group-hover:text-zinc-300 transition-colors" />
+            <ArrowUpRight className="w-4 h-4 text-zinc-600 group-hover:text-zinc-700 transition-colors" />
           </div>
           <div>
-            <div className="text-2xl font-bold font-mono text-white tracking-tight flex items-center gap-2">
+            <div className="text-2xl font-bold font-mono text-zinc-900 tracking-tight flex items-center gap-2">
               <span>{pendingReports.length}</span>
               {pendingReports.length > 0 && (
                 <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-rose-500 text-white font-bold animate-pulse">
@@ -277,13 +277,13 @@ export const AdminOverviewView: React.FC<AdminOverviewViewProps> = ({ onNavigate
                 </span>
               )}
             </div>
-            <p className="text-xs text-zinc-400 font-light mt-0.5">
+            <p className="text-xs text-zinc-500 font-light mt-0.5">
               Pending violation reports across posts &amp; accounts
             </p>
           </div>
-          <div className="pt-2 border-t border-white/[0.06] flex items-center justify-between text-[11px] text-zinc-500">
+          <div className="pt-2 border-t border-black/[0.06] flex items-center justify-between text-[11px] text-zinc-500">
             <span>Total tickets logged</span>
-            <span className="text-zinc-400">{contentReports.length} total</span>
+            <span className="text-zinc-500">{contentReports.length} total</span>
           </div>
         </div>
       </div>
@@ -295,7 +295,7 @@ export const AdminOverviewView: React.FC<AdminOverviewViewProps> = ({ onNavigate
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <ShieldAlert className="w-4 h-4 text-rose-400" />
-              <h2 className="text-sm font-semibold text-white uppercase tracking-wider font-mono">
+              <h2 className="text-sm font-semibold text-zinc-900 uppercase tracking-wider font-mono">
                 Urgent Reports Queue
               </h2>
             </div>
@@ -309,10 +309,10 @@ export const AdminOverviewView: React.FC<AdminOverviewViewProps> = ({ onNavigate
 
           <div className="space-y-2.5">
             {pendingReports.length === 0 ? (
-              <div className="p-8 rounded-2xl bg-zinc-950/60 border border-white/[0.08] text-center space-y-2">
+              <div className="p-8 rounded-2xl bg-zinc-50 border border-black/[0.08] text-center space-y-2">
                 <CheckCircle2 className="w-8 h-8 text-emerald-400 mx-auto" />
-                <h4 className="text-sm font-medium text-white">Queue is Clean</h4>
-                <p className="text-xs text-zinc-400">
+                <h4 className="text-sm font-medium text-zinc-900">Queue is Clean</h4>
+                <p className="text-xs text-zinc-500">
                   No pending abuse or violation reports at this moment.
                 </p>
               </div>
@@ -320,7 +320,7 @@ export const AdminOverviewView: React.FC<AdminOverviewViewProps> = ({ onNavigate
               pendingReports.slice(0, 3).map((report) => (
                 <div
                   key={report.id}
-                  className="p-4 rounded-2xl bg-zinc-950/80 border border-rose-500/20 hover:border-rose-500/40 transition-all flex items-start justify-between gap-4"
+                  className="p-4 rounded-2xl bg-white shadow-sm border border-rose-500/20 hover:border-rose-500/40 transition-all flex items-start justify-between gap-4"
                 >
                   <div className="space-y-1 min-w-0">
                     <div className="flex items-center gap-2">
@@ -331,7 +331,7 @@ export const AdminOverviewView: React.FC<AdminOverviewViewProps> = ({ onNavigate
                         {report.targetType.toUpperCase()} #{report.targetId.slice(0, 8)}
                       </span>
                     </div>
-                    <p className="text-xs text-zinc-300 line-clamp-1">
+                    <p className="text-xs text-zinc-700 line-clamp-1">
                       {report.details || 'Community member flagged this content as violating platform standards.'}
                     </p>
                     <div className="text-[11px] text-zinc-500 font-mono">
@@ -356,7 +356,7 @@ export const AdminOverviewView: React.FC<AdminOverviewViewProps> = ({ onNavigate
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Zap className="w-4 h-4 text-amber-400" />
-              <h2 className="text-sm font-semibold text-white uppercase tracking-wider font-mono">
+              <h2 className="text-sm font-semibold text-zinc-900 uppercase tracking-wider font-mono">
                 Feature Engine Status
               </h2>
             </div>
@@ -368,7 +368,7 @@ export const AdminOverviewView: React.FC<AdminOverviewViewProps> = ({ onNavigate
             </button>
           </div>
 
-          <div className="p-4 rounded-2xl bg-zinc-950/80 border border-white/[0.08] space-y-3">
+          <div className="p-4 rounded-2xl bg-white shadow-sm border border-black/[0.08] space-y-3">
             {[
               { label: 'Discover Feed', key: 'discover', active: featureFlags.discover },
               { label: 'Post Creation', key: 'posting', active: featureFlags.posting },
@@ -379,7 +379,7 @@ export const AdminOverviewView: React.FC<AdminOverviewViewProps> = ({ onNavigate
             ].map((f) => (
               <div
                 key={f.key}
-                className="flex items-center justify-between p-2.5 rounded-xl bg-zinc-900/50 border border-white/[0.04]"
+                className="flex items-center justify-between p-2.5 rounded-xl bg-zinc-50 border border-black/[0.04]"
               >
                 <div className="flex items-center gap-2.5">
                   <span
@@ -387,7 +387,7 @@ export const AdminOverviewView: React.FC<AdminOverviewViewProps> = ({ onNavigate
                       f.active ? 'bg-emerald-400 shadow-sm shadow-emerald-400/50' : 'bg-zinc-600'
                     }`}
                   />
-                  <span className="text-xs font-medium text-zinc-200">{f.label}</span>
+                  <span className="text-xs font-medium text-zinc-800">{f.label}</span>
                 </div>
                 <span
                   className={`text-[10px] font-mono px-2 py-0.5 rounded ${
@@ -409,7 +409,7 @@ export const AdminOverviewView: React.FC<AdminOverviewViewProps> = ({ onNavigate
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Activity className="w-4 h-4 text-sky-400" />
-            <h2 className="text-sm font-semibold text-white uppercase tracking-wider font-mono">
+            <h2 className="text-sm font-semibold text-zinc-900 uppercase tracking-wider font-mono">
               Live Audit Trail
             </h2>
           </div>
@@ -421,15 +421,15 @@ export const AdminOverviewView: React.FC<AdminOverviewViewProps> = ({ onNavigate
           </button>
         </div>
 
-        <div className="overflow-hidden rounded-2xl bg-zinc-950/80 border border-white/[0.08]">
-          <div className="divide-y divide-white/[0.06]">
+        <div className="overflow-hidden rounded-2xl bg-white shadow-sm border border-black/[0.08]">
+          <div className="divide-y divide-zinc-200">
             {adminActivityLogs.slice(0, 4).map((log) => (
               <div key={log.id} className="p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
                 <div className="flex items-center gap-3">
-                  <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-zinc-800 text-zinc-300 font-semibold">
+                  <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-zinc-800 text-zinc-700 font-semibold">
                     {log.action}
                   </span>
-                  <span className="text-zinc-200 font-medium">{log.details || log.target}</span>
+                  <span className="text-zinc-800 font-medium">{log.details || log.target}</span>
                 </div>
                 <div className="flex items-center gap-4 text-zinc-500 font-mono text-[11px] shrink-0">
                   <span>by {log.adminName}</span>

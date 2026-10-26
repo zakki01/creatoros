@@ -82,20 +82,20 @@ export const CreatorLayout: React.FC = () => {
   };
 
   return (
-    <div className="flex h-dvh w-full bg-transparent text-zinc-100 overflow-hidden font-sans">
+    <div className="flex h-dvh w-full bg-[#EAECEF] text-zinc-900 overflow-hidden font-sans">
       {/* Elevated Spatial Glass Sidebar Rail */}
       <aside
-        className={`h-full border-r border-white/[0.08] bg-[#0B0B10]/85 backdrop-blur-2xl shadow-[4px_0_24px_-6px_rgba(0,0,0,0.65)] hidden md:flex flex-col justify-between transition-all duration-200 z-30 shrink-0 ${
+        className={`h-full border-r border-black/[0.08] bg-[#DFE3E8]/90 backdrop-blur-2xl shadow-sm hidden md:flex flex-col justify-between transition-all duration-200 z-30 shrink-0 ${
           isSidebarCollapsed ? 'w-16' : 'w-56'
         }`}
       >
         {/* Creator Brand Header */}
-        <div className="p-3.5 border-b border-white/[0.07] flex items-center justify-between">
+        <div className="p-3.5 border-b border-black/[0.06] flex items-center justify-between">
           <BrandLogo size="sm" iconOnly={isSidebarCollapsed} />
 
           <button
             onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
-            className="p-1.5 rounded-lg text-zinc-500 hover:text-zinc-200 hover:bg-white/[0.06] transition-all duration-200 cursor-pointer"
+            className="p-1.5 rounded-lg text-zinc-500 hover:text-zinc-900 hover:bg-black/[0.05] transition-all duration-200 cursor-pointer"
             title={isSidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
           >
             {isSidebarCollapsed ? (
@@ -118,20 +118,20 @@ export const CreatorLayout: React.FC = () => {
                 title={isSidebarCollapsed ? item.label : undefined}
                 className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-xl text-xs font-medium transition-all duration-200 cursor-pointer ${
                   isActive
-                    ? 'surface-3 text-white font-semibold shadow-[inset_0_1px_0_0_rgba(255,255,255,0.18),0_4px_12px_-2px_rgba(0,0,0,0.5)]'
-                    : 'text-zinc-400 hover:text-zinc-100 hover:bg-white/[0.04] hover:translate-x-0.5 border border-transparent'
+                    ? 'bg-white text-zinc-900 font-semibold shadow-xs border border-black/[0.06]'
+                    : 'text-zinc-600 hover:text-zinc-900 hover:bg-black/[0.04] hover:translate-x-0.5 border border-transparent'
                 }`}
               >
                 <Icon
                   className={`w-4 h-4 shrink-0 transition-colors ${
-                    isActive ? 'text-emerald-400 drop-shadow-[0_0_8px_rgba(52,211,153,0.45)]' : 'text-zinc-400'
+                    isActive ? 'text-[#0096C7]' : 'text-zinc-500'
                   }`}
                 />
                 {!isSidebarCollapsed && (
                   <span className="truncate flex-1 text-left">{item.label}</span>
                 )}
                 {!isSidebarCollapsed && typeof item.badge === 'number' && (
-                  <span className="px-1.5 py-0.5 rounded-full text-[10px] font-mono bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+                  <span className="px-1.5 py-0.5 rounded-full text-[10px] font-mono bg-sky-100 text-sky-800 border border-sky-300">
                     {item.badge}
                   </span>
                 )}
@@ -141,7 +141,7 @@ export const CreatorLayout: React.FC = () => {
 
           {/* Divider for Secondary Navigation */}
           <div className="pt-2 pb-1">
-            <div className="h-px bg-white/[0.06] mx-2" />
+            <div className="h-px bg-black/[0.06] mx-2" />
           </div>
 
           {/* Secondary Navigation */}
@@ -155,13 +155,13 @@ export const CreatorLayout: React.FC = () => {
                 title={isSidebarCollapsed ? item.label : undefined}
                 className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-xl text-xs font-medium transition-all duration-200 cursor-pointer ${
                   isActive
-                    ? 'surface-3 text-white font-semibold shadow-[inset_0_1px_0_0_rgba(255,255,255,0.18),0_4px_12px_-2px_rgba(0,0,0,0.5)]'
-                    : 'text-zinc-400 hover:text-zinc-100 hover:bg-white/[0.04] hover:translate-x-0.5 border border-transparent'
+                    ? 'bg-white text-zinc-900 font-semibold shadow-xs border border-black/[0.06]'
+                    : 'text-zinc-600 hover:text-zinc-900 hover:bg-black/[0.04] hover:translate-x-0.5 border border-transparent'
                 }`}
               >
                 <Icon
                   className={`w-4 h-4 shrink-0 transition-colors ${
-                    isActive ? 'text-emerald-400' : 'text-zinc-400'
+                    isActive ? 'text-[#0096C7]' : 'text-zinc-500'
                   }`}
                 />
                 {!isSidebarCollapsed && (
@@ -174,9 +174,9 @@ export const CreatorLayout: React.FC = () => {
 
         {/* Sidebar Footer */}
         {!isSidebarCollapsed && (
-          <div className="p-3 border-t border-white/[0.07] text-[11px] text-zinc-500 flex items-center justify-between">
+          <div className="p-3 border-t border-black/[0.06] text-[11px] text-zinc-600 flex items-center justify-between">
             <span>Creator Studio</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)] animate-pulse" />
+            <span className="w-1.5 h-1.5 rounded-full bg-[#00B4D8] animate-pulse" />
           </div>
         )}
       </aside>

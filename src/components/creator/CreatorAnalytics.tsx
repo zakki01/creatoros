@@ -32,7 +32,7 @@ export const CreatorAnalytics: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-xl sm:text-2xl font-bold text-white font-display tracking-tight">
+            <h1 className="text-xl sm:text-2xl font-bold text-zinc-900 font-display tracking-tight">
               Analytics
             </h1>
             <Badge variant="success" size="sm" dot>
@@ -65,7 +65,7 @@ export const CreatorAnalytics: React.FC = () => {
                 <Icon className="w-3.5 h-3.5 text-indigo-400" />
               </div>
               <div>
-                <p className="text-xl font-bold text-white font-mono tracking-tight">
+                <p className="text-xl font-bold text-zinc-900 font-mono tracking-tight">
                   {m.value}
                 </p>
                 <span className="text-[10px] text-emerald-400 font-mono font-semibold">
@@ -81,7 +81,7 @@ export const CreatorAnalytics: React.FC = () => {
       <SpatialCard surface={2} className="p-5 sm:p-6 space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-sm font-bold text-white font-display">
+            <h3 className="text-sm font-bold text-zinc-900 font-display">
               Reach Velocity
             </h3>
             <p className="text-[11px] text-zinc-400">
@@ -153,7 +153,7 @@ export const CreatorAnalytics: React.FC = () => {
 
       {/* Top Content Showcase */}
       <div className="space-y-3">
-        <h3 className="text-sm font-bold text-white font-display px-1">
+        <h3 className="text-sm font-bold text-zinc-900 font-display px-1">
           Top Sponsored Deliverables
         </h3>
 

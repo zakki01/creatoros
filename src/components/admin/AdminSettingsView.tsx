@@ -97,10 +97,10 @@ export const AdminSettingsView: React.FC = () => {
     <div className="space-y-8 animate-fadeIn">
       {/* Header */}
       <div>
-        <h2 className="text-xl sm:text-2xl font-display font-medium text-white tracking-tight">
+        <h2 className="text-xl sm:text-2xl font-display font-medium text-zinc-900 tracking-tight">
           Platform Governance &amp; Feature Controls
         </h2>
-        <p className="text-xs text-zinc-400 font-sans font-light">
+        <p className="text-xs text-zinc-500 font-sans font-light">
           Real-time toggles across 14 platform sub-systems, rate limits, upload quotas, and emergency protocols.
         </p>
       </div>
@@ -110,13 +110,13 @@ export const AdminSettingsView: React.FC = () => {
         {flagSections.map((sec, idx) => (
           <div
             key={idx}
-            className="rounded-3xl bg-zinc-950/80 border border-white/10 p-6 backdrop-blur-xl space-y-4"
+            className="rounded-3xl bg-white shadow-sm border border-black/[0.08] p-6 backdrop-blur-xl space-y-4"
           >
-            <div className="border-b border-white/[0.08] pb-3">
-              <h3 className="text-sm font-semibold text-white tracking-wide font-mono uppercase">
+            <div className="border-b border-black/[0.08] pb-3">
+              <h3 className="text-sm font-semibold text-zinc-900 tracking-wide font-mono uppercase">
                 {sec.title}
               </h3>
-              <p className="text-xs text-zinc-400 font-light mt-0.5">
+              <p className="text-xs text-zinc-500 font-light mt-0.5">
                 {sec.description}
               </p>
             </div>
@@ -131,8 +131,8 @@ export const AdminSettingsView: React.FC = () => {
                     onClick={() => handleToggle(flag.key, flag.label)}
                     className={`p-4 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between space-y-3 ${
                       isActive
-                        ? 'bg-zinc-900/60 border-white/15 hover:border-white/30'
-                        : 'bg-zinc-950/60 border-zinc-900 opacity-60 hover:opacity-100'
+                        ? 'bg-white shadow-sm border-black/10 hover:border-white/30'
+                        : 'bg-zinc-50 border-zinc-900 opacity-60 hover:opacity-100'
                     }`}
                   >
                     <div className="flex items-start justify-between gap-3">
@@ -140,7 +140,7 @@ export const AdminSettingsView: React.FC = () => {
                         <span className="text-xs font-medium text-white block">
                           {flag.label}
                         </span>
-                        <p className="text-[11px] text-zinc-400 font-light leading-snug">
+                        <p className="text-[11px] text-zinc-500 font-light leading-snug">
                           {flag.desc}
                         </p>
                       </div>
@@ -151,14 +151,14 @@ export const AdminSettingsView: React.FC = () => {
                             <div className="w-4 h-4 rounded-full bg-white shadow-sm" />
                           </div>
                         ) : (
-                          <div className="w-9 h-5 rounded-full bg-zinc-800 p-0.5 flex items-center justify-start border border-zinc-700">
+                          <div className="w-9 h-5 rounded-full bg-zinc-800 p-0.5 flex items-center justify-start border border-zinc-300">
                             <div className="w-4 h-4 rounded-full bg-zinc-500 shadow-sm" />
                           </div>
                         )}
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-between pt-2 border-t border-white/[0.04] text-[10px] font-mono">
+                    <div className="flex items-center justify-between pt-2 border-t border-black/[0.04] text-[10px] font-mono">
                       <span className="text-zinc-500">Status</span>
                       <span className={isActive ? 'text-emerald-400 font-bold' : 'text-zinc-600'}>
                         {isActive ? 'ACTIVE' : 'DISABLED'}
@@ -173,14 +173,14 @@ export const AdminSettingsView: React.FC = () => {
       </div>
 
       {/* Operational Thresholds & Server Form */}
-      <div className="rounded-3xl bg-zinc-950/80 border border-white/10 p-6 sm:p-8 backdrop-blur-xl space-y-6">
-        <div className="flex items-center justify-between border-b border-white/[0.08] pb-4">
+      <div className="rounded-3xl bg-white shadow-sm border border-black/[0.08] p-6 sm:p-8 backdrop-blur-xl space-y-6">
+        <div className="flex items-center justify-between border-b border-black/[0.08] pb-4">
           <div>
-            <h3 className="text-sm font-semibold text-white tracking-wide font-mono uppercase flex items-center gap-2">
+            <h3 className="text-sm font-semibold text-zinc-900 tracking-wide font-mono uppercase flex items-center gap-2">
               <Sliders className="w-4 h-4 text-sky-400" />
               Operational Limits &amp; Parameters
             </h3>
-            <p className="text-xs text-zinc-400 font-light mt-0.5">
+            <p className="text-xs text-zinc-500 font-light mt-0.5">
               Set file upload constraints, network rate limiting, and escrow platform commissions.
             </p>
           </div>
@@ -195,7 +195,7 @@ export const AdminSettingsView: React.FC = () => {
 
         <form onSubmit={handleSaveOperationalSettings} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
           <div className="space-y-2">
-            <label className="text-xs font-mono text-zinc-400 uppercase">
+            <label className="text-xs font-mono text-zinc-500 uppercase">
               Max Reel Video Upload
             </label>
             <div className="relative">
@@ -205,7 +205,7 @@ export const AdminSettingsView: React.FC = () => {
                 onChange={(e) =>
                   setLocalSettings({ ...localSettings, maxVideoSizeMb: parseInt(e.target.value) || 100 })
                 }
-                className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-900 border border-white/10 text-xs text-white focus:outline-none focus:border-sky-500/50"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-white shadow-sm border border-black/[0.08] text-xs text-white focus:outline-none focus:border-sky-500/50"
               />
               <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs font-mono text-zinc-500">
                 MB
@@ -215,7 +215,7 @@ export const AdminSettingsView: React.FC = () => {
           </div>
 
           <div className="space-y-2">
-            <label className="text-xs font-mono text-zinc-400 uppercase">
+            <label className="text-xs font-mono text-zinc-500 uppercase">
               Max Blog Word Count
             </label>
             <div className="relative">
@@ -225,7 +225,7 @@ export const AdminSettingsView: React.FC = () => {
                 onChange={(e) =>
                   setLocalSettings({ ...localSettings, maxBlogWords: parseInt(e.target.value) || 2000 })
                 }
-                className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-900 border border-white/10 text-xs text-white focus:outline-none focus:border-sky-500/50"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-white shadow-sm border border-black/[0.08] text-xs text-white focus:outline-none focus:border-sky-500/50"
               />
               <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs font-mono text-zinc-500">
                 words
@@ -235,7 +235,7 @@ export const AdminSettingsView: React.FC = () => {
           </div>
 
           <div className="space-y-2">
-            <label className="text-xs font-mono text-zinc-400 uppercase">
+            <label className="text-xs font-mono text-zinc-500 uppercase">
               Rate Limit / User
             </label>
             <div className="relative">
@@ -245,7 +245,7 @@ export const AdminSettingsView: React.FC = () => {
                 onChange={(e) =>
                   setLocalSettings({ ...localSettings, rateLimitPerMinute: parseInt(e.target.value) || 60 })
                 }
-                className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-900 border border-white/10 text-xs text-white focus:outline-none focus:border-sky-500/50"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-white shadow-sm border border-black/[0.08] text-xs text-white focus:outline-none focus:border-sky-500/50"
               />
               <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs font-mono text-zinc-500">
                 req/min
@@ -255,7 +255,7 @@ export const AdminSettingsView: React.FC = () => {
           </div>
 
           <div className="space-y-2">
-            <label className="text-xs font-mono text-zinc-400 uppercase">
+            <label className="text-xs font-mono text-zinc-500 uppercase">
               Escrow Platform Fee
             </label>
             <div className="relative">
@@ -264,7 +264,7 @@ export const AdminSettingsView: React.FC = () => {
                 step="0.5"
                 value={5}
                 disabled
-                className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-900/60 border border-white/10 text-xs text-zinc-400"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-white shadow-sm border border-black/[0.08] text-xs text-zinc-500"
               />
               <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs font-mono text-zinc-500">
                 % fee

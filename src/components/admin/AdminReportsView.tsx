@@ -106,10 +106,10 @@ export const AdminReportsView: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl sm:text-2xl font-display font-medium text-white tracking-tight">
+          <h2 className="text-xl sm:text-2xl font-display font-medium text-zinc-900 tracking-tight">
             Trust &amp; Safety Report Center
           </h2>
-          <p className="text-xs text-zinc-400 font-sans font-light">
+          <p className="text-xs text-zinc-500 font-sans font-light">
             Manage user violation tickets, copyright infringement notices, spam flags, and community disputes.
           </p>
         </div>
@@ -122,7 +122,7 @@ export const AdminReportsView: React.FC = () => {
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="p-4 rounded-2xl bg-zinc-950/80 border border-white/10 backdrop-blur-xl flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+      <div className="p-4 rounded-2xl bg-white shadow-sm border border-black/[0.08] backdrop-blur-xl flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
         {/* Search */}
         <div className="relative flex-1">
           <Search className="w-4 h-4 text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
@@ -131,7 +131,7 @@ export const AdminReportsView: React.FC = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search by reporter handle, target ID, or details..."
-            className="w-full pl-10 pr-4 py-2 rounded-xl bg-zinc-900/80 border border-white/10 text-xs text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-sky-500/50"
+            className="w-full pl-10 pr-4 py-2 rounded-xl bg-white shadow-sm border border-black/[0.08] text-xs text-zinc-900 placeholder-zinc-500 focus:outline-none focus:border-sky-500/50"
           />
         </div>
 
@@ -151,8 +151,8 @@ export const AdminReportsView: React.FC = () => {
               onClick={() => setStatusFilter(tab.id)}
               className={`px-3 py-1.5 rounded-lg text-xs font-sans font-medium transition-all shrink-0 cursor-pointer ${
                 statusFilter === tab.id
-                  ? 'bg-white text-zinc-950 shadow-sm'
-                  : 'bg-zinc-900 text-zinc-400 hover:text-white'
+                  ? 'bg-[#00B4D8] text-white shadow-xs'
+                  : 'bg-zinc-100 text-zinc-600 hover:text-zinc-900'
               }`}
             >
               {tab.label}
@@ -164,10 +164,10 @@ export const AdminReportsView: React.FC = () => {
       {/* Report Ticket Stream */}
       <div className="space-y-3.5">
         {filteredReports.length === 0 ? (
-          <div className="p-12 rounded-2xl bg-zinc-950/60 border border-white/[0.08] text-center space-y-2">
+          <div className="p-12 rounded-2xl bg-zinc-50 border border-black/[0.08] text-center space-y-2">
             <CheckCircle2 className="w-8 h-8 text-emerald-400 mx-auto" />
-            <h4 className="text-sm font-medium text-white">No Reports Found</h4>
-            <p className="text-xs text-zinc-400">
+            <h4 className="text-sm font-medium text-zinc-900">No Reports Found</h4>
+            <p className="text-xs text-zinc-500">
               There are no reports matching the selected filters.
             </p>
           </div>
@@ -181,12 +181,12 @@ export const AdminReportsView: React.FC = () => {
             return (
               <div
                 key={report.id}
-                className={`p-5 rounded-2xl bg-zinc-950/80 border transition-all flex flex-col lg:flex-row items-start lg:items-center justify-between gap-5 ${
+                className={`p-5 rounded-2xl bg-white shadow-sm border transition-all flex flex-col lg:flex-row items-start lg:items-center justify-between gap-5 ${
                   isPending
                     ? 'border-rose-500/40 bg-rose-950/5'
                     : isInvestigating
                     ? 'border-amber-500/40 bg-amber-950/5'
-                    : 'border-white/10'
+                    : 'border-black/[0.08]'
                 }`}
               >
                 {/* Ticket Details */}
@@ -195,7 +195,7 @@ export const AdminReportsView: React.FC = () => {
                     <span className="px-2.5 py-0.5 rounded text-[10px] font-mono uppercase bg-rose-500/20 text-rose-300 font-bold border border-rose-500/30">
                       {report.reason}
                     </span>
-                    <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-zinc-900 text-zinc-300 border border-white/10 uppercase">
+                    <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-white text-zinc-700 border border-black/[0.08] uppercase">
                       {report.targetType} #{report.targetId.slice(0, 10)}
                     </span>
                     <span
@@ -206,19 +206,19 @@ export const AdminReportsView: React.FC = () => {
                           ? 'bg-amber-500 text-zinc-950'
                           : isResolved
                           ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
-                          : 'bg-zinc-800 text-zinc-400'
+                          : 'bg-zinc-800 text-zinc-500'
                       }`}
                     >
                       {report.status}
                     </span>
                   </div>
 
-                  <p className="text-xs text-zinc-200 font-sans leading-relaxed">
+                  <p className="text-xs text-zinc-800 font-sans leading-relaxed">
                     {report.details || 'Community member reported this item citing terms violation.'}
                   </p>
 
                   <div className="flex flex-wrap items-center gap-4 text-[11px] text-zinc-500 font-mono">
-                    <span>Filed by <strong className="text-zinc-300">{report.reporterHandle || report.reporterName}</strong></span>
+                    <span>Filed by <strong className="text-zinc-700">{report.reporterHandle || report.reporterName}</strong></span>
                     <span>{new Date(report.createdAt).toLocaleString()}</span>
                     {report.adminNotes && (
                       <span className="text-amber-400">Note: {report.adminNotes}</span>
@@ -249,7 +249,7 @@ export const AdminReportsView: React.FC = () => {
                   {/* Suspend Account */}
                   <button
                     onClick={() => handleSuspendAccount(report)}
-                    className="px-3 py-1.5 rounded-lg text-xs font-sans font-medium bg-zinc-900 hover:bg-rose-950/40 border border-white/10 hover:border-rose-500/30 text-zinc-300 hover:text-rose-300 transition-all flex items-center gap-1.5 cursor-pointer"
+                    className="px-3 py-1.5 rounded-lg text-xs font-sans font-medium bg-white hover:bg-rose-950/40 border border-black/[0.08] hover:border-rose-500/30 text-zinc-700 hover:text-rose-300 transition-all flex items-center gap-1.5 cursor-pointer"
                   >
                     <Ban className="w-3 h-3 text-rose-400" />
                     <span>Suspend User</span>
@@ -258,7 +258,7 @@ export const AdminReportsView: React.FC = () => {
                   {/* Dismiss */}
                   <button
                     onClick={() => handleDismiss(report)}
-                    className="px-3 py-1.5 rounded-lg text-xs font-sans font-medium bg-zinc-900 hover:bg-zinc-800 border border-white/10 text-zinc-400 hover:text-white transition-all cursor-pointer"
+                    className="px-3 py-1.5 rounded-lg text-xs font-sans font-medium bg-white hover:bg-zinc-100 border border-black/[0.08] text-zinc-500 hover:text-zinc-900 transition-all cursor-pointer"
                   >
                     Dismiss
                   </button>

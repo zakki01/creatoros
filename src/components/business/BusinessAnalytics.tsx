@@ -101,15 +101,15 @@ export const BusinessAnalytics: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl sm:text-3xl font-bold text-zinc-100 font-display">
+            <h1 className="text-2xl sm:text-3xl font-bold text-zinc-900 font-display">
               Campaign Analytics & Attribution
             </h1>
             <Badge variant="brand" size="sm">
               Real-Time Tracking
             </Badge>
           </div>
-          <p className="text-sm text-zinc-400 mt-1">
-            End-to-end performance and creator-level ROI for <strong className="text-zinc-200">"{activeCampaign.name}"</strong>
+          <p className="text-sm text-zinc-500 mt-1">
+            End-to-end performance and creator-level ROI for <strong className="text-zinc-800">"{activeCampaign.name}"</strong>
           </p>
         </div>
 
@@ -122,7 +122,7 @@ export const BusinessAnalytics: React.FC = () => {
             size="md"
             leftIcon={<Download className="w-4 h-4 text-emerald-400" />}
             onClick={() => setIsReportModalOpen(true)}
-            className="border-zinc-800 text-zinc-200 cursor-pointer"
+            className="border-zinc-200 text-zinc-800 cursor-pointer"
           >
             Export & Share Report
           </Button>
@@ -135,12 +135,12 @@ export const BusinessAnalytics: React.FC = () => {
           const Icon = m.icon;
           return (
             <Card key={idx} className="p-4 space-y-2">
-              <div className="flex items-center justify-between text-zinc-400">
+              <div className="flex items-center justify-between text-zinc-500">
                 <span className="text-[11px] font-medium truncate">{m.label}</span>
                 <Icon className="w-3.5 h-3.5 text-zinc-500" />
               </div>
               <div>
-                <p className="text-lg font-bold text-zinc-100 font-mono tracking-tight">
+                <p className="text-lg font-bold text-zinc-900 font-mono tracking-tight">
                   {m.value}
                 </p>
                 <span className="text-[10px] text-emerald-400 font-mono font-medium">
@@ -156,10 +156,10 @@ export const BusinessAnalytics: React.FC = () => {
       <Card className="p-6 space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-base font-bold text-zinc-100 font-display">
+            <h3 className="text-base font-bold text-zinc-900 font-display">
               Creator-Level Performance & Attribution
             </h3>
-            <p className="text-xs text-zinc-400 mt-0.5">
+            <p className="text-xs text-zinc-500 mt-0.5">
               Exact spend, revenue, and individual return on ad spend (ROAS) per partner.
             </p>
           </div>
@@ -170,7 +170,7 @@ export const BusinessAnalytics: React.FC = () => {
 
         <div className="overflow-x-auto pt-2">
           <table className="w-full text-left text-xs">
-            <thead className="bg-zinc-950/80 text-zinc-400 border-b border-zinc-800 uppercase text-[10px] font-semibold tracking-wider">
+            <thead className="bg-white shadow-xs text-zinc-500 border-b border-zinc-200 uppercase text-[10px] font-semibold tracking-wider">
               <tr>
                 <th className="py-3 px-4">Creator Partner</th>
                 <th className="py-3 px-4">Deliverables</th>
@@ -194,29 +194,29 @@ export const BusinessAnalytics: React.FC = () => {
                         className="w-8 h-8 rounded-xl object-cover ring-1 ring-zinc-700"
                       />
                       <div>
-                        <p className="font-semibold text-zinc-200">{c.name}</p>
+                        <p className="font-semibold text-zinc-800">{c.name}</p>
                         <p className="text-[10px] text-zinc-500 font-mono">{c.handle}</p>
                       </div>
                     </div>
                   </td>
-                  <td className="py-3.5 px-4 text-zinc-400 font-mono">{c.deliverables}</td>
-                  <td className="py-3.5 px-4 font-mono font-semibold text-zinc-200">
+                  <td className="py-3.5 px-4 text-zinc-500 font-mono">{c.deliverables}</td>
+                  <td className="py-3.5 px-4 font-mono font-semibold text-zinc-800">
                     ₹{(c.spend / 1000).toFixed(0)}K
                   </td>
-                  <td className="py-3.5 px-4 font-mono text-zinc-300">
+                  <td className="py-3.5 px-4 font-mono text-zinc-700">
                     {(c.views / 1000).toFixed(0)}K
                   </td>
-                  <td className="py-3.5 px-4 font-mono text-zinc-300">
+                  <td className="py-3.5 px-4 font-mono text-zinc-700">
                     {c.clicks.toLocaleString()}
                   </td>
-                  <td className="py-3.5 px-4 font-mono font-semibold text-zinc-200">
+                  <td className="py-3.5 px-4 font-mono font-semibold text-zinc-800">
                     {c.conversions}
                   </td>
                   <td className="py-3.5 px-4 font-mono font-bold text-emerald-400">
                     ₹{(c.revenue / 100000).toFixed(1)}L
                   </td>
                   <td className="py-3.5 px-4">
-                    <span className="font-mono font-bold text-indigo-400 text-sm">
+                    <span className="font-mono font-bold text-[#0096C7] text-sm">
                       {c.roas.toFixed(1)}x
                     </span>
                   </td>

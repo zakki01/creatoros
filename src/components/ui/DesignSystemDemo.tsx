@@ -88,7 +88,7 @@ export const DesignSystemDemo: React.FC<{ onBack?: () => void }> = ({ onBack }) 
               <span className="text-[11px] text-zinc-500 font-mono">bgBase</span>
               <p className="text-xs font-semibold text-zinc-300">#070709</p>
             </div>
-            <div className="p-3.5 rounded-xl border border-white/10 bg-[#0c0c11] space-y-1">
+            <div className="p-3.5 rounded-xl border border-white/10 bg-zinc-50 space-y-1">
               <span className="text-[11px] text-zinc-500 font-mono">bgSurface</span>
               <p className="text-xs font-semibold text-zinc-300">#0c0c11</p>
             </div>

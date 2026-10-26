@@ -157,22 +157,22 @@ export const BrandProfileModal: React.FC<BrandProfileModalProps> = ({
 
   return (
     <>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-md animate-fade-in overflow-y-auto">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/45 backdrop-blur-md animate-fade-in overflow-y-auto">
         <div
-          className="relative w-full max-w-3xl rounded-2xl bg-[#0c0c11] border border-white/[0.08] shadow-2xl text-zinc-100 overflow-hidden my-auto"
+          className="relative w-full max-w-3xl rounded-2xl bg-white text-zinc-900 border border-black/[0.08] shadow-2xl text-zinc-900 overflow-hidden my-auto"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Close Button */}
           <button
             onClick={onClose}
             aria-label="Close brand profile"
-            className="absolute top-3 right-3 z-20 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full bg-black/60 text-zinc-300 hover:text-white hover:bg-black/90 transition-all cursor-pointer backdrop-blur-sm border border-white/10"
+            className="absolute top-3 right-3 z-20 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full bg-black/60 text-zinc-700 hover:text-white hover:bg-black/90 transition-all cursor-pointer backdrop-blur-sm border border-black/[0.08]"
           >
             <X className="w-4 h-4" />
           </button>
 
           {/* Cover Banner */}
-          <div className="relative h-36 sm:h-44 w-full overflow-hidden bg-zinc-900">
+          <div className="relative h-36 sm:h-44 w-full overflow-hidden bg-white">
             <img
               src={brandData.coverUrl || 'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=1200&auto=format&fit=crop&q=80'}
               alt={brandData.name}
@@ -188,21 +188,21 @@ export const BrandProfileModal: React.FC<BrandProfileModalProps> = ({
                 <img
                   src={brandData.logo}
                   alt={brandData.name}
-                  className="w-20 h-20 rounded-2xl object-cover ring-2 ring-[#0c0c11] shadow-xl bg-zinc-950 shrink-0"
+                  className="w-20 h-20 rounded-2xl object-cover ring-2 ring-[#0c0c11] shadow-xl bg-white shrink-0"
                 />
                 <div>
                   <div className="flex items-center gap-2">
-                    <h2 className="text-lg font-bold text-white font-display">{brandData.name}</h2>
-                    <span className="p-0.5 rounded-full bg-indigo-500/20 text-indigo-400">
+                    <h2 className="text-lg font-bold text-zinc-900 font-display">{brandData.name}</h2>
+                    <span className="p-0.5 rounded-full bg-indigo-500/20 text-[#0096C7]">
                       <ShieldCheck className="w-4 h-4" />
                     </span>
                   </div>
-                  <p className="text-xs text-zinc-400 font-mono">{brandData.handle}</p>
+                  <p className="text-xs text-zinc-500 font-mono">{brandData.handle}</p>
                   <p className="text-[11px] text-zinc-500 flex items-center gap-1.5 mt-0.5">
                     <MapPin className="w-3 h-3 text-zinc-500" />
                     <span>{brandData.location}</span>
                     <span>•</span>
-                    <span className="text-indigo-400">{brandData.category}</span>
+                    <span className="text-[#0096C7]">{brandData.category}</span>
                   </p>
                 </div>
               </div>
@@ -236,7 +236,7 @@ export const BrandProfileModal: React.FC<BrandProfileModalProps> = ({
                 ) : (
                   <button
                     onClick={() => setIsConnectModalOpen(true)}
-                    className="min-h-[44px] px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold flex items-center justify-center gap-1.5 shadow-sm shadow-indigo-600/30 transition-all cursor-pointer active:scale-95"
+                    className="min-h-[44px] px-4 py-2.5 rounded-xl bg-[#00B4D8] hover:bg-[#0096C7] text-white text-xs font-semibold flex items-center justify-center gap-1.5 shadow-sm shadow-xs transition-all cursor-pointer active:scale-95"
                   >
                     <UserPlus className="w-3.5 h-3.5" />
                     <span>Connect</span>
@@ -245,16 +245,16 @@ export const BrandProfileModal: React.FC<BrandProfileModalProps> = ({
 
                 <button
                   onClick={handleMessageClick}
-                  className="min-h-[44px] px-4 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-white/[0.08] text-zinc-200 text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                  className="min-h-[44px] px-4 py-2.5 rounded-xl bg-white shadow-sm hover:bg-zinc-100 border border-black/[0.08] text-zinc-800 text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer"
                 >
-                  <MessageSquare className="w-3.5 h-3.5 text-zinc-400" />
+                  <MessageSquare className="w-3.5 h-3.5 text-zinc-500" />
                   <span>Message</span>
                 </button>
               </div>
             </div>
 
             {/* Quick Metrics Bar */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 p-3 rounded-xl bg-zinc-950/70 border border-white/[0.06]">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 p-3 rounded-xl bg-white shadow-sm border border-black/[0.06]">
               <div>
                 <span className="text-[10px] font-mono uppercase text-zinc-500 block">Open Briefs</span>
                 <span className="text-sm font-bold text-white font-mono mt-0.5 block">
@@ -275,14 +275,14 @@ export const BrandProfileModal: React.FC<BrandProfileModalProps> = ({
               </div>
               <div>
                 <span className="text-[10px] font-mono uppercase text-zinc-500 block">Payment Escrow</span>
-                <span className="text-sm font-bold text-indigo-400 font-mono mt-0.5 block">
+                <span className="text-sm font-bold text-[#0096C7] font-mono mt-0.5 block">
                   100% Guaranteed
                 </span>
               </div>
             </div>
 
             {/* Navigation Tabs */}
-            <div className="flex items-center gap-1 border-b border-white/[0.06] pt-1 overflow-x-auto">
+            <div className="flex items-center gap-1 border-b border-black/[0.06] pt-1 overflow-x-auto">
               {[
                 { id: 'about', label: 'About', icon: Info },
                 { id: 'content', label: 'Content', icon: Layers },
@@ -299,8 +299,8 @@ export const BrandProfileModal: React.FC<BrandProfileModalProps> = ({
                     onClick={() => setActiveTab(tab.id as any)}
                     className={`flex items-center gap-1.5 px-3.5 py-2 border-b-2 text-xs font-semibold transition-all shrink-0 cursor-pointer ${
                       isActive
-                        ? 'border-indigo-500 text-white'
-                        : 'border-transparent text-zinc-400 hover:text-zinc-200'
+                        ? 'border-[#00B4D8] text-white'
+                        : 'border-transparent text-zinc-500 hover:text-zinc-800'
                     }`}
                   >
                     <Icon className="w-3.5 h-3.5" />
@@ -316,18 +316,18 @@ export const BrandProfileModal: React.FC<BrandProfileModalProps> = ({
               {activeTab === 'about' && (
                 <div className="space-y-4 text-xs animate-fade-in">
                   <div className="space-y-1.5">
-                    <h4 className="font-semibold text-zinc-300 uppercase tracking-wider text-[11px]">
+                    <h4 className="font-semibold text-zinc-700 uppercase tracking-wider text-[11px]">
                       Brand Overview
                     </h4>
-                    <p className="text-zinc-300 leading-relaxed">{brandData.bio}</p>
+                    <p className="text-zinc-700 leading-relaxed">{brandData.bio}</p>
                   </div>
 
-                  <div className="p-3.5 rounded-xl bg-zinc-900/50 border border-white/[0.06] space-y-2">
-                    <h5 className="font-semibold text-zinc-200 flex items-center gap-1.5 text-xs">
-                      <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
+                  <div className="p-3.5 rounded-xl bg-zinc-50 border border-black/[0.06] space-y-2">
+                    <h5 className="font-semibold text-zinc-800 flex items-center gap-1.5 text-xs">
+                      <Sparkles className="w-3.5 h-3.5 text-[#0096C7]" />
                       <span>Creator Collaboration Standards</span>
                     </h5>
-                    <ul className="space-y-1 text-zinc-400 text-[11px] list-disc list-inside">
+                    <ul className="space-y-1 text-zinc-500 text-[11px] list-disc list-inside">
                       <li>4K vertical resolution (9:16) with color grading approved against brand palette.</li>
                       <li>Turnaround within 5–7 business days with up to 1 creative revision included.</li>
                       <li>Escrow released within 24 hours of final content delivery and validation.</li>
@@ -343,7 +343,7 @@ export const BrandProfileModal: React.FC<BrandProfileModalProps> = ({
                   {sampleBrandPosts.map((post) => (
                     <div
                       key={post.id}
-                      className="group rounded-xl overflow-hidden bg-zinc-900/60 border border-white/[0.06] hover:border-zinc-700 transition-all"
+                      className="group rounded-xl overflow-hidden bg-white shadow-sm border border-black/[0.06] hover:border-zinc-300 transition-all"
                     >
                       <div className="relative h-28 overflow-hidden">
                         <img
@@ -352,14 +352,14 @@ export const BrandProfileModal: React.FC<BrandProfileModalProps> = ({
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-                        <div className="absolute bottom-1.5 left-2 right-2 flex justify-between text-[10px] text-zinc-300 font-mono">
+                        <div className="absolute bottom-1.5 left-2 right-2 flex justify-between text-[10px] text-zinc-700 font-mono">
                           <span>{post.views} views</span>
                           <span className="text-emerald-400">{post.engagement}</span>
                         </div>
                       </div>
                       <div className="p-2.5">
-                        <p className="text-xs font-semibold text-zinc-200 truncate">{post.title}</p>
-                        <p className="text-[10px] text-zinc-400 mt-0.5 truncate">{post.creator}</p>
+                        <p className="text-xs font-semibold text-zinc-800 truncate">{post.title}</p>
+                        <p className="text-[10px] text-zinc-500 mt-0.5 truncate">{post.creator}</p>
                       </div>
                     </div>
                   ))}
@@ -372,7 +372,7 @@ export const BrandProfileModal: React.FC<BrandProfileModalProps> = ({
                   {sampleReels.map((reel) => (
                     <div
                       key={reel.id}
-                      className="group relative rounded-xl overflow-hidden bg-zinc-900/60 border border-white/[0.06] aspect-[9/16]"
+                      className="group relative rounded-xl overflow-hidden bg-white shadow-sm border border-black/[0.06] aspect-[9/16]"
                     >
                       <img
                         src={reel.thumbnail}
@@ -380,11 +380,11 @@ export const BrandProfileModal: React.FC<BrandProfileModalProps> = ({
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex flex-col justify-end p-2.5">
-                        <span className="text-[10px] text-indigo-400 font-mono">{reel.creator}</span>
+                        <span className="text-[10px] text-[#0096C7] font-mono">{reel.creator}</span>
                         <p className="text-xs font-semibold text-white leading-tight line-clamp-2">
                           {reel.title}
                         </p>
-                        <span className="text-[10px] font-mono text-zinc-400 mt-1">{reel.views} plays</span>
+                        <span className="text-[10px] font-mono text-zinc-500 mt-1">{reel.views} plays</span>
                       </div>
                     </div>
                   ))}
@@ -395,16 +395,16 @@ export const BrandProfileModal: React.FC<BrandProfileModalProps> = ({
               {activeTab === 'shots' && (
                 <div className="space-y-3 animate-fade-in">
                   {brandShots.length === 0 ? (
-                    <div className="p-8 rounded-xl bg-zinc-900/40 border border-zinc-800 text-center space-y-1">
+                    <div className="p-8 rounded-xl bg-zinc-50 border border-zinc-200 text-center space-y-1">
                       <Camera className="w-6 h-6 text-zinc-600 mx-auto" />
-                      <p className="text-xs text-zinc-400">No photography shots published by brand yet.</p>
+                      <p className="text-xs text-zinc-500">No photography shots published by brand yet.</p>
                     </div>
                   ) : (
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                       {brandShots.map((shot) => (
                         <div
                           key={shot.id}
-                          className="group relative rounded-xl overflow-hidden bg-zinc-900 border border-white/[0.06] aspect-[4/5]"
+                          className="group relative rounded-xl overflow-hidden bg-white border border-black/[0.06] aspect-[4/5]"
                         >
                           <img
                             src={shot.mediaUrl}
@@ -412,8 +412,8 @@ export const BrandProfileModal: React.FC<BrandProfileModalProps> = ({
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity p-2.5 flex flex-col justify-end">
-                            <p className="text-[11px] text-zinc-200 line-clamp-2">{shot.content || shot.caption}</p>
-                            <span className="text-[10px] font-mono text-zinc-400 mt-1">{shot.likesCount || shot.likes || 0} likes</span>
+                            <p className="text-[11px] text-zinc-800 line-clamp-2">{shot.content || shot.caption}</p>
+                            <span className="text-[10px] font-mono text-zinc-500 mt-1">{shot.likesCount || shot.likes || 0} likes</span>
                           </div>
                         </div>
                       ))}
@@ -426,9 +426,9 @@ export const BrandProfileModal: React.FC<BrandProfileModalProps> = ({
               {activeTab === 'blogs' && (
                 <div className="space-y-3 animate-fade-in">
                   {brandBlogs.length === 0 ? (
-                    <div className="p-8 rounded-xl bg-zinc-900/40 border border-zinc-800 text-center space-y-1">
+                    <div className="p-8 rounded-xl bg-zinc-50 border border-zinc-200 text-center space-y-1">
                       <BookOpen className="w-6 h-6 text-zinc-600 mx-auto" />
-                      <p className="text-xs text-zinc-400">No editorial articles published by brand yet.</p>
+                      <p className="text-xs text-zinc-500">No editorial articles published by brand yet.</p>
                     </div>
                   ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -436,10 +436,10 @@ export const BrandProfileModal: React.FC<BrandProfileModalProps> = ({
                         <div
                           key={blog.id}
                           onClick={() => setSelectedBlogModal(blog)}
-                          className="rounded-xl bg-zinc-950 border border-white/10 hover:border-white/20 p-3.5 space-y-2 cursor-pointer group transition-all"
+                          className="rounded-xl bg-white border border-black/[0.08] hover:border-black/15 p-3.5 space-y-2 cursor-pointer group transition-all"
                         >
                           {blog.blogCoverImage && (
-                            <div className="h-28 rounded-lg overflow-hidden bg-zinc-900">
+                            <div className="h-28 rounded-lg overflow-hidden bg-white">
                               <img
                                 src={blog.blogCoverImage}
                                 alt={blog.blogTitle || 'Cover'}
@@ -447,18 +447,18 @@ export const BrandProfileModal: React.FC<BrandProfileModalProps> = ({
                               />
                             </div>
                           )}
-                          <div className="flex items-center gap-2 text-[10px] font-mono text-zinc-400">
+                          <div className="flex items-center gap-2 text-[10px] font-mono text-zinc-500">
                             <span>✍ {blog.blogReadingTime || '4 min read'}</span>
                             <span>•</span>
                             <span>{new Date(blog.createdAt || blog.timestamp || Date.now()).toLocaleDateString()}</span>
                           </div>
-                          <h4 className="text-xs font-semibold text-white group-hover:text-indigo-300 transition-colors line-clamp-1">
+                          <h4 className="text-xs font-semibold text-white group-hover:text-[#0096C7] transition-colors line-clamp-1">
                             {blog.blogTitle || blog.content || blog.caption}
                           </h4>
-                          <p className="text-[11px] text-zinc-400 line-clamp-2 font-light">
+                          <p className="text-[11px] text-zinc-500 line-clamp-2 font-light">
                             {blog.content || blog.caption}
                           </p>
-                          <div className="pt-2 border-t border-white/[0.04] flex items-center justify-between text-[11px]">
+                          <div className="pt-2 border-t border-black/[0.04] flex items-center justify-between text-[11px]">
                             <span className="text-zinc-500 font-mono">{blog.likesCount || blog.likes || 0} claps</span>
                             <span className="text-sky-400 group-hover:text-sky-300 font-medium flex items-center gap-1">
                               Read Article →
@@ -477,7 +477,7 @@ export const BrandProfileModal: React.FC<BrandProfileModalProps> = ({
                   {sampleCampaigns.map((camp) => (
                     <div
                       key={camp.id}
-                      className="p-3.5 rounded-xl bg-zinc-900/60 border border-white/[0.06] flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:border-zinc-700 transition-all"
+                      className="p-3.5 rounded-xl bg-white shadow-sm border border-black/[0.06] flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:border-zinc-300 transition-all"
                     >
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
@@ -486,8 +486,8 @@ export const BrandProfileModal: React.FC<BrandProfileModalProps> = ({
                             {camp.status}
                           </span>
                         </div>
-                        <p className="text-[11px] text-zinc-400">
-                          Deliverables: <strong className="text-zinc-200">{camp.deliverables}</strong> • Niche: {camp.niche}
+                        <p className="text-[11px] text-zinc-500">
+                          Deliverables: <strong className="text-zinc-800">{camp.deliverables}</strong> • Niche: {camp.niche}
                         </p>
                         <p className="text-[10px] font-mono text-zinc-500">
                           Deadline: {camp.deadline}
@@ -500,7 +500,7 @@ export const BrandProfileModal: React.FC<BrandProfileModalProps> = ({
                         </span>
                         <button
                           onClick={() => setIsConnectModalOpen(true)}
-                          className="px-3 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-[11px] font-semibold transition-all cursor-pointer"
+                          className="px-3 py-1 rounded-lg bg-[#00B4D8] hover:bg-[#0096C7] text-white text-[11px] font-semibold transition-all cursor-pointer"
                         >
                           Pitch Brief
                         </button>

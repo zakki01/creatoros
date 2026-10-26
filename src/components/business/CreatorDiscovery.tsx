@@ -85,40 +85,40 @@ export const CreatorDiscovery: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl sm:text-3xl font-bold text-zinc-100 font-display">
+            <h1 className="text-2xl sm:text-3xl font-bold text-zinc-900 font-display">
               Creator Discovery
             </h1>
             <Badge variant="brand" size="sm">
               AI Matched
             </Badge>
           </div>
-          <p className="text-sm text-zinc-400 mt-1">
-            Evaluating creators against active campaign <strong className="text-zinc-200">"{activeCampaign.name}"</strong>
+          <p className="text-sm text-zinc-500 mt-1">
+            Evaluating creators against active campaign <strong className="text-zinc-800">"{activeCampaign.name}"</strong>
           </p>
         </div>
 
-        <div className="text-xs text-zinc-400 bg-zinc-900 border border-zinc-800 px-3.5 py-2 rounded-xl">
-          Active target: <span className="font-semibold text-zinc-200">{activeCampaign.targetAudience.location.join(', ')}</span>
+        <div className="text-xs text-zinc-500 bg-zinc-100 border border-zinc-200 px-3.5 py-2 text-zinc-700 rounded-xl">
+          Active target: <span className="font-semibold text-zinc-800">{activeCampaign.targetAudience.location.join(', ')}</span>
         </div>
       </div>
 
       {/* Filters Bar */}
-      <div className="p-4 rounded-3xl bg-zinc-900 border border-zinc-800 space-y-3">
+      <div className="p-4 rounded-3xl bg-white border border-zinc-200 space-y-3">
         {/* Search */}
         <div className="relative">
-          <Search className="w-4 h-4 text-zinc-400 absolute left-3.5 top-3.5" />
+          <Search className="w-4 h-4 text-zinc-500 absolute left-3.5 top-3.5" />
           <input
             type="text"
             placeholder="Search creators by name, handle, category, location, or keywords..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-zinc-950 text-zinc-100 pl-10 pr-4 py-2.5 text-xs rounded-2xl border border-zinc-800 focus:border-indigo-500 focus:outline-none"
+            className="w-full bg-white text-zinc-900 pl-10 pr-4 py-2.5 text-xs rounded-2xl border border-zinc-200 focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] focus:outline-none"
           />
         </div>
 
         {/* Filter Pills */}
         <div className="flex flex-wrap items-center gap-2 pt-1 text-xs">
-          <div className="flex items-center gap-1.5 text-zinc-400 mr-2">
+          <div className="flex items-center gap-1.5 text-zinc-500 mr-2">
             <Filter className="w-3.5 h-3.5" />
             <span className="text-[11px] font-medium">Filters:</span>
           </div>
@@ -127,7 +127,7 @@ export const CreatorDiscovery: React.FC = () => {
           <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
-            className="bg-zinc-800 text-zinc-200 text-xs px-2.5 py-1.5 rounded-xl border border-zinc-700/80 focus:outline-none"
+            className="bg-zinc-800 text-zinc-800 text-xs px-2.5 py-1.5 rounded-xl border border-zinc-300 focus:outline-none"
           >
             {categories.map((c) => (
               <option key={c} value={c}>
@@ -140,7 +140,7 @@ export const CreatorDiscovery: React.FC = () => {
           <select
             value={selectedLocation}
             onChange={(e) => setSelectedLocation(e.target.value)}
-            className="bg-zinc-800 text-zinc-200 text-xs px-2.5 py-1.5 rounded-xl border border-zinc-700/80 focus:outline-none"
+            className="bg-zinc-800 text-zinc-800 text-xs px-2.5 py-1.5 rounded-xl border border-zinc-300 focus:outline-none"
           >
             {locations.map((l) => (
               <option key={l} value={l}>
@@ -153,7 +153,7 @@ export const CreatorDiscovery: React.FC = () => {
           <select
             value={selectedReliability}
             onChange={(e) => setSelectedReliability(e.target.value)}
-            className="bg-zinc-800 text-zinc-200 text-xs px-2.5 py-1.5 rounded-xl border border-zinc-700/80 focus:outline-none"
+            className="bg-zinc-800 text-zinc-800 text-xs px-2.5 py-1.5 rounded-xl border border-zinc-300 focus:outline-none"
           >
             <option value="All">All Reliability Scores</option>
             <option value="95+">Top Tier (&gt;95% On-Time)</option>
@@ -171,7 +171,7 @@ export const CreatorDiscovery: React.FC = () => {
           return (
             <Card
               key={creator.id}
-              className="p-5 flex flex-col justify-between hover:border-zinc-700 transition-all space-y-4"
+              className="p-5 flex flex-col justify-between hover:border-zinc-300 transition-all space-y-4"
             >
               <div className="space-y-4">
                 {/* Header row */}
@@ -184,15 +184,15 @@ export const CreatorDiscovery: React.FC = () => {
                     />
                     <div>
                       <div className="flex items-center gap-1.5">
-                        <h3 className="text-sm font-bold text-zinc-100 font-display">
+                        <h3 className="text-sm font-bold text-zinc-900 font-display">
                           {creator.name}
                         </h3>
                         {creator.verified && (
-                          <ShieldCheck className="w-4 h-4 text-indigo-400 shrink-0" />
+                          <ShieldCheck className="w-4 h-4 text-[#0096C7] shrink-0" />
                         )}
                       </div>
                       <p className="text-[11px] text-zinc-500 font-mono">@{creator.handle}</p>
-                      <p className="text-xs text-zinc-400 line-clamp-1 mt-0.5">
+                      <p className="text-xs text-zinc-500 line-clamp-1 mt-0.5">
                         {creator.category}
                       </p>
                     </div>
@@ -201,27 +201,27 @@ export const CreatorDiscovery: React.FC = () => {
                   {/* AI Match Fit Badge (Clickable to show WHY) */}
                   <button
                     onClick={() => setExpandedWhyId(isWhyExpanded ? null : creator.id)}
-                    className="flex items-center gap-1 px-2.5 py-1 rounded-xl bg-indigo-950/40 hover:bg-indigo-950/60 border border-indigo-500/40 text-indigo-300 text-xs font-semibold shrink-0 transition-colors"
+                    className="flex items-center gap-1 px-2.5 py-1 rounded-xl bg-indigo-950/40 hover:bg-indigo-950/60 border border-[#00B4D8]/40 text-[#0096C7] text-xs font-semibold shrink-0 transition-colors"
                     title="Click to view AI Match explanation"
                   >
-                    <Sparkles className="w-3 h-3 text-indigo-400 animate-pulse-subtle" />
+                    <Sparkles className="w-3 h-3 text-[#0096C7] animate-pulse-subtle" />
                     <span>{creator.aiMatchScore || 92}% Fit</span>
                   </button>
                 </div>
 
                 {/* AI Match Explanation Drawer if expanded */}
                 {isWhyExpanded && creator.aiMatchFactors && (
-                  <div className="p-3.5 rounded-2xl bg-indigo-950/30 border border-indigo-500/30 text-xs space-y-2 animate-slide-up">
-                    <div className="flex items-center justify-between text-indigo-300 font-semibold text-[11px] uppercase tracking-wider">
+                  <div className="p-3.5 rounded-2xl bg-[#00B4D8]/10 border border-[#00B4D8]/30 text-xs space-y-2 animate-slide-up">
+                    <div className="flex items-center justify-between text-[#0096C7] font-semibold text-[11px] uppercase tracking-wider">
                       <span>Why this creator matches:</span>
                       <button
                         onClick={() => setExpandedWhyId(null)}
-                        className="text-zinc-500 hover:text-zinc-300 transition-colors cursor-pointer"
+                        className="text-zinc-500 hover:text-zinc-700 transition-colors cursor-pointer"
                       >
                         <X className="w-3.5 h-3.5" />
                       </button>
                     </div>
-                    <ul className="space-y-1.5 text-[11px] text-zinc-300">
+                    <ul className="space-y-1.5 text-[11px] text-zinc-700">
                       <li>• <strong>Audience:</strong> {creator.aiMatchFactors.audienceMatch}</li>
                       <li>• <strong>Content:</strong> {creator.aiMatchFactors.contentRelevance}</li>
                       <li>• <strong>Performance:</strong> {creator.aiMatchFactors.historicalPerformance}</li>
@@ -231,34 +231,34 @@ export const CreatorDiscovery: React.FC = () => {
                 )}
 
                 {/* Bio snippet */}
-                <p className="text-xs text-zinc-400 line-clamp-2 leading-relaxed">
+                <p className="text-xs text-zinc-500 line-clamp-2 leading-relaxed">
                   {creator.bio}
                 </p>
 
                 {/* Stats Bar */}
-                <div className="grid grid-cols-3 gap-2 p-2.5 rounded-2xl bg-zinc-950/60 border border-zinc-800/80 text-center">
+                <div className="grid grid-cols-3 gap-2 p-2.5 rounded-2xl bg-zinc-50 border border-zinc-200 text-center">
                   <div>
                     <p className="text-[10px] text-zinc-500 font-medium">Followers</p>
-                    <p className="text-xs font-bold text-zinc-200 font-mono mt-0.5">
+                    <p className="text-xs font-bold text-zinc-800 font-mono mt-0.5">
                       {(creator.totalFollowers / 1000).toFixed(0)}K
                     </p>
                   </div>
-                  <div className="border-x border-zinc-800">
+                  <div className="border-x border-zinc-200">
                     <p className="text-[10px] text-zinc-500 font-medium">Engagement</p>
-                    <p className="text-xs font-bold text-indigo-400 font-mono mt-0.5">
+                    <p className="text-xs font-bold text-[#0096C7] font-mono mt-0.5">
                       {creator.avgEngagement}%
                     </p>
                   </div>
                   <div>
                     <p className="text-[10px] text-zinc-500 font-medium">Est. Rate</p>
-                    <p className="text-xs font-bold text-zinc-200 font-mono mt-0.5">
+                    <p className="text-xs font-bold text-zinc-800 font-mono mt-0.5">
                       ₹{(creator.estimatedRate / 1000).toFixed(0)}K
                     </p>
                   </div>
                 </div>
 
                 {/* Reliability & Location Strip */}
-                <div className="flex items-center justify-between text-xs text-zinc-400 pt-1">
+                <div className="flex items-center justify-between text-xs text-zinc-500 pt-1">
                   <span className="flex items-center gap-1">
                     <MapPin className="w-3.5 h-3.5 text-zinc-500" />
                     <span>{creator.location.split(',')[0]}</span>
@@ -271,7 +271,7 @@ export const CreatorDiscovery: React.FC = () => {
               </div>
 
               {/* Action Buttons: Section 67: [ View ] [ Invite ] */}
-              <div className="pt-3 border-t border-zinc-800/80 flex items-center gap-2">
+              <div className="pt-3 border-t border-zinc-200 flex items-center gap-2">
                 <Button
                   variant="outline"
                   size="sm"

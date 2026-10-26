@@ -90,28 +90,28 @@ export const Avatar: React.FC<AvatarProps> = ({
   };
 
   const ringStyles = {
-    true: 'ring-2 ring-white/20 shadow-[0_6px_16px_-4px_rgba(0,0,0,0.65)]',
-    primary: 'ring-2 ring-indigo-500/80 ring-offset-2 ring-offset-[#07070A] shadow-[0_0_20px_-4px_rgba(99,102,241,0.45)]',
-    success: 'ring-2 ring-emerald-500/80 ring-offset-2 ring-offset-[#07070A] shadow-[0_0_20px_-4px_rgba(16,185,129,0.4)]',
+    true: 'ring-2 ring-black/15 shadow-sm',
+    primary: 'ring-2 ring-[#00B4D8] ring-offset-2 ring-offset-white shadow-sm',
+    success: 'ring-2 ring-emerald-500 ring-offset-2 ring-offset-white shadow-sm',
   };
 
   const statusStyles: Record<AvatarStatus, string> = {
-    online: 'bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]',
-    offline: 'bg-zinc-500',
-    busy: 'bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.8)]',
+    online: 'bg-emerald-500 shadow-sm',
+    offline: 'bg-zinc-400',
+    busy: 'bg-rose-500 shadow-sm',
   };
 
   return (
     <div
       className={clsx(
-        'relative inline-flex shrink-0 select-none rounded-full shadow-[0_6px_14px_-3px_rgba(0,0,0,0.6)]',
+        'relative inline-flex shrink-0 select-none rounded-full shadow-sm',
         cfg.container,
         ring && typeof ring === 'string' ? ringStyles[ring] : ring ? ringStyles.true : '',
         className
       )}
       {...props}
     >
-      <div className="w-full h-full rounded-full overflow-hidden bg-gradient-to-b from-zinc-800 to-zinc-900 border border-white/15 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.22)] flex items-center justify-center font-semibold text-zinc-200">
+      <div className="w-full h-full rounded-full overflow-hidden bg-gradient-to-b from-slate-100 to-slate-200 border border-black/10 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.9)] flex items-center justify-center font-semibold text-slate-800">
         {src && !hasError ? (
           <img
             src={src}

@@ -97,26 +97,26 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 sm:pt-24 p-4 animate-fade-in">
-      <div className="fixed inset-0 bg-black/80 backdrop-blur-xl" onClick={onClose} />
-      <div className="relative w-full max-w-xl surface-4 rounded-3xl overflow-hidden z-10 animate-slide-up">
+      <div className="fixed inset-0 bg-black/45 backdrop-blur-md" onClick={onClose} />
+      <div className="relative w-full max-w-xl bg-white text-zinc-900 border border-black/[0.08] shadow-2xl rounded-3xl overflow-hidden z-10 animate-slide-up">
         {/* Top specular highlight */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent"
+          className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/80 to-transparent"
         />
 
         {/* Search Input */}
-        <div className="flex items-center px-4 py-3.5 border-b border-white/[0.08] bg-white/[0.02]">
-          <Search className="w-4 h-4 text-indigo-400 mr-3 shrink-0" />
+        <div className="flex items-center px-4 py-3.5 border-b border-zinc-200 bg-zinc-50/70">
+          <Search className="w-4 h-4 text-[#0096C7] mr-3 shrink-0" />
           <input
             type="text"
             placeholder="Jump to workspace, creator, or campaign..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             autoFocus
-            className="w-full bg-transparent text-sm text-white placeholder-zinc-500 focus:outline-none font-sans"
+            className="w-full bg-transparent text-sm text-zinc-900 placeholder-zinc-400 focus:outline-none font-sans"
           />
-          <kbd className="text-[10px] bg-white/[0.06] border border-white/10 text-zinc-400 px-2 py-0.5 rounded-md font-mono shrink-0">
+          <kbd className="text-[10px] bg-white border border-zinc-300 text-zinc-600 px-2 py-0.5 rounded-md font-mono shrink-0 shadow-xs">
             ESC
           </kbd>
         </div>
@@ -135,15 +135,15 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
                   <button
                     key={item.id}
                     onClick={() => handleSelect(item.id)}
-                    className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-white/[0.06] text-left transition-all text-zinc-200 group"
+                    className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-zinc-100 text-left transition-all text-zinc-800 group cursor-pointer"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="p-1.5 rounded-lg bg-white/[0.05] border border-white/[0.08] text-zinc-400 group-hover:text-indigo-400 group-hover:border-indigo-500/30 transition-colors">
+                      <div className="p-1.5 rounded-lg bg-zinc-100 border border-zinc-200 text-zinc-600 group-hover:text-[#0096C7] group-hover:border-[#00B4D8]/40 transition-colors">
                         <Icon className="w-4 h-4" />
                       </div>
-                      <span className="text-xs font-medium text-white">{item.title}</span>
+                      <span className="text-xs font-medium text-zinc-900">{item.title}</span>
                     </div>
-                    <span className="text-[10px] text-zinc-400 bg-white/[0.04] border border-white/[0.06] px-2 py-0.5 rounded-md">
+                    <span className="text-[10px] text-zinc-500 bg-zinc-100 border border-zinc-200 px-2 py-0.5 rounded-md">
                       {item.category}
                     </span>
                   </button>
@@ -159,20 +159,20 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
                     <button
                       key={creator.id}
                       onClick={() => handleSelect(role === 'business' ? 'creators' : 'discover')}
-                      className="w-full flex items-center justify-between p-2 rounded-xl hover:bg-white/[0.06] text-left transition-all"
+                      className="w-full flex items-center justify-between p-2 rounded-xl hover:bg-zinc-100 text-left transition-all cursor-pointer"
                     >
                       <div className="flex items-center gap-2.5">
                         <img
                           src={creator.avatar}
                           alt={creator.name}
-                          className="w-7 h-7 rounded-full object-cover border border-white/15"
+                          className="w-7 h-7 rounded-full object-cover border border-black/10"
                         />
                         <div>
-                          <p className="text-xs font-medium text-white">{creator.name}</p>
-                          <p className="text-[10px] text-zinc-400">{creator.niche}</p>
+                          <p className="text-xs font-medium text-zinc-900">{creator.name}</p>
+                          <p className="text-[10px] text-zinc-500">{creator.niche}</p>
                         </div>
                       </div>
-                      <ArrowRight className="w-3.5 h-3.5 text-zinc-500" />
+                      <ArrowRight className="w-3.5 h-3.5 text-zinc-400" />
                     </button>
                   ))}
                 </div>
@@ -187,13 +187,13 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
                     <button
                       key={camp.id}
                       onClick={() => handleSelect(role === 'business' ? camp.id : 'campaigns')}
-                      className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-white/[0.06] text-left transition-all"
+                      className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-zinc-100 text-left transition-all cursor-pointer"
                     >
                       <div>
-                        <p className="text-xs font-medium text-white">{camp.name}</p>
-                        <p className="text-[10px] text-zinc-400">{camp.status}</p>
+                        <p className="text-xs font-medium text-zinc-900">{camp.name}</p>
+                        <p className="text-[10px] text-zinc-500">{camp.status}</p>
                       </div>
-                      <ArrowRight className="w-3.5 h-3.5 text-zinc-500" />
+                      <ArrowRight className="w-3.5 h-3.5 text-zinc-400" />
                     </button>
                   ))}
                 </div>

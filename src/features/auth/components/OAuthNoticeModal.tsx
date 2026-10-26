@@ -25,15 +25,15 @@ export const OAuthNoticeModal: React.FC<OAuthNoticeModalProps> = ({
       : 'Facebook';
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in">
-      <div className="relative w-full max-w-md rounded-2xl bg-zinc-950 border border-zinc-800 p-6 shadow-2xl space-y-5">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/45 backdrop-blur-md animate-fade-in">
+      <div className="relative w-full max-w-md rounded-2xl bg-white border border-zinc-200 p-6 shadow-2xl space-y-5">
         <div className="flex items-start justify-between">
-          <div className="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 flex items-center justify-center">
+          <div className="w-10 h-10 rounded-xl bg-[#00B4D8]/10 border border-[#00B4D8]/20 text-[#0096C7] flex items-center justify-center">
             <ShieldCheck className="w-5 h-5" />
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors cursor-pointer"
+            className="p-1 rounded-lg text-zinc-500 hover:text-white hover:bg-zinc-100 transition-colors cursor-pointer"
             aria-label="Close dialog"
           >
             <X className="w-4 h-4" />
@@ -41,10 +41,10 @@ export const OAuthNoticeModal: React.FC<OAuthNoticeModalProps> = ({
         </div>
 
         <div className="space-y-2">
-          <h3 className="text-base font-bold text-zinc-100 font-display">
+          <h3 className="text-base font-bold text-zinc-900 font-display">
             Continue with {providerName}
           </h3>
-          <p className="text-xs text-zinc-400 leading-relaxed">
+          <p className="text-xs text-zinc-500 leading-relaxed">
             Secure single sign-on is verifying authentication with {providerName}. You can proceed with instant platform access or enter your registered account credentials.
           </p>
         </div>
@@ -56,7 +56,7 @@ export const OAuthNoticeModal: React.FC<OAuthNoticeModalProps> = ({
               onClose();
               onContinueAsDemo();
             }}
-            className="w-full min-h-[44px] flex items-center justify-center gap-2 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow-lg shadow-indigo-600/20 transition-all cursor-pointer active:scale-98"
+            className="w-full min-h-[44px] flex items-center justify-center gap-2 py-2.5 rounded-xl bg-[#00B4D8] hover:bg-[#0096C7] text-white text-xs font-semibold shadow-lg shadow-indigo-600/20 transition-all cursor-pointer active:scale-98"
           >
             <BrandLogo size="xs" iconOnly />
             <span>Continue to CreatorOS</span>
@@ -66,7 +66,7 @@ export const OAuthNoticeModal: React.FC<OAuthNoticeModalProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="w-full min-h-[44px] py-2 rounded-xl text-xs text-zinc-400 hover:text-zinc-200 transition-colors cursor-pointer"
+            className="w-full min-h-[44px] py-2 rounded-xl text-xs text-zinc-500 hover:text-zinc-800 transition-colors cursor-pointer"
           >
             Use Email & Password
           </button>

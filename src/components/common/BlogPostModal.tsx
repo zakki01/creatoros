@@ -69,13 +69,13 @@ export const BlogPostModal: React.FC<BlogPostModalProps> = ({
     <>
       <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/90 backdrop-blur-md animate-fade-in overflow-y-auto">
         <div
-          className="relative w-full max-w-3xl rounded-2xl bg-[#0c0c11] border border-white/[0.08] shadow-2xl text-zinc-100 overflow-hidden my-auto max-h-[92vh] flex flex-col"
+          className="relative w-full max-w-3xl rounded-2xl bg-white text-zinc-900 border border-black/[0.08] shadow-2xl text-zinc-900 overflow-hidden my-auto max-h-[92vh] flex flex-col"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Top Sticky Bar */}
-          <div className="p-3.5 sm:p-4 border-b border-white/[0.08] bg-[#0c0c11]/95 backdrop-blur-md flex items-center justify-between z-20 shrink-0">
+          <div className="p-3.5 sm:p-4 border-b border-black/[0.08] bg-white/95 backdrop-blur-md border-b border-black/[0.08] flex items-center justify-between z-20 shrink-0">
             <div className="flex items-center gap-2">
-              <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full bg-indigo-500/15 text-indigo-300 border border-indigo-500/25">
+              <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full bg-[#00B4D8]/10 text-[#0096C7] border border-[#00B4D8]/25">
                 ✍ Editorial Article
               </span>
               <span className="text-xs text-zinc-500 font-mono hidden sm:inline">
@@ -90,7 +90,7 @@ export const BlogPostModal: React.FC<BlogPostModalProps> = ({
                 className={`p-1.5 rounded-lg border text-xs flex items-center gap-1.5 transition-all cursor-pointer ${
                   isLiked
                     ? 'border-rose-500/30 bg-rose-500/15 text-rose-400 font-semibold'
-                    : 'border-white/[0.08] text-zinc-400 hover:text-white hover:bg-zinc-800'
+                    : 'border-black/[0.08] text-zinc-500 hover:text-white hover:bg-zinc-100'
                 }`}
               >
                 <Heart className={`w-3.5 h-3.5 ${isLiked ? 'fill-current' : ''}`} />
@@ -99,7 +99,7 @@ export const BlogPostModal: React.FC<BlogPostModalProps> = ({
 
               <button
                 onClick={handleShare}
-                className="p-1.5 rounded-lg border border-white/[0.08] text-zinc-400 hover:text-white hover:bg-zinc-800 text-xs flex items-center gap-1 transition-all cursor-pointer"
+                className="p-1.5 rounded-lg border border-black/[0.08] text-zinc-500 hover:text-white hover:bg-zinc-100 text-xs flex items-center gap-1 transition-all cursor-pointer"
                 title="Share article link"
               >
                 {copiedLink ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Share2 className="w-3.5 h-3.5" />}
@@ -107,7 +107,7 @@ export const BlogPostModal: React.FC<BlogPostModalProps> = ({
 
               <button
                 onClick={onClose}
-                className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition-all cursor-pointer ml-1"
+                className="p-1.5 rounded-lg text-zinc-500 hover:text-white hover:bg-zinc-100 transition-all cursor-pointer ml-1"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -115,10 +115,10 @@ export const BlogPostModal: React.FC<BlogPostModalProps> = ({
           </div>
 
           {/* Scrollable Reading Content */}
-          <div className="flex-1 overflow-y-auto px-5 sm:px-10 py-6 space-y-7 text-zinc-200">
+          <div className="flex-1 overflow-y-auto px-5 sm:px-10 py-6 space-y-7 text-zinc-800">
             {/* Cover Banner */}
             {post.blogCoverImage && (
-              <div className="relative rounded-2xl overflow-hidden aspect-[16/9] w-full bg-zinc-950 border border-white/[0.06] shadow-lg">
+              <div className="relative rounded-2xl overflow-hidden aspect-[16/9] w-full bg-white border border-black/[0.06] shadow-lg">
                 <img
                   src={post.blogCoverImage}
                   alt={post.blogTitle || 'Cover'}
@@ -130,12 +130,12 @@ export const BlogPostModal: React.FC<BlogPostModalProps> = ({
 
             {/* Title & Author Meta */}
             <div className="space-y-4">
-              <h1 className="text-2xl sm:text-3xl font-bold text-white font-display leading-tight tracking-tight">
+              <h1 className="text-2xl sm:text-3xl font-bold text-zinc-900 font-display leading-tight tracking-tight">
                 {post.blogTitle || post.content}
               </h1>
 
               {/* Author Strip */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-xl bg-zinc-950/70 border border-white/[0.06]">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-xl bg-white shadow-sm border border-black/[0.06]">
                 <div className="flex items-center gap-3">
                   <img
                     src={post.authorAvatar}
@@ -145,9 +145,9 @@ export const BlogPostModal: React.FC<BlogPostModalProps> = ({
                   <div>
                     <div className="flex items-center gap-1.5">
                       <span className="text-sm font-bold text-white">{post.authorName}</span>
-                      <ShieldCheck className="w-3.5 h-3.5 text-indigo-400" />
+                      <ShieldCheck className="w-3.5 h-3.5 text-[#0096C7]" />
                     </div>
-                    <p className="text-xs text-zinc-400 font-mono">
+                    <p className="text-xs text-zinc-500 font-mono">
                       {post.authorHandle} • {post.timestamp} • {post.blogReadingTime || '4 min read'}
                     </p>
                   </div>
@@ -162,7 +162,7 @@ export const BlogPostModal: React.FC<BlogPostModalProps> = ({
                   ) : (
                     <button
                       onClick={() => setIsConnectOpen(true)}
-                      className="px-3.5 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm shadow-indigo-600/30 transition-all cursor-pointer"
+                      className="px-3.5 py-1.5 rounded-xl bg-[#00B4D8] hover:bg-[#0096C7] text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm shadow-xs transition-all cursor-pointer"
                     >
                       <UserPlus className="w-3.5 h-3.5" />
                       <span>Connect</span>
@@ -173,12 +173,12 @@ export const BlogPostModal: React.FC<BlogPostModalProps> = ({
             </div>
 
             {/* Article Body */}
-            <div className="space-y-4 text-sm leading-relaxed text-zinc-300 font-sans border-t border-b border-white/[0.06] py-6">
+            <div className="space-y-4 text-sm leading-relaxed text-zinc-700 font-sans border-t border-b border-black/[0.06] py-6">
               {post.blogContent ? (
                 post.blogContent.split('\n\n').map((paragraph, idx) => {
                   if (paragraph.startsWith('## ')) {
                     return (
-                      <h2 key={idx} className="text-xl font-bold text-white font-display pt-3 pb-1">
+                      <h2 key={idx} className="text-xl font-bold text-zinc-900 font-display pt-3 pb-1">
                         {paragraph.replace('## ', '')}
                       </h2>
                     );
@@ -194,20 +194,20 @@ export const BlogPostModal: React.FC<BlogPostModalProps> = ({
                     return (
                       <blockquote
                         key={idx}
-                        className="pl-4 border-l-2 border-indigo-500 text-zinc-200 italic my-3 bg-zinc-950/40 py-2 rounded-r-xl"
+                        className="pl-4 border-l-2 border-[#00B4D8] text-zinc-800 italic my-3 bg-zinc-50 py-2 rounded-r-xl"
                       >
                         {paragraph.replace('> ', '')}
                       </blockquote>
                     );
                   }
                   return (
-                    <p key={idx} className="text-zinc-300 leading-relaxed">
+                    <p key={idx} className="text-zinc-700 leading-relaxed">
                       {paragraph}
                     </p>
                   );
                 })
               ) : (
-                <p className="text-zinc-300 leading-relaxed whitespace-pre-line">
+                <p className="text-zinc-700 leading-relaxed whitespace-pre-line">
                   {post.content}
                 </p>
               )}
@@ -217,7 +217,7 @@ export const BlogPostModal: React.FC<BlogPostModalProps> = ({
             {post.blogArticleImages && post.blogArticleImages.length > 0 && (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
                 {post.blogArticleImages.map((img, i) => (
-                  <div key={i} className="rounded-xl overflow-hidden border border-white/[0.06] aspect-video">
+                  <div key={i} className="rounded-xl overflow-hidden border border-black/[0.06] aspect-video">
                     <img src={img} alt={`Asset ${i}`} className="w-full h-full object-cover" />
                   </div>
                 ))}
@@ -230,7 +230,7 @@ export const BlogPostModal: React.FC<BlogPostModalProps> = ({
                 {post.tags.map((t, i) => (
                   <span
                     key={i}
-                    className="text-xs font-mono px-2.5 py-1 rounded-lg bg-zinc-900 border border-white/[0.06] text-indigo-300"
+                    className="text-xs font-mono px-2.5 py-1 rounded-lg bg-white border border-black/[0.06] text-[#0096C7]"
                   >
                     {t}
                   </span>
@@ -239,10 +239,10 @@ export const BlogPostModal: React.FC<BlogPostModalProps> = ({
             )}
 
             {/* Comments Section */}
-            <div className="space-y-4 pt-6 border-t border-white/[0.08]">
+            <div className="space-y-4 pt-6 border-t border-black/[0.08]">
               <div className="flex items-center gap-2">
-                <MessageCircle className="w-4 h-4 text-indigo-400" />
-                <h4 className="text-sm font-bold text-white font-display">
+                <MessageCircle className="w-4 h-4 text-[#0096C7]" />
+                <h4 className="text-sm font-bold text-zinc-900 font-display">
                   Discussion & Responses ({post.commentsCount})
                 </h4>
               </div>
@@ -254,12 +254,12 @@ export const BlogPostModal: React.FC<BlogPostModalProps> = ({
                   value={commentInput}
                   onChange={(e) => setCommentInput(e.target.value)}
                   placeholder="Join the discussion or share feedback..."
-                  className="flex-1 bg-zinc-900 border border-white/[0.08] rounded-xl px-3.5 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-indigo-500"
+                  className="flex-1 bg-white border border-black/[0.08] rounded-xl px-3.5 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]"
                 />
                 <button
                   type="submit"
                   disabled={!commentInput.trim()}
-                  className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 text-xs font-semibold text-white flex items-center gap-1.5 cursor-pointer transition-all"
+                  className="px-4 py-2 rounded-xl bg-[#00B4D8] hover:bg-[#0096C7] disabled:opacity-40 text-xs font-semibold text-white flex items-center gap-1.5 cursor-pointer transition-all"
                 >
                   <Send className="w-3 h-3" />
                   <span>Reply</span>
@@ -272,7 +272,7 @@ export const BlogPostModal: React.FC<BlogPostModalProps> = ({
                   post.comments.map((comment) => (
                     <div
                       key={comment.id}
-                      className="p-3 rounded-xl bg-zinc-950/60 border border-white/[0.04] space-y-1 text-xs"
+                      className="p-3 rounded-xl bg-zinc-50 border border-black/[0.04] space-y-1 text-xs"
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
@@ -290,7 +290,7 @@ export const BlogPostModal: React.FC<BlogPostModalProps> = ({
                           {comment.timestamp}
                         </span>
                       </div>
-                      <p className="text-zinc-300 pl-7">{comment.content}</p>
+                      <p className="text-zinc-700 pl-7">{comment.content}</p>
                     </div>
                   ))
                 ) : (

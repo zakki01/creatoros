@@ -54,7 +54,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
 
       {/* Email Field */}
       <div className="space-y-1.5 text-left">
-        <label className="text-xs font-medium text-zinc-300">Email Address</label>
+        <label className="text-xs font-medium text-zinc-700">Email Address</label>
         <div className="relative">
           <input
             type="email"
@@ -64,7 +64,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
             placeholder="creator@example.com"
             disabled={isLoading}
             autoComplete="username"
-            className="input-soft-recessed w-full pl-9 pr-3.5 py-2.5 rounded-xl text-xs text-zinc-100 placeholder:text-zinc-500 focus:outline-none transition-all"
+            className="input-soft-recessed w-full pl-9 pr-3.5 py-2.5 rounded-xl text-xs text-zinc-900 placeholder:text-zinc-500 focus:outline-none transition-all"
           />
           <Mail className="w-4 h-4 text-zinc-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
         </div>
@@ -95,9 +95,9 @@ export const LoginForm: React.FC<LoginFormProps> = ({
           id="rememberMe"
           checked={rememberMe}
           onChange={(e) => setRememberMe(e.target.checked)}
-          className="rounded border-zinc-700/60 bg-zinc-900/90 text-indigo-500 focus:ring-0 focus:ring-offset-0 w-3.5 h-3.5 cursor-pointer accent-indigo-500"
+          className="rounded border-zinc-300/60 bg-white/90 text-indigo-500 focus:ring-0 focus:ring-offset-0 w-3.5 h-3.5 cursor-pointer accent-indigo-500"
         />
-        <label htmlFor="rememberMe" className="text-xs text-zinc-400 cursor-pointer select-none">
+        <label htmlFor="rememberMe" className="text-xs text-zinc-500 cursor-pointer select-none">
           Keep me signed in on this device
         </label>
       </div>

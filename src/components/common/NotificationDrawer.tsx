@@ -38,14 +38,14 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 overflow-hidden animate-fade-in">
-      <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
+      <div className="fixed inset-0 bg-black/45 backdrop-blur-sm" onClick={onClose} />
       <div className="fixed inset-y-0 right-0 max-w-full flex pl-10">
-        <div className="w-screen max-w-md bg-zinc-900 border-l border-zinc-800 shadow-2xl flex flex-col">
+        <div className="w-screen max-w-md bg-white text-zinc-900 border-l border-black/[0.08] shadow-2xl flex flex-col">
           {/* Header */}
-          <div className="p-5 border-b border-zinc-800 flex items-center justify-between">
+          <div className="p-5 border-b border-zinc-200 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Bell className="w-5 h-5 text-indigo-400" />
-              <h2 className="text-base font-semibold text-zinc-100 font-display">Notifications</h2>
+              <Bell className="w-5 h-5 text-[#0096C7]" />
+              <h2 className="text-base font-semibold text-zinc-900 font-display">Notifications</h2>
               <Badge variant="brand" size="sm">
                 {filteredNotifications.filter((n) => !n.read).length} new
               </Badge>
@@ -53,7 +53,7 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({
             <div className="flex items-center gap-2">
               <button
                 onClick={clearAllNotifications}
-                className="text-xs text-zinc-400 hover:text-zinc-200 flex items-center gap-1 p-1"
+                className="text-xs text-zinc-500 hover:text-zinc-900 flex items-center gap-1 p-1 cursor-pointer"
                 title="Mark all as read"
               >
                 <CheckCheck className="w-3.5 h-3.5" />
@@ -61,7 +61,7 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({
               </button>
               <button
                 onClick={onClose}
-                className="p-1.5 rounded-lg text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800"
+                className="p-1.5 rounded-lg text-zinc-400 hover:text-zinc-800 hover:bg-black/[0.05] cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -87,22 +87,22 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({
                   }}
                   className={`p-3.5 rounded-2xl border transition-all cursor-pointer ${
                     !notif.read
-                      ? 'bg-zinc-800/80 border-indigo-500/30 hover:border-indigo-500/60'
-                      : 'bg-zinc-950/60 border-zinc-800/60 hover:border-zinc-700 opacity-80'
+                      ? 'bg-sky-50/70 border-sky-300/80 hover:border-sky-400 shadow-xs'
+                      : 'bg-zinc-50 border-zinc-200/80 hover:border-zinc-300 text-zinc-700'
                   }`}
                 >
                   <div className="flex items-start gap-3">
-                    <div className="p-2 rounded-xl bg-zinc-900 border border-zinc-800 shrink-0">
+                    <div className="p-2 rounded-xl bg-white border border-black/10 shadow-xs shrink-0">
                       {getIcon(notif.type)}
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between gap-2">
-                        <h4 className="text-xs font-semibold text-zinc-200 truncate">
+                        <h4 className="text-xs font-semibold text-zinc-900 truncate">
                           {notif.title}
                         </h4>
                         <span className="text-[10px] text-zinc-500 shrink-0">{notif.time}</span>
                       </div>
-                      <p className="text-xs text-zinc-400 mt-1 line-clamp-2">
+                      <p className="text-xs text-zinc-600 mt-1 line-clamp-2">
                         {notif.description}
                       </p>
                     </div>
@@ -113,8 +113,8 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({
           </div>
 
           {/* Footer */}
-          <div className="p-4 border-t border-zinc-800 bg-zinc-950/50">
-            <Button variant="ghost" size="sm" className="w-full text-xs text-zinc-400" onClick={onClose}>
+          <div className="p-4 border-t border-zinc-200 bg-zinc-50">
+            <Button variant="outline" size="sm" className="w-full text-xs" onClick={onClose}>
               Close Panel
             </Button>
           </div>

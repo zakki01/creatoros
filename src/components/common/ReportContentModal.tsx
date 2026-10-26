@@ -60,14 +60,14 @@ export const ReportContentModal: React.FC<ReportContentModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-md animate-fade-in overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/45 backdrop-blur-md animate-fade-in overflow-y-auto">
       <div
-        className="relative w-full max-w-md rounded-2xl bg-[#0c0c11] border border-white/[0.08] p-6 shadow-2xl text-zinc-100 space-y-4 my-auto"
+        className="relative w-full max-w-md rounded-2xl bg-white text-zinc-900 border border-black/[0.08] p-6 shadow-2xl text-zinc-900 space-y-4 my-auto"
         onClick={(e) => e.stopPropagation()}
       >
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition-all cursor-pointer"
+          className="absolute top-4 right-4 p-1.5 rounded-lg text-zinc-500 hover:text-white hover:bg-zinc-100 transition-all cursor-pointer"
         >
           <X className="w-4 h-4" />
         </button>
@@ -78,27 +78,27 @@ export const ReportContentModal: React.FC<ReportContentModalProps> = ({
               <Check className="w-6 h-6" />
             </div>
             <h3 className="text-base font-semibold text-white">Report Submitted</h3>
-            <p className="text-xs text-zinc-400 max-w-xs mx-auto">
+            <p className="text-xs text-zinc-500 max-w-xs mx-auto">
               Thank you for keeping CreatorOS safe. Our Super Admin Trust & Safety moderation desk has queued this item for investigation.
             </p>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="flex items-center gap-2.5 pb-2 border-b border-white/[0.06]">
+            <div className="flex items-center gap-2.5 pb-2 border-b border-black/[0.06]">
               <div className="w-9 h-9 rounded-xl bg-rose-500/15 border border-rose-500/30 text-rose-400 flex items-center justify-center">
                 <ShieldAlert className="w-4 h-4" />
               </div>
               <div>
-                <h3 className="text-sm font-bold text-white font-display">Report Content</h3>
-                <p className="text-[11px] text-zinc-400">
-                  Target: <strong className="text-zinc-200">{target.ownerName}</strong> ({target.type})
+                <h3 className="text-sm font-bold text-zinc-900 font-display">Report Content</h3>
+                <p className="text-[11px] text-zinc-500">
+                  Target: <strong className="text-zinc-800">{target.ownerName}</strong> ({target.type})
                 </p>
               </div>
             </div>
 
             {/* Reasons List */}
             <div className="space-y-1.5 max-h-56 overflow-y-auto pr-1">
-              <label className="text-[10px] uppercase font-mono tracking-wider text-zinc-400 block font-semibold">
+              <label className="text-[10px] uppercase font-mono tracking-wider text-zinc-500 block font-semibold">
                 Reason for Report
               </label>
               {REPORT_REASONS.map((item) => (
@@ -107,7 +107,7 @@ export const ReportContentModal: React.FC<ReportContentModalProps> = ({
                   className={`flex items-start gap-2.5 p-2.5 rounded-xl border cursor-pointer transition-all ${
                     selectedReason === item.reason
                       ? 'bg-rose-500/10 border-rose-500/40 text-white'
-                      : 'bg-zinc-900/40 border-white/[0.04] text-zinc-400 hover:bg-zinc-900 hover:text-zinc-200'
+                      : 'bg-zinc-50 border-black/[0.04] text-zinc-500 hover:bg-zinc-100 hover:text-zinc-800'
                   }`}
                 >
                   <input
@@ -130,7 +130,7 @@ export const ReportContentModal: React.FC<ReportContentModalProps> = ({
 
             {/* Additional details */}
             <div className="space-y-1.5">
-              <label className="text-[11px] font-medium text-zinc-400 block">
+              <label className="text-[11px] font-medium text-zinc-500 block">
                 Additional Context (Optional)
               </label>
               <textarea
@@ -138,15 +138,15 @@ export const ReportContentModal: React.FC<ReportContentModalProps> = ({
                 value={details}
                 onChange={(e) => setDetails(e.target.value)}
                 placeholder="Include relevant timestamps, handles, or context..."
-                className="w-full bg-zinc-900/80 border border-white/[0.08] rounded-xl p-2.5 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-rose-500 resize-none"
+                className="w-full bg-white shadow-sm border border-black/[0.08] rounded-xl p-2.5 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-rose-500 resize-none"
               />
             </div>
 
-            <div className="flex items-center justify-end gap-2 pt-2 border-t border-white/[0.06]">
+            <div className="flex items-center justify-end gap-2 pt-2 border-t border-black/[0.06]">
               <button
                 type="button"
                 onClick={onClose}
-                className="px-3.5 py-1.5 rounded-xl text-xs text-zinc-400 hover:text-zinc-200 cursor-pointer"
+                className="px-3.5 py-1.5 rounded-xl text-xs text-zinc-500 hover:text-zinc-800 cursor-pointer"
               >
                 Cancel
               </button>

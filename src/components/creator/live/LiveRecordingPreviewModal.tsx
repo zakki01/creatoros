@@ -92,19 +92,19 @@ export const LiveRecordingPreviewModal: React.FC<LiveRecordingPreviewModalProps>
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in">
-      <div className="relative w-full max-w-3xl rounded-2xl bg-zinc-950 border border-zinc-800 shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/45 backdrop-blur-md animate-fade-in">
+      <div className="relative w-full max-w-3xl rounded-2xl bg-white border border-black/[0.08] shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
         {/* Header */}
-        <div className="p-4 border-b border-zinc-800/80 flex items-center justify-between">
+        <div className="p-4 border-b border-zinc-200 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
               <Film className="w-4 h-4" />
             </div>
             <div>
-              <h2 className="text-sm font-semibold text-zinc-100">
+              <h2 className="text-sm font-semibold text-zinc-900">
                 Recorded Live Clip Preview
               </h2>
-              <p className="text-[11px] text-zinc-400">
+              <p className="text-[11px] text-zinc-500">
                 {clip.sceneName} • {clip.durationSec}s duration • {clip.aspectRatio} format
               </p>
             </div>
@@ -112,7 +112,7 @@ export const LiveRecordingPreviewModal: React.FC<LiveRecordingPreviewModalProps>
 
           <button
             onClick={onClose}
-            className="p-1 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors"
+            className="p-1 rounded-lg text-zinc-500 hover:text-white hover:bg-zinc-100 transition-colors"
           >
             <X className="w-4 h-4" />
           </button>
@@ -121,7 +121,7 @@ export const LiveRecordingPreviewModal: React.FC<LiveRecordingPreviewModalProps>
         {/* Body Container */}
         <div className="flex-1 overflow-y-auto p-5 grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Left: Video Player */}
-          <div className="flex flex-col items-center justify-center bg-black/60 rounded-xl p-3 border border-zinc-800/80">
+          <div className="flex flex-col items-center justify-center bg-black/60 rounded-xl p-3 border border-zinc-200">
             <div
               className={`relative rounded-lg overflow-hidden bg-black flex items-center justify-center ${
                 clip.aspectRatio === '9:16'
@@ -146,7 +146,7 @@ export const LiveRecordingPreviewModal: React.FC<LiveRecordingPreviewModalProps>
               <button
                 type="button"
                 onClick={handleDownload}
-                className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-700/80 text-xs font-semibold text-zinc-200 transition-colors"
+                className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-zinc-100 hover:bg-zinc-200 border border-zinc-300 text-xs font-semibold text-zinc-800 transition-colors"
               >
                 <Download className="w-3.5 h-3.5" />
                 <span>Download Video File (.webm)</span>
@@ -157,22 +157,22 @@ export const LiveRecordingPreviewModal: React.FC<LiveRecordingPreviewModalProps>
           {/* Right: Submit to Campaign Workflow */}
           <div className="space-y-4 flex flex-col justify-between">
             <div className="space-y-3.5">
-              <div className="flex items-center gap-1.5 pb-2 border-b border-zinc-800/60">
+              <div className="flex items-center gap-1.5 pb-2 border-b border-zinc-200/60">
                 <Layers className="w-4 h-4 text-emerald-400" />
-                <h3 className="text-xs font-semibold text-zinc-200 uppercase tracking-wider">
+                <h3 className="text-xs font-semibold text-zinc-800 uppercase tracking-wider">
                   Submit Directly to Campaign
                 </h3>
               </div>
 
               {/* Select Campaign */}
               <div className="space-y-1">
-                <label className="text-[11px] font-medium text-zinc-400">
+                <label className="text-[11px] font-medium text-zinc-500">
                   Target Campaign
                 </label>
                 <select
                   value={selectedCampaignId}
                   onChange={(e) => setSelectedCampaignId(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg bg-zinc-900 border border-zinc-800 text-xs text-zinc-200 focus:outline-none focus:border-emerald-500"
+                  className="w-full px-3 py-2 rounded-lg bg-white border border-zinc-300 text-xs text-zinc-900 focus:border-[#00B4D8] focus:outline-none focus:border-emerald-500"
                 >
                   {campaigns.map((camp) => (
                     <option key={camp.id} value={camp.id}>
@@ -184,7 +184,7 @@ export const LiveRecordingPreviewModal: React.FC<LiveRecordingPreviewModalProps>
 
               {/* Title */}
               <div className="space-y-1">
-                <label className="text-[11px] font-medium text-zinc-400">
+                <label className="text-[11px] font-medium text-zinc-500">
                   Deliverable Title
                 </label>
                 <input
@@ -192,13 +192,13 @@ export const LiveRecordingPreviewModal: React.FC<LiveRecordingPreviewModalProps>
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="e.g. Summer Launch Reel - Cut 1"
-                  className="w-full px-3 py-2 rounded-lg bg-zinc-900 border border-zinc-800 text-xs text-zinc-200 focus:outline-none focus:border-emerald-500"
+                  className="w-full px-3 py-2 rounded-lg bg-white border border-zinc-300 text-xs text-zinc-900 focus:border-[#00B4D8] focus:outline-none focus:border-emerald-500"
                 />
               </div>
 
               {/* Caption */}
               <div className="space-y-1">
-                <label className="text-[11px] font-medium text-zinc-400">
+                <label className="text-[11px] font-medium text-zinc-500">
                   Caption & Description
                 </label>
                 <textarea
@@ -206,13 +206,13 @@ export const LiveRecordingPreviewModal: React.FC<LiveRecordingPreviewModalProps>
                   value={caption}
                   onChange={(e) => setCaption(e.target.value)}
                   placeholder="Include hashtags, mentions, and call-to-action"
-                  className="w-full px-3 py-2 rounded-lg bg-zinc-900 border border-zinc-800 text-xs text-zinc-200 focus:outline-none focus:border-emerald-500 resize-none"
+                  className="w-full px-3 py-2 rounded-lg bg-white border border-zinc-300 text-xs text-zinc-900 focus:border-[#00B4D8] focus:outline-none focus:border-emerald-500 resize-none"
                 />
               </div>
 
               {/* AI Pre-check Reminder */}
-              <div className="p-2.5 rounded-lg bg-indigo-950/30 border border-indigo-500/20 text-[11px] text-indigo-300 flex items-start gap-2">
-                <Sparkles className="w-3.5 h-3.5 text-indigo-400 shrink-0 mt-0.5" />
+              <div className="p-2.5 rounded-lg bg-[#00B4D8]/10 border border-indigo-500/20 text-[11px] text-[#0096C7] flex items-start gap-2">
+                <Sparkles className="w-3.5 h-3.5 text-[#0096C7] shrink-0 mt-0.5" />
                 <span>
                   Automatic AI Pre-check will run compliance against the brand guidelines upon submission.
                 </span>

@@ -94,15 +94,15 @@ export const CampaignTimeline: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl sm:text-3xl font-bold text-zinc-100 font-display">
+            <h1 className="text-2xl sm:text-3xl font-bold text-zinc-900 font-display">
               Campaign Timeline & Blockers
             </h1>
             <Badge variant="brand" size="sm">
               Live Progress
             </Badge>
           </div>
-          <p className="text-sm text-zinc-400 mt-1">
-            Tracking execution milestones for <strong className="text-zinc-200">"{activeCampaign.name}"</strong>
+          <p className="text-sm text-zinc-500 mt-1">
+            Tracking execution milestones for <strong className="text-zinc-800">"{activeCampaign.name}"</strong>
           </p>
         </div>
 
@@ -113,8 +113,8 @@ export const CampaignTimeline: React.FC = () => {
               onClick={() => setActiveCampaignId(c.id)}
               className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-all ${
                 c.id === activeCampaign.id
-                  ? 'bg-indigo-600 text-white shadow-sm'
-                  : 'bg-zinc-900 text-zinc-400 hover:text-zinc-200 border border-zinc-800'
+                  ? 'bg-[#00B4D8] text-white shadow-sm'
+                  : 'bg-white text-zinc-500 hover:text-zinc-800 border border-zinc-200'
               }`}
             >
               {c.name}
@@ -130,7 +130,7 @@ export const CampaignTimeline: React.FC = () => {
           <p className="font-semibold text-amber-300">
             Active Milestone Blocker Detected: Content Submission Wave 1
           </p>
-          <p className="text-zinc-300 leading-relaxed">
+          <p className="text-zinc-700 leading-relaxed">
             Publishing wave was scheduled for Friday; 2 creators are delayed in transit due to courier delivery latency. AI recommends auto-adjusting wave 1 schedule by 24h to synchronize creator release impact.
           </p>
         </div>
@@ -149,8 +149,8 @@ export const CampaignTimeline: React.FC = () => {
                   isDone
                     ? 'bg-emerald-500 border-emerald-400 text-white'
                     : isActive
-                    ? 'bg-indigo-600 border-indigo-400 text-white ring-4 ring-indigo-500/20 animate-pulse-subtle'
-                    : 'bg-zinc-900 border-zinc-700 text-zinc-500'
+                    ? 'bg-[#00B4D8] border-indigo-400 text-white ring-4 ring-indigo-500/20 animate-pulse-subtle'
+                    : 'bg-white border-zinc-300 text-zinc-500'
                 }`}
               >
                 {isDone ? (
@@ -164,8 +164,8 @@ export const CampaignTimeline: React.FC = () => {
               <Card
                 className={`p-5 space-y-3 transition-all ${
                   isActive
-                    ? 'bg-zinc-900/90 border-indigo-500/60 shadow-lg shadow-indigo-500/5'
-                    : 'bg-zinc-900/50 border-zinc-800/80 opacity-80 group-hover:opacity-100'
+                    ? 'bg-white/90 border-[#00B4D8]/60 shadow-lg shadow-indigo-500/5'
+                    : 'bg-zinc-50 border-zinc-200 opacity-80 group-hover:opacity-100'
                 }`}
               >
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
@@ -173,7 +173,7 @@ export const CampaignTimeline: React.FC = () => {
                     <span className="text-xs font-mono font-semibold text-zinc-500">
                       Phase {idx + 1}
                     </span>
-                    <h3 className="text-sm font-bold text-zinc-100 font-display">
+                    <h3 className="text-sm font-bold text-zinc-900 font-display">
                       {stage.name}
                     </h3>
                     <Badge
@@ -183,13 +183,13 @@ export const CampaignTimeline: React.FC = () => {
                       {stage.status.toUpperCase()}
                     </Badge>
                   </div>
-                  <span className="text-xs text-zinc-400 font-mono flex items-center gap-1.5">
+                  <span className="text-xs text-zinc-500 font-mono flex items-center gap-1.5">
                     <Calendar className="w-3.5 h-3.5 text-zinc-500" />
                     <span>{stage.date}</span>
                   </span>
                 </div>
 
-                <p className="text-xs text-zinc-400 leading-relaxed">
+                <p className="text-xs text-zinc-500 leading-relaxed">
                   {stage.description}
                 </p>
 
