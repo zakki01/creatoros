@@ -3,37 +3,37 @@
  */
 
 :root {
-  --color-brand-primary: #111827;
-  --color-brand-secondary: #374151;
-  --color-brand-accent: #00B4D8;
-  --color-brand-accent-hover: #0096C7;
-  --color-brand-accent-light: rgba(0, 180, 216, 0.12);
+  --color-brand-primary: #123047;
+  --color-brand-secondary: #365267;
+  --color-brand-accent: #00869B;
+  --color-brand-accent-hover: #006C80;
+  --color-brand-accent-light: rgba(0, 134, 155, 0.11);
 
   --color-brand-text: #0F172A;
-  --color-brand-muted: #64748B;
+  --color-brand-muted: #596A7D;
   --color-brand-text-inverse: #FFFFFF;
 
-  --color-surface: #E2E5E9;
-  --color-surface-card: #EAECEF;
-  --color-surface-glass: rgba(245, 247, 250, 0.82);
-  --color-surface-recessed: #D3D7DE;
+  --color-surface: #EDF0F4;
+  --color-surface-card: #F8FAFC;
+  --color-surface-glass: rgba(255, 255, 255, 0.76);
+  --color-surface-recessed: #E2E7ED;
   --color-surface-input: #FFFFFF;
 
-  --color-border: rgba(0, 0, 0, 0.09);
+  --color-border: #D5DDE6;
   --color-border-highlight: rgba(255, 255, 255, 0.9);
 
-  --color-success: #059669;
-  --color-warning: #D97706;
-  --color-danger: #E11D48;
+  --color-success: #047857;
+  --color-warning: #92400E;
+  --color-danger: #B4233C;
 
   --radius-card: 28px;
 }
 
 /* Studio Environment Background Layer */
 .welcome-studio-bg {
-  background-color: #E2E5E9;
+  background-color: #EDF0F4;
   background-image: 
-    linear-gradient(180deg, rgba(240, 243, 246, 0.45) 0%, rgba(220, 224, 230, 0.65) 100%),
+    linear-gradient(180deg, rgba(243, 246, 249, 0.24) 0%, rgba(224, 230, 237, 0.48) 100%),
     url('/assets/images/studio-background.jpg');
   background-size: cover;
   background-position: center bottom;
@@ -55,7 +55,7 @@
 }
 
 .studio-card-soft {
-  background: linear-gradient(165deg, #F0F2F5 0%, #E3E6EB 100%);
+  background: linear-gradient(155deg, #FFFFFF 0%, #F1F4F8 100%);
   border: 1px solid rgba(255, 255, 255, 0.85);
   box-shadow: 
     0 24px 50px -12px rgba(15, 23, 42, 0.14),
@@ -82,27 +82,21 @@
 }
 
 .studio-btn-primary {
-  background: linear-gradient(180deg, #DCE0E6 0%, #C7CCD5 50%, #B4BAC5 100%);
-  border: 1px solid rgba(255, 255, 255, 0.9);
-  border-top-color: #FFFFFF;
-  box-shadow: 
-    0 4px 12px rgba(15, 23, 42, 0.12),
-    inset 0 1px 2px rgba(255, 255, 255, 0.95),
-    inset 0 -1px 2px rgba(0, 0, 0, 0.12);
-  color: #111827;
+  background: linear-gradient(180deg, #078FA5 0%, #006C80 100%);
+  border: 1px solid rgba(0, 90, 110, 0.32);
+  border-top-color: rgba(255, 255, 255, 0.45);
+  box-shadow: 0 5px 14px rgba(0, 108, 128, 0.22), inset 0 1px 1px rgba(255, 255, 255, 0.22);
+  color: #FFFFFF;
   transition: transform 0.14s ease, box-shadow 0.14s ease, filter 0.14s ease;
 }
 
 .studio-btn-primary:hover:not(:disabled) {
   filter: brightness(1.02);
   transform: translateY(-1px);
-  box-shadow: 
-    0 6px 16px rgba(15, 23, 42, 0.16),
-    inset 0 1px 2px #FFFFFF,
-    inset 0 -1px 2px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 8px 18px rgba(0, 108, 128, 0.28), inset 0 1px 1px rgba(255, 255, 255, 0.28);
 }
 
 .studio-btn-primary:active:not(:disabled) {
   transform: translateY(0);
-  box-shadow: inset 0 2px 4px rgba(15, 23, 42, 0.18);
+  box-shadow: inset 0 2px 4px rgba(0, 50, 65, 0.28);
 }

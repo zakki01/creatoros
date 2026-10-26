@@ -24,12 +24,12 @@ export const AuthPage: React.FC<AuthPageProps> = ({
   });
 
   return (
-    <div className="min-h-screen w-full bg-[#070709] text-zinc-100 flex flex-col justify-between selection:bg-sky-500/30 selection:text-sky-100 overflow-x-hidden font-sans p-4 sm:p-6 lg:p-8">
+    <div className="min-h-screen w-full bg-[#EAECEF] text-zinc-900 flex flex-col justify-between selection:bg-sky-500/30 selection:text-sky-100 overflow-x-hidden font-sans p-4 sm:p-6 lg:p-8">
       {/* Top Bar with Back Action */}
       <div className="max-w-7xl w-full mx-auto flex items-center justify-between pb-6">
         <button
           onClick={onBackToWelcome}
-          className="inline-flex items-center gap-2 text-xs font-sans font-medium text-zinc-400 hover:text-white transition-colors cursor-pointer"
+          className="inline-flex items-center gap-2 text-xs font-sans font-medium text-zinc-600 hover:text-zinc-900 transition-colors cursor-pointer"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>Back to Overview</span>

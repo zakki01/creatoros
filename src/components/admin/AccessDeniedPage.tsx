@@ -31,8 +31,8 @@ export const AccessDeniedPage: React.FC<AccessDeniedPageProps> = ({
             CreatorOS Security Gateway
           </span>
         </div>
-        <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-rose-500/10 border border-rose-500/25 text-rose-300 text-xs font-mono">
-          <Lock className="w-3.5 h-3.5 text-rose-400" />
+        <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-rose-50 border border-rose-200 text-rose-800 text-xs font-mono">
+          <Lock className="w-3.5 h-3.5 text-rose-700" />
           <span>403 FORBIDDEN</span>
         </div>
       </header>
@@ -40,8 +40,8 @@ export const AccessDeniedPage: React.FC<AccessDeniedPageProps> = ({
       {/* Main Denial Card */}
       <main className="relative z-10 max-w-lg mx-auto w-full text-center space-y-6 my-auto py-8">
         <div className="relative inline-flex items-center justify-center">
-          <div className="w-20 h-20 rounded-2xl bg-rose-950/40 border border-rose-500/30 flex items-center justify-center text-rose-400 shadow-[0_0_50px_rgba(244,63,94,0.2)]">
-            <ShieldAlert className="w-10 h-10 animate-pulse text-rose-400" />
+          <div className="w-20 h-20 rounded-2xl bg-rose-50 border border-rose-200 flex items-center justify-center text-rose-700 shadow-[0_0_50px_rgba(244,63,94,0.2)]">
+            <ShieldAlert className="w-10 h-10 animate-pulse text-rose-700" />
           </div>
           <div className="absolute -bottom-2 px-2.5 py-0.5 rounded-full bg-rose-500 text-white font-mono text-[10px] font-bold tracking-wider uppercase">
             Restricted
@@ -49,7 +49,7 @@ export const AccessDeniedPage: React.FC<AccessDeniedPageProps> = ({
         </div>
 
         <div className="space-y-2">
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white font-sans">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900 font-sans">
             Access Denied
           </h1>
           <p className="text-sm text-zinc-500 leading-relaxed max-w-md mx-auto">
@@ -59,9 +59,9 @@ export const AccessDeniedPage: React.FC<AccessDeniedPageProps> = ({
 
         {/* Security telemetry box */}
         <div className="p-3.5 rounded-xl bg-white shadow-sm border border-zinc-200 font-mono text-left text-[11px] text-zinc-500 space-y-1">
-          <div className="flex items-center justify-between text-zinc-500 border-b border-zinc-900 pb-1 mb-1">
+          <div className="flex items-center justify-between text-zinc-500 border-b border-zinc-200 pb-1 mb-1">
             <span className="flex items-center gap-1.5 text-zinc-500">
-              <Terminal className="w-3 h-3 text-rose-400" />
+              <Terminal className="w-3 h-3 text-rose-700" />
               <span>SECURITY LOG</span>
             </span>
             <span className="text-[10px]">AUTH_RULE_36</span>
@@ -72,7 +72,7 @@ export const AccessDeniedPage: React.FC<AccessDeniedPageProps> = ({
           </div>
           <div className="flex justify-between">
             <span className="text-zinc-500">Disposition:</span>
-            <span className="text-rose-400 font-semibold">RBAC Isolation Enforced</span>
+            <span className="text-rose-700 font-semibold">RBAC Isolation Enforced</span>
           </div>
         </div>
 

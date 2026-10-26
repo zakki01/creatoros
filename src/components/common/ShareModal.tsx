@@ -78,12 +78,12 @@ export const ShareModal: React.FC<ShareModalProps> = ({
         {/* Header */}
         <div className="flex items-center justify-between border-b border-black/[0.08] pb-3">
           <div className="flex items-center gap-2">
-            <Share2 className="w-4 h-4 text-[#0096C7]" />
-            <h3 className="text-sm font-bold text-white">Share Drop</h3>
+            <Share2 className="w-4 h-4 text-[#007E93]" />
+            <h3 className="text-sm font-bold text-zinc-900">Share Drop</h3>
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded-lg text-zinc-500 hover:text-white hover:bg-zinc-100 transition-colors cursor-pointer"
+            className="p-1 rounded-lg text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 transition-colors cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
@@ -105,7 +105,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
                   <img
                     src={conv.participantAvatar}
                     alt={conv.participantName}
-                    className="w-10 h-10 rounded-full object-cover ring-1 ring-white/10"
+                    className="w-10 h-10 rounded-full object-cover ring-1 ring-zinc-200"
                   />
                   {sentConvId === conv.id && (
                     <div className="absolute inset-0 bg-emerald-500/80 rounded-full flex items-center justify-center text-white">
@@ -129,11 +129,11 @@ export const ShareModal: React.FC<ShareModalProps> = ({
             className="w-full flex items-center justify-between p-3 rounded-xl bg-white shadow-sm hover:bg-zinc-100/80 border border-black/[0.06] transition-all cursor-pointer text-left"
           >
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-white/[0.06] flex items-center justify-center text-zinc-700">
-                {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+              <div className="w-8 h-8 rounded-lg bg-zinc-100 flex items-center justify-center text-zinc-700">
+                {copied ? <Check className="w-4 h-4 text-emerald-700" /> : <Copy className="w-4 h-4" />}
               </div>
               <div>
-                <span className="text-xs font-semibold text-white block">
+                <span className="text-xs font-semibold text-zinc-900 block">
                   {copied ? 'Link Copied to Clipboard!' : 'Copy Link'}
                 </span>
                 <span className="text-[10px] text-zinc-500 font-mono">
@@ -141,7 +141,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
                 </span>
               </div>
             </div>
-            {copied && <span className="text-xs text-emerald-400 font-mono font-bold">Copied ✓</span>}
+            {copied && <span className="text-xs text-emerald-700 font-mono font-bold">Copied ✓</span>}
           </button>
 
           {/* External Share */}
@@ -150,11 +150,11 @@ export const ShareModal: React.FC<ShareModalProps> = ({
             className="w-full flex items-center justify-between p-3 rounded-xl bg-white shadow-sm hover:bg-zinc-100/80 border border-black/[0.06] transition-all cursor-pointer text-left"
           >
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-white/[0.06] flex items-center justify-center text-zinc-700">
+              <div className="w-8 h-8 rounded-lg bg-zinc-100 flex items-center justify-center text-zinc-700">
                 <ExternalLink className="w-4 h-4" />
               </div>
               <div>
-                <span className="text-xs font-semibold text-white block">
+                <span className="text-xs font-semibold text-zinc-900 block">
                   Share Externally
                 </span>
                 <span className="text-[10px] text-zinc-500 font-mono">

@@ -124,7 +124,7 @@ export const CreatorLayout: React.FC = () => {
               >
                 <Icon
                   className={`w-4 h-4 shrink-0 transition-colors ${
-                    isActive ? 'text-[#0096C7]' : 'text-zinc-500'
+                    isActive ? 'text-[#007E93]' : 'text-zinc-500'
                   }`}
                 />
                 {!isSidebarCollapsed && (
@@ -161,7 +161,7 @@ export const CreatorLayout: React.FC = () => {
               >
                 <Icon
                   className={`w-4 h-4 shrink-0 transition-colors ${
-                    isActive ? 'text-[#0096C7]' : 'text-zinc-500'
+                    isActive ? 'text-[#007E93]' : 'text-zinc-500'
                   }`}
                 />
                 {!isSidebarCollapsed && (
@@ -241,7 +241,7 @@ export const CreatorLayout: React.FC = () => {
             <React.Suspense
               fallback={
                 <div className="h-96 w-full flex flex-col items-center justify-center space-y-3">
-                  <div className="w-9 h-9 rounded-xl bg-indigo-600/20 text-indigo-400 flex items-center justify-center animate-pulse">
+                  <div className="w-9 h-9 rounded-xl bg-[#007E93]/20 text-[#007E93] flex items-center justify-center animate-pulse">
                     <Video className="w-4 h-4" />
                   </div>
                   <span className="text-xs font-mono text-zinc-400">Loading Live AI Studio...</span>

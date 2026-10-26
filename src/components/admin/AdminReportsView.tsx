@@ -151,7 +151,7 @@ export const AdminReportsView: React.FC = () => {
               onClick={() => setStatusFilter(tab.id)}
               className={`px-3 py-1.5 rounded-lg text-xs font-sans font-medium transition-all shrink-0 cursor-pointer ${
                 statusFilter === tab.id
-                  ? 'bg-[#00B4D8] text-white shadow-xs'
+                  ? 'bg-[#007E93] text-white shadow-xs'
                   : 'bg-zinc-100 text-zinc-600 hover:text-zinc-900'
               }`}
             >
@@ -165,7 +165,7 @@ export const AdminReportsView: React.FC = () => {
       <div className="space-y-3.5">
         {filteredReports.length === 0 ? (
           <div className="p-12 rounded-2xl bg-zinc-50 border border-black/[0.08] text-center space-y-2">
-            <CheckCircle2 className="w-8 h-8 text-emerald-400 mx-auto" />
+            <CheckCircle2 className="w-8 h-8 text-emerald-700 mx-auto" />
             <h4 className="text-sm font-medium text-zinc-900">No Reports Found</h4>
             <p className="text-xs text-zinc-500">
               There are no reports matching the selected filters.
@@ -205,8 +205,8 @@ export const AdminReportsView: React.FC = () => {
                           : isInvestigating
                           ? 'bg-amber-500 text-zinc-950'
                           : isResolved
-                          ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
-                          : 'bg-zinc-800 text-zinc-500'
+                          ? 'bg-emerald-50 text-emerald-700 border border-emerald-500/30'
+                          : 'bg-zinc-100 text-zinc-600'
                       }`}
                     >
                       {report.status}
@@ -221,7 +221,7 @@ export const AdminReportsView: React.FC = () => {
                     <span>Filed by <strong className="text-zinc-700">{report.reporterHandle || report.reporterName}</strong></span>
                     <span>{new Date(report.createdAt).toLocaleString()}</span>
                     {report.adminNotes && (
-                      <span className="text-amber-400">Note: {report.adminNotes}</span>
+                      <span className="text-amber-800">Note: {report.adminNotes}</span>
                     )}
                   </div>
                 </div>
@@ -231,7 +231,7 @@ export const AdminReportsView: React.FC = () => {
                   {isPending && (
                     <button
                       onClick={() => handleInvestigate(report)}
-                      className="px-3 py-1.5 rounded-lg text-xs font-sans font-medium bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 text-amber-300 transition-all cursor-pointer"
+                      className="px-3 py-1.5 rounded-lg text-xs font-sans font-medium bg-amber-50 hover:bg-amber-50 border border-amber-500/30 text-amber-800 transition-all cursor-pointer"
                     >
                       Investigate
                     </button>

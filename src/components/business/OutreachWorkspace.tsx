@@ -106,7 +106,7 @@ export const OutreachWorkspace: React.FC = () => {
             onClick={() => setViewMode('kanban')}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition-all ${
               viewMode === 'kanban'
-                ? 'bg-zinc-800 text-zinc-900 shadow-sm font-semibold'
+                ? 'bg-[#E9FAFC] text-[#006779] border border-[#A6E5EC] shadow-sm font-semibold'
                 : 'text-zinc-500 hover:text-zinc-800'
             }`}
           >
@@ -117,7 +117,7 @@ export const OutreachWorkspace: React.FC = () => {
             onClick={() => setViewMode('list')}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition-all ${
               viewMode === 'list'
-                ? 'bg-zinc-800 text-zinc-900 shadow-sm font-semibold'
+                ? 'bg-[#E9FAFC] text-[#006779] border border-[#A6E5EC] shadow-sm font-semibold'
                 : 'text-zinc-500 hover:text-zinc-800'
             }`}
           >
@@ -141,7 +141,7 @@ export const OutreachWorkspace: React.FC = () => {
                 <div className="flex items-center justify-between px-2 pt-1">
                   <div className="flex items-center gap-2">
                     <span className="text-xs font-semibold text-zinc-800">{stage}</span>
-                    <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-zinc-800 text-zinc-500 font-mono">
+                    <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-zinc-100 text-zinc-600 font-mono">
                       {itemsInStage.length}
                     </span>
                   </div>
@@ -158,7 +158,7 @@ export const OutreachWorkspace: React.FC = () => {
                       <div
                         key={item.id}
                         onClick={() => handleOpenItem(item)}
-                        className="p-3.5 rounded-2xl bg-white shadow-xs border border-zinc-200 hover:border-zinc-300 hover:bg-zinc-850 cursor-pointer transition-all shadow-sm space-y-2.5 group"
+                        className="p-3.5 rounded-2xl bg-white shadow-xs border border-zinc-200 hover:border-zinc-300 hover:bg-zinc-200 cursor-pointer transition-all shadow-sm space-y-2.5 group"
                       >
                         <div className="flex items-center justify-between gap-2">
                           <div className="flex items-center gap-2">
@@ -168,7 +168,7 @@ export const OutreachWorkspace: React.FC = () => {
                               className="w-7 h-7 rounded-xl object-cover ring-1 ring-zinc-700 shrink-0"
                             />
                             <div>
-                              <p className="text-xs font-semibold text-zinc-900 group-hover:text-[#0096C7] transition-colors">
+                              <p className="text-xs font-semibold text-zinc-900 group-hover:text-[#007E93] transition-colors">
                                 {item.creator.name}
                               </p>
                               <p className="text-[10px] text-zinc-500 font-mono">
@@ -187,7 +187,7 @@ export const OutreachWorkspace: React.FC = () => {
 
                         <div className="flex items-center justify-between text-[10px] text-zinc-500 pt-1 border-t border-zinc-200/60">
                           <span>Last: {item.lastContactDate}</span>
-                          <span className="text-[#0096C7] flex items-center gap-0.5">
+                          <span className="text-[#007E93] flex items-center gap-0.5">
                             <MessageSquare className="w-3 h-3" />
                             <span>{item.messages.length}</span>
                           </span>
@@ -223,7 +223,7 @@ export const OutreachWorkspace: React.FC = () => {
                   <tr
                     key={item.id}
                     onClick={() => handleOpenItem(item)}
-                    className="hover:bg-zinc-850 cursor-pointer transition-colors"
+                    className="hover:bg-zinc-200 cursor-pointer transition-colors"
                   >
                     <td className="py-3 px-4">
                       <div className="flex items-center gap-2.5">
@@ -253,7 +253,7 @@ export const OutreachWorkspace: React.FC = () => {
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="text-xs text-[#0096C7]"
+                        className="text-xs text-[#007E93]"
                         onClick={(e) => {
                           e.stopPropagation();
                           handleOpenItem(item);
@@ -312,7 +312,7 @@ export const OutreachWorkspace: React.FC = () => {
                   updateOutreachStage(selectedItem.id, newStage);
                   setSelectedItem({ ...selectedItem, stage: newStage });
                 }}
-                className="bg-zinc-800 text-zinc-900 text-xs px-3 py-1.5 rounded-xl border border-zinc-300 font-medium focus:outline-none"
+                className="bg-zinc-100 text-zinc-900 text-xs px-3 py-1.5 rounded-xl border border-zinc-300 font-medium focus:outline-none"
               >
                 {stages.map((st) => (
                   <option key={st} value={st}>
@@ -336,8 +336,8 @@ export const OutreachWorkspace: React.FC = () => {
                     <div
                       className={`max-w-md p-3.5 rounded-2xl text-xs leading-relaxed ${
                         m.sender === 'brand'
-                          ? 'bg-[#00B4D8] text-white rounded-br-none'
-                          : 'bg-zinc-800 text-zinc-800 rounded-bl-none'
+                          ? 'bg-[#007E93] text-white rounded-br-none'
+                          : 'bg-white text-zinc-800 border border-zinc-200 rounded-bl-none'
                       }`}
                     >
                       <p className="whitespace-pre-line">{m.message}</p>
@@ -355,7 +355,7 @@ export const OutreachWorkspace: React.FC = () => {
                 <Button
                   variant="outline"
                   size="sm"
-                  leftIcon={<Sparkles className="w-3.5 h-3.5 text-[#0096C7]" />}
+                  leftIcon={<Sparkles className="w-3.5 h-3.5 text-[#007E93]" />}
                   onClick={handleGenerateAiMessage}
                   className="text-xs"
                 >

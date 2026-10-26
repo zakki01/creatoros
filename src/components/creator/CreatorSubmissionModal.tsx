@@ -87,7 +87,7 @@ export const CreatorSubmissionModal: React.FC<CreatorSubmissionModalProps> = ({
       maxWidth="3xl"
       title={
         <div className="flex items-center gap-2.5">
-          <div className="p-1.5 rounded-xl bg-emerald-600/20 text-emerald-400 border border-emerald-500/30">
+          <div className="p-1.5 rounded-xl bg-emerald-600/20 text-emerald-700 border border-emerald-500/30">
             <Film className="w-4 h-4" />
           </div>
           <div>
@@ -107,7 +107,7 @@ export const CreatorSubmissionModal: React.FC<CreatorSubmissionModalProps> = ({
             size="sm"
             onClick={handleRunPreCheck}
             isLoading={isPreChecking}
-            leftIcon={<Sparkles className="w-4 h-4 text-[#0096C7]" />}
+            leftIcon={<Sparkles className="w-4 h-4 text-[#007E93]" />}
             className="text-xs"
           >
             Pre-Check
@@ -203,11 +203,11 @@ export const CreatorSubmissionModal: React.FC<CreatorSubmissionModalProps> = ({
 
         {/* LIVE AI PRE-CHECK PANEL */}
         {aiPreCheck && (
-          <div className="p-4 rounded-2xl bg-indigo-950/20 border border-[#00B4D8]/30 space-y-3 animate-fade-in">
+          <div className="p-4 rounded-2xl bg-[#F0FAFB] border border-[#007E93]/20 space-y-3 animate-fade-in">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-[#0096C7]" />
-                <h4 className="text-xs font-semibold text-[#0096C7] uppercase tracking-wider">
+                <Sparkles className="w-4 h-4 text-[#007E93]" />
+                <h4 className="text-xs font-semibold text-[#007E93] uppercase tracking-wider">
                   Live AI Pre-Check Verification
                 </h4>
               </div>
@@ -228,33 +228,33 @@ export const CreatorSubmissionModal: React.FC<CreatorSubmissionModalProps> = ({
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
               <div className="p-2 rounded-xl bg-zinc-50 border border-zinc-200 flex items-center gap-2">
                 {aiPreCheck.productVisible ? (
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-700" />
                 ) : (
-                  <XCircle className="w-3.5 h-3.5 text-rose-400" />
+                  <XCircle className="w-3.5 h-3.5 text-rose-700" />
                 )}
                 <span className="text-zinc-700">Product in center frame</span>
               </div>
               <div className="p-2 rounded-xl bg-zinc-50 border border-zinc-200 flex items-center gap-2">
                 {aiPreCheck.brandMention ? (
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-700" />
                 ) : (
-                  <XCircle className="w-3.5 h-3.5 text-rose-400" />
+                  <XCircle className="w-3.5 h-3.5 text-rose-700" />
                 )}
                 <span className="text-zinc-700">Brand tagged (@aurastreetwear)</span>
               </div>
               <div className="p-2 rounded-xl bg-zinc-50 border border-zinc-200 flex items-center gap-2">
                 {aiPreCheck.requiredCta ? (
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-700" />
                 ) : (
-                  <AlertTriangle className="w-3.5 h-3.5 text-amber-400" />
+                  <AlertTriangle className="w-3.5 h-3.5 text-amber-800" />
                 )}
                 <span className="text-zinc-700">CTA includes bio link/code</span>
               </div>
               <div className="p-2 rounded-xl bg-zinc-50 border border-zinc-200 flex items-center gap-2">
                 {aiPreCheck.durationCompliant ? (
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-700" />
                 ) : (
-                  <XCircle className="w-3.5 h-3.5 text-rose-400" />
+                  <XCircle className="w-3.5 h-3.5 text-rose-700" />
                 )}
                 <span className="text-zinc-700">Duration (38s) compliant</span>
               </div>

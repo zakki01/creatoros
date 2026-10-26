@@ -119,7 +119,7 @@ export const CreatorAdminWorkspace: React.FC = () => {
           <Button
             variant="outline"
             size="md"
-            leftIcon={<Download className="w-4 h-4 text-emerald-400" />}
+            leftIcon={<Download className="w-4 h-4 text-emerald-700" />}
             onClick={() => setIsReportCenterOpen(true)}
             className="border-zinc-200 text-zinc-800 cursor-pointer"
           >
@@ -145,11 +145,11 @@ export const CreatorAdminWorkspace: React.FC = () => {
               onClick={() => setActiveTab(tab.id as any)}
               className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-medium whitespace-nowrap transition-all cursor-pointer ${
                 isActive
-                  ? 'bg-zinc-800 text-white font-semibold border border-black/[0.08] shadow-sm'
-                  : 'text-zinc-500 hover:text-zinc-800 hover:bg-zinc-850/50'
+                  ? 'bg-[#007E93] text-white font-semibold border border-black/[0.08] shadow-sm'
+                  : 'text-zinc-500 hover:text-zinc-800 hover:bg-zinc-200/50'
               }`}
             >
-              <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-emerald-400' : 'text-zinc-500'}`} />
+              <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-emerald-700' : 'text-zinc-500'}`} />
               <span>{tab.label}</span>
             </button>
           );
@@ -186,7 +186,7 @@ export const CreatorAdminWorkspace: React.FC = () => {
                     <div className="flex items-center gap-2">
                       <span className="text-xs font-bold text-zinc-900">{c.name}</span>
                       {c.status === 'invited' && (
-                        <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                        <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-500/20">
                           Invite Pending
                         </span>
                       )}
@@ -274,7 +274,7 @@ export const CreatorAdminWorkspace: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Card className="p-5 space-y-4">
             <h3 className="text-sm font-bold text-zinc-900 font-display flex items-center gap-2">
-              <Sliders className="w-4 h-4 text-emerald-400" />
+              <Sliders className="w-4 h-4 text-emerald-700" />
               <span>Draft & Delivery Controls</span>
             </h3>
             <div className="space-y-3">
@@ -321,7 +321,7 @@ export const CreatorAdminWorkspace: React.FC = () => {
 
           <Card className="p-5 space-y-4">
             <h3 className="text-sm font-bold text-zinc-900 font-display flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-[#0096C7]" />
+              <ShieldCheck className="w-4 h-4 text-[#007E93]" />
               <span>Standard Contract Defaults</span>
             </h3>
             <div className="space-y-3 text-xs">
@@ -388,13 +388,13 @@ export const CreatorAdminWorkspace: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Card className="p-5 space-y-4">
             <h3 className="text-sm font-bold text-zinc-900 font-display flex items-center gap-2">
-              <CreditCard className="w-4 h-4 text-emerald-400" />
+              <CreditCard className="w-4 h-4 text-emerald-700" />
               <span>Verified Payout Channel</span>
             </h3>
             <div className="p-3.5 rounded-xl bg-zinc-50 border border-zinc-200 space-y-2 text-xs">
               <div className="flex justify-between items-center">
                 <span className="text-zinc-500">Direct Bank Payout</span>
-                <span className="text-emerald-400 font-mono flex items-center gap-1 font-semibold">
+                <span className="text-emerald-700 font-mono flex items-center gap-1 font-semibold">
                   <CheckCircle2 className="w-3.5 h-3.5" /> Verified
                 </span>
               </div>
@@ -405,7 +405,7 @@ export const CreatorAdminWorkspace: React.FC = () => {
             <div className="p-3.5 rounded-xl bg-zinc-50 border border-zinc-200 space-y-2 text-xs">
               <div className="flex justify-between items-center">
                 <span className="text-zinc-500">PAN & GST Compliance</span>
-                <span className="text-emerald-400 font-mono flex items-center gap-1 font-semibold">
+                <span className="text-emerald-700 font-mono flex items-center gap-1 font-semibold">
                   <CheckCircle2 className="w-3.5 h-3.5" /> Compliant
                 </span>
               </div>
@@ -417,7 +417,7 @@ export const CreatorAdminWorkspace: React.FC = () => {
           <Card className="p-5 space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="text-sm font-bold text-zinc-900 font-display flex items-center gap-2">
-                <FileCheck2 className="w-4 h-4 text-[#0096C7]" />
+                <FileCheck2 className="w-4 h-4 text-[#007E93]" />
                 <span>Tax Invoices & Withholding</span>
               </h3>
               <Button
@@ -443,7 +443,7 @@ export const CreatorAdminWorkspace: React.FC = () => {
                   </div>
                   <div className="text-right">
                     <span className="font-mono font-bold text-zinc-900 block">{inv.amount}</span>
-                    <span className="text-[10px] text-emerald-400 font-mono font-semibold">{inv.status}</span>
+                    <span className="text-[10px] text-emerald-700 font-mono font-semibold">{inv.status}</span>
                   </div>
                 </div>
               ))}
@@ -457,13 +457,13 @@ export const CreatorAdminWorkspace: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Card className="p-5 space-y-4">
             <h3 className="text-sm font-bold text-zinc-900 font-display flex items-center gap-2">
-              <KeyRound className="w-4 h-4 text-emerald-400" />
+              <KeyRound className="w-4 h-4 text-emerald-700" />
               <span>Active Sessions & 2FA</span>
             </h3>
             <div className="space-y-2.5 text-xs">
               <div className="p-3 rounded-xl bg-zinc-50 border border-zinc-200 flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <Laptop className="w-5 h-5 text-[#0096C7] shrink-0" />
+                  <Laptop className="w-5 h-5 text-[#007E93] shrink-0" />
                   <div>
                     <span className="font-semibold text-zinc-800 block">Chrome on Windows 11</span>
                     <span className="text-[11px] text-zinc-500 font-mono">Mumbai, India • Current session</span>

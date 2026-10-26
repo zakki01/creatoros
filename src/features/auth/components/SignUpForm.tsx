@@ -47,23 +47,23 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       {displayError && (
-        <div className="flex items-center gap-2 p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-xs text-rose-300 animate-fade-in">
-          <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
+        <div className="flex items-center gap-2 p-3 rounded-xl bg-rose-50 border border-rose-200 text-xs text-rose-800 animate-fade-in">
+          <AlertCircle className="w-4 h-4 text-rose-700 shrink-0" />
           <span>{displayError}</span>
         </div>
       )}
 
       {/* Role Selector Pill */}
       <div className="space-y-1.5 text-left">
-        <label className="text-xs font-medium text-zinc-300">Account Type</label>
-        <div className="grid grid-cols-2 gap-2 p-1 bg-black/40 border border-white/[0.08] shadow-[inset_1px_1px_3px_rgba(0,0,0,0.6)] rounded-xl">
+        <label className="text-xs font-medium text-zinc-700">Account Type</label>
+        <div className="grid grid-cols-2 gap-2 p-1 bg-zinc-100 border border-zinc-200 shadow-inner rounded-xl">
           <button
             type="button"
             onClick={() => setRole('creator')}
             className={`flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${
               role === 'creator'
                 ? 'btn-soft-primary font-semibold shadow-sm'
-                : 'text-zinc-400 hover:text-zinc-200'
+                : 'text-zinc-600 hover:text-zinc-900'
             }`}
           >
             <UserCheck className={`w-3.5 h-3.5 ${role === 'creator' ? 'text-zinc-950' : 'text-sky-400'}`} />
@@ -75,10 +75,10 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({
             className={`flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${
               role === 'business'
                 ? 'btn-soft-primary font-semibold shadow-sm'
-                : 'text-zinc-400 hover:text-zinc-200'
+                : 'text-zinc-600 hover:text-zinc-900'
             }`}
           >
-            <Building2 className={`w-3.5 h-3.5 ${role === 'business' ? 'text-zinc-950' : 'text-indigo-400'}`} />
+            <Building2 className={`w-3.5 h-3.5 ${role === 'business' ? 'text-zinc-950' : 'text-[#007E93]'}`} />
             <span>Brand / Agency</span>
           </button>
         </div>
@@ -90,7 +90,7 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({
       {/* Name and Handle in Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-left">
         <div className="space-y-1.5">
-          <label className="text-xs font-medium text-zinc-300">Full Name</label>
+          <label className="text-xs font-medium text-zinc-700">Full Name</label>
           <div className="relative">
             <input
               type="text"
@@ -99,14 +99,14 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({
               onChange={(e) => setName(e.target.value)}
               placeholder="e.g. Alex Rivera"
               disabled={isLoading}
-              className="input-soft-recessed w-full pl-9 pr-3.5 py-2.5 rounded-xl text-xs text-zinc-100 placeholder:text-zinc-500 focus:outline-none transition-all"
+              className="input-soft-recessed w-full pl-9 pr-3.5 py-2.5 rounded-xl text-xs text-zinc-900 placeholder:text-zinc-500 focus:outline-none transition-all"
             />
             <User className="w-4 h-4 text-zinc-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
           </div>
         </div>
 
         <div className="space-y-1.5">
-          <label className="text-xs font-medium text-zinc-300">Handle</label>
+          <label className="text-xs font-medium text-zinc-700">Handle</label>
           <div className="relative">
             <input
               type="text"
@@ -114,7 +114,7 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({
               onChange={(e) => setHandle(e.target.value)}
               placeholder="@alexcreates"
               disabled={isLoading}
-              className="input-soft-recessed w-full pl-9 pr-3.5 py-2.5 rounded-xl text-xs text-zinc-100 placeholder:text-zinc-500 focus:outline-none transition-all font-mono"
+              className="input-soft-recessed w-full pl-9 pr-3.5 py-2.5 rounded-xl text-xs text-zinc-900 placeholder:text-zinc-500 focus:outline-none transition-all font-mono"
             />
             <AtSign className="w-4 h-4 text-zinc-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
           </div>
@@ -123,7 +123,7 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({
 
       {/* Email */}
       <div className="space-y-1.5 text-left">
-        <label className="text-xs font-medium text-zinc-300">Email Address</label>
+        <label className="text-xs font-medium text-zinc-700">Email Address</label>
         <div className="relative">
           <input
             type="email"
@@ -133,7 +133,7 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({
             placeholder="alex@domain.com"
             disabled={isLoading}
             autoComplete="username"
-            className="input-soft-recessed w-full pl-9 pr-3.5 py-2.5 rounded-xl text-xs text-zinc-100 placeholder:text-zinc-500 focus:outline-none transition-all"
+            className="input-soft-recessed w-full pl-9 pr-3.5 py-2.5 rounded-xl text-xs text-zinc-900 placeholder:text-zinc-500 focus:outline-none transition-all"
           />
           <Mail className="w-4 h-4 text-zinc-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
         </div>

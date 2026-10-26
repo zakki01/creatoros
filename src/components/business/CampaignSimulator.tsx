@@ -60,8 +60,8 @@ export const CampaignSimulator: React.FC<CampaignSimulatorProps> = ({
         </div>
 
         {adoptedMessage && (
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-950/40 border border-emerald-500/40 text-emerald-300 text-xs animate-fade-in">
-            <CheckCircle className="w-4 h-4 text-emerald-400" />
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-50 border border-emerald-500/40 text-emerald-800 text-xs animate-fade-in">
+            <CheckCircle className="w-4 h-4 text-emerald-700" />
             <span>{adoptedMessage}</span>
           </div>
         )}
@@ -72,7 +72,7 @@ export const CampaignSimulator: React.FC<CampaignSimulatorProps> = ({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <label className="text-xs font-semibold text-zinc-700 flex items-center gap-2">
-              <Sliders className="w-4 h-4 text-[#0096C7]" />
+              <Sliders className="w-4 h-4 text-[#007E93]" />
               <span>Simulated Budget Variable</span>
             </label>
             <p className="text-xs text-zinc-500 mt-0.5">
@@ -94,7 +94,7 @@ export const CampaignSimulator: React.FC<CampaignSimulatorProps> = ({
           step={50000}
           value={budget}
           onChange={(e) => setBudget(Number(e.target.value))}
-          className="w-full h-2 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-indigo-500"
+          className="w-full h-2 bg-zinc-100 rounded-lg appearance-none cursor-pointer accent-indigo-500"
         />
 
         <div className="flex justify-between text-[11px] font-mono text-zinc-500">
@@ -107,7 +107,7 @@ export const CampaignSimulator: React.FC<CampaignSimulatorProps> = ({
 
       {/* Mandatory Disclaimer as per Specification */}
       <div className="flex items-start gap-3 p-4 rounded-2xl bg-zinc-50 border border-zinc-200 text-xs text-zinc-500">
-        <AlertCircle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+        <AlertCircle className="w-4 h-4 text-amber-800 shrink-0 mt-0.5" />
         <p>
           <strong className="text-zinc-800">Algorithmic Simulation Notice:</strong> Projected ranges for reach, engagement, clicks, and CPA are calculated using platform performance averages, audience saturation modeling, and verified historical creator metrics. They are modeled estimates and not guaranteed business returns.
         </p>
@@ -123,7 +123,7 @@ export const CampaignSimulator: React.FC<CampaignSimulatorProps> = ({
               onClick={() => setSelectedScenarioId(scen.id)}
               className={`rounded-3xl p-6 border transition-all cursor-pointer flex flex-col justify-between ${
                 isSelected
-                  ? 'bg-white border-[#00B4D8] shadow-2xl shadow-xs ring-1 ring-indigo-500'
+                  ? 'bg-white border-[#00B4D8] shadow-2xl shadow-xs ring-1 ring-[#007E93]'
                   : 'bg-white shadow-xs border-zinc-200 hover:border-zinc-300 hover:bg-zinc-100/90'
               }`}
             >
@@ -131,7 +131,7 @@ export const CampaignSimulator: React.FC<CampaignSimulatorProps> = ({
                 {/* Header */}
                 <div>
                   <div className="flex items-center justify-between gap-2 mb-2">
-                    <span className="text-[11px] font-mono text-[#0096C7] font-semibold uppercase tracking-wider">
+                    <span className="text-[11px] font-mono text-[#007E93] font-semibold uppercase tracking-wider">
                       {scen.name.split(':')[0]}
                     </span>
                     <Badge
@@ -187,7 +187,7 @@ export const CampaignSimulator: React.FC<CampaignSimulatorProps> = ({
                       <TrendingUp className="w-3.5 h-3.5 text-zinc-500" />
                       <span>Engagement Rate</span>
                     </span>
-                    <span className="font-mono text-[#0096C7] font-semibold">
+                    <span className="font-mono text-[#007E93] font-semibold">
                       {scen.projectedEngagement}
                     </span>
                   </div>
@@ -212,17 +212,17 @@ export const CampaignSimulator: React.FC<CampaignSimulatorProps> = ({
                   {/* Estimated CPA */}
                   <div className="flex items-center justify-between text-xs py-1">
                     <span className="text-zinc-500 flex items-center gap-1.5">
-                      <DollarSign className="w-3.5 h-3.5 text-emerald-400" />
-                      <span className="font-medium text-emerald-400">Estimated CPA</span>
+                      <DollarSign className="w-3.5 h-3.5 text-emerald-700" />
+                      <span className="font-medium text-emerald-700">Estimated CPA</span>
                     </span>
-                    <span className="font-mono font-bold text-emerald-400">
+                    <span className="font-mono font-bold text-emerald-700">
                       {scen.estimatedCpa}
                     </span>
                   </div>
                 </div>
 
                 {/* Strategy Tag */}
-                <div className="p-2.5 rounded-xl bg-[#00B4D8]/10 border border-[#00B4D8]/20 text-[11px] text-[#0096C7] text-center font-medium">
+                <div className="p-2.5 rounded-xl bg-[#00B4D8]/10 border border-[#00B4D8]/20 text-[11px] text-[#007E93] text-center font-medium">
                   {scen.recommendationTag}
                 </div>
               </div>

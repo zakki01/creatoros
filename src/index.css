@@ -5,32 +5,32 @@
 
 @layer base {
   :root {
-    --background: 210 20% 96%;
+    --background: 210 24% 96%;
     --foreground: 222 47% 11%;
     --card: 0 0% 100%;
     --card-foreground: 222 47% 11%;
     --popover: 0 0% 100%;
     --popover-foreground: 222 47% 11%;
-    --primary: 190 95% 42%;
-    --primary-foreground: 0 0% 98%;
+    --primary: 190 100% 28%;
+    --primary-foreground: 0 0% 100%;
     --secondary: 214 16% 91%;
     --secondary-foreground: 222 47% 11%;
     --muted: 214 16% 91%;
     --muted-foreground: 215 16% 47%;
-    --accent: 190 95% 42%;
-    --accent-foreground: 222 47% 11%;
+    --accent: 190 100% 35%;
+    --accent-foreground: 0 0% 100%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 214 16% 87%;
-    --input: 214 16% 87%;
-    --ring: 190 95% 42%;
+    --border: 214 20% 86%;
+    --input: 214 20% 84%;
+    --ring: 190 100% 28%;
     --radius: 0.875rem;
 
     /* Centralized Spatial 3D Light Studio Surface System */
-    --surface-0: #EAECEF;
+    --surface-0: #EDF0F4;
     --surface-1: #FFFFFF;
-    --surface-2: #F4F6F8;
-    --surface-3: #E4E8EE;
+    --surface-2: #F7F9FC;
+    --surface-3: #E5EAF0;
     --surface-4: #FFFFFF;
 
     /* Depth & Elevation Tokens (Physical Light Studio) */
@@ -48,18 +48,18 @@
     --glass-medium: rgba(255, 255, 255, 0.82);
 
     /* Glassmorphism x Neumorphism Tokens */
-    --glass-bg: rgba(255, 255, 255, 0.88);
-    --glass-bg-strong: rgba(255, 255, 255, 0.95);
-    --glass-bg-subtle: rgba(255, 255, 255, 0.55);
-    --glass-border: rgba(0, 0, 0, 0.08);
-    --glass-border-hover: rgba(0, 0, 0, 0.14);
+    --glass-bg: rgba(255, 255, 255, 0.84);
+    --glass-bg-strong: rgba(255, 255, 255, 0.97);
+    --glass-bg-subtle: rgba(255, 255, 255, 0.62);
+    --glass-border: rgba(77, 93, 112, 0.16);
+    --glass-border-hover: rgba(77, 93, 112, 0.25);
     --glass-highlight: rgba(255, 255, 255, 0.95);
     --glass-blur: 20px;
 
     /* Neumorphic / Soft UI Shadows (Light Studio) */
-    --soft-shadow: 0 12px 32px -8px rgba(15, 23, 42, 0.09), 0 2px 6px 0 rgba(15, 23, 42, 0.04);
-    --soft-shadow-inset: inset 2px 2px 4px 0 rgba(15, 23, 42, 0.06), inset -1px -1px 2px 0 rgba(255, 255, 255, 0.9);
-    --soft-shadow-raised: 0 4px 14px rgba(15, 23, 42, 0.08), inset 0 1px 1px 0 rgba(255, 255, 255, 0.95);
+    --soft-shadow: 0 10px 26px -9px rgba(23, 37, 54, 0.15), 0 2px 5px rgba(23, 37, 54, 0.05);
+    --soft-shadow-inset: inset 1px 2px 4px rgba(23, 37, 54, 0.09), inset -1px -1px 2px rgba(255, 255, 255, 0.95);
+    --soft-shadow-raised: 0 4px 12px rgba(23, 37, 54, 0.10), inset 0 1px 1px rgba(255, 255, 255, 0.95);
     --soft-shadow-pressed: inset 2px 2px 4px 0 rgba(15, 23, 42, 0.12), inset -1px -1px 2px 0 rgba(255, 255, 255, 0.8);
 
     /* Prevent browser text insertion caret from appearing between words on static UI */
@@ -99,7 +99,7 @@
     background-color: var(--surface-0);
     background-image:
       radial-gradient(ellipse 90% 60% at 50% -10%, rgba(255, 255, 255, 0.75), transparent 75%),
-      radial-gradient(ellipse 60% 45% at 85% 15%, rgba(0, 180, 216, 0.04), transparent 65%),
+      radial-gradient(ellipse 60% 45% at 85% 15%, rgba(0, 134, 155, 0.035), transparent 65%),
       radial-gradient(ellipse 55% 50% at 15% 85%, rgba(100, 116, 139, 0.05), transparent 65%);
     background-attachment: fixed;
     @apply text-zinc-900 font-sans antialiased;
@@ -187,7 +187,7 @@
 }
 
 .surface-2 {
-  background: #F4F6F8;
+  background: #F7F9FC;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(0, 0, 0, 0.08);
@@ -196,7 +196,7 @@
 }
 
 .surface-3 {
-  background: #E4E8EE;
+  background: #E5EAF0;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -287,7 +287,7 @@
 }
 
 .surface-soft-recessed {
-  background: #DCE0E6;
+  background: #E0E6ED;
   border: 1px solid rgba(0, 0, 0, 0.06);
   box-shadow: var(--soft-shadow-inset), 0 1px 0 0 rgba(255, 255, 255, 0.8);
 }
@@ -327,7 +327,7 @@
 }
 
 .btn-soft-primary {
-  background: linear-gradient(180deg, #111827 0%, #1F2937 100%);
+  background: linear-gradient(180deg, #078FA5 0%, #006C80 100%);
   color: #FFFFFF;
   border: 1px solid rgba(255, 255, 255, 0.15);
   box-shadow: 0 4px 14px rgba(15, 23, 42, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.3);
@@ -336,7 +336,7 @@
 
 .btn-soft-primary:hover:not(:disabled) {
   transform: translateY(-1px);
-  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.28), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+  box-shadow: 0 8px 20px rgba(0, 108, 128, 0.28), inset 0 1px 1px rgba(255, 255, 255, 0.32);
 }
 
 .btn-soft-primary:active:not(:disabled) {
@@ -368,17 +368,17 @@
 
 /* Tactile Depth Button utility (CreatorOS Cyan Primary CTA) */
 .depth-btn-primary {
-  background: linear-gradient(180deg, #00C4DF 0%, #00A6C7 100%);
-  color: #0B1320;
+  background: linear-gradient(180deg, #078FA5 0%, #006C80 100%);
+  color: #FFFFFF;
   font-weight: 600;
   border: 1px solid rgba(255, 255, 255, 0.6);
-  border-bottom-color: rgba(0, 130, 160, 0.6);
-  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.8), 0 4px 12px -2px rgba(0, 180, 216, 0.4), 0 1px 3px 0 rgba(15, 23, 42, 0.08);
+  border-bottom-color: rgba(0, 50, 65, 0.45);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.8), 0 4px 12px -2px rgba(0, 108, 128, 0.24), 0 1px 3px 0 rgba(15, 23, 42, 0.08);
 }
 
 .depth-btn-primary:hover:not(:disabled) {
-  background: linear-gradient(180deg, #1AD1EA 0%, #00B4D8 100%);
-  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.95), 0 8px 20px -3px rgba(0, 180, 216, 0.5), 0 2px 6px -1px rgba(15, 23, 42, 0.12);
+  background: linear-gradient(180deg, #0798AF 0%, #007C91 100%);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.95), 0 8px 20px -3px rgba(0, 108, 128, 0.3), 0 2px 6px -1px rgba(15, 23, 42, 0.12);
   transform: translateY(-1px);
 }
 
@@ -422,7 +422,7 @@
 }
 
 .glow-accent {
-  box-shadow: 0 0 35px -8px rgba(99, 102, 241, 0.3);
+  box-shadow: 0 0 26px -8px rgba(0, 134, 155, 0.24);
 }
 
 .glow-sky {
@@ -599,3 +599,200 @@ button:not(:disabled):active,
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.22);
 }
 
+
+
+/* ========================================================================
+   CREATOROS LIGHT STUDIO QUALITY LAYER
+   Fixes legacy dark utilities left in components migrated to the light theme.
+   Intentional media/video overlays remain dark; controls and data surfaces do not.
+   ======================================================================== */
+:root {
+  color-scheme: light;
+  --cos-canvas: #EDF0F4;
+  --cos-surface: #FFFFFF;
+  --cos-surface-raised: #FAFBFD;
+  --cos-surface-recessed: #E4E9EF;
+  --cos-border: #D6DEE7;
+  --cos-text: #172536;
+  --cos-text-secondary: #4E5F72;
+  --cos-text-muted: #64758A;
+  --cos-accent: #007E93;
+  --cos-accent-hover: #006779;
+}
+
+/* Native form controls must not inherit dark text on dark fills. */
+select,
+select[class] {
+  color-scheme: light;
+  color: var(--cos-text) !important;
+  background-color: var(--cos-surface) !important;
+  border-color: var(--cos-border) !important;
+  box-shadow: inset 0 1px 2px rgba(23, 37, 54, 0.05), 0 1px 0 rgba(255,255,255,.92);
+}
+select option,
+select optgroup {
+  color: var(--cos-text) !important;
+  background: #FFFFFF !important;
+}
+input,
+textarea {
+  color: var(--cos-text);
+}
+input::placeholder,
+textarea::placeholder {
+  color: #6B7A8C;
+  opacity: 1;
+}
+
+/* Remap accidental dark-neutral utility fills to appropriate light surfaces. */
+[class~="bg-zinc-800"][class~="text-zinc-800"],
+[class~="bg-zinc-800"][class~="text-zinc-900"],
+[class~="bg-zinc-800"][class~="text-zinc-700"],
+[class~="bg-zinc-800"][class~="text-zinc-600"],
+[class~="bg-zinc-800"][class~="text-zinc-500"] {
+  background-color: #F1F4F8 !important;
+  color: var(--cos-text-secondary) !important;
+  border-color: var(--cos-border) !important;
+}
+[class~="bg-zinc-50"],
+[class~="bg-zinc-100"] {
+  background-color: #F1F4F8 !important;
+}
+[class~="hover:bg-zinc-50"]:hover,
+[class~="hover:bg-zinc-100"]:hover,
+[class~="hover:bg-zinc-700"]:hover,
+[class~="hover:bg-zinc-700/60"]:hover {
+  background-color: #E8EDF3 !important;
+}
+
+/* Semantic state fills are corrected only when paired with legacy light-on-dark status text.
+   Do not recolor media overlays or ambient background glows. */
+[class*="bg-emerald-950/"][class~="text-emerald-200"],
+[class*="bg-emerald-950/"][class~="text-emerald-300"],
+[class*="bg-emerald-950/"][class~="text-emerald-400"] {
+  background-color: #ECFDF5 !important;
+  color: #065F46 !important;
+  border-color: #A7F3D0 !important;
+}
+[class*="bg-amber-950/"][class~="text-amber-200"],
+[class*="bg-amber-950/"][class~="text-amber-300"],
+[class*="bg-amber-950/"][class~="text-amber-400"] {
+  background-color: #FFFBEB !important;
+  color: #854D0E !important;
+  border-color: #FDE68A !important;
+}
+[class*="bg-rose-950/"][class~="text-rose-200"],
+[class*="bg-rose-950/"][class~="text-rose-300"],
+[class*="bg-rose-950/"][class~="text-rose-400"] {
+  background-color: #FFF1F2 !important;
+  color: #9F1239 !important;
+  border-color: #FECDD3 !important;
+}
+
+/* Consistent visible focus; avoid competing indigo/cyan rings. */
+:where(button, a, input, textarea, select, [role="button"]):focus-visible {
+  outline: 2px solid rgba(0, 126, 147, 0.72);
+  outline-offset: 2px;
+}
+
+/* Clear, restrained shadow hierarchy; reserve strong elevation for overlays. */
+.glass-card,
+.glass-bento {
+  border-color: #D9E1E9;
+  box-shadow: 0 2px 4px rgba(23, 37, 54, 0.035), 0 8px 20px -14px rgba(23, 37, 54, 0.18), inset 0 1px 0 rgba(255,255,255,.96);
+}
+.glass-card:hover,
+.glass-bento:hover {
+  border-color: #B9C8D7;
+  box-shadow: 0 5px 12px rgba(23, 37, 54, 0.06), 0 16px 28px -18px rgba(23, 37, 54, 0.22);
+}
+.surface-1 { background: #FFFFFF; border-color: #D9E1E9; }
+.surface-2 { background: #F7F9FC; border-color: #D9E1E9; }
+.surface-3 { background: #E8EDF3; border-color: #D2DBE5; }
+.surface-4 { background: rgba(255,255,255,.94); border-color: #D3DDE7; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-float-slow { animation: none !important; }
+}
+
+
+/* Contrast repairs for legacy semantic state combinations in light surfaces. */
+[class~="bg-emerald-50"][class~="text-emerald-300"],
+[class~="bg-emerald-50"][class~="text-emerald-400"] { color: #065F46 !important; }
+[class~="bg-amber-50"][class~="text-amber-200"],
+[class~="bg-amber-50"][class~="text-amber-300"],
+[class~="bg-amber-50"][class~="text-amber-400"] { color: #854D0E !important; }
+input[class~="text-white"],
+textarea[class~="text-white"],
+select[class~="text-white"] { color: var(--cos-text) !important; }
+input[class~="text-white"]::placeholder,
+textarea[class~="text-white"]::placeholder { color: #64758A !important; }
+
+
+/* Final global contrast contract: neutral surfaces always use readable dark text. */
+.surface-1, .surface-2, .surface-3, .surface-4 {
+  color: var(--cos-text);
+}
+.surface-1.text-white, .surface-2.text-white, .surface-3.text-white, .surface-4.text-white {
+  color: var(--cos-text) !important;
+}
+/* White text is appropriate on saturated primary buttons, never on a pale utility button. */
+.depth-btn-secondary:hover, .depth-btn-secondary:hover.text-white,
+button[class~="bg-zinc-100"][class~="text-white"]:hover,
+button[class~="bg-white"][class~="text-white"]:hover {
+  color: #172536 !important;
+}
+[class~="bg-emerald-50"][class~="text-emerald-200"],
+[class~="bg-emerald-50"][class~="text-emerald-300"],
+[class~="bg-emerald-50"][class~="text-emerald-400"] { color: #065F46 !important; }
+[class~="bg-amber-50"][class~="text-amber-200"],
+[class~="bg-amber-50"][class~="text-amber-300"],
+[class~="bg-amber-50"][class~="text-amber-400"] { color: #854D0E !important; }
+[class~="bg-rose-50"][class~="text-rose-200"],
+[class~="bg-rose-50"][class~="text-rose-300"],
+[class~="bg-rose-50"][class~="text-rose-400"] { color: #9F1239 !important; }
+input, textarea, [contenteditable="true"] { caret-color: auto; }
+
+/* Semantic feedback colours: pale status surfaces use dark, AA-friendly foregrounds. */
+[class*="bg-rose-500/"][class~="text-rose-200"],
+[class*="bg-rose-500/"][class~="text-rose-300"],
+[class*="bg-rose-500/"][class~="text-rose-400"],
+[class*="bg-rose-950/"][class~="text-rose-200"],
+[class*="bg-rose-950/"][class~="text-rose-300"],
+[class*="bg-rose-950/"][class~="text-rose-400"] { color: #9F1239 !important; }
+[class*="bg-amber-500/"][class~="text-amber-200"],
+[class*="bg-amber-500/"][class~="text-amber-300"],
+[class*="bg-amber-500/"][class~="text-amber-400"] { color: #854D0E !important; }
+[class*="bg-sky-500/"][class~="text-sky-200"],
+[class*="bg-sky-500/"][class~="text-sky-300"],
+[class*="bg-sky-500/"][class~="text-sky-400"] { color: #075985 !important; }
+[class*="bg-purple-500/"][class~="text-purple-200"],
+[class*="bg-purple-500/"][class~="text-purple-300"],
+[class*="bg-purple-500/"][class~="text-purple-400"] { color: #6B21A8 !important; }
+[class*="bg-indigo-500/"][class~="text-indigo-200"],
+[class*="bg-indigo-500/"][class~="text-indigo-300"],
+[class*="bg-indigo-500/"][class~="text-indigo-400"] { color: #3730A3 !important; }
+
+
+/* Light-theme status chip corrections. Select the chip by both its translucent fill and old pale text. */
+[class*="bg-rose-500/"][class~="text-rose-200"],
+[class*="bg-rose-500/"][class~="text-rose-300"],
+[class*="bg-rose-500/"][class~="text-rose-400"] {
+  background-color: #FFF1F2 !important;
+  border-color: #FECDD3 !important;
+  color: #9F1239 !important;
+}
+[class*="bg-amber-500/"][class~="text-amber-200"],
+[class*="bg-amber-500/"][class~="text-amber-300"],
+[class*="bg-amber-500/"][class~="text-amber-400"] {
+  background-color: #FFFBEB !important;
+  border-color: #FDE68A !important;
+  color: #854D0E !important;
+}
+[class*="bg-emerald-500/"][class~="text-emerald-200"],
+[class*="bg-emerald-500/"][class~="text-emerald-300"],
+[class*="bg-emerald-500/"][class~="text-emerald-400"] {
+  background-color: #ECFDF5 !important;
+  border-color: #A7F3D0 !important;
+  color: #065F46 !important;
+}

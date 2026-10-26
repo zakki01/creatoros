@@ -80,14 +80,14 @@ export const AiCampaignBrain: React.FC<{ onNavigate: (tab: string) => void }> = 
         </div>
 
         <div className="flex items-center gap-2 text-xs text-zinc-500 bg-white border border-zinc-200 px-3.5 py-1.5 rounded-xl">
-          <Sparkles className="w-3.5 h-3.5 text-[#0096C7]" />
-          <span>Active Guardrail: <strong className="text-[#0096C7] uppercase">{automationLevel}</strong></span>
+          <Sparkles className="w-3.5 h-3.5 text-[#007E93]" />
+          <span>Active Guardrail: <strong className="text-[#007E93] uppercase">{automationLevel}</strong></span>
         </div>
       </div>
 
       {actionFeedback && (
-        <div className="p-3.5 rounded-2xl bg-indigo-950/40 border border-[#00B4D8]/40 text-xs text-indigo-200 flex items-center gap-2 animate-fade-in">
-          <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+        <div className="p-3.5 rounded-2xl bg-[#E9FAFC] border border-[#007E93]/20 text-xs text-[#005564] flex items-center gap-2 animate-fade-in">
+          <CheckCircle2 className="w-4 h-4 text-emerald-700 shrink-0" />
           <span>{actionFeedback}</span>
         </div>
       )}
@@ -99,7 +99,7 @@ export const AiCampaignBrain: React.FC<{ onNavigate: (tab: string) => void }> = 
           <div className="p-6 rounded-3xl bg-white border border-zinc-200 space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Bot className="w-5 h-5 text-[#0096C7]" />
+                <Bot className="w-5 h-5 text-[#007E93]" />
                 <h3 className="text-base font-bold text-zinc-900 font-display">
                   Autonomous Risk & Opportunity Detection
                 </h3>
@@ -133,9 +133,9 @@ export const AiCampaignBrain: React.FC<{ onNavigate: (tab: string) => void }> = 
                     </span>
                   </div>
 
-                  <div className="p-3 rounded-xl bg-[#00B4D8]/10 border border-[#00B4D8]/20 text-xs text-indigo-200/90 flex items-center justify-between gap-3">
+                  <div className="p-3 rounded-xl bg-[#00B4D8]/10 border border-[#00B4D8]/20 text-xs text-[#005564] flex items-center justify-between gap-3">
                     <div className="flex items-center gap-2">
-                      <Sparkles className="w-3.5 h-3.5 text-[#0096C7] shrink-0" />
+                      <Sparkles className="w-3.5 h-3.5 text-[#007E93] shrink-0" />
                       <span>{item.recommendedAction}</span>
                     </div>
 
@@ -230,13 +230,13 @@ export const AiCampaignBrain: React.FC<{ onNavigate: (tab: string) => void }> = 
               </div>
               <div className="p-3 rounded-xl bg-zinc-50 border border-zinc-200 flex justify-between items-center">
                 <span className="text-zinc-500">Drafts in AI Pre-Check</span>
-                <span className="font-mono font-bold text-[#0096C7]">
+                <span className="font-mono font-bold text-[#007E93]">
                   {submissions.filter((s) => s.status === 'submitted').length}
                 </span>
               </div>
               <div className="p-3 rounded-xl bg-zinc-50 border border-zinc-200 flex justify-between items-center">
                 <span className="text-zinc-500">Upcoming Payments</span>
-                <span className="font-mono font-bold text-emerald-400">
+                <span className="font-mono font-bold text-emerald-700">
                   ₹{payments.filter((p) => p.status === 'pending').reduce((a, b) => a + b.amount, 0).toLocaleString()}
                 </span>
               </div>
@@ -244,7 +244,7 @@ export const AiCampaignBrain: React.FC<{ onNavigate: (tab: string) => void }> = 
           </Card>
 
           <Card className="p-5 space-y-3 bg-gradient-to-b from-indigo-950/30 to-zinc-900 border-[#00B4D8]/20">
-            <div className="flex items-center gap-2 text-[#0096C7] text-xs font-semibold">
+            <div className="flex items-center gap-2 text-[#007E93] text-xs font-semibold">
               <ShieldCheck className="w-4 h-4" />
               <span>Safe Autopilot Rules</span>
             </div>

@@ -90,13 +90,13 @@ export const SupportPortal: React.FC<SupportPortalProps> = ({ onBack }) => {
     switch (status) {
       case 'OPEN':
         return (
-          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
+          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-50 text-amber-800 border border-amber-500/30">
             OPEN
           </span>
         );
       case 'IN_PROGRESS':
         return (
-          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-indigo-500/20 text-[#0096C7] border border-[#00B4D8]/30">
+          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-[#007E93]/10 text-[#007E93] border border-[#00B4D8]/30">
             IN PROGRESS
           </span>
         );
@@ -108,13 +108,13 @@ export const SupportPortal: React.FC<SupportPortalProps> = ({ onBack }) => {
         );
       case 'RESOLVED':
         return (
-          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-50 text-emerald-800 border border-emerald-500/30">
             RESOLVED
           </span>
         );
       case 'CLOSED':
         return (
-          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-zinc-800 text-zinc-500 border border-zinc-300">
+          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-zinc-100 text-zinc-600 border border-zinc-300">
             CLOSED
           </span>
         );
@@ -135,7 +135,7 @@ export const SupportPortal: React.FC<SupportPortalProps> = ({ onBack }) => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#EAECEF] text-zinc-900 font-sans selection:bg-indigo-500/30 selection:text-indigo-200">
+    <div className="min-h-screen bg-[#EAECEF] text-zinc-900 font-sans selection:bg-[#007E93]/10 selection:text-[#005564]">
       {/* Header Bar */}
       <header className="sticky top-0 z-40 border-b border-black/[0.08] bg-[#EAECEF]/90 backdrop-blur-2xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
@@ -160,7 +160,7 @@ export const SupportPortal: React.FC<SupportPortalProps> = ({ onBack }) => {
                 setActiveTab('new_ticket');
                 setCreatedNotice(null);
               }}
-              className="min-h-[44px] px-3.5 py-2 rounded-xl bg-[#00B4D8] hover:bg-[#0096C7] text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm shadow-xs transition-all cursor-pointer active:scale-95"
+              className="min-h-[44px] px-3.5 py-2 rounded-xl bg-[#007E93] hover:bg-[#006779] text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm shadow-xs transition-all cursor-pointer active:scale-95"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Raise Ticket</span>
@@ -173,14 +173,14 @@ export const SupportPortal: React.FC<SupportPortalProps> = ({ onBack }) => {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
         {/* Banner Alert if Ticket was just created */}
         {createdNotice && (
-          <div className="mb-6 p-4 rounded-2xl bg-emerald-950/20 border border-emerald-500/30 text-emerald-300 flex items-center justify-between gap-3 animate-fade-in">
+          <div className="mb-6 p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 flex items-center justify-between gap-3 animate-fade-in">
             <div className="flex items-center gap-2.5">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+              <CheckCircle2 className="w-4 h-4 text-emerald-700 shrink-0" />
               <span className="text-xs font-medium">{createdNotice}</span>
             </div>
             <button
               onClick={() => setCreatedNotice(null)}
-              className="text-xs text-emerald-400 hover:text-emerald-200"
+              className="text-xs text-emerald-700 hover:text-emerald-200"
             >
               Dismiss
             </button>
@@ -193,7 +193,7 @@ export const SupportPortal: React.FC<SupportPortalProps> = ({ onBack }) => {
             onClick={() => setActiveTab('my_tickets')}
             className={`min-h-[44px] px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center gap-2 ${
               activeTab === 'my_tickets'
-                ? 'bg-zinc-800 text-white border border-black/[0.08]'
+                ? 'bg-[#007E93] text-white border border-black/[0.08]'
                 : 'text-zinc-500 hover:text-zinc-800 hover:bg-zinc-100'
             }`}
           >
@@ -205,7 +205,7 @@ export const SupportPortal: React.FC<SupportPortalProps> = ({ onBack }) => {
             onClick={() => setActiveTab('new_ticket')}
             className={`min-h-[44px] px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center gap-2 ${
               activeTab === 'new_ticket'
-                ? 'bg-zinc-800 text-white border border-black/[0.08]'
+                ? 'bg-[#007E93] text-white border border-black/[0.08]'
                 : 'text-zinc-500 hover:text-zinc-800 hover:bg-zinc-100'
             }`}
           >
@@ -300,7 +300,7 @@ export const SupportPortal: React.FC<SupportPortalProps> = ({ onBack }) => {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="min-h-[44px] px-6 py-2.5 rounded-xl bg-[#00B4D8] hover:bg-[#0096C7] text-white text-xs font-semibold flex items-center gap-2 shadow-sm shadow-xs transition-all cursor-pointer active:scale-95 disabled:opacity-50"
+                  className="min-h-[44px] px-6 py-2.5 rounded-xl bg-[#007E93] hover:bg-[#006779] text-white text-xs font-semibold flex items-center gap-2 shadow-sm shadow-xs transition-all cursor-pointer active:scale-95 disabled:opacity-50"
                 >
                   <Send className="w-3.5 h-3.5" />
                   <span>Submit Ticket</span>
@@ -324,7 +324,7 @@ export const SupportPortal: React.FC<SupportPortalProps> = ({ onBack }) => {
                 </p>
                 <button
                   onClick={() => setActiveTab('new_ticket')}
-                  className="min-h-[44px] px-4 py-2 rounded-xl bg-[#00B4D8] hover:bg-[#0096C7] text-white text-xs font-semibold inline-flex items-center gap-1.5 transition-all cursor-pointer mt-2"
+                  className="min-h-[44px] px-4 py-2 rounded-xl bg-[#007E93] hover:bg-[#006779] text-white text-xs font-semibold inline-flex items-center gap-1.5 transition-all cursor-pointer mt-2"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   <span>Raise Your First Ticket</span>
@@ -342,12 +342,12 @@ export const SupportPortal: React.FC<SupportPortalProps> = ({ onBack }) => {
                         onClick={() => setSelectedTicketId(t.id)}
                         className={`p-4 rounded-2xl border transition-all cursor-pointer text-left ${
                           isSelected
-                            ? 'bg-zinc-800/90 border-[#00B4D8]/50 shadow-md'
-                            : 'bg-white shadow-sm border-black/[0.06] hover:bg-zinc-850 hover:border-black/[0.08]'
+                            ? 'bg-zinc-100 border-[#00B4D8]/50 shadow-md'
+                            : 'bg-white shadow-sm border-black/[0.06] hover:bg-zinc-200 hover:border-black/[0.08]'
                         }`}
                       >
                         <div className="flex items-center justify-between gap-2 mb-1.5">
-                          <span className="text-[11px] font-mono font-bold text-[#0096C7]">
+                          <span className="text-[11px] font-mono font-bold text-[#007E93]">
                             #{t.ticketNumber}
                           </span>
                           {getStatusBadge(t.status)}
@@ -376,11 +376,11 @@ export const SupportPortal: React.FC<SupportPortalProps> = ({ onBack }) => {
                       <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 pb-4 border-b border-black/[0.08]">
                         <div>
                           <div className="flex items-center gap-2 mb-1">
-                            <span className="text-xs font-mono font-bold text-[#0096C7]">
+                            <span className="text-xs font-mono font-bold text-[#007E93]">
                               Ticket #{selectedTicket.ticketNumber}
                             </span>
                             {getStatusBadge(selectedTicket.status)}
-                            <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-800 text-zinc-500">
+                            <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-100 text-zinc-600">
                               {selectedTicket.issueType}
                             </span>
                           </div>
@@ -414,10 +414,10 @@ export const SupportPortal: React.FC<SupportPortalProps> = ({ onBack }) => {
                               >
                                 <div className="flex items-center justify-between gap-2 mb-2 pb-1.5 border-b border-black/[0.04]">
                                   <span className="font-semibold text-white flex items-center gap-1.5">
-                                    {isStaff && <LifeBuoy className="w-3.5 h-3.5 text-[#0096C7]" />}
+                                    {isStaff && <LifeBuoy className="w-3.5 h-3.5 text-[#007E93]" />}
                                     <span>{msg.senderName}</span>
                                     {isStaff && (
-                                      <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-indigo-500/20 text-[#0096C7]">
+                                      <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-[#007E93]/10 text-[#007E93]">
                                         Staff
                                       </span>
                                     )}
@@ -452,7 +452,7 @@ export const SupportPortal: React.FC<SupportPortalProps> = ({ onBack }) => {
                             <button
                               type="submit"
                               disabled={!replyText.trim()}
-                              className="min-h-[44px] px-4 py-2 rounded-xl bg-[#00B4D8] hover:bg-[#0096C7] text-white text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer disabled:opacity-50 active:scale-95"
+                              className="min-h-[44px] px-4 py-2 rounded-xl bg-[#007E93] hover:bg-[#006779] text-white text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer disabled:opacity-50 active:scale-95"
                             >
                               <Send className="w-3.5 h-3.5" />
                               <span>Send Reply</span>

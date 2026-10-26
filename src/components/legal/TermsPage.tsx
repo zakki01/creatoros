@@ -58,7 +58,7 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onBack }) => {
   };
 
   return (
-    <div className="min-h-screen bg-[#EAECEF] text-zinc-900 font-sans selection:bg-indigo-500/30 selection:text-indigo-200">
+    <div className="min-h-screen bg-[#EAECEF] text-zinc-900 font-sans selection:bg-[#007E93]/10 selection:text-[#005564]">
       {/* Top Header */}
       <header className="sticky top-0 z-40 border-b border-black/[0.08] bg-[#EAECEF]/90 backdrop-blur-2xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
@@ -86,7 +86,7 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onBack }) => {
               <Download className="w-3.5 h-3.5" />
               <span>Print</span>
             </button>
-            <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-zinc-800 text-zinc-500 border border-zinc-300">
+            <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-zinc-100 text-zinc-600 border border-zinc-300">
               Oct 2026
             </span>
           </div>
@@ -96,13 +96,13 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onBack }) => {
       {/* Main Content Area */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-10 lg:py-14">
         {/* Counsel Disclaimer Banner */}
-        <div className="mb-10 p-4 sm:p-5 rounded-2xl bg-amber-950/20 border border-amber-500/30 text-amber-200 flex items-start gap-3.5">
-          <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+        <div className="mb-10 p-4 sm:p-5 rounded-2xl bg-amber-50 border border-amber-500/30 text-amber-800 flex items-start gap-3.5">
+          <AlertTriangle className="w-5 h-5 text-amber-800 shrink-0 mt-0.5" />
           <div className="space-y-1">
-            <h4 className="text-xs font-bold text-amber-300 uppercase tracking-wider font-mono">
+            <h4 className="text-xs font-bold text-amber-800 uppercase tracking-wider font-mono">
               Legal Counsel Review Notice
             </h4>
-            <p className="text-xs text-amber-200/90 leading-relaxed">
+            <p className="text-xs text-amber-800/90 leading-relaxed">
               These Terms & Conditions outline the operational governance, contract mechanisms, payment procedures, and dispute resolution rules of CreatorOS. This document is provided for operational staging and must be formally audited and reviewed by qualified jurisdiction-specific commercial legal counsel prior to full production deployment.
             </p>
           </div>
@@ -113,7 +113,7 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onBack }) => {
           <aside className="hidden lg:block lg:col-span-4 sticky top-24 space-y-3">
             <div className="p-4 rounded-2xl bg-white shadow-sm border border-black/[0.08] backdrop-blur-xl">
               <div className="flex items-center gap-2 pb-3 mb-2 border-b border-black/[0.06] text-xs font-bold text-zinc-800 font-mono uppercase tracking-wider">
-                <FileText className="w-4 h-4 text-[#0096C7]" />
+                <FileText className="w-4 h-4 text-[#007E93]" />
                 <span>Document Outline</span>
               </div>
               <div className="max-h-[calc(100vh-200px)] overflow-y-auto space-y-1 pr-1 text-xs">
@@ -124,7 +124,7 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onBack }) => {
                     onClick={() => setActiveSection(sec.id)}
                     className={`block px-3 py-2 rounded-xl transition-all ${
                       activeSection === sec.id
-                        ? 'bg-[#00B4D8]/20 text-[#0096C7] font-semibold border border-[#00B4D8]/30'
+                        ? 'bg-[#00B4D8]/20 text-[#007E93] font-semibold border border-[#00B4D8]/30'
                         : 'text-zinc-500 hover:text-zinc-800 hover:bg-zinc-100/40'
                     }`}
                   >
@@ -150,7 +150,7 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onBack }) => {
             {/* Section 01 */}
             <section id="acceptance" className="space-y-3 pt-6 border-t border-black/[0.06]">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded bg-zinc-800 text-[#0096C7] border border-zinc-300">01</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-zinc-300">01</span>
                 <h2 className="text-lg font-bold text-zinc-900 font-display">Acceptance of Terms</h2>
               </div>
               <p className="text-xs text-zinc-700">
@@ -161,7 +161,7 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onBack }) => {
             {/* Section 02 */}
             <section id="eligibility" className="space-y-3 pt-6 border-t border-black/[0.06]">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded bg-zinc-800 text-[#0096C7] border border-zinc-300">02</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-zinc-300">02</span>
                 <h2 className="text-lg font-bold text-zinc-900 font-display">Eligibility</h2>
               </div>
               <p className="text-xs text-zinc-700">
@@ -172,7 +172,7 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onBack }) => {
             {/* Section 03 */}
             <section id="registration" className="space-y-3 pt-6 border-t border-black/[0.06]">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded bg-zinc-800 text-[#0096C7] border border-zinc-300">03</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-zinc-300">03</span>
                 <h2 className="text-lg font-bold text-zinc-900 font-display">Account Registration & Security</h2>
               </div>
               <p className="text-xs text-zinc-700">
@@ -183,7 +183,7 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onBack }) => {
             {/* Section 04 */}
             <section id="creator-accounts" className="space-y-3 pt-6 border-t border-black/[0.06]">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded bg-zinc-800 text-[#0096C7] border border-zinc-300">04</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-zinc-300">04</span>
                 <h2 className="text-lg font-bold text-zinc-900 font-display">Creator Accounts & Profiles</h2>
               </div>
               <p className="text-xs text-zinc-700">
@@ -194,7 +194,7 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onBack }) => {
             {/* Section 05 */}
             <section id="brand-accounts" className="space-y-3 pt-6 border-t border-black/[0.06]">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded bg-zinc-800 text-[#0096C7] border border-zinc-300">05</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-zinc-300">05</span>
                 <h2 className="text-lg font-bold text-zinc-900 font-display">Brand Accounts & Workspaces</h2>
               </div>
               <p className="text-xs text-zinc-700">
@@ -205,7 +205,7 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onBack }) => {
             {/* Section 06 */}
             <section id="verification" className="space-y-3 pt-6 border-t border-black/[0.06]">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded bg-zinc-800 text-[#0096C7] border border-zinc-300">06</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-zinc-300">06</span>
                 <h2 className="text-lg font-bold text-zinc-900 font-display">Identity & Professional Verification</h2>
               </div>
               <p className="text-xs text-zinc-700">
@@ -216,7 +216,7 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onBack }) => {
             {/* Section 07 */}
             <section id="platform" className="space-y-3 pt-6 border-t border-black/[0.06]">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded bg-zinc-800 text-[#0096C7] border border-zinc-300">07</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-zinc-300">07</span>
                 <h2 className="text-lg font-bold text-zinc-900 font-display">The CreatorOS Platform</h2>
               </div>
               <p className="text-xs text-zinc-700">
@@ -227,7 +227,7 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onBack }) => {
             {/* Section 08 */}
             <section id="campaigns" className="space-y-3 pt-6 border-t border-black/[0.06]">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded bg-zinc-800 text-[#0096C7] border border-zinc-300">08</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-zinc-300">08</span>
                 <h2 className="text-lg font-bold text-zinc-900 font-display">Campaigns & Discovery</h2>
               </div>
               <p className="text-xs text-zinc-700">
@@ -238,7 +238,7 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onBack }) => {
             {/* Section 09 */}
             <section id="contracts" className="space-y-3 pt-6 border-t border-black/[0.06]">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded bg-zinc-800 text-[#0096C7] border border-zinc-300">09</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-zinc-300">09</span>
                 <h2 className="text-lg font-bold text-zinc-900 font-display">Commercial Agreements & Contracts</h2>
               </div>
               <p className="text-xs text-zinc-700">
@@ -249,7 +249,7 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onBack }) => {
             {/* Section 10 */}
             <section id="payments" className="space-y-3 pt-6 border-t border-black/[0.06]">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded bg-zinc-800 text-[#0096C7] border border-zinc-300">10</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-zinc-300">10</span>
                 <h2 className="text-lg font-bold text-zinc-900 font-display">Payment Processing & Escrow Holds</h2>
               </div>
               <p className="text-xs text-zinc-700">
@@ -260,7 +260,7 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onBack }) => {
             {/* Section 11 */}
             <section id="platform-fees" className="space-y-3 pt-6 border-t border-black/[0.06]">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded bg-zinc-800 text-[#0096C7] border border-zinc-300">11</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-zinc-300">11</span>
                 <h2 className="text-lg font-bold text-zinc-900 font-display">Platform Fees (10% Model)</h2>
               </div>
               <p className="text-xs text-zinc-700">
@@ -271,7 +271,7 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onBack }) => {
             {/* Section 12 */}
             <section id="project-protection" className="space-y-3 pt-6 border-t border-black/[0.06]">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded bg-zinc-800 text-[#0096C7] border border-zinc-300">12</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-zinc-300">12</span>
                 <h2 className="text-lg font-bold text-zinc-900 font-display">Project Protection Guarantee</h2>
               </div>
               <p className="text-xs text-zinc-700">
@@ -282,7 +282,7 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onBack }) => {
             {/* Section 13 */}
             <section id="deliverables" className="space-y-3 pt-6 border-t border-black/[0.06]">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded bg-zinc-800 text-[#0096C7] border border-zinc-300">13</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-zinc-300">13</span>
                 <h2 className="text-lg font-bold text-zinc-900 font-display">Deliverables & File Standards</h2>
               </div>
               <p className="text-xs text-zinc-700">
@@ -293,7 +293,7 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onBack }) => {
             {/* Section 14 */}
             <section id="revisions" className="space-y-3 pt-6 border-t border-black/[0.06]">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded bg-zinc-800 text-[#0096C7] border border-zinc-300">14</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-zinc-300">14</span>
                 <h2 className="text-lg font-bold text-zinc-900 font-display">Revisions & Acceptance Windows</h2>
               </div>
               <p className="text-xs text-zinc-700">
@@ -304,7 +304,7 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onBack }) => {
             {/* Section 15 */}
             <section id="usage-rights" className="space-y-3 pt-6 border-t border-black/[0.06]">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded bg-zinc-800 text-[#0096C7] border border-zinc-300">15</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-zinc-300">15</span>
                 <h2 className="text-lg font-bold text-zinc-900 font-display">Usage Rights & Licensing</h2>
               </div>
               <p className="text-xs text-zinc-700">
@@ -315,7 +315,7 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onBack }) => {
             {/* Section 16 */}
             <section id="ip" className="space-y-3 pt-6 border-t border-black/[0.06]">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded bg-zinc-800 text-[#0096C7] border border-zinc-300">16</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-zinc-300">16</span>
                 <h2 className="text-lg font-bold text-zinc-900 font-display">Intellectual Property Ownership</h2>
               </div>
               <p className="text-xs text-zinc-700">
@@ -326,7 +326,7 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onBack }) => {
             {/* Section 17 */}
             <section id="user-content" className="space-y-3 pt-6 border-t border-black/[0.06]">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded bg-zinc-800 text-[#0096C7] border border-zinc-300">17</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-zinc-300">17</span>
                 <h2 className="text-lg font-bold text-zinc-900 font-display">User Content & Portfolio Display</h2>
               </div>
               <p className="text-xs text-zinc-700">
@@ -337,7 +337,7 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onBack }) => {
             {/* Section 18 */}
             <section id="messaging" className="space-y-3 pt-6 border-t border-black/[0.06]">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded bg-zinc-800 text-[#0096C7] border border-zinc-300">18</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-zinc-300">18</span>
                 <h2 className="text-lg font-bold text-zinc-900 font-display">Direct Messaging & Communications</h2>
               </div>
               <p className="text-xs text-zinc-700">
@@ -348,7 +348,7 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onBack }) => {
             {/* Section 19 */}
             <section id="prohibited-conduct" className="space-y-3 pt-6 border-t border-black/[0.06]">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded bg-zinc-800 text-[#0096C7] border border-zinc-300">19</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-zinc-300">19</span>
                 <h2 className="text-lg font-bold text-zinc-900 font-display">Prohibited Conduct & Community Standards</h2>
               </div>
               <p className="text-xs text-zinc-700">
@@ -359,7 +359,7 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onBack }) => {
             {/* Section 20 */}
             <section id="disputes" className="space-y-3 pt-6 border-t border-black/[0.06]">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded bg-zinc-800 text-[#0096C7] border border-zinc-300">20</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-zinc-300">20</span>
                 <h2 className="text-lg font-bold text-zinc-900 font-display">Dispute Arbitration & Resolution</h2>
               </div>
               <p className="text-xs text-zinc-700">
@@ -370,7 +370,7 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onBack }) => {
             {/* Section 21 */}
             <section id="cancellation" className="space-y-3 pt-6 border-t border-black/[0.06]">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded bg-zinc-800 text-[#0096C7] border border-zinc-300">21</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-zinc-300">21</span>
                 <h2 className="text-lg font-bold text-zinc-900 font-display">Cancellation & Termination</h2>
               </div>
               <p className="text-xs text-zinc-700">
@@ -381,7 +381,7 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onBack }) => {
             {/* Section 22 */}
             <section id="refunds" className="space-y-3 pt-6 border-t border-black/[0.06]">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded bg-zinc-800 text-[#0096C7] border border-zinc-300">22</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-zinc-300">22</span>
                 <h2 className="text-lg font-bold text-zinc-900 font-display">Refund Policy</h2>
               </div>
               <p className="text-xs text-zinc-700">
@@ -392,7 +392,7 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onBack }) => {
             {/* Section 23 */}
             <section id="suspension" className="space-y-3 pt-6 border-t border-black/[0.06]">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded bg-zinc-800 text-[#0096C7] border border-zinc-300">23</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-zinc-300">23</span>
                 <h2 className="text-lg font-bold text-zinc-900 font-display">Account Suspension & Sanctions</h2>
               </div>
               <p className="text-xs text-zinc-700">
@@ -403,18 +403,18 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onBack }) => {
             {/* Section 24 */}
             <section id="privacy" className="space-y-3 pt-6 border-t border-black/[0.06]">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded bg-zinc-800 text-[#0096C7] border border-zinc-300">24</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-zinc-300">24</span>
                 <h2 className="text-lg font-bold text-zinc-900 font-display">Data Privacy Reference</h2>
               </div>
               <p className="text-xs text-zinc-700">
-                Our practices regarding personal data collection, processing, cookie utilization, and international data transfers are detailed in the CreatorOS <a href="/privacy" className="text-[#0096C7] underline hover:text-[#0096C7]">Privacy Policy</a>, which is incorporated by reference into these Terms.
+                Our practices regarding personal data collection, processing, cookie utilization, and international data transfers are detailed in the CreatorOS <a href="/privacy" className="text-[#007E93] underline hover:text-[#007E93]">Privacy Policy</a>, which is incorporated by reference into these Terms.
               </p>
             </section>
 
             {/* Section 25 */}
             <section id="liability" className="space-y-3 pt-6 border-t border-black/[0.06]">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded bg-zinc-800 text-[#0096C7] border border-zinc-300">25</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-zinc-300">25</span>
                 <h2 className="text-lg font-bold text-zinc-900 font-display">Limitation of Liability</h2>
               </div>
               <p className="text-xs text-zinc-700">
@@ -425,7 +425,7 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onBack }) => {
             {/* Section 26 */}
             <section id="changes" className="space-y-3 pt-6 border-t border-black/[0.06]">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded bg-zinc-800 text-[#0096C7] border border-zinc-300">26</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-zinc-300">26</span>
                 <h2 className="text-lg font-bold text-zinc-900 font-display">Changes to Terms</h2>
               </div>
               <p className="text-xs text-zinc-700">
@@ -436,11 +436,11 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onBack }) => {
             {/* Section 27 */}
             <section id="contact" className="space-y-3 pt-6 border-t border-black/[0.06]">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded bg-zinc-800 text-[#0096C7] border border-zinc-300">27</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-zinc-300">27</span>
                 <h2 className="text-lg font-bold text-zinc-900 font-display">Contact Information</h2>
               </div>
               <p className="text-xs text-zinc-700">
-                For commercial legal inquiries, dispute escalations, or regulatory compliance questions, contact the CreatorOS Legal Operations team at <strong className="text-white">legal@creatoros.ai</strong> or submit a formal request via the <a href="/support" className="text-[#0096C7] underline hover:text-[#0096C7]">CreatorOS Support Portal</a>.
+                For commercial legal inquiries, dispute escalations, or regulatory compliance questions, contact the CreatorOS Legal Operations team at <strong className="text-white">legal@creatoros.ai</strong> or submit a formal request via the <a href="/support" className="text-[#007E93] underline hover:text-[#007E93]">CreatorOS Support Portal</a>.
               </p>
             </section>
           </div>

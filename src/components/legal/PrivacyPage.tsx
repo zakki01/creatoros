@@ -41,7 +41,7 @@ export const PrivacyPage: React.FC<PrivacyPageProps> = ({ onBack }) => {
   };
 
   return (
-    <div className="min-h-screen bg-[#EAECEF] text-zinc-900 font-sans selection:bg-indigo-500/30 selection:text-indigo-200">
+    <div className="min-h-screen bg-[#EAECEF] text-zinc-900 font-sans selection:bg-[#007E93]/10 selection:text-[#005564]">
       {/* Top Header */}
       <header className="sticky top-0 z-40 border-b border-black/[0.08] bg-[#EAECEF]/90 backdrop-blur-2xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
@@ -69,7 +69,7 @@ export const PrivacyPage: React.FC<PrivacyPageProps> = ({ onBack }) => {
               <Download className="w-3.5 h-3.5" />
               <span>Print</span>
             </button>
-            <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-zinc-800 text-zinc-500 border border-zinc-300">
+            <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-zinc-100 text-zinc-600 border border-zinc-300">
               Oct 2026
             </span>
           </div>
@@ -79,13 +79,13 @@ export const PrivacyPage: React.FC<PrivacyPageProps> = ({ onBack }) => {
       {/* Main Content Area */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-10 lg:py-14">
         {/* Counsel Disclaimer Banner */}
-        <div className="mb-10 p-4 sm:p-5 rounded-2xl bg-amber-950/20 border border-amber-500/30 text-amber-200 flex items-start gap-3.5">
-          <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+        <div className="mb-10 p-4 sm:p-5 rounded-2xl bg-amber-50 border border-amber-500/30 text-amber-800 flex items-start gap-3.5">
+          <AlertTriangle className="w-5 h-5 text-amber-800 shrink-0 mt-0.5" />
           <div className="space-y-1">
-            <h4 className="text-xs font-bold text-amber-300 uppercase tracking-wider font-mono">
+            <h4 className="text-xs font-bold text-amber-800 uppercase tracking-wider font-mono">
               Privacy Governance Notice
             </h4>
-            <p className="text-xs text-amber-200/90 leading-relaxed">
+            <p className="text-xs text-amber-800/90 leading-relaxed">
               This Privacy Policy describes data handling procedures, cookie practices, and security measures applied across CreatorOS. This text is an operational staging draft and should be verified by certified data privacy counsel prior to commercial launch to ensure jurisdictional compliance with GDPR, CCPA, and regional statutes.
             </p>
           </div>
@@ -96,7 +96,7 @@ export const PrivacyPage: React.FC<PrivacyPageProps> = ({ onBack }) => {
           <aside className="hidden lg:block lg:col-span-4 sticky top-24 space-y-3">
             <div className="p-4 rounded-2xl bg-white shadow-sm border border-black/[0.08] backdrop-blur-xl">
               <div className="flex items-center gap-2 pb-3 mb-2 border-b border-black/[0.06] text-xs font-bold text-zinc-800 font-mono uppercase tracking-wider">
-                <FileText className="w-4 h-4 text-[#0096C7]" />
+                <FileText className="w-4 h-4 text-[#007E93]" />
                 <span>Policy Outline</span>
               </div>
               <div className="max-h-[calc(100vh-200px)] overflow-y-auto space-y-1 pr-1 text-xs">
@@ -107,7 +107,7 @@ export const PrivacyPage: React.FC<PrivacyPageProps> = ({ onBack }) => {
                     onClick={() => setActiveSection(sec.id)}
                     className={`block px-3 py-2 rounded-xl transition-all ${
                       activeSection === sec.id
-                        ? 'bg-[#00B4D8]/20 text-[#0096C7] font-semibold border border-[#00B4D8]/30'
+                        ? 'bg-[#00B4D8]/20 text-[#007E93] font-semibold border border-[#00B4D8]/30'
                         : 'text-zinc-500 hover:text-zinc-800 hover:bg-zinc-100/40'
                     }`}
                   >
@@ -133,7 +133,7 @@ export const PrivacyPage: React.FC<PrivacyPageProps> = ({ onBack }) => {
             {/* Section 01 */}
             <section id="overview" className="space-y-3 pt-6 border-t border-black/[0.06]">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded bg-zinc-800 text-[#0096C7] border border-zinc-300">01</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-zinc-300">01</span>
                 <h2 className="text-lg font-bold text-zinc-900 font-display">Privacy Philosophy & Scope</h2>
               </div>
               <p className="text-xs text-zinc-700">
@@ -144,7 +144,7 @@ export const PrivacyPage: React.FC<PrivacyPageProps> = ({ onBack }) => {
             {/* Section 02 */}
             <section id="data-collection" className="space-y-3 pt-6 border-t border-black/[0.06]">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded bg-zinc-800 text-[#0096C7] border border-zinc-300">02</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-zinc-300">02</span>
                 <h2 className="text-lg font-bold text-zinc-900 font-display">Information We Collect</h2>
               </div>
               <p className="text-xs text-zinc-700">
@@ -155,7 +155,7 @@ export const PrivacyPage: React.FC<PrivacyPageProps> = ({ onBack }) => {
             {/* Section 03 */}
             <section id="account-data" className="space-y-3 pt-6 border-t border-black/[0.06]">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded bg-zinc-800 text-[#0096C7] border border-zinc-300">03</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-zinc-300">03</span>
                 <h2 className="text-lg font-bold text-zinc-900 font-display">Account & Identity Data</h2>
               </div>
               <p className="text-xs text-zinc-700">
@@ -166,7 +166,7 @@ export const PrivacyPage: React.FC<PrivacyPageProps> = ({ onBack }) => {
             {/* Section 04 */}
             <section id="creator-brand-info" className="space-y-3 pt-6 border-t border-black/[0.06]">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded bg-zinc-800 text-[#0096C7] border border-zinc-300">04</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-zinc-300">04</span>
                 <h2 className="text-lg font-bold text-zinc-900 font-display">Creator & Brand Information</h2>
               </div>
               <p className="text-xs text-zinc-700">
@@ -177,7 +177,7 @@ export const PrivacyPage: React.FC<PrivacyPageProps> = ({ onBack }) => {
             {/* Section 05 */}
             <section id="messages-content" className="space-y-3 pt-6 border-t border-black/[0.06]">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded bg-zinc-800 text-[#0096C7] border border-zinc-300">05</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-zinc-300">05</span>
                 <h2 className="text-lg font-bold text-zinc-900 font-display">Messages, Content & Uploads</h2>
               </div>
               <p className="text-xs text-zinc-700">
@@ -188,7 +188,7 @@ export const PrivacyPage: React.FC<PrivacyPageProps> = ({ onBack }) => {
             {/* Section 06 */}
             <section id="payments-financial" className="space-y-3 pt-6 border-t border-black/[0.06]">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded bg-zinc-800 text-[#0096C7] border border-zinc-300">06</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-zinc-300">06</span>
                 <h2 className="text-lg font-bold text-zinc-900 font-display">Payments & Financial Data</h2>
               </div>
               <p className="text-xs text-zinc-700">
@@ -199,7 +199,7 @@ export const PrivacyPage: React.FC<PrivacyPageProps> = ({ onBack }) => {
             {/* Section 07 */}
             <section id="cookies-tracking" className="space-y-3 pt-6 border-t border-black/[0.06]">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded bg-zinc-800 text-[#0096C7] border border-zinc-300">07</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-zinc-300">07</span>
                 <h2 className="text-lg font-bold text-zinc-900 font-display">Cookies & Local Storage</h2>
               </div>
               <p className="text-xs text-zinc-700">
@@ -210,7 +210,7 @@ export const PrivacyPage: React.FC<PrivacyPageProps> = ({ onBack }) => {
             {/* Section 08 */}
             <section id="analytics-telemetry" className="space-y-3 pt-6 border-t border-black/[0.06]">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded bg-zinc-800 text-[#0096C7] border border-zinc-300">08</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-zinc-300">08</span>
                 <h2 className="text-lg font-bold text-zinc-900 font-display">Platform Analytics & Telemetry</h2>
               </div>
               <p className="text-xs text-zinc-700">
@@ -221,7 +221,7 @@ export const PrivacyPage: React.FC<PrivacyPageProps> = ({ onBack }) => {
             {/* Section 09 */}
             <section id="third-parties" className="space-y-3 pt-6 border-t border-black/[0.06]">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded bg-zinc-800 text-[#0096C7] border border-zinc-300">09</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-zinc-300">09</span>
                 <h2 className="text-lg font-bold text-zinc-900 font-display">Third-Party Service Providers</h2>
               </div>
               <p className="text-xs text-zinc-700">
@@ -232,7 +232,7 @@ export const PrivacyPage: React.FC<PrivacyPageProps> = ({ onBack }) => {
             {/* Section 10 */}
             <section id="data-retention" className="space-y-3 pt-6 border-t border-black/[0.06]">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded bg-zinc-800 text-[#0096C7] border border-zinc-300">10</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-zinc-300">10</span>
                 <h2 className="text-lg font-bold text-zinc-900 font-display">Data Retention Schedules</h2>
               </div>
               <p className="text-xs text-zinc-700">
@@ -243,7 +243,7 @@ export const PrivacyPage: React.FC<PrivacyPageProps> = ({ onBack }) => {
             {/* Section 11 */}
             <section id="security-encryption" className="space-y-3 pt-6 border-t border-black/[0.06]">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded bg-zinc-800 text-[#0096C7] border border-zinc-300">11</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-zinc-300">11</span>
                 <h2 className="text-lg font-bold text-zinc-900 font-display">Security & Encryption Controls</h2>
               </div>
               <p className="text-xs text-zinc-700">
@@ -254,7 +254,7 @@ export const PrivacyPage: React.FC<PrivacyPageProps> = ({ onBack }) => {
             {/* Section 12 */}
             <section id="user-rights" className="space-y-3 pt-6 border-t border-black/[0.06]">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded bg-zinc-800 text-[#0096C7] border border-zinc-300">12</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-zinc-300">12</span>
                 <h2 className="text-lg font-bold text-zinc-900 font-display">Your Rights (GDPR & CCPA)</h2>
               </div>
               <p className="text-xs text-zinc-700">
@@ -265,7 +265,7 @@ export const PrivacyPage: React.FC<PrivacyPageProps> = ({ onBack }) => {
             {/* Section 13 */}
             <section id="international-transfers" className="space-y-3 pt-6 border-t border-black/[0.06]">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded bg-zinc-800 text-[#0096C7] border border-zinc-300">13</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-zinc-300">13</span>
                 <h2 className="text-lg font-bold text-zinc-900 font-display">Cross-Border Data Transfers</h2>
               </div>
               <p className="text-xs text-zinc-700">
@@ -276,11 +276,11 @@ export const PrivacyPage: React.FC<PrivacyPageProps> = ({ onBack }) => {
             {/* Section 14 */}
             <section id="contact" className="space-y-3 pt-6 border-t border-black/[0.06]">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-mono px-2 py-0.5 rounded bg-zinc-800 text-[#0096C7] border border-zinc-300">14</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-zinc-300">14</span>
                 <h2 className="text-lg font-bold text-zinc-900 font-display">Data Protection Officer Contact</h2>
               </div>
               <p className="text-xs text-zinc-700">
-                To submit a Subject Access Request (SAR), exercise privacy rights, or contact our Data Protection Officer, email <strong className="text-white">privacy@creatoros.ai</strong> or submit an inquiry through the <a href="/support" className="text-[#0096C7] underline hover:text-[#0096C7]">CreatorOS Support Portal</a>.
+                To submit a Subject Access Request (SAR), exercise privacy rights, or contact our Data Protection Officer, email <strong className="text-white">privacy@creatoros.ai</strong> or submit an inquiry through the <a href="/support" className="text-[#007E93] underline hover:text-[#007E93]">CreatorOS Support Portal</a>.
               </p>
             </section>
           </div>

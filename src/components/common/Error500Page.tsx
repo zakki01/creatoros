@@ -69,7 +69,7 @@ export const Error500Page: React.FC<Error500PageProps> = ({
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
             <button
               onClick={handleReload}
-              className="w-full sm:w-auto min-h-[44px] px-5 py-2.5 rounded-xl bg-[#00B4D8] hover:bg-[#0096C7] text-white text-xs font-semibold flex items-center justify-center gap-2 shadow-sm shadow-xs transition-all cursor-pointer active:scale-95"
+              className="w-full sm:w-auto min-h-[44px] px-5 py-2.5 rounded-xl bg-[#007E93] hover:bg-[#006779] text-white text-xs font-semibold flex items-center justify-center gap-2 shadow-sm shadow-xs transition-all cursor-pointer active:scale-95"
             >
               <RefreshCw className="w-3.5 h-3.5" />
               <span>Retry Request</span>

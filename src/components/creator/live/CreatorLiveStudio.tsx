@@ -234,11 +234,11 @@ export const CreatorLiveStudio: React.FC = () => {
       {/* Studio Header */}
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-2.5">
-          <h1 className="text-xl sm:text-2xl font-bold text-white font-display tracking-tight">
+          <h1 className="text-xl sm:text-2xl font-bold text-zinc-900 font-display tracking-tight">
             Live Studio
           </h1>
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-mono uppercase bg-indigo-500/15 text-indigo-300 border border-indigo-500/30">
-            <Sparkles className="w-3 h-3 text-indigo-400" />
+          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-mono uppercase bg-[#007E93]/10 text-[#006779] border border-[#007E93]/25">
+            <Sparkles className="w-3 h-3 text-[#007E93]" />
             Realtime AI
           </span>
         </div>
@@ -292,7 +292,7 @@ export const CreatorLiveStudio: React.FC = () => {
             disabled={isRecording}
           />
 
-          <div className="h-px bg-white/[0.07]" />
+          <div className="h-px bg-zinc-200" />
 
           <LiveReferencePanel
             referenceImage={referenceImage}

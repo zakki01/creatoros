@@ -78,7 +78,7 @@ export const CreatorProfileModal: React.FC<CreatorProfileModalProps> = ({
                 {creator.name}
               </h2>
               {creator.verified && (
-                <ShieldCheck className="w-4 h-4 text-[#0096C7]" />
+                <ShieldCheck className="w-4 h-4 text-[#007E93]" />
               )}
               <span className="text-xs text-zinc-500 font-mono">@{creator.handle}</span>
             </div>
@@ -135,8 +135,8 @@ export const CreatorProfileModal: React.FC<CreatorProfileModalProps> = ({
               <div className="p-4 rounded-2xl bg-[#00B4D8]/10 border border-[#00B4D8]/30 space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <Sparkles className="w-4 h-4 text-[#0096C7]" />
-                    <h4 className="text-xs font-semibold text-[#0096C7] uppercase tracking-wider">
+                    <Sparkles className="w-4 h-4 text-[#007E93]" />
+                    <h4 className="text-xs font-semibold text-[#007E93] uppercase tracking-wider">
                       Why This Creator Matches ({creator.aiMatchScore}% Campaign Fit)
                     </h4>
                   </div>
@@ -176,13 +176,13 @@ export const CreatorProfileModal: React.FC<CreatorProfileModalProps> = ({
               </div>
               <div className="p-3.5 rounded-2xl bg-white shadow-xs border border-zinc-200 text-center">
                 <p className="text-[10px] text-zinc-500 uppercase font-medium">Avg Engagement</p>
-                <p className="text-lg font-bold text-[#0096C7] font-mono mt-0.5">
+                <p className="text-lg font-bold text-[#007E93] font-mono mt-0.5">
                   {creator.avgEngagement}%
                 </p>
               </div>
               <div className="p-3.5 rounded-2xl bg-white shadow-xs border border-zinc-200 text-center">
                 <p className="text-[10px] text-zinc-500 uppercase font-medium">On-Time Delivery</p>
-                <p className="text-lg font-bold text-emerald-400 font-mono mt-0.5">
+                <p className="text-lg font-bold text-emerald-700 font-mono mt-0.5">
                   {creator.reliabilityMetrics.onTimeDelivery}%
                 </p>
               </div>
@@ -210,7 +210,7 @@ export const CreatorProfileModal: React.FC<CreatorProfileModalProps> = ({
                         <span className="text-zinc-700">{loc.city}</span>
                         <span className="font-mono text-zinc-500">{loc.pct}%</span>
                       </div>
-                      <div className="w-full bg-zinc-800 h-1.5 rounded-full overflow-hidden">
+                      <div className="w-full bg-zinc-100 h-1.5 rounded-full overflow-hidden">
                         <div
                           className="bg-indigo-500 h-full rounded-full"
                           style={{ width: `${loc.pct}%` }}
@@ -231,7 +231,7 @@ export const CreatorProfileModal: React.FC<CreatorProfileModalProps> = ({
                         <span className="text-zinc-700">{age.range} years</span>
                         <span className="font-mono text-zinc-500">{age.pct}%</span>
                       </div>
-                      <div className="w-full bg-zinc-800 h-1.5 rounded-full overflow-hidden">
+                      <div className="w-full bg-zinc-100 h-1.5 rounded-full overflow-hidden">
                         <div
                           className="bg-purple-500 h-full rounded-full"
                           style={{ width: `${age.pct}%` }}
@@ -328,9 +328,9 @@ export const CreatorProfileModal: React.FC<CreatorProfileModalProps> = ({
                         <span className="font-semibold text-zinc-700">{item.label}</span>
                         <span className="text-[10px] text-zinc-500 ml-2 hidden sm:inline">{item.desc}</span>
                       </div>
-                      <span className="font-mono font-bold text-[#0096C7]">{item.score}%</span>
+                      <span className="font-mono font-bold text-[#007E93]">{item.score}%</span>
                     </div>
-                    <div className="w-full bg-zinc-800 h-2 rounded-full overflow-hidden">
+                    <div className="w-full bg-zinc-100 h-2 rounded-full overflow-hidden">
                       <div
                         className="bg-gradient-to-r from-indigo-500 to-emerald-400 h-full rounded-full"
                         style={{ width: `${item.score}%` }}
@@ -353,7 +353,7 @@ export const CreatorProfileModal: React.FC<CreatorProfileModalProps> = ({
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <div className="w-6 h-6 rounded-lg bg-zinc-800 flex items-center justify-center text-xs font-bold text-zinc-700">
+                    <div className="w-6 h-6 rounded-lg bg-zinc-100 flex items-center justify-center text-xs font-bold text-zinc-700">
                       {t.brandName.slice(0, 1)}
                     </div>
                     <div>
@@ -363,7 +363,7 @@ export const CreatorProfileModal: React.FC<CreatorProfileModalProps> = ({
                       </span>
                     </div>
                   </div>
-                  <div className="flex items-center gap-1 text-amber-400">
+                  <div className="flex items-center gap-1 text-amber-800">
                     <Star className="w-3.5 h-3.5 fill-current" />
                     <span className="text-xs font-bold font-mono">{t.rating}.0</span>
                   </div>

@@ -7,10 +7,10 @@
 export const tokens = {
   colors: {
     // Surface hierarchy (Light Studio Foundation)
-    bgBase: '#EAECEF',       // Soft gray studio canvas
+    bgBase: '#EDF0F4',       // Soft gray studio canvas
     bgSurface: '#FFFFFF',    // Crisp white card & sheet surface
-    bgElevated: '#F4F6F8',   // Popover & elevated card surface
-    bgSubtle: '#DFE3E8',     // Hover & subtle interactive fills
+    bgElevated: '#F7F9FC',   // Popover & elevated card surface
+    bgSubtle: '#E4E9EF',     // Hover & subtle interactive fills
 
     // Borders & Dividers
     borderSubtle: 'rgba(0, 0, 0, 0.08)',
@@ -19,21 +19,21 @@ export const tokens = {
 
     // Text Hierarchy
     textPrimary: '#0F172A',   // slate-900 (titles, prominent labels)
-    textSecondary: '#475569', // slate-600 (descriptions, handles)
-    textMuted: '#64748B',     // slate-500 (timestamps, inactive states)
+    textSecondary: '#4E5F72', // slate-600 (descriptions, handles)
+    textMuted: '#64758A',     // slate-500 (timestamps, inactive states)
 
     // Semantic Accents (CreatorOS Electric Cyan + Balanced Accents)
-    primary: '#00B4D8',       // cyan-500 / brand accent
-    primaryHover: '#0096C7',  // cyan-600
+    primary: '#007E93',       // cyan-500 / brand accent
+    primaryHover: '#006779',  // cyan-600
     primaryLight: 'rgba(0, 180, 216, 0.12)',
 
-    success: '#059669',       // emerald-600
+    success: '#047857',       // emerald-600
     successLight: 'rgba(5, 150, 105, 0.12)',
 
-    danger: '#E11D48',        // rose-600
+    danger: '#B4233C',        // rose-600
     dangerLight: 'rgba(225, 29, 72, 0.12)',
 
-    warning: '#D97706',       // amber-600
+    warning: '#92400E',       // amber-600
     warningLight: 'rgba(217, 119, 6, 0.12)',
   },
 

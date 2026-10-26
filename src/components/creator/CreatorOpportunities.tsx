@@ -95,11 +95,11 @@ export const CreatorOpportunities: React.FC = () => {
 
                   {/* Compensation + Match */}
                   <div className="flex items-center gap-3 shrink-0">
-                    <span className="text-base sm:text-lg font-bold font-mono text-emerald-400">
+                    <span className="text-base sm:text-lg font-bold font-mono text-emerald-700">
                       ₹{opp.proposedFee.toLocaleString()}
                     </span>
-                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-[#00B4D8]/10 border border-[#00B4D8]/30 text-[#0096C7] text-xs font-semibold">
-                      <Sparkles className="w-3 h-3 text-[#0096C7]" />
+                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-[#00B4D8]/10 border border-[#00B4D8]/30 text-[#007E93] text-xs font-semibold">
+                      <Sparkles className="w-3 h-3 text-[#007E93]" />
                       94% Match
                     </span>
                   </div>
@@ -139,7 +139,7 @@ export const CreatorOpportunities: React.FC = () => {
                     </div>
 
                   ) : isConfirmed ? (
-                    <span className="text-xs text-emerald-400 font-medium flex items-center gap-1">
+                    <span className="text-xs text-emerald-700 font-medium flex items-center gap-1">
                       <Check className="w-3.5 h-3.5" />
                       <span>Campaign Accepted • Contract Generated</span>
                     </span>

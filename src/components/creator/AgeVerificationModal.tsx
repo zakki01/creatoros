@@ -44,18 +44,18 @@ export const AgeVerificationModal: React.FC<AgeVerificationModalProps> = ({
       <div className="relative w-full max-w-lg rounded-2xl bg-white border border-black/[0.08] shadow-2xl p-6 md:p-8 shadow-2xl space-y-5">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-1.5 rounded-lg text-zinc-500 hover:text-white hover:bg-zinc-100 transition-colors"
+          className="absolute top-4 right-4 p-1.5 rounded-lg text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 transition-colors"
         >
           <X className="w-5 h-5" />
         </button>
 
         {/* Header */}
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shrink-0">
-            <ShieldCheck className="w-6 h-6 text-emerald-400" />
+          <div className="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-500/20 flex items-center justify-center shrink-0">
+            <ShieldCheck className="w-6 h-6 text-emerald-700" />
           </div>
           <div>
-            <h2 className="text-base font-bold text-white tracking-tight font-mono">
+            <h2 className="text-base font-bold text-zinc-900 tracking-tight font-mono">
               18+ Age & Child Safety Verification
             </h2>
             <p className="text-xs text-zinc-500 mt-0.5">
@@ -77,8 +77,8 @@ export const AgeVerificationModal: React.FC<AgeVerificationModalProps> = ({
           <span
             className={`px-2.5 py-1 rounded-full text-xs font-semibold ${
               ageVerification.ageVerified
-                ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
-                : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'
+                ? 'bg-emerald-50 text-emerald-700 border border-emerald-500/20'
+                : 'bg-amber-50 text-amber-800 border border-amber-500/20'
             }`}
           >
             {ageVerification.ageVerified ? (
@@ -96,7 +96,7 @@ export const AgeVerificationModal: React.FC<AgeVerificationModalProps> = ({
         <form onSubmit={handleVerify} className="space-y-4">
           <div className="space-y-1">
             <label className="text-xs font-medium text-zinc-700 flex items-center gap-1.5">
-              <Calendar className="w-3.5 h-3.5 text-[#0096C7]" />
+              <Calendar className="w-3.5 h-3.5 text-[#007E93]" />
               <span>Date of Birth (Must be 18+ to accept commercial brand campaigns)</span>
             </label>
             <input
@@ -136,7 +136,7 @@ export const AgeVerificationModal: React.FC<AgeVerificationModalProps> = ({
           {/* Child Safety & Automated Moderation Note */}
           <div className="p-3.5 rounded-xl bg-zinc-50 border border-zinc-200 text-[11px] text-zinc-500 space-y-1.5">
             <div className="flex items-center gap-1.5 font-semibold text-zinc-700">
-              <Lock className="w-3.5 h-3.5 text-[#0096C7]" />
+              <Lock className="w-3.5 h-3.5 text-[#007E93]" />
               <span>Automated Deliverable Moderation Scan</span>
             </div>
             <p className="leading-relaxed">
@@ -146,7 +146,7 @@ export const AgeVerificationModal: React.FC<AgeVerificationModalProps> = ({
           </div>
 
           {submissionFeedback && (
-            <div className="p-2.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-xs text-emerald-400 flex items-center gap-2">
+            <div className="p-2.5 rounded-lg bg-emerald-50 border border-emerald-500/20 text-xs text-emerald-700 flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 shrink-0" />
               <span>{submissionFeedback}</span>
             </div>
@@ -156,7 +156,7 @@ export const AgeVerificationModal: React.FC<AgeVerificationModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 rounded-xl text-xs text-zinc-500 hover:text-white"
+              className="px-4 py-2 rounded-xl text-xs text-zinc-600 hover:text-zinc-900"
             >
               Close
             </button>

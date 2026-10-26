@@ -36,9 +36,9 @@ export const LandingAuth: React.FC<LandingAuthProps> = ({ onEnterApp }) => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-[#09090b] text-zinc-900 flex flex-col justify-between p-6 sm:p-12 relative overflow-hidden font-sans">
+    <div className="min-h-screen w-full bg-[#EAECEF] text-zinc-900 flex flex-col justify-between p-6 sm:p-12 relative overflow-hidden font-sans">
       {/* Subtle ambient background glow */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-gradient-to-tr from-indigo-600/15 via-purple-600/10 to-emerald-600/15 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-gradient-to-tr from-[#007E93]/10 via-white/30 to-[#00B4D8]/10 rounded-full blur-[140px] pointer-events-none" />
 
       {/* Top Header */}
       <header className="flex items-center justify-between max-w-6xl w-full mx-auto relative z-10">
@@ -67,13 +67,13 @@ export const LandingAuth: React.FC<LandingAuthProps> = ({ onEnterApp }) => {
             onClick={() => handleSelect('business')}
             className={`p-7 rounded-3xl border transition-all cursor-pointer flex flex-col justify-between space-y-5 ${
               selectedRole === 'business'
-                ? 'bg-white border-[#00B4D8] shadow-2xl shadow-indigo-500/15 ring-2 ring-indigo-500/50'
+                ? 'bg-white border-[#00B4D8] shadow-xl shadow-slate-900/10 ring-2 ring-[#007E93]/35'
                 : 'bg-white shadow-sm border-zinc-200 hover:border-zinc-300 hover:bg-zinc-100/90'
             }`}
           >
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <div className="w-12 h-12 rounded-2xl bg-[#00B4D8]/20 text-[#0096C7] border border-[#00B4D8]/30 flex items-center justify-center">
+                <div className="w-12 h-12 rounded-2xl bg-[#00B4D8]/20 text-[#007E93] border border-[#00B4D8]/30 flex items-center justify-center">
                   <Building2 className="w-6 h-6" />
                 </div>
                 {selectedRole === 'business' && (
@@ -87,7 +87,7 @@ export const LandingAuth: React.FC<LandingAuthProps> = ({ onEnterApp }) => {
                 <h3 className="text-xl font-bold text-zinc-900 font-display">
                   Business & Brand App
                 </h3>
-                <p className="text-xs text-[#0096C7] font-medium mt-0.5">
+                <p className="text-xs text-[#007E93] font-medium mt-0.5">
                   "Run my influencer campaigns."
                 </p>
                 <p className="text-xs text-zinc-500 mt-2 leading-relaxed">
@@ -97,15 +97,15 @@ export const LandingAuth: React.FC<LandingAuthProps> = ({ onEnterApp }) => {
 
               <div className="space-y-2 text-xs text-zinc-700 pt-2 border-t border-zinc-200">
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-[#0096C7]" />
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#007E93]" />
                   <span>AI Attention Center & Proactive Risk Engine</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-[#0096C7]" />
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#007E93]" />
                   <span>Campaign Simulator (Scenario A vs B vs C)</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-[#0096C7]" />
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#007E93]" />
                   <span>Automated AI Pre-Check on Video Submissions</span>
                 </div>
               </div>
@@ -132,7 +132,7 @@ export const LandingAuth: React.FC<LandingAuthProps> = ({ onEnterApp }) => {
           >
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <div className="w-12 h-12 rounded-2xl bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center">
+                <div className="w-12 h-12 rounded-2xl bg-emerald-600/20 text-emerald-700 border border-emerald-500/30 flex items-center justify-center">
                   <UserCheck className="w-6 h-6" />
                 </div>
                 {selectedRole === 'creator' && (
@@ -146,7 +146,7 @@ export const LandingAuth: React.FC<LandingAuthProps> = ({ onEnterApp }) => {
                 <h3 className="text-xl font-bold text-zinc-900 font-display">
                   Creator Studio App
                 </h3>
-                <p className="text-xs text-emerald-400 font-medium mt-0.5">
+                <p className="text-xs text-emerald-700 font-medium mt-0.5">
                   "Grow my creator business."
                 </p>
                 <p className="text-xs text-zinc-500 mt-2 leading-relaxed">
@@ -156,15 +156,15 @@ export const LandingAuth: React.FC<LandingAuthProps> = ({ onEnterApp }) => {
 
               <div className="space-y-2 text-xs text-zinc-700 pt-2 border-t border-zinc-200">
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-700" />
                   <span>Creator Passport™ with Verified Platform Metrics</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-700" />
                   <span>Instant Escrow Payouts (50% Advance Guaranteed)</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-700" />
                   <span>Strict Data Privacy: Confidential Brand Data Isolated</span>
                 </div>
               </div>

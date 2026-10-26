@@ -97,7 +97,7 @@ export const AdminLogsView: React.FC = () => {
               onClick={() => setResultFilter(st.id)}
               className={`px-3 py-1.5 rounded-lg text-xs font-sans font-medium transition-all cursor-pointer ${
                 resultFilter === st.id
-                  ? 'bg-[#00B4D8] text-white shadow-xs'
+                  ? 'bg-[#007E93] text-white shadow-xs'
                   : 'bg-zinc-100 text-zinc-600 hover:text-zinc-900'
               }`}
             >
@@ -165,13 +165,13 @@ export const AdminLogsView: React.FC = () => {
                     {/* Result */}
                     <td className="py-3.5 px-4 text-right whitespace-nowrap">
                       {isSuccess && (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-50 text-emerald-700 border border-emerald-500/30">
                           <CheckCircle2 className="w-3 h-3" />
                           SUCCESS
                         </span>
                       )}
                       {isWarning && (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono bg-amber-500/15 text-amber-300 border border-amber-500/30">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono bg-amber-50 text-amber-800 border border-amber-500/30">
                           <AlertTriangle className="w-3 h-3" />
                           WARNING
                         </span>

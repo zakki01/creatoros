@@ -54,8 +54,8 @@ export const CreatorCampaigns: React.FC<{
               variant="outline"
               size="sm"
               onClick={() => onNavigate('live')}
-              leftIcon={<Video className="w-3.5 h-3.5 text-[#0096C7]" />}
-              className="border-[#00B4D8]/30 hover:border-indigo-500/60 text-zinc-800"
+              leftIcon={<Video className="w-3.5 h-3.5 text-[#007E93]" />}
+              className="border-[#00B4D8]/30 hover:border-[#007E93]/40 text-zinc-800"
             >
               Live Studio
             </Button>
@@ -93,7 +93,7 @@ export const CreatorCampaigns: React.FC<{
                     </Badge>
                   </div>
                   <p className="text-xs text-zinc-500 mt-0.5">
-                    Aura Streetwear Co. · <strong className="text-emerald-400 font-mono">₹{camp.proposedFee.toLocaleString()}</strong>
+                    Aura Streetwear Co. · <strong className="text-emerald-700 font-mono">₹{camp.proposedFee.toLocaleString()}</strong>
                   </p>
                 </div>
 
@@ -113,13 +113,13 @@ export const CreatorCampaigns: React.FC<{
               <div className="p-4 rounded-2xl bg-zinc-50 border border-zinc-200 space-y-3">
                 <div className="flex items-center justify-between text-xs">
                   <span className="font-semibold text-zinc-700">Campaign Milestone Tracker</span>
-                  <span className="font-mono text-emerald-400 font-semibold">Stage 2 of 4 Active</span>
+                  <span className="font-mono text-emerald-700 font-semibold">Stage 2 of 4 Active</span>
                 </div>
 
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-1">
                   {/* Step 1 */}
-                  <div className="p-3 rounded-xl bg-emerald-950/20 border border-emerald-500/30 text-xs space-y-1">
-                    <div className="flex items-center gap-1.5 text-emerald-400 font-semibold">
+                  <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-500/30 text-xs space-y-1">
+                    <div className="flex items-center gap-1.5 text-emerald-700 font-semibold">
                       <CheckCircle2 className="w-3.5 h-3.5" />
                       <span>1. Contract Signed</span>
                     </div>
@@ -128,8 +128,8 @@ export const CreatorCampaigns: React.FC<{
 
                   {/* Step 2 */}
                   <div className="p-3 rounded-xl bg-[#00B4D8]/10 border border-[#00B4D8]/40 text-xs space-y-1">
-                    <div className="flex items-center gap-1.5 text-[#0096C7] font-semibold">
-                      <Clock className="w-3.5 h-3.5 text-[#0096C7] animate-pulse" />
+                    <div className="flex items-center gap-1.5 text-[#007E93] font-semibold">
+                      <Clock className="w-3.5 h-3.5 text-[#007E93] animate-pulse" />
                       <span>2. Content Submission</span>
                     </div>
                     <p className="text-[10px] text-zinc-500">Draft uploaded for AI pre-check</p>

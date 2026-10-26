@@ -164,7 +164,7 @@ export const ContractsWorkspace: React.FC<ContractsWorkspaceProps> = ({
 
         <button
           onClick={() => setViewMode('new')}
-          className="min-h-[44px] px-5 py-2.5 rounded-xl bg-[#00B4D8] hover:bg-[#0096C7] text-slate-950 text-xs font-bold flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer active:scale-95 self-start sm:self-auto shrink-0"
+          className="min-h-[44px] px-5 py-2.5 rounded-xl bg-[#007E93] hover:bg-[#006779] text-slate-950 text-xs font-bold flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer active:scale-95 self-start sm:self-auto shrink-0"
         >
           <Plus className="w-4 h-4" />
           <span>Create Contract</span>
@@ -192,7 +192,7 @@ export const ContractsWorkspace: React.FC<ContractsWorkspaceProps> = ({
 
         <div className="p-3.5 rounded-xl bg-white border border-black/[0.08] shadow-xs space-y-1">
           <span className="text-[10px] font-mono uppercase text-zinc-500 block">Dispute-Free Rate</span>
-          <p className="text-base font-bold text-[#0096C7] font-mono">98.4%</p>
+          <p className="text-base font-bold text-[#007E93] font-mono">98.4%</p>
         </div>
       </div>
 
@@ -291,7 +291,7 @@ export const ContractsWorkspace: React.FC<ContractsWorkspaceProps> = ({
 
           <button
             onClick={() => setViewMode('new')}
-            className="min-h-[44px] px-5 py-2.5 rounded-xl bg-[#00B4D8] hover:bg-[#0096C7] text-slate-950 text-xs font-bold inline-flex items-center gap-1.5 shadow-sm transition-all cursor-pointer"
+            className="min-h-[44px] px-5 py-2.5 rounded-xl bg-[#007E93] hover:bg-[#006779] text-slate-950 text-xs font-bold inline-flex items-center gap-1.5 shadow-sm transition-all cursor-pointer"
           >
             <Plus className="w-4 h-4" />
             <span>Create Contract</span>

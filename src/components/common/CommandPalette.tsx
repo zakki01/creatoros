@@ -107,7 +107,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
 
         {/* Search Input */}
         <div className="flex items-center px-4 py-3.5 border-b border-zinc-200 bg-zinc-50/70">
-          <Search className="w-4 h-4 text-[#0096C7] mr-3 shrink-0" />
+          <Search className="w-4 h-4 text-[#007E93] mr-3 shrink-0" />
           <input
             type="text"
             placeholder="Jump to workspace, creator, or campaign..."
@@ -138,7 +138,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
                     className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-zinc-100 text-left transition-all text-zinc-800 group cursor-pointer"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="p-1.5 rounded-lg bg-zinc-100 border border-zinc-200 text-zinc-600 group-hover:text-[#0096C7] group-hover:border-[#00B4D8]/40 transition-colors">
+                      <div className="p-1.5 rounded-lg bg-zinc-100 border border-zinc-200 text-zinc-600 group-hover:text-[#007E93] group-hover:border-[#00B4D8]/40 transition-colors">
                         <Icon className="w-4 h-4" />
                       </div>
                       <span className="text-xs font-medium text-zinc-900">{item.title}</span>

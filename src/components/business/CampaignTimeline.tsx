@@ -113,7 +113,7 @@ export const CampaignTimeline: React.FC = () => {
               onClick={() => setActiveCampaignId(c.id)}
               className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-all ${
                 c.id === activeCampaign.id
-                  ? 'bg-[#00B4D8] text-white shadow-sm'
+                  ? 'bg-[#007E93] text-white shadow-sm'
                   : 'bg-white text-zinc-500 hover:text-zinc-800 border border-zinc-200'
               }`}
             >
@@ -124,10 +124,10 @@ export const CampaignTimeline: React.FC = () => {
       </div>
 
       {/* Overdue / Blocker Alert Banner */}
-      <div className="p-4 rounded-2xl bg-amber-950/20 border border-amber-500/30 flex items-start gap-3 text-xs">
-        <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+      <div className="p-4 rounded-2xl bg-amber-50 border border-amber-500/30 flex items-start gap-3 text-xs">
+        <AlertTriangle className="w-5 h-5 text-amber-800 shrink-0 mt-0.5" />
         <div className="space-y-1">
-          <p className="font-semibold text-amber-300">
+          <p className="font-semibold text-amber-800">
             Active Milestone Blocker Detected: Content Submission Wave 1
           </p>
           <p className="text-zinc-700 leading-relaxed">
@@ -137,7 +137,7 @@ export const CampaignTimeline: React.FC = () => {
       </div>
 
       {/* Visual Pipeline Timeline Cards */}
-      <div className="relative pl-6 space-y-6 before:absolute before:left-2.5 before:top-3 before:bottom-3 before:w-0.5 before:bg-zinc-800">
+      <div className="relative pl-6 space-y-6 before:absolute before:left-2.5 before:top-3 before:bottom-3 before:w-0.5 before:bg-zinc-100">
         {timelineStages.map((stage, idx) => {
           const isDone = stage.status === 'completed';
           const isActive = stage.status === 'active';
@@ -149,7 +149,7 @@ export const CampaignTimeline: React.FC = () => {
                   isDone
                     ? 'bg-emerald-500 border-emerald-400 text-white'
                     : isActive
-                    ? 'bg-[#00B4D8] border-indigo-400 text-white ring-4 ring-indigo-500/20 animate-pulse-subtle'
+                    ? 'bg-[#00B4D8] border-indigo-400 text-white ring-4 ring-[#007E93]/20 animate-pulse-subtle'
                     : 'bg-white border-zinc-300 text-zinc-500'
                 }`}
               >
@@ -194,8 +194,8 @@ export const CampaignTimeline: React.FC = () => {
                 </p>
 
                 {stage.blockers && (
-                  <div className="p-2.5 rounded-xl bg-amber-950/30 border border-amber-500/30 flex items-center gap-2 text-[11px] text-amber-300">
-                    <AlertTriangle className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                  <div className="p-2.5 rounded-xl bg-amber-50 border border-amber-200 flex items-center gap-2 text-[11px] text-amber-800">
+                    <AlertTriangle className="w-3.5 h-3.5 text-amber-800 shrink-0" />
                     <span><strong>Active Blocker:</strong> {stage.blockers}</span>
                   </div>
                 )}

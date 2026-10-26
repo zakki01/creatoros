@@ -151,7 +151,7 @@ export const AdminSettingsView: React.FC = () => {
                             <div className="w-4 h-4 rounded-full bg-white shadow-sm" />
                           </div>
                         ) : (
-                          <div className="w-9 h-5 rounded-full bg-zinc-800 p-0.5 flex items-center justify-start border border-zinc-300">
+                          <div className="w-9 h-5 rounded-full bg-zinc-100 p-0.5 flex items-center justify-start border border-zinc-300">
                             <div className="w-4 h-4 rounded-full bg-zinc-500 shadow-sm" />
                           </div>
                         )}
@@ -160,7 +160,7 @@ export const AdminSettingsView: React.FC = () => {
 
                     <div className="flex items-center justify-between pt-2 border-t border-black/[0.04] text-[10px] font-mono">
                       <span className="text-zinc-500">Status</span>
-                      <span className={isActive ? 'text-emerald-400 font-bold' : 'text-zinc-600'}>
+                      <span className={isActive ? 'text-emerald-700 font-bold' : 'text-zinc-600'}>
                         {isActive ? 'ACTIVE' : 'DISABLED'}
                       </span>
                     </div>
@@ -186,7 +186,7 @@ export const AdminSettingsView: React.FC = () => {
           </div>
 
           {isSaved && (
-            <span className="px-3 py-1 rounded-full text-xs font-mono bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center gap-1.5 animate-fadeIn">
+            <span className="px-3 py-1 rounded-full text-xs font-mono bg-emerald-50 text-emerald-800 border border-emerald-500/30 flex items-center gap-1.5 animate-fadeIn">
               <CheckCircle2 className="w-3.5 h-3.5" />
               Settings Applied
             </span>
@@ -205,7 +205,7 @@ export const AdminSettingsView: React.FC = () => {
                 onChange={(e) =>
                   setLocalSettings({ ...localSettings, maxVideoSizeMb: parseInt(e.target.value) || 100 })
                 }
-                className="w-full px-3.5 py-2.5 rounded-xl bg-white shadow-sm border border-black/[0.08] text-xs text-white focus:outline-none focus:border-sky-500/50"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-white shadow-sm border border-zinc-200 text-xs text-zinc-900 focus:outline-none focus:border-sky-500/50"
               />
               <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs font-mono text-zinc-500">
                 MB
@@ -225,7 +225,7 @@ export const AdminSettingsView: React.FC = () => {
                 onChange={(e) =>
                   setLocalSettings({ ...localSettings, maxBlogWords: parseInt(e.target.value) || 2000 })
                 }
-                className="w-full px-3.5 py-2.5 rounded-xl bg-white shadow-sm border border-black/[0.08] text-xs text-white focus:outline-none focus:border-sky-500/50"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-white shadow-sm border border-zinc-200 text-xs text-zinc-900 focus:outline-none focus:border-sky-500/50"
               />
               <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs font-mono text-zinc-500">
                 words
@@ -245,7 +245,7 @@ export const AdminSettingsView: React.FC = () => {
                 onChange={(e) =>
                   setLocalSettings({ ...localSettings, rateLimitPerMinute: parseInt(e.target.value) || 60 })
                 }
-                className="w-full px-3.5 py-2.5 rounded-xl bg-white shadow-sm border border-black/[0.08] text-xs text-white focus:outline-none focus:border-sky-500/50"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-white shadow-sm border border-zinc-200 text-xs text-zinc-900 focus:outline-none focus:border-sky-500/50"
               />
               <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs font-mono text-zinc-500">
                 req/min

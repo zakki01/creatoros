@@ -53,7 +53,7 @@ export const LiveCamera: React.FC<LiveCameraProps> = ({
 
       {/* 3D Studio Monitor Viewport Container */}
       <div
-        className={`relative rounded-3xl overflow-hidden surface-3 border border-white/15 shadow-[0_28px_60px_-14px_rgba(0,0,0,0.9),inset_0_1px_0_0_rgba(255,255,255,0.22)] transition-all duration-300 flex items-center justify-center ${getAspectClasses()}`}
+        className={`relative rounded-3xl overflow-hidden bg-zinc-900 border border-zinc-700 shadow-[0_24px_48px_-18px_rgba(15,23,42,0.35),inset_0_1px_0_0_rgba(255,255,255,0.16)] transition-all duration-300 flex items-center justify-center ${getAspectClasses()}`}
       >
         {/* Subtle scene backdrop preview when camera is off */}
         {!displayStream && activeScene.thumbnailUrl && (
@@ -92,7 +92,7 @@ export const LiveCamera: React.FC<LiveCameraProps> = ({
 
             {/* Live watermark indicator */}
             {isLive && (
-              <div className="absolute bottom-3.5 left-3.5 z-20 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/75 backdrop-blur-md border border-emerald-500/35 text-[10px] font-mono text-emerald-400 pointer-events-none">
+              <div className="absolute bottom-3.5 left-3.5 z-20 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/75 backdrop-blur-md border border-emerald-500/35 text-[10px] font-mono text-emerald-700 pointer-events-none">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                 <span>LIVE AI</span>
               </div>

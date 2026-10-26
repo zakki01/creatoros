@@ -23,7 +23,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
   accentColor = 'indigo',
 }) => {
   const activeColorStyles = {
-    indigo: 'text-[#0096C7]',
+    indigo: 'text-[#007E93]',
     emerald: 'text-emerald-700',
   };
 

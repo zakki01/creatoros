@@ -105,7 +105,7 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({
             <span className="text-xs font-mono font-bold tracking-widest text-zinc-700 uppercase">
               CreatorOS
             </span>
-            <span className="px-1.5 py-0.5 rounded text-[9px] font-mono uppercase bg-rose-500/20 text-rose-300 border border-rose-500/30 font-bold">
+            <span className="px-1.5 py-0.5 rounded text-[9px] font-mono uppercase bg-rose-500/20 text-rose-800 border border-rose-200 font-bold">
               ROOT ENCLAVE
             </span>
           </div>
@@ -126,24 +126,24 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({
         <div className="rounded-2xl bg-white shadow-sm border border-zinc-200 backdrop-blur-2xl shadow-2xl p-6 sm:p-8 space-y-6">
           {/* Header */}
           <div className="space-y-2 text-center">
-            <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 mb-1">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-700 mb-1">
               <ShieldAlert className="w-6 h-6" />
             </div>
-            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-white font-sans">
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 font-sans">
               CreatorOS Command Center
             </h1>
-            <p className="text-xs text-rose-400/90 font-mono tracking-wide">
+            <p className="text-xs text-rose-700 font-mono tracking-wide">
               Super Admin Access
             </p>
           </div>
 
           {/* Security Alert / Error */}
           {errorMessage && (
-            <div className="flex items-start gap-2.5 p-3 rounded-xl bg-rose-500/10 border border-rose-500/25 text-xs text-rose-300 animate-fade-in">
-              <AlertCircle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
+            <div className="flex items-start gap-2.5 p-3 rounded-xl bg-rose-50 border border-rose-200 text-xs text-rose-800 animate-fade-in">
+              <AlertCircle className="w-4 h-4 text-rose-700 shrink-0 mt-0.5" />
               <div className="space-y-0.5">
                 <span className="font-semibold block">Authentication Notice</span>
-                <span className="text-[11px] leading-relaxed block text-rose-200/90">
+                <span className="text-[11px] leading-relaxed block text-rose-700">
                   {errorMessage}
                 </span>
               </div>
@@ -151,7 +151,7 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({
           )}
 
           {lockoutTimer !== null && lockoutTimer > 0 && (
-            <div className="flex items-center justify-between p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-xs text-amber-300 font-mono">
+            <div className="flex items-center justify-between p-3 rounded-xl bg-amber-50 border border-amber-500/30 text-xs text-amber-800 font-mono">
               <span>Security Lockdown:</span>
               <span className="font-bold">{lockoutTimer}s remaining</span>
             </div>
@@ -174,7 +174,7 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({
                   placeholder="admin@creatoros.ai"
                   required
                   disabled={isLoading || (lockoutTimer !== null && lockoutTimer > 0)}
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white shadow-sm border border-zinc-200 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500/40 transition-all font-mono"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white shadow-sm border border-zinc-200 text-xs text-zinc-900 placeholder-zinc-600 focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500/40 transition-all font-mono"
                 />
               </div>
             </div>
@@ -194,7 +194,7 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({
                   placeholder="••••••••••••"
                   required
                   disabled={isLoading || (lockoutTimer !== null && lockoutTimer > 0)}
-                  className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-white shadow-sm border border-zinc-200 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500/40 transition-all font-mono"
+                  className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-white shadow-sm border border-zinc-200 text-xs text-zinc-900 placeholder-zinc-600 focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500/40 transition-all font-mono"
                 />
                 <button
                   type="button"
@@ -221,7 +221,7 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({
                   onChange={(e) => setTwoFactorCode(e.target.value.replace(/\D/g, ''))}
                   placeholder="6-digit code e.g. 849201"
                   disabled={isLoading || (lockoutTimer !== null && lockoutTimer > 0)}
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white shadow-sm border border-zinc-200 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500/40 transition-all font-mono tracking-widest"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white shadow-sm border border-zinc-200 text-xs text-zinc-900 placeholder-zinc-600 focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500/40 transition-all font-mono tracking-widest"
                 />
               </div>
             </div>

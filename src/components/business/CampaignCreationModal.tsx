@@ -170,7 +170,7 @@ export const CampaignCreationModal: React.FC<CampaignCreationModalProps> = ({
       maxWidth="3xl"
       title={
         <div className="flex items-center gap-2.5">
-          <div className="p-1.5 rounded-xl bg-[#00B4D8]/20 text-[#0096C7] border border-[#00B4D8]/30">
+          <div className="p-1.5 rounded-xl bg-[#00B4D8]/20 text-[#007E93] border border-[#00B4D8]/30">
             <Sparkles className="w-4 h-4" />
           </div>
           <div>
@@ -244,7 +244,7 @@ export const CampaignCreationModal: React.FC<CampaignCreationModalProps> = ({
                   ? 'bg-indigo-500 shadow-sm shadow-indigo-500/50'
                   : i + 1 < step
                   ? 'bg-zinc-600'
-                  : 'bg-zinc-800'
+                  : 'bg-zinc-100'
               }`}
             />
           ))}
@@ -271,13 +271,13 @@ export const CampaignCreationModal: React.FC<CampaignCreationModalProps> = ({
                     onClick={() => setObjective(obj)}
                     className={`p-3.5 rounded-2xl border text-left transition-all ${
                       objective === obj
-                        ? 'bg-indigo-950/40 border-[#00B4D8] text-white shadow-sm'
+                        ? 'bg-[#E9FAFC] border-[#007E93] text-zinc-900 shadow-sm'
                         : 'bg-white shadow-xs border-zinc-200 hover:border-zinc-300 text-zinc-700'
                     }`}
                   >
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-semibold">{obj}</span>
-                      {objective === obj && <Check className="w-3.5 h-3.5 text-[#0096C7]" />}
+                      {objective === obj && <Check className="w-3.5 h-3.5 text-[#007E93]" />}
                     </div>
                   </button>
                 ))}
@@ -354,7 +354,7 @@ export const CampaignCreationModal: React.FC<CampaignCreationModalProps> = ({
                   onClick={() => setBudget(preset)}
                   className={`p-3 rounded-xl border text-center text-xs font-mono font-medium transition-colors ${
                     budget === preset
-                      ? 'bg-indigo-900/30 border-[#00B4D8] text-[#0096C7]'
+                      ? 'bg-indigo-900/30 border-[#00B4D8] text-[#007E93]'
                       : 'bg-white shadow-xs border-zinc-200 text-zinc-500 hover:text-zinc-800'
                   }`}
                 >
@@ -381,13 +381,13 @@ export const CampaignCreationModal: React.FC<CampaignCreationModalProps> = ({
                     onClick={() => togglePlatform(plat)}
                     className={`p-4 rounded-2xl border text-left transition-all ${
                       isSelected
-                        ? 'bg-indigo-950/40 border-[#00B4D8] text-white'
+                        ? 'bg-[#E9FAFC] border-[#007E93] text-zinc-900'
                         : 'bg-white shadow-xs border-zinc-200 text-zinc-500 hover:border-zinc-300'
                     }`}
                   >
                     <div className="flex items-center justify-between">
                       <span className="text-sm font-semibold">{plat}</span>
-                      {isSelected && <Check className="w-4 h-4 text-[#0096C7]" />}
+                      {isSelected && <Check className="w-4 h-4 text-[#007E93]" />}
                     </div>
                   </button>
                 );
@@ -419,7 +419,7 @@ export const CampaignCreationModal: React.FC<CampaignCreationModalProps> = ({
                       updated[idx].type = e.target.value as DeliverableType;
                       setDeliverables(updated);
                     }}
-                    className="bg-zinc-800 text-zinc-900 text-xs px-3 py-2 rounded-xl border border-zinc-300 focus:outline-none"
+                    className="bg-zinc-100 text-zinc-900 text-xs px-3 py-2 rounded-xl border border-zinc-300 focus:outline-none"
                   >
                     {deliverableTypesList.map((t) => (
                       <option key={t} value={t}>
@@ -438,7 +438,7 @@ export const CampaignCreationModal: React.FC<CampaignCreationModalProps> = ({
                         updated[idx].count = Number(e.target.value);
                         setDeliverables(updated);
                       }}
-                      className="w-16 bg-zinc-800 text-zinc-900 text-xs font-mono px-2.5 py-1.5 rounded-xl border border-zinc-300 text-center"
+                      className="w-16 bg-zinc-100 text-zinc-900 text-xs font-mono px-2.5 py-1.5 rounded-xl border border-zinc-300 text-center"
                     />
                   </div>
 
@@ -452,7 +452,7 @@ export const CampaignCreationModal: React.FC<CampaignCreationModalProps> = ({
                         updated[idx].rate = Number(e.target.value);
                         setDeliverables(updated);
                       }}
-                      className="w-24 bg-zinc-800 text-zinc-900 text-xs font-mono px-2.5 py-1.5 rounded-xl border border-zinc-300 text-right"
+                      className="w-24 bg-zinc-100 text-zinc-900 text-xs font-mono px-2.5 py-1.5 rounded-xl border border-zinc-300 text-right"
                     />
                   </div>
                 </div>
@@ -523,7 +523,7 @@ export const CampaignCreationModal: React.FC<CampaignCreationModalProps> = ({
           <div className="space-y-6">
             {isGeneratingPlan || !aiPlan ? (
               <div className="py-16 text-center space-y-3">
-                <Sparkles className="w-8 h-8 text-[#0096C7] animate-spin mx-auto" />
+                <Sparkles className="w-8 h-8 text-[#007E93] animate-spin mx-auto" />
                 <p className="text-sm font-semibold text-zinc-800">
                   AI Campaign Architect Synthesizing Optimal Strategy...
                 </p>
@@ -536,8 +536,8 @@ export const CampaignCreationModal: React.FC<CampaignCreationModalProps> = ({
                 {/* Strategic summary */}
                 <div className="p-4 rounded-2xl bg-[#00B4D8]/10 border border-[#00B4D8]/30">
                   <div className="flex items-center gap-2 mb-1">
-                    <Sparkles className="w-4 h-4 text-[#0096C7]" />
-                    <h4 className="text-xs font-semibold text-[#0096C7] uppercase tracking-wider">
+                    <Sparkles className="w-4 h-4 text-[#007E93]" />
+                    <h4 className="text-xs font-semibold text-[#007E93] uppercase tracking-wider">
                       Strategic AI Blueprint
                     </h4>
                   </div>
@@ -564,7 +564,7 @@ export const CampaignCreationModal: React.FC<CampaignCreationModalProps> = ({
                       >
                         <div className="flex items-center justify-between">
                           <span className="text-xs font-semibold text-zinc-800">{mix.tier}</span>
-                          <span className="text-[10px] text-[#0096C7] font-mono font-medium">
+                          <span className="text-[10px] text-[#007E93] font-mono font-medium">
                             {mix.percentage}% budget
                           </span>
                         </div>
@@ -578,7 +578,7 @@ export const CampaignCreationModal: React.FC<CampaignCreationModalProps> = ({
                               updated[idx].count = Math.max(1, Number(e.target.value));
                               setEditableMix(updated);
                             }}
-                            className="w-16 bg-zinc-800 text-zinc-900 text-xs font-mono px-2 py-1 rounded-lg border border-zinc-300 text-center"
+                            className="w-16 bg-zinc-100 text-zinc-900 text-xs font-mono px-2 py-1 rounded-lg border border-zinc-300 text-center"
                           />
                           <span className="text-xs text-zinc-500">creators</span>
                         </div>
@@ -606,7 +606,7 @@ export const CampaignCreationModal: React.FC<CampaignCreationModalProps> = ({
                         <p className="text-sm font-bold text-zinc-900 font-mono mt-0.5">
                           {kpi.target}
                         </p>
-                        <p className="text-[10px] text-[#0096C7]/80 mt-0.5">{kpi.benchmark}</p>
+                        <p className="text-[10px] text-[#007E93]/80 mt-0.5">{kpi.benchmark}</p>
                       </div>
                     ))}
                   </div>

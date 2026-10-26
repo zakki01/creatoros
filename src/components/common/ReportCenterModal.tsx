@@ -90,11 +90,11 @@ export const ReportCenterModal: React.FC<ReportCenterModalProps> = ({
                 onClick={() => setReportType(type.id)}
                 className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
                   isSelected
-                    ? 'bg-zinc-800/90 border-[#00B4D8]/80 text-white shadow-md'
+                    ? 'bg-[#007E93] border-[#007E93] text-white shadow-md'
                     : 'bg-white shadow-sm border-zinc-200 text-zinc-500 hover:text-zinc-800 hover:border-zinc-300'
                 }`}
               >
-                <Icon className={`w-4 h-4 mb-2 ${isSelected ? 'text-[#0096C7]' : 'text-zinc-500'}`} />
+                <Icon className={`w-4 h-4 mb-2 ${isSelected ? 'text-[#007E93]' : 'text-zinc-500'}`} />
                 <span className="text-xs font-semibold block">{type.label}</span>
               </button>
             );
@@ -122,7 +122,7 @@ export const ReportCenterModal: React.FC<ReportCenterModalProps> = ({
                   onClick={() => setDateRange(range.id as any)}
                   className={`py-1.5 text-[11px] font-mono rounded-lg transition-colors cursor-pointer ${
                     dateRange === range.id
-                      ? 'bg-zinc-800 text-white font-semibold'
+                      ? 'bg-[#007E93] text-white font-semibold'
                       : 'text-zinc-500 hover:text-zinc-800'
                   }`}
                 >
@@ -152,7 +152,7 @@ export const ReportCenterModal: React.FC<ReportCenterModalProps> = ({
                     onClick={() => setVisibility(vis.id as any)}
                     className={`py-1.5 text-[11px] flex items-center justify-center gap-1.5 rounded-lg transition-colors cursor-pointer ${
                       visibility === vis.id
-                        ? 'bg-zinc-800 text-white font-semibold'
+                        ? 'bg-[#007E93] text-white font-semibold'
                         : 'text-zinc-500 hover:text-zinc-800'
                     }`}
                   >
@@ -169,7 +169,7 @@ export const ReportCenterModal: React.FC<ReportCenterModalProps> = ({
         <div className="p-4 rounded-2xl bg-zinc-50 border border-black/[0.08] space-y-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <FileText className="w-4 h-4 text-emerald-400" />
+              <FileText className="w-4 h-4 text-emerald-700" />
               <span className="text-xs font-bold text-zinc-800 uppercase font-mono tracking-wider">
                 Summary Manifest Preview
               </span>
@@ -186,7 +186,7 @@ export const ReportCenterModal: React.FC<ReportCenterModalProps> = ({
             </div>
             <div className="p-2.5 rounded-xl bg-zinc-50 border border-black/[0.06]">
               <span className="text-[10px] text-zinc-500 block font-mono">Conversion ROAS</span>
-              <span className="text-sm font-bold font-mono text-emerald-400">3.82x Lift</span>
+              <span className="text-sm font-bold font-mono text-emerald-700">3.82x Lift</span>
             </div>
             <div className="p-2.5 rounded-xl bg-zinc-50 border border-black/[0.06]">
               <span className="text-[10px] text-zinc-500 block font-mono">Disbursed Escrow</span>
@@ -194,7 +194,7 @@ export const ReportCenterModal: React.FC<ReportCenterModalProps> = ({
             </div>
             <div className="p-2.5 rounded-xl bg-zinc-50 border border-black/[0.06]">
               <span className="text-[10px] text-zinc-500 block font-mono">Verified Sign-off</span>
-              <span className="text-sm font-bold font-mono text-[#0096C7]">100% Attributed</span>
+              <span className="text-sm font-bold font-mono text-[#007E93]">100% Attributed</span>
             </div>
           </div>
         </div>
@@ -202,14 +202,14 @@ export const ReportCenterModal: React.FC<ReportCenterModalProps> = ({
         {/* Public Share Link Bar if Public or Workspace */}
         {visibility !== 'private' && (
           <div className="p-3 rounded-xl bg-[#00B4D8]/10 border border-[#00B4D8]/30 flex items-center justify-between gap-3">
-            <div className="min-w-0 flex items-center gap-2 text-xs text-indigo-200 truncate">
-              <Share2 className="w-4 h-4 shrink-0 text-[#0096C7]" />
+            <div className="min-w-0 flex items-center gap-2 text-xs text-[#005564] truncate">
+              <Share2 className="w-4 h-4 shrink-0 text-[#007E93]" />
               <span className="truncate font-mono text-[11px]">{shareableUrl}</span>
             </div>
             <button
               type="button"
               onClick={handleCopyLink}
-              className="shrink-0 px-3 py-1.5 rounded-lg bg-[#00B4D8] hover:bg-[#0096C7] text-white text-xs font-medium flex items-center gap-1.5 transition-colors cursor-pointer"
+              className="shrink-0 px-3 py-1.5 rounded-lg bg-[#007E93] hover:bg-[#006779] text-white text-xs font-medium flex items-center gap-1.5 transition-colors cursor-pointer"
             >
               {isCopied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
               <span>{isCopied ? 'Copied' : 'Copy Link'}</span>
@@ -225,7 +225,7 @@ export const ReportCenterModal: React.FC<ReportCenterModalProps> = ({
           <Button
             variant="outline"
             size="md"
-            leftIcon={<FileSpreadsheet className="w-4 h-4 text-emerald-400" />}
+            leftIcon={<FileSpreadsheet className="w-4 h-4 text-emerald-700" />}
             onClick={() => handleExport('csv')}
             disabled={isExporting !== null}
             className="cursor-pointer border-zinc-300 text-zinc-800"
@@ -238,7 +238,7 @@ export const ReportCenterModal: React.FC<ReportCenterModalProps> = ({
             leftIcon={<Download className="w-4 h-4" />}
             onClick={() => handleExport('pdf')}
             disabled={isExporting !== null}
-            className="bg-[#00B4D8] hover:bg-[#0096C7] text-white shadow-indigo-600/20 cursor-pointer"
+            className="bg-[#007E93] hover:bg-[#006779] text-white shadow-teal-900/15 cursor-pointer"
           >
             {isExporting === 'pdf' ? 'Generating PDF...' : 'Download Executive PDF'}
           </Button>

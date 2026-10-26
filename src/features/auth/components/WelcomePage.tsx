@@ -128,7 +128,7 @@ export const WelcomePage: React.FC<WelcomePageProps> = ({
 
               {/* Metric 2 */}
               <div className="flex flex-col items-center sm:items-start text-center sm:text-left pt-2 sm:pt-0 sm:px-3">
-                <span className="text-base sm:text-lg font-bold font-mono text-[#0096C7] tracking-tight">
+                <span className="text-base sm:text-lg font-bold font-mono text-[#007E93] tracking-tight">
                   ₹4.2 Cr+
                 </span>
                 <span className="text-[11px] font-sans text-zinc-500 font-medium">

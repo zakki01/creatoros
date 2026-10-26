@@ -88,8 +88,8 @@ export const CreatorAiStudio: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-zinc-200">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-xl font-bold tracking-tight text-white font-mono flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-[#0096C7]" />
+            <h1 className="text-xl font-bold tracking-tight text-zinc-900 font-mono flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-[#007E93]" />
               <span>Creator AI Studio</span>
             </h1>
             <span className="px-2 py-0.5 rounded-full text-[10px] font-mono bg-purple-500/10 text-purple-400 border border-purple-500/20">
@@ -106,7 +106,7 @@ export const CreatorAiStudio: React.FC = () => {
           <button
             onClick={() => setActiveTool('hooks')}
             className={`px-3 py-1.5 rounded-lg font-medium transition-all ${
-              activeTool === 'hooks' ? 'bg-zinc-800 text-white' : 'text-zinc-500 hover:text-zinc-800'
+              activeTool === 'hooks' ? 'bg-[#007E93] text-white' : 'text-zinc-500 hover:text-zinc-800'
             }`}
           >
             Viral Hooks
@@ -114,7 +114,7 @@ export const CreatorAiStudio: React.FC = () => {
           <button
             onClick={() => setActiveTool('script')}
             className={`px-3 py-1.5 rounded-lg font-medium transition-all ${
-              activeTool === 'script' ? 'bg-zinc-800 text-white' : 'text-zinc-500 hover:text-zinc-800'
+              activeTool === 'script' ? 'bg-[#007E93] text-white' : 'text-zinc-500 hover:text-zinc-800'
             }`}
           >
             Video Script
@@ -122,7 +122,7 @@ export const CreatorAiStudio: React.FC = () => {
           <button
             onClick={() => setActiveTool('caption')}
             className={`px-3 py-1.5 rounded-lg font-medium transition-all ${
-              activeTool === 'caption' ? 'bg-zinc-800 text-white' : 'text-zinc-500 hover:text-zinc-800'
+              activeTool === 'caption' ? 'bg-[#007E93] text-white' : 'text-zinc-500 hover:text-zinc-800'
             }`}
           >
             Captions
@@ -130,7 +130,7 @@ export const CreatorAiStudio: React.FC = () => {
           <button
             onClick={() => setActiveTool('compliance')}
             className={`px-3 py-1.5 rounded-lg font-medium transition-all ${
-              activeTool === 'compliance' ? 'bg-zinc-800 text-white' : 'text-zinc-500 hover:text-zinc-800'
+              activeTool === 'compliance' ? 'bg-[#007E93] text-white' : 'text-zinc-500 hover:text-zinc-800'
             }`}
           >
             Brief Audit
@@ -178,7 +178,7 @@ export const CreatorAiStudio: React.FC = () => {
           <button
             onClick={handleGenerate}
             disabled={isGenerating}
-            className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white text-xs font-semibold flex items-center gap-1.5 shadow-md shadow-indigo-600/30 transition-all"
+            className="px-4 py-2 rounded-xl bg-[#007E93] hover:bg-[#006779] disabled:opacity-50 text-white text-xs font-semibold flex items-center gap-1.5 shadow-md shadow-teal-900/20 transition-all"
           >
             <Zap className="w-3.5 h-3.5 fill-white" />
             <span>{isGenerating ? 'Synthesizing...' : 'Generate with AI'}</span>
@@ -198,21 +198,21 @@ export const CreatorAiStudio: React.FC = () => {
               {generatedHooks.map((hook, idx) => (
                 <div
                   key={idx}
-                  className="rounded-xl border border-black/[0.08] bg-white shadow-xs p-4 flex items-start justify-between gap-3 group hover:border-zinc-700 transition-all"
+                  className="rounded-xl border border-black/[0.08] bg-white shadow-xs p-4 flex items-start justify-between gap-3 group hover:border-[#007E93]/40 transition-all"
                 >
                   <div className="space-y-1">
-                    <span className="text-[10px] font-mono font-bold text-[#0096C7]">
+                    <span className="text-[10px] font-mono font-bold text-[#007E93]">
                       Variation #{idx + 1}
                     </span>
                     <p className="text-xs text-zinc-800 leading-relaxed font-medium">"{hook}"</p>
                   </div>
                   <button
                     onClick={() => handleCopy(hook, `hook-${idx}`)}
-                    className="p-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-500 hover:text-white transition-colors shrink-0"
+                    className="p-1.5 rounded-lg bg-zinc-100 hover:bg-zinc-200 text-zinc-700 hover:text-zinc-900 transition-colors shrink-0"
                     title="Copy hook"
                   >
                     {copiedKey === `hook-${idx}` ? (
-                      <Check className="w-3.5 h-3.5 text-emerald-400" />
+                      <Check className="w-3.5 h-3.5 text-emerald-700" />
                     ) : (
                       <Copy className="w-3.5 h-3.5" />
                     )}
@@ -232,12 +232,12 @@ export const CreatorAiStudio: React.FC = () => {
               </h3>
               <button
                 onClick={() => handleCopy(generatedScript, 'script')}
-                className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-700 text-xs transition-colors"
+                className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-zinc-100 hover:bg-zinc-200 text-zinc-700 text-xs transition-colors"
               >
                 {copiedKey === 'script' ? (
                   <>
-                    <Check className="w-3.5 h-3.5 text-emerald-400" />
-                    <span className="text-emerald-400">Copied</span>
+                    <Check className="w-3.5 h-3.5 text-emerald-700" />
+                    <span className="text-emerald-700">Copied</span>
                   </>
                 ) : (
                   <>
@@ -264,12 +264,12 @@ export const CreatorAiStudio: React.FC = () => {
               </h3>
               <button
                 onClick={() => handleCopy(generatedCaption, 'caption')}
-                className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-700 text-xs transition-colors"
+                className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-zinc-100 hover:bg-zinc-200 text-zinc-700 text-xs transition-colors"
               >
                 {copiedKey === 'caption' ? (
                   <>
-                    <Check className="w-3.5 h-3.5 text-emerald-400" />
-                    <span className="text-emerald-400">Copied</span>
+                    <Check className="w-3.5 h-3.5 text-emerald-700" />
+                    <span className="text-emerald-700">Copied</span>
                   </>
                 ) : (
                   <>
@@ -296,15 +296,15 @@ export const CreatorAiStudio: React.FC = () => {
             <div className="rounded-xl border border-black/[0.08] bg-white shadow-xs p-5 space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
-                    <ShieldCheck className="w-6 h-6 text-emerald-400" />
+                  <div className="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-500/20 flex items-center justify-center">
+                    <ShieldCheck className="w-6 h-6 text-emerald-700" />
                   </div>
                   <div>
-                    <h4 className="text-sm font-bold text-white">Compliance Score: {complianceResult.score}%</h4>
+                    <h4 className="text-sm font-bold text-zinc-900">Compliance Score: {complianceResult.score}%</h4>
                     <p className="text-xs text-zinc-500">Passed safety checks and brief alignment criteria.</p>
                   </div>
                 </div>
-                <span className="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-semibold">
+                <span className="px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-500/20 text-xs font-semibold">
                   Ready to Submit
                 </span>
               </div>
@@ -312,7 +312,7 @@ export const CreatorAiStudio: React.FC = () => {
               <div className="pt-3 border-t border-zinc-200 space-y-2">
                 {complianceResult.notes.map((note, idx) => (
                   <div key={idx} className="flex items-center gap-2 text-xs text-zinc-700">
-                    <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                    <Check className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
                     <span>{note}</span>
                   </div>
                 ))}

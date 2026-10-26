@@ -120,7 +120,7 @@ export const BusinessAnalytics: React.FC = () => {
           <Button
             variant="outline"
             size="md"
-            leftIcon={<Download className="w-4 h-4 text-emerald-400" />}
+            leftIcon={<Download className="w-4 h-4 text-emerald-700" />}
             onClick={() => setIsReportModalOpen(true)}
             className="border-zinc-200 text-zinc-800 cursor-pointer"
           >
@@ -143,7 +143,7 @@ export const BusinessAnalytics: React.FC = () => {
                 <p className="text-lg font-bold text-zinc-900 font-mono tracking-tight">
                   {m.value}
                 </p>
-                <span className="text-[10px] text-emerald-400 font-mono font-medium">
+                <span className="text-[10px] text-emerald-700 font-mono font-medium">
                   {m.delta} vs forecasted
                 </span>
               </div>
@@ -185,7 +185,7 @@ export const BusinessAnalytics: React.FC = () => {
             </thead>
             <tbody className="divide-y divide-zinc-800/80">
               {creatorPerformances.map((c, idx) => (
-                <tr key={idx} className="hover:bg-zinc-850/60 transition-colors">
+                <tr key={idx} className="hover:bg-zinc-100 transition-colors">
                   <td className="py-3.5 px-4">
                     <div className="flex items-center gap-2.5">
                       <img
@@ -212,11 +212,11 @@ export const BusinessAnalytics: React.FC = () => {
                   <td className="py-3.5 px-4 font-mono font-semibold text-zinc-800">
                     {c.conversions}
                   </td>
-                  <td className="py-3.5 px-4 font-mono font-bold text-emerald-400">
+                  <td className="py-3.5 px-4 font-mono font-bold text-emerald-700">
                     ₹{(c.revenue / 100000).toFixed(1)}L
                   </td>
                   <td className="py-3.5 px-4">
-                    <span className="font-mono font-bold text-[#0096C7] text-sm">
+                    <span className="font-mono font-bold text-[#007E93] text-sm">
                       {c.roas.toFixed(1)}x
                     </span>
                   </td>

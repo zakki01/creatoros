@@ -67,17 +67,17 @@ export const ReportContentModal: React.FC<ReportContentModalProps> = ({
       >
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-1.5 rounded-lg text-zinc-500 hover:text-white hover:bg-zinc-100 transition-all cursor-pointer"
+          className="absolute top-4 right-4 p-1.5 rounded-lg text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 transition-all cursor-pointer"
         >
           <X className="w-4 h-4" />
         </button>
 
         {isSubmitted ? (
           <div className="py-8 text-center space-y-3 animate-fade-in">
-            <div className="w-12 h-12 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center mx-auto">
+            <div className="w-12 h-12 rounded-full bg-emerald-50 border border-emerald-500/30 text-emerald-700 flex items-center justify-center mx-auto">
               <Check className="w-6 h-6" />
             </div>
-            <h3 className="text-base font-semibold text-white">Report Submitted</h3>
+            <h3 className="text-base font-semibold text-zinc-900">Report Submitted</h3>
             <p className="text-xs text-zinc-500 max-w-xs mx-auto">
               Thank you for keeping CreatorOS safe. Our Super Admin Trust & Safety moderation desk has queued this item for investigation.
             </p>
@@ -106,7 +106,7 @@ export const ReportContentModal: React.FC<ReportContentModalProps> = ({
                   key={item.reason}
                   className={`flex items-start gap-2.5 p-2.5 rounded-xl border cursor-pointer transition-all ${
                     selectedReason === item.reason
-                      ? 'bg-rose-500/10 border-rose-500/40 text-white'
+                      ? 'bg-rose-50 border-rose-300 text-rose-900'
                       : 'bg-zinc-50 border-black/[0.04] text-zinc-500 hover:bg-zinc-100 hover:text-zinc-800'
                   }`}
                 >
@@ -138,7 +138,7 @@ export const ReportContentModal: React.FC<ReportContentModalProps> = ({
                 value={details}
                 onChange={(e) => setDetails(e.target.value)}
                 placeholder="Include relevant timestamps, handles, or context..."
-                className="w-full bg-white shadow-sm border border-black/[0.08] rounded-xl p-2.5 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-rose-500 resize-none"
+                className="w-full bg-white shadow-sm border border-zinc-200 rounded-xl p-2.5 text-xs text-zinc-900 placeholder-zinc-500 focus:outline-none focus:border-rose-500 resize-none"
               />
             </div>
 

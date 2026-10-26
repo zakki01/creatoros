@@ -129,7 +129,7 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-5 h-full">
             <div className="space-y-3 max-w-sm">
               <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-mono uppercase tracking-wider bg-sky-50 text-sky-800 border border-sky-200">
-                <Sparkles className="w-3 h-3 text-[#0096C7]" />
+                <Sparkles className="w-3 h-3 text-[#007E93]" />
                 <span>3D AI Environment</span>
               </div>
               <div>
@@ -248,7 +248,7 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
           className="p-5 flex flex-col justify-between space-y-3 bg-white border border-black/[0.08] shadow-sm"
         >
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-mono uppercase tracking-wider text-[#0096C7] font-semibold">
+            <span className="text-[11px] font-mono uppercase tracking-wider text-[#007E93] font-semibold">
               Opportunity
             </span>
             <span className="w-2 h-2 rounded-full bg-[#00B4D8] animate-pulse" />
@@ -261,7 +261,7 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
               Nike Summer Launch · ₹45,000
             </p>
           </div>
-          <div className="flex items-center text-xs text-[#0096C7] font-medium gap-1 pt-1">
+          <div className="flex items-center text-xs text-[#007E93] font-medium gap-1 pt-1">
             <span>View offer →</span>
           </div>
         </SpatialCard>
@@ -360,7 +360,7 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
       <div className="space-y-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Layers className="w-4 h-4 text-[#0096C7]" />
+            <Layers className="w-4 h-4 text-[#007E93]" />
             <h2 className="text-base font-bold text-zinc-900 font-display">Active Campaigns</h2>
           </div>
           <Button

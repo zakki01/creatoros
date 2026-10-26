@@ -211,7 +211,7 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
                   {creator.name}
                 </h1>
                 {creator.verified && (
-                  <span className="text-emerald-400 font-bold text-sm" title="Verified Creator">
+                  <span className="text-emerald-700 font-bold text-sm" title="Verified Creator">
                     ✓
                   </span>
                 )}
@@ -223,7 +223,7 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
                 <MapPin className="w-3.5 h-3.5 text-zinc-500 shrink-0" />
                 <span>{creator.location}</span>
                 <span>·</span>
-                <span className="text-emerald-400 font-semibold">{creator.availability}</span>
+                <span className="text-emerald-700 font-semibold">{creator.availability}</span>
               </p>
             </div>
           </div>
@@ -234,9 +234,9 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
               <>
                 <button
                   onClick={() => setCreatorActiveTab('passport')}
-                  className="depth-btn-secondary flex-1 sm:flex-none min-h-[40px] px-3.5 py-2 rounded-xl text-xs font-semibold border border-emerald-500/30 text-emerald-300 flex items-center justify-center gap-1.5 cursor-pointer"
+                  className="depth-btn-secondary flex-1 sm:flex-none min-h-[40px] px-3.5 py-2 rounded-xl text-xs font-semibold border border-emerald-500/30 text-emerald-800 flex items-center justify-center gap-1.5 cursor-pointer"
                 >
-                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-700" />
                   <span>Passport</span>
                 </button>
 
@@ -261,7 +261,7 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
                 {connectionState === 'connected' ? (
                   <button
                     disabled
-                    className="flex-1 sm:flex-none min-h-[42px] px-3.5 py-2 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs font-semibold flex items-center justify-center gap-1.5"
+                    className="flex-1 sm:flex-none min-h-[42px] px-3.5 py-2 rounded-xl bg-emerald-50 border border-emerald-500/30 text-emerald-700 text-xs font-semibold flex items-center justify-center gap-1.5"
                   >
                     <Check className="w-4 h-4" />
                     <span>Connected</span>
@@ -269,7 +269,7 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
                 ) : connectionState === 'pending' ? (
                   <button
                     disabled
-                    className="flex-1 sm:flex-none min-h-[42px] px-3.5 py-2 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-400 text-xs font-semibold flex items-center justify-center gap-1.5"
+                    className="flex-1 sm:flex-none min-h-[42px] px-3.5 py-2 rounded-xl bg-amber-50 border border-amber-500/30 text-amber-800 text-xs font-semibold flex items-center justify-center gap-1.5"
                   >
                     <Clock className="w-4 h-4" />
                     <span>Pending</span>
@@ -310,7 +310,7 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
         {/* 4 Spatial Reputation & Portfolio Pills */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-1 relative z-10">
           <div className="p-3 rounded-xl surface-2 text-center">
-            <span className="text-base sm:text-lg font-bold font-mono text-[#0096C7] block">
+            <span className="text-base sm:text-lg font-bold font-mono text-[#007E93] block">
               96
             </span>
             <span className="text-[11px] text-zinc-500 font-medium">Reputation</span>
@@ -322,13 +322,13 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
             <span className="text-[11px] text-zinc-500 font-medium">Followers</span>
           </div>
           <div className="p-3 rounded-xl surface-2 text-center">
-            <span className="text-base sm:text-lg font-bold font-mono text-emerald-400 block">
+            <span className="text-base sm:text-lg font-bold font-mono text-emerald-700 block">
               {creator.avgEngagement}%
             </span>
             <span className="text-[11px] text-zinc-500 font-medium">Engagement</span>
           </div>
           <div className="p-3 rounded-xl surface-2 text-center">
-            <span className="text-base sm:text-lg font-bold font-mono text-white block">
+            <span className="text-base sm:text-lg font-bold font-mono text-zinc-900 block">
               12
             </span>
             <span className="text-[11px] text-zinc-500 font-medium">Campaigns</span>
@@ -346,7 +346,7 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
               onClick={() => setActiveTab(tab.id as any)}
               className={`px-3.5 py-2 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
                 isActive
-                  ? 'surface-3 text-white shadow-sm'
+                  ? 'surface-3 text-zinc-900 shadow-sm'
                   : 'text-zinc-500 hover:text-zinc-800'
               }`}
             >
@@ -412,7 +412,7 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
                   </div>
                   <div className="p-2.5 rounded-lg surface-1">
                     <span className="text-[10px] text-zinc-500 uppercase">Engagement</span>
-                    <p className="text-sm font-bold font-mono text-emerald-400">
+                    <p className="text-sm font-bold font-mono text-emerald-700">
                       {p.engagementRate}%
                     </p>
                   </div>
@@ -427,7 +427,7 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
               <h3 className="text-xs font-semibold text-zinc-700 uppercase tracking-wider font-mono">
                 Reputation Metrics
               </h3>
-              <span className="text-xs font-mono font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded-full">
+              <span className="text-xs font-mono font-bold text-emerald-700 bg-emerald-50 border border-emerald-500/20 px-2.5 py-0.5 rounded-full">
                 96 Reputation
               </span>
             </div>
@@ -484,13 +484,13 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
                   <div className="absolute top-3 left-3">
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-black/60 backdrop-blur-md text-[#0096C7] border border-white/15">
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-black/60 backdrop-blur-md text-[#007E93] border border-white/15">
                       {p.type}
                     </span>
                   </div>
                   <div className="absolute bottom-3 left-3 right-3 flex justify-between text-xs text-white">
                     <span className="font-mono font-semibold">{(p.views / 1000).toFixed(0)}K views</span>
-                    <span className="font-mono text-emerald-400 font-semibold">{(p.engagement / 1000).toFixed(1)}K</span>
+                    <span className="font-mono text-emerald-700 font-semibold">{(p.engagement / 1000).toFixed(1)}K</span>
                   </div>
                 </div>
                 <div className="p-3.5">
@@ -530,13 +530,13 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
                 </div>
 
                 <div className="space-y-1">
-                  <span className="text-[10px] text-[#0096C7] font-mono">{reel.brand}</span>
+                  <span className="text-[10px] text-[#007E93] font-mono">{reel.brand}</span>
                   <h4 className="text-xs font-bold text-white line-clamp-2 leading-snug">
                     {reel.title}
                   </h4>
                   <div className="flex items-center justify-between text-[10px] text-zinc-700 font-mono pt-1">
                     <span>{reel.views} plays</span>
-                    <span className="text-emerald-400">{reel.engagement} likes</span>
+                    <span className="text-emerald-700">{reel.engagement} likes</span>
                   </div>
                 </div>
               </div>
@@ -580,7 +580,7 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
                           className={`p-1.5 rounded-lg backdrop-blur-md transition-all ${
                             shot.isPinned
                               ? 'bg-amber-500 text-zinc-950 font-bold'
-                              : 'bg-black/60 text-zinc-700 hover:text-white'
+                              : 'bg-black/60 text-white hover:text-white'
                           }`}
                           title={shot.isPinned ? 'Unpin shot' : 'Pin shot to profile'}
                         >
@@ -640,7 +640,7 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
                       <span>{new Date(blog.createdAt || blog.timestamp || Date.now()).toLocaleDateString()}</span>
                     </div>
 
-                    <h3 className="text-sm font-semibold text-white group-hover:text-sky-300 transition-colors line-clamp-2 leading-snug">
+                    <h3 className="text-sm font-semibold text-zinc-900 group-hover:text-[#007E93] transition-colors line-clamp-2 leading-snug">
                       {blog.blogTitle || blog.content || blog.caption}
                     </h3>
 
@@ -701,16 +701,16 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
                 >
                   <div className="flex items-center justify-between">
                     <div>
-                      <span className="font-bold text-white text-sm">{c.brand}</span>
+                      <span className="font-bold text-zinc-900 text-sm">{c.brand}</span>
                       <p className="text-[11px] text-zinc-500">{c.campaign}</p>
                     </div>
                     <div className="text-right">
-                      <span className="font-mono font-bold text-emerald-400">{c.payout}</span>
+                      <span className="font-mono font-bold text-emerald-700">{c.payout}</span>
                       <span className="block text-[10px] text-emerald-500 font-mono">Verified Escrow</span>
                     </div>
                   </div>
                   <p className="text-zinc-700 italic pt-1">"{c.comment}"</p>
-                  <div className="flex items-center gap-1 text-amber-400 text-[11px]">
+                  <div className="flex items-center gap-1 text-amber-800 text-[11px]">
                     <Star className="w-3.5 h-3.5 fill-current" />
                     <span className="font-mono font-bold">{c.rating}.0</span>
                     <span className="text-zinc-500 ml-1">• {c.deliverables}</span>
@@ -802,8 +802,8 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
             </button>
 
             <div className="flex items-center gap-2">
-              <Plus className="w-4 h-4 text-[#0096C7]" />
-              <h3 className="text-base font-bold text-white">Add Showcase Work</h3>
+              <Plus className="w-4 h-4 text-[#007E93]" />
+              <h3 className="text-base font-bold text-zinc-900">Add Showcase Work</h3>
             </div>
             <p className="text-xs text-zinc-500">
               Highlight your latest high-impact reel, editorial lookbook, or campaign deliverable.
@@ -902,7 +902,7 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-1.5 rounded-xl text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-500 shadow-sm shadow-indigo-600/30 cursor-pointer"
+                  className="px-4 py-1.5 rounded-xl text-xs font-semibold text-white bg-[#007E93] hover:bg-[#006779] shadow-sm shadow-teal-900/20 cursor-pointer"
                 >
                   Publish to Showcase
                 </button>

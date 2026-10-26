@@ -26,13 +26,13 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({
   const getIcon = (type: string) => {
     switch (type) {
       case 'approval':
-        return <FileCheck className="w-4 h-4 text-emerald-400" />;
+        return <FileCheck className="w-4 h-4 text-emerald-700" />;
       case 'payment':
-        return <CreditCard className="w-4 h-4 text-indigo-400" />;
+        return <CreditCard className="w-4 h-4 text-[#007E93]" />;
       case 'campaign':
         return <Sparkles className="w-4 h-4 text-purple-400" />;
       default:
-        return <AlertCircle className="w-4 h-4 text-amber-400" />;
+        return <AlertCircle className="w-4 h-4 text-amber-800" />;
     }
   };
 
@@ -44,7 +44,7 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({
           {/* Header */}
           <div className="p-5 border-b border-zinc-200 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Bell className="w-5 h-5 text-[#0096C7]" />
+              <Bell className="w-5 h-5 text-[#007E93]" />
               <h2 className="text-base font-semibold text-zinc-900 font-display">Notifications</h2>
               <Badge variant="brand" size="sm">
                 {filteredNotifications.filter((n) => !n.read).length} new

@@ -67,7 +67,7 @@ export const BlogPostModal: React.FC<BlogPostModalProps> = ({
 
   return (
     <>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/90 backdrop-blur-md animate-fade-in overflow-y-auto">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/45 backdrop-blur-md animate-fade-in overflow-y-auto">
         <div
           className="relative w-full max-w-3xl rounded-2xl bg-white text-zinc-900 border border-black/[0.08] shadow-2xl text-zinc-900 overflow-hidden my-auto max-h-[92vh] flex flex-col"
           onClick={(e) => e.stopPropagation()}
@@ -75,7 +75,7 @@ export const BlogPostModal: React.FC<BlogPostModalProps> = ({
           {/* Top Sticky Bar */}
           <div className="p-3.5 sm:p-4 border-b border-black/[0.08] bg-white/95 backdrop-blur-md border-b border-black/[0.08] flex items-center justify-between z-20 shrink-0">
             <div className="flex items-center gap-2">
-              <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full bg-[#00B4D8]/10 text-[#0096C7] border border-[#00B4D8]/25">
+              <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full bg-[#00B4D8]/10 text-[#007E93] border border-[#00B4D8]/25">
                 ✍ Editorial Article
               </span>
               <span className="text-xs text-zinc-500 font-mono hidden sm:inline">
@@ -90,7 +90,7 @@ export const BlogPostModal: React.FC<BlogPostModalProps> = ({
                 className={`p-1.5 rounded-lg border text-xs flex items-center gap-1.5 transition-all cursor-pointer ${
                   isLiked
                     ? 'border-rose-500/30 bg-rose-500/15 text-rose-400 font-semibold'
-                    : 'border-black/[0.08] text-zinc-500 hover:text-white hover:bg-zinc-100'
+                    : 'border-black/[0.08] text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100'
                 }`}
               >
                 <Heart className={`w-3.5 h-3.5 ${isLiked ? 'fill-current' : ''}`} />
@@ -99,15 +99,15 @@ export const BlogPostModal: React.FC<BlogPostModalProps> = ({
 
               <button
                 onClick={handleShare}
-                className="p-1.5 rounded-lg border border-black/[0.08] text-zinc-500 hover:text-white hover:bg-zinc-100 text-xs flex items-center gap-1 transition-all cursor-pointer"
+                className="p-1.5 rounded-lg border border-black/[0.08] text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 text-xs flex items-center gap-1 transition-all cursor-pointer"
                 title="Share article link"
               >
-                {copiedLink ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Share2 className="w-3.5 h-3.5" />}
+                {copiedLink ? <Check className="w-3.5 h-3.5 text-emerald-700" /> : <Share2 className="w-3.5 h-3.5" />}
               </button>
 
               <button
                 onClick={onClose}
-                className="p-1.5 rounded-lg text-zinc-500 hover:text-white hover:bg-zinc-100 transition-all cursor-pointer ml-1"
+                className="p-1.5 rounded-lg text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 transition-all cursor-pointer ml-1"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -144,8 +144,8 @@ export const BlogPostModal: React.FC<BlogPostModalProps> = ({
                   />
                   <div>
                     <div className="flex items-center gap-1.5">
-                      <span className="text-sm font-bold text-white">{post.authorName}</span>
-                      <ShieldCheck className="w-3.5 h-3.5 text-[#0096C7]" />
+                      <span className="text-sm font-bold text-zinc-900">{post.authorName}</span>
+                      <ShieldCheck className="w-3.5 h-3.5 text-[#007E93]" />
                     </div>
                     <p className="text-xs text-zinc-500 font-mono">
                       {post.authorHandle} • {post.timestamp} • {post.blogReadingTime || '4 min read'}
@@ -155,14 +155,14 @@ export const BlogPostModal: React.FC<BlogPostModalProps> = ({
 
                 <div className="shrink-0">
                   {connectionState === 'connected' ? (
-                    <span className="text-xs font-semibold text-emerald-400 flex items-center gap-1">
+                    <span className="text-xs font-semibold text-emerald-700 flex items-center gap-1">
                       <Check className="w-3.5 h-3.5" />
                       <span>Connected ✓</span>
                     </span>
                   ) : (
                     <button
                       onClick={() => setIsConnectOpen(true)}
-                      className="px-3.5 py-1.5 rounded-xl bg-[#00B4D8] hover:bg-[#0096C7] text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm shadow-xs transition-all cursor-pointer"
+                      className="px-3.5 py-1.5 rounded-xl bg-[#007E93] hover:bg-[#006779] text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm shadow-xs transition-all cursor-pointer"
                     >
                       <UserPlus className="w-3.5 h-3.5" />
                       <span>Connect</span>
@@ -185,7 +185,7 @@ export const BlogPostModal: React.FC<BlogPostModalProps> = ({
                   }
                   if (paragraph.startsWith('### ')) {
                     return (
-                      <h3 key={idx} className="text-base font-semibold text-white pt-2 pb-0.5">
+                      <h3 key={idx} className="text-base font-semibold text-zinc-900 pt-2 pb-0.5">
                         {paragraph.replace('### ', '')}
                       </h3>
                     );
@@ -230,7 +230,7 @@ export const BlogPostModal: React.FC<BlogPostModalProps> = ({
                 {post.tags.map((t, i) => (
                   <span
                     key={i}
-                    className="text-xs font-mono px-2.5 py-1 rounded-lg bg-white border border-black/[0.06] text-[#0096C7]"
+                    className="text-xs font-mono px-2.5 py-1 rounded-lg bg-white border border-black/[0.06] text-[#007E93]"
                   >
                     {t}
                   </span>
@@ -241,7 +241,7 @@ export const BlogPostModal: React.FC<BlogPostModalProps> = ({
             {/* Comments Section */}
             <div className="space-y-4 pt-6 border-t border-black/[0.08]">
               <div className="flex items-center gap-2">
-                <MessageCircle className="w-4 h-4 text-[#0096C7]" />
+                <MessageCircle className="w-4 h-4 text-[#007E93]" />
                 <h4 className="text-sm font-bold text-zinc-900 font-display">
                   Discussion & Responses ({post.commentsCount})
                 </h4>
@@ -254,12 +254,12 @@ export const BlogPostModal: React.FC<BlogPostModalProps> = ({
                   value={commentInput}
                   onChange={(e) => setCommentInput(e.target.value)}
                   placeholder="Join the discussion or share feedback..."
-                  className="flex-1 bg-white border border-black/[0.08] rounded-xl px-3.5 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]"
+                  className="flex-1 bg-white border border-zinc-200 rounded-xl px-3.5 py-2 text-xs text-zinc-900 placeholder-zinc-500 focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]"
                 />
                 <button
                   type="submit"
                   disabled={!commentInput.trim()}
-                  className="px-4 py-2 rounded-xl bg-[#00B4D8] hover:bg-[#0096C7] disabled:opacity-40 text-xs font-semibold text-white flex items-center gap-1.5 cursor-pointer transition-all"
+                  className="px-4 py-2 rounded-xl bg-[#007E93] hover:bg-[#006779] disabled:opacity-40 text-xs font-semibold text-white flex items-center gap-1.5 cursor-pointer transition-all"
                 >
                   <Send className="w-3 h-3" />
                   <span>Reply</span>
@@ -281,7 +281,7 @@ export const BlogPostModal: React.FC<BlogPostModalProps> = ({
                             alt={comment.authorName}
                             className="w-5 h-5 rounded-full object-cover"
                           />
-                          <span className="font-semibold text-white">{comment.authorName}</span>
+                          <span className="font-semibold text-zinc-900">{comment.authorName}</span>
                           <span className="text-[10px] text-zinc-500 font-mono">
                             {comment.authorHandle}
                           </span>

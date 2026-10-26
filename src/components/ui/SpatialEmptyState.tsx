@@ -164,7 +164,7 @@ export const SpatialEmptyState: React.FC<SpatialEmptyStateProps> = ({
       {/* Ambient radial light behind 3D object */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute top-4 w-40 h-40 rounded-full bg-indigo-500/15 blur-3xl"
+        className="pointer-events-none absolute top-4 w-40 h-40 rounded-full bg-[#007E93]/10 blur-3xl"
       />
 
       <div className="relative z-10 animate-float-slow mb-3">

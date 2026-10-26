@@ -6,24 +6,24 @@
 export const tokens = {
   colors: {
     // CreatorOS Brand Identity (derived from official logo emblem)
-    brandPrimary: '#111827', // Charcoal deep slate
-    brandSecondary: '#374151', // Studio medium slate
-    brandAccent: '#00B4D8', // Electric Cyan / Ocean Blue
-    brandAccentHover: '#0096C7',
+    brandPrimary: '#123047', // Charcoal deep slate
+    brandSecondary: '#365267', // Studio medium slate
+    brandAccent: '#00869B', // Electric Cyan / Ocean Blue
+    brandAccentHover: '#006C80',
     brandAccentLight: 'rgba(0, 180, 216, 0.12)',
 
     // Surface Grays & Studio Foundation
-    surfaceStudio: '#E2E5E9',
-    surfaceCard: '#EAECEF',
+    surfaceStudio: '#EDF0F4',
+    surfaceCard: '#F7F9FC',
     surfaceCardHighlight: '#FFFFFF',
     surfaceGlass: 'rgba(245, 247, 250, 0.78)',
-    surfaceRecessed: '#D3D7DE',
+    surfaceRecessed: '#E2E7ED',
     surfaceInput: '#FFFFFF',
 
     // Typography
     textPrimary: '#0F172A',
-    textSecondary: '#475569',
-    textMuted: '#64748B',
+    textSecondary: '#4E5F72',
+    textMuted: '#64758A',
     textInverse: '#FFFFFF',
 
     // Borders & Dividers
@@ -33,15 +33,15 @@ export const tokens = {
     borderFocus: '#00B4D8',
 
     // Feedback
-    success: '#059669',
-    warning: '#D97706',
-    danger: '#E11D48',
+    success: '#047857',
+    warning: '#92400E',
+    danger: '#B4233C',
   },
 
   shadows: {
     // Soft UI / Neumorphism
     cardFloating:
-      '0 24px 48px -12px rgba(15, 23, 42, 0.18), 0 8px 16px -4px rgba(15, 23, 42, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.95)',
+      '0 16px 36px -14px rgba(23, 37, 54, 0.18), 0 4px 10px -3px rgba(23, 37, 54, 0.06), inset 0 1px 1px rgba(255, 255, 255, 0.95)',
     controlRaised:
       '0 4px 12px rgba(15, 23, 42, 0.1), inset 0 1px 1px rgba(255, 255, 255, 0.95), inset 0 -1px 2px rgba(0, 0, 0, 0.06)',
     controlRecessed:

@@ -75,13 +75,13 @@ export const AdminSupportDesk: React.FC = () => {
     switch (status) {
       case 'OPEN':
         return (
-          <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
+          <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-50 text-amber-800 border border-amber-500/30">
             OPEN
           </span>
         );
       case 'IN_PROGRESS':
         return (
-          <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-indigo-500/20 text-[#0096C7] border border-[#00B4D8]/30">
+          <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-[#007E93]/10 text-[#007E93] border border-[#00B4D8]/30">
             IN PROGRESS
           </span>
         );
@@ -93,13 +93,13 @@ export const AdminSupportDesk: React.FC = () => {
         );
       case 'RESOLVED':
         return (
-          <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+          <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-50 text-emerald-800 border border-emerald-500/30">
             RESOLVED
           </span>
         );
       case 'CLOSED':
         return (
-          <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-zinc-800 text-zinc-500 border border-zinc-300">
+          <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-zinc-100 text-zinc-600 border border-zinc-300">
             CLOSED
           </span>
         );
@@ -115,7 +115,7 @@ export const AdminSupportDesk: React.FC = () => {
             <h1 className="text-xl sm:text-2xl font-bold text-zinc-900 font-display">
               Support Desk & Triage
             </h1>
-            <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-800 text-zinc-500 border border-zinc-300">
+            <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-100 text-zinc-600 border border-zinc-300">
               {tickets.length} Active Tickets
             </span>
           </div>
@@ -128,19 +128,19 @@ export const AdminSupportDesk: React.FC = () => {
         <div className="flex items-center gap-2">
           <div className="px-3 py-1.5 rounded-xl bg-white shadow-sm border border-black/[0.08] text-xs">
             <span className="text-zinc-500 text-[10px] uppercase font-mono block">Open</span>
-            <span className="font-bold text-amber-400 font-mono">
+            <span className="font-bold text-amber-800 font-mono">
               {tickets.filter((t) => t.status === 'OPEN').length}
             </span>
           </div>
           <div className="px-3 py-1.5 rounded-xl bg-white shadow-sm border border-black/[0.08] text-xs">
             <span className="text-zinc-500 text-[10px] uppercase font-mono block">In Progress</span>
-            <span className="font-bold text-[#0096C7] font-mono">
+            <span className="font-bold text-[#007E93] font-mono">
               {tickets.filter((t) => t.status === 'IN_PROGRESS').length}
             </span>
           </div>
           <div className="px-3 py-1.5 rounded-xl bg-white shadow-sm border border-black/[0.08] text-xs">
             <span className="text-zinc-500 text-[10px] uppercase font-mono block">Resolved</span>
-            <span className="font-bold text-emerald-400 font-mono">
+            <span className="font-bold text-emerald-700 font-mono">
               {tickets.filter((t) => t.status === 'RESOLVED').length}
             </span>
           </div>
@@ -169,7 +169,7 @@ export const AdminSupportDesk: React.FC = () => {
                 onClick={() => setStatusFilter(st)}
                 className={`min-h-[36px] px-2.5 py-1 rounded-lg text-[11px] font-semibold transition-all cursor-pointer ${
                   statusFilter === st
-                    ? 'bg-zinc-800 text-white shadow-sm'
+                    ? 'bg-[#007E93] text-white shadow-sm'
                     : 'text-zinc-500 hover:text-zinc-800'
                 }`}
               >
@@ -211,17 +211,17 @@ export const AdminSupportDesk: React.FC = () => {
                   onClick={() => setSelectedTicketId(t.id)}
                   className={`p-4 rounded-2xl border transition-all cursor-pointer text-left ${
                     isSelected
-                      ? 'bg-zinc-850 border-[#00B4D8]/50 shadow-lg ring-1 ring-indigo-500/30'
-                      : 'bg-white shadow-sm border-black/[0.06] hover:bg-zinc-850 hover:border-black/[0.08]'
+                      ? 'bg-zinc-100 border-[#00B4D8]/50 shadow-lg ring-1 ring-[#007E93]/25'
+                      : 'bg-white shadow-sm border-black/[0.06] hover:bg-zinc-200 hover:border-black/[0.08]'
                   }`}
                 >
                   <div className="flex items-center justify-between gap-2 mb-1.5">
-                    <span className="text-[11px] font-mono font-bold text-[#0096C7]">
+                    <span className="text-[11px] font-mono font-bold text-[#007E93]">
                       #{t.ticketNumber}
                     </span>
                     <div className="flex items-center gap-1.5">
                       {getStatusBadge(t.status)}
-                      <span className="text-[10px] font-mono uppercase px-1.5 py-0.2 rounded bg-zinc-800 text-zinc-500">
+                      <span className="text-[10px] font-mono uppercase px-1.5 py-0.2 rounded bg-zinc-100 text-zinc-600">
                         {t.priority}
                       </span>
                     </div>
@@ -234,7 +234,7 @@ export const AdminSupportDesk: React.FC = () => {
                   <div className="flex items-center justify-between text-[11px] text-zinc-500 pt-1 border-t border-black/[0.04]">
                     <span className="flex items-center gap-1.5 truncate">
                       {t.userRole === 'business' ? (
-                        <Building2 className="w-3 h-3 text-[#0096C7] shrink-0" />
+                        <Building2 className="w-3 h-3 text-[#007E93] shrink-0" />
                       ) : (
                         <User className="w-3 h-3 text-sky-400 shrink-0" />
                       )}
@@ -258,11 +258,11 @@ export const AdminSupportDesk: React.FC = () => {
               <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 pb-4 border-b border-black/[0.08]">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="text-xs font-mono font-bold text-[#0096C7]">
+                    <span className="text-xs font-mono font-bold text-[#007E93]">
                       Ticket #{selectedTicket.ticketNumber}
                     </span>
                     {getStatusBadge(selectedTicket.status)}
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-800 text-zinc-700">
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-100 text-zinc-700">
                       {selectedTicket.issueType}
                     </span>
                   </div>
@@ -297,7 +297,7 @@ export const AdminSupportDesk: React.FC = () => {
 
                   <button
                     onClick={() => handleAssign('Sarah Connor')}
-                    className="min-h-[38px] px-3 py-1 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-800 text-[11px] font-semibold transition-colors cursor-pointer"
+                    className="min-h-[38px] px-3 py-1 rounded-xl bg-zinc-100 hover:bg-zinc-200 text-zinc-800 text-[11px] font-semibold transition-colors cursor-pointer"
                   >
                     Assign to Me
                   </button>
@@ -315,7 +315,7 @@ export const AdminSupportDesk: React.FC = () => {
                       key={msg.id}
                       className={`p-4 rounded-2xl border text-xs ${
                         isInternal
-                          ? 'bg-amber-950/25 border-amber-500/40 text-amber-200 shadow-sm'
+                          ? 'bg-amber-50 border-amber-500/40 text-amber-800 shadow-sm'
                           : isStaff
                           ? 'bg-[#00B4D8]/10 border-[#00B4D8]/30 text-zinc-800'
                           : 'bg-white border-black/[0.06] text-zinc-700'
@@ -324,15 +324,15 @@ export const AdminSupportDesk: React.FC = () => {
                       <div className="flex items-center justify-between gap-2 mb-2 pb-1.5 border-b border-black/[0.04]">
                         <span className="font-semibold text-white flex items-center gap-1.5">
                           {isInternal ? (
-                            <Lock className="w-3.5 h-3.5 text-amber-400" />
+                            <Lock className="w-3.5 h-3.5 text-amber-800" />
                           ) : isStaff ? (
-                            <Shield className="w-3.5 h-3.5 text-[#0096C7]" />
+                            <Shield className="w-3.5 h-3.5 text-[#007E93]" />
                           ) : (
                             <User className="w-3.5 h-3.5 text-sky-400" />
                           )}
                           <span>{msg.senderName}</span>
                           {isInternal && (
-                            <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-300 uppercase font-bold">
+                            <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-amber-50 text-amber-800 uppercase font-bold">
                               Internal Staff Note (Hidden from User)
                             </span>
                           )}
@@ -356,14 +356,14 @@ export const AdminSupportDesk: React.FC = () => {
                   <label className="text-xs font-semibold text-zinc-700">
                     Respond to User or Leave Internal Note
                   </label>
-                  <label className="flex items-center gap-1.5 text-xs text-amber-300 cursor-pointer select-none">
+                  <label className="flex items-center gap-1.5 text-xs text-amber-800 cursor-pointer select-none">
                     <input
                       type="checkbox"
                       checked={isInternalNote}
                       onChange={(e) => setIsInternalNote(e.target.checked)}
                       className="rounded border-zinc-300 bg-white text-amber-500 focus:ring-0"
                     />
-                    <Lock className="w-3 h-3 text-amber-400" />
+                    <Lock className="w-3 h-3 text-amber-800" />
                     <span>Internal Staff Note (Hidden from User)</span>
                   </label>
                 </div>
@@ -379,7 +379,7 @@ export const AdminSupportDesk: React.FC = () => {
                   }
                   className={`w-full p-3 rounded-xl border text-xs text-zinc-900 placeholder:text-zinc-600 focus:outline-none resize-none ${
                     isInternalNote
-                      ? 'bg-amber-950/20 border-amber-500/40 focus:border-amber-400'
+                      ? 'bg-amber-50 border-amber-500/40 focus:border-amber-400'
                       : 'bg-white border-zinc-200 focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]'
                   }`}
                 />
@@ -396,7 +396,7 @@ export const AdminSupportDesk: React.FC = () => {
                     className={`min-h-[44px] px-5 py-2 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer disabled:opacity-50 active:scale-95 ${
                       isInternalNote
                         ? 'bg-amber-600 hover:bg-amber-500 text-white shadow-sm shadow-amber-600/30'
-                        : 'bg-[#00B4D8] hover:bg-[#0096C7] text-white shadow-sm shadow-xs'
+                        : 'bg-[#007E93] hover:bg-[#006779] text-white shadow-sm shadow-xs'
                     }`}
                   >
                     <Send className="w-3.5 h-3.5" />

@@ -113,11 +113,11 @@ export const PostDetailModal: React.FC<PostDetailModalProps> = ({
                 />
                 <div>
                   <div className="flex items-center gap-1.5">
-                    <span className="font-bold text-xs text-white">
+                    <span className="font-bold text-xs text-zinc-900">
                       {post.authorName}
                     </span>
                     {post.authorVerified && (
-                      <ShieldCheck className="w-3.5 h-3.5 text-[#0096C7]" />
+                      <ShieldCheck className="w-3.5 h-3.5 text-[#007E93]" />
                     )}
                   </div>
                   <div className="flex items-center gap-2 text-[10px] text-zinc-500 font-mono">
@@ -130,7 +130,7 @@ export const PostDetailModal: React.FC<PostDetailModalProps> = ({
 
               {/* Connect CTA */}
               {isConnected ? (
-                <span className="px-3 py-1 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold flex items-center gap-1">
+                <span className="px-3 py-1 rounded-xl bg-emerald-50 border border-emerald-500/20 text-emerald-700 text-xs font-semibold flex items-center gap-1">
                   <Check className="w-3.5 h-3.5" />
                   <span>Connected</span>
                 </span>
@@ -151,7 +151,7 @@ export const PostDetailModal: React.FC<PostDetailModalProps> = ({
                 {post.contentType === 'reel' ? '🎬 Reel' : post.contentType === 'blog' ? '✍ Blog' : '📸 Shot'}
               </span>
               {post.discoveryBadge && (
-                <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-[#00B4D8]/10 text-[#0096C7] border border-[#00B4D8]/20">
+                <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-[#00B4D8]/10 text-[#007E93] border border-[#00B4D8]/20">
                   {post.discoveryBadge}
                 </span>
               )}
@@ -181,7 +181,7 @@ export const PostDetailModal: React.FC<PostDetailModalProps> = ({
                 {post.tags.map((t, idx) => (
                   <span
                     key={idx}
-                    className="text-[11px] font-mono text-[#0096C7] hover:text-[#0096C7] cursor-pointer"
+                    className="text-[11px] font-mono text-[#007E93] hover:text-[#007E93] cursor-pointer"
                   >
                     {t}
                   </span>
@@ -193,16 +193,16 @@ export const PostDetailModal: React.FC<PostDetailModalProps> = ({
             {opp && (
               <div className="p-4 rounded-xl bg-white shadow-sm border border-black/[0.08] space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-mono uppercase text-amber-400 font-semibold flex items-center gap-1">
-                    <Sparkles className="w-3 h-3 text-amber-400" />
+                  <span className="text-[10px] font-mono uppercase text-amber-800 font-semibold flex items-center gap-1">
+                    <Sparkles className="w-3 h-3 text-amber-800" />
                     Commercial Brief
                   </span>
-                  <span className="text-xs font-bold font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-md">
+                  <span className="text-xs font-bold font-mono text-emerald-700 bg-emerald-50 border border-emerald-500/20 px-2 py-0.5 rounded-md">
                     {opp.budgetFormatted}
                   </span>
                 </div>
                 <div>
-                  <h4 className="text-sm font-bold text-white">{opp.title}</h4>
+                  <h4 className="text-sm font-bold text-zinc-900">{opp.title}</h4>
                   <p className="text-xs text-zinc-700 mt-0.5">{opp.deliverablesSummary}</p>
                 </div>
                 <div className="grid grid-cols-2 gap-2 text-[11px] font-mono text-zinc-500 pt-1 border-t border-black/[0.06]">
@@ -272,7 +272,7 @@ export const PostDetailModal: React.FC<PostDetailModalProps> = ({
               <button
                 onClick={() => togglePostSave(post.id)}
                 className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
-                  post.savedByMe ? 'text-[#0096C7] bg-[#00B4D8]/10' : 'text-zinc-500 hover:text-zinc-800'
+                  post.savedByMe ? 'text-[#007E93] bg-[#00B4D8]/10' : 'text-zinc-500 hover:text-zinc-800'
                 }`}
               >
                 <Bookmark className={`w-4 h-4 ${post.savedByMe ? 'fill-current' : ''}`} />
@@ -282,7 +282,7 @@ export const PostDetailModal: React.FC<PostDetailModalProps> = ({
             {/* Quick view comments trigger */}
             <button
               onClick={() => setShowComments(true)}
-              className="text-xs text-[#0096C7] hover:text-[#0096C7] font-medium block cursor-pointer"
+              className="text-xs text-[#007E93] hover:text-[#007E93] font-medium block cursor-pointer"
             >
               View conversation ({post.commentsCount} comments) →
             </button>

@@ -54,7 +54,7 @@ export const BrandAdminWorkspace: React.FC = () => {
           <Button
             variant="outline"
             size="md"
-            leftIcon={<Download className="w-4 h-4 text-emerald-400" />}
+            leftIcon={<Download className="w-4 h-4 text-emerald-700" />}
             onClick={() => setIsReportCenterOpen(true)}
             className="border-zinc-200 text-zinc-800 cursor-pointer"
           >
@@ -79,11 +79,11 @@ export const BrandAdminWorkspace: React.FC = () => {
               onClick={() => setActiveTab(tab.id as any)}
               className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-medium whitespace-nowrap transition-all cursor-pointer ${
                 isActive
-                  ? 'bg-zinc-800 text-white font-semibold border border-black/[0.08] shadow-sm'
-                  : 'text-zinc-500 hover:text-zinc-800 hover:bg-zinc-850/50'
+                  ? 'bg-[#007E93] text-white font-semibold border border-black/[0.08] shadow-sm'
+                  : 'text-zinc-500 hover:text-zinc-800 hover:bg-zinc-200/50'
               }`}
             >
-              <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-[#0096C7]' : 'text-zinc-500'}`} />
+              <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-[#007E93]' : 'text-zinc-500'}`} />
               <span>{tab.label}</span>
             </button>
           );
@@ -102,7 +102,7 @@ export const BrandAdminWorkspace: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Card className="p-5 space-y-4">
             <h3 className="text-sm font-bold text-zinc-900 font-display flex items-center gap-2">
-              <Sliders className="w-4 h-4 text-[#0096C7]" />
+              <Sliders className="w-4 h-4 text-[#007E93]" />
               <span>Spend & Approval Delegation</span>
             </h3>
 
@@ -130,7 +130,7 @@ export const BrandAdminWorkspace: React.FC = () => {
                   type="checkbox"
                   checked={policies.requireTwoSignOffsForDrafts}
                   onChange={(e) => setPolicies({ ...policies, requireTwoSignOffsForDrafts: e.target.checked })}
-                  className="rounded text-indigo-500 focus:ring-0 cursor-pointer w-4 h-4"
+                  className="rounded text-[#007E93] focus:ring-0 cursor-pointer w-4 h-4"
                 />
               </div>
             </div>
@@ -138,7 +138,7 @@ export const BrandAdminWorkspace: React.FC = () => {
 
           <Card className="p-5 space-y-4">
             <h3 className="text-sm font-bold text-zinc-900 font-display flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-emerald-400" />
+              <ShieldCheck className="w-4 h-4 text-emerald-700" />
               <span>Brand Safety Standards</span>
             </h3>
 
@@ -163,7 +163,7 @@ export const BrandAdminWorkspace: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Card className="p-5 space-y-4">
             <h3 className="text-sm font-bold text-zinc-900 font-display flex items-center gap-2">
-              <CreditCard className="w-4 h-4 text-emerald-400" />
+              <CreditCard className="w-4 h-4 text-emerald-700" />
               <span>Escrow Funding & Auto-Disbursement</span>
             </h3>
 
@@ -177,13 +177,13 @@ export const BrandAdminWorkspace: React.FC = () => {
                   type="checkbox"
                   checked={policies.autoReleaseEscrowOnDeliverableApproval}
                   onChange={(e) => setPolicies({ ...policies, autoReleaseEscrowOnDeliverableApproval: e.target.checked })}
-                  className="rounded text-indigo-500 focus:ring-0 cursor-pointer w-4 h-4"
+                  className="rounded text-[#007E93] focus:ring-0 cursor-pointer w-4 h-4"
                 />
               </div>
 
               <div className="p-3.5 rounded-xl bg-white shadow-xs border border-zinc-200 space-y-2">
                 <span className="font-semibold text-zinc-800 block">Corporate Escrow Balance</span>
-                <p className="text-xl font-bold font-mono text-emerald-400">₹4,50,000</p>
+                <p className="text-xl font-bold font-mono text-emerald-700">₹4,50,000</p>
                 <p className="text-[11px] text-zinc-500">Locked in ICICI Commercial Escrow Account for active campaigns.</p>
               </div>
             </div>
@@ -191,14 +191,14 @@ export const BrandAdminWorkspace: React.FC = () => {
 
           <Card className="p-5 space-y-4">
             <h3 className="text-sm font-bold text-zinc-900 font-display flex items-center gap-2">
-              <FileCheck2 className="w-4 h-4 text-[#0096C7]" />
+              <FileCheck2 className="w-4 h-4 text-[#007E93]" />
               <span>Corporate Tax & Invoicing Entity</span>
             </h3>
 
             <div className="p-3.5 rounded-xl bg-white shadow-xs border border-zinc-200 space-y-2 text-xs">
               <div className="flex justify-between items-center">
                 <span className="text-zinc-500">Entity Details</span>
-                <span className="text-emerald-400 font-mono flex items-center gap-1 font-semibold">
+                <span className="text-emerald-700 font-mono flex items-center gap-1 font-semibold">
                   <CheckCircle2 className="w-3.5 h-3.5" /> Verified
                 </span>
               </div>
@@ -215,7 +215,7 @@ export const BrandAdminWorkspace: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Card className="p-5 space-y-4">
             <h3 className="text-sm font-bold text-zinc-900 font-display flex items-center gap-2">
-              <KeyRound className="w-4 h-4 text-emerald-400" />
+              <KeyRound className="w-4 h-4 text-emerald-700" />
               <span>Authentication & MFA Enforcement</span>
             </h3>
 
@@ -229,7 +229,7 @@ export const BrandAdminWorkspace: React.FC = () => {
                   type="checkbox"
                   checked={policies.enforceMfaForAllAdmins}
                   onChange={(e) => setPolicies({ ...policies, enforceMfaForAllAdmins: e.target.checked })}
-                  className="rounded text-indigo-500 focus:ring-0 cursor-pointer w-4 h-4"
+                  className="rounded text-[#007E93] focus:ring-0 cursor-pointer w-4 h-4"
                 />
               </div>
 

@@ -33,7 +33,7 @@ export const LiveControls: React.FC<LiveControlsProps> = ({
   return (
     <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-3.5 rounded-2xl surface-3">
       {/* Aspect Ratio Switcher */}
-      <div className="flex items-center gap-1 p-1 rounded-xl bg-black/40 border border-white/[0.08]">
+      <div className="flex items-center gap-1 p-1 rounded-xl bg-white border border-zinc-200 shadow-inner">
         {(['9:16', '16:9', '1:1'] as AspectRatio[]).map((aspect) => (
           <button
             key={aspect}
@@ -42,8 +42,8 @@ export const LiveControls: React.FC<LiveControlsProps> = ({
             disabled={isLive || isRecording}
             className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-all ${
               aspectRatio === aspect
-                ? 'bg-white/10 text-white border border-white/15 shadow-sm'
-                : 'text-zinc-500 hover:text-zinc-300 border border-transparent'
+                ? 'bg-[#E9FAFC] text-[#005564] border border-[#A6E5EC] shadow-sm'
+                : 'text-zinc-600 hover:text-zinc-900 border border-transparent hover:bg-zinc-100'
             } ${isLive || isRecording ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'}`}
           >
             {aspect}
@@ -60,18 +60,18 @@ export const LiveControls: React.FC<LiveControlsProps> = ({
           disabled={!hasCamera || isConnecting}
           className={`flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-200 ${
             isLive
-              ? 'depth-btn-secondary text-zinc-200'
+              ? 'depth-btn-secondary text-zinc-900'
               : 'depth-btn-primary text-white'
           } ${!hasCamera || isConnecting ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
         >
           {isConnecting ? (
             <>
-              <RefreshCw className="w-3.5 h-3.5 animate-spin text-indigo-300" />
+              <RefreshCw className="w-3.5 h-3.5 animate-spin text-[#007E93]" />
               <span>Connecting...</span>
             </>
           ) : isLive ? (
             <>
-              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+              <Sparkles className="w-3.5 h-3.5 text-amber-800" />
               <span>Stop AI</span>
             </>
           ) : (
@@ -90,7 +90,7 @@ export const LiveControls: React.FC<LiveControlsProps> = ({
           className={`flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-200 ${
             isRecording
               ? 'bg-rose-600 hover:bg-rose-500 text-white shadow-[0_0_20px_-4px_rgba(244,63,94,0.6)] animate-pulse'
-              : 'depth-btn-secondary text-zinc-200'
+              : 'depth-btn-secondary text-zinc-900'
           } ${!hasCamera ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
         >
           {isRecording ? (
@@ -112,7 +112,7 @@ export const LiveControls: React.FC<LiveControlsProps> = ({
           onClick={onToggleAudio}
           className={`p-2 rounded-xl border transition-all ${
             isAudioEnabled
-              ? 'depth-btn-secondary text-zinc-300 hover:text-white'
+              ? 'depth-btn-secondary text-zinc-700 hover:text-zinc-900'
               : 'bg-rose-500/15 border-rose-500/30 text-rose-400'
           }`}
           title={isAudioEnabled ? 'Mute mic' : 'Unmute mic'}

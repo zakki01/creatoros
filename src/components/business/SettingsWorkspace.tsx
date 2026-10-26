@@ -88,7 +88,7 @@ export const SettingsWorkspace: React.FC = () => {
             type="button"
             onClick={() => setAiEnabled(!aiEnabled)}
             className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-              aiEnabled ? 'bg-[#00B4D8]' : 'bg-zinc-800'
+              aiEnabled ? 'bg-[#00B4D8]' : 'bg-zinc-100'
             }`}
           >
             <span
@@ -109,7 +109,7 @@ export const SettingsWorkspace: React.FC = () => {
               <ul className="space-y-2 text-xs text-zinc-500">
                 {autoActions.map((item, idx) => (
                   <li key={idx} className="flex items-center gap-2">
-                    <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                    <Check className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
                     <span>{item}</span>
                   </li>
                 ))}
@@ -164,7 +164,7 @@ export const SettingsWorkspace: React.FC = () => {
               <h2 className="text-sm font-semibold text-zinc-800">
                 Live Creator Engine (Decart Realtime)
               </h2>
-              <span className="px-2 py-0.2 rounded-full text-[10px] font-mono bg-indigo-500/20 text-[#0096C7] border border-[#00B4D8]/30">
+              <span className="px-2 py-0.2 rounded-full text-[10px] font-mono bg-[#007E93]/10 text-[#007E93] border border-[#00B4D8]/30">
                 Self-Hosted / Optional
               </span>
             </div>
@@ -182,7 +182,7 @@ export const SettingsWorkspace: React.FC = () => {
               saveStoredLiveEngineConfig(updated);
             }}
             className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-              liveConfig.enabled ? 'bg-[#00B4D8]' : 'bg-zinc-800'
+              liveConfig.enabled ? 'bg-[#00B4D8]' : 'bg-zinc-100'
             }`}
           >
             <span
@@ -200,7 +200,7 @@ export const SettingsWorkspace: React.FC = () => {
               <div className="space-y-1.5 sm:col-span-2">
                 <label className="text-xs font-medium text-zinc-700 flex items-center justify-between">
                   <span className="flex items-center gap-1.5">
-                    <Key className="w-3.5 h-3.5 text-[#0096C7]" />
+                    <Key className="w-3.5 h-3.5 text-[#007E93]" />
                     <span>Decart API Key</span>
                   </span>
                   <span className="text-[11px] text-zinc-500 font-normal">
@@ -259,7 +259,7 @@ export const SettingsWorkspace: React.FC = () => {
               <div className="space-y-1.5">
                 <label className="text-xs font-medium text-zinc-700 flex items-center justify-between">
                   <span className="flex items-center gap-1.5">
-                    <Shield className="w-3.5 h-3.5 text-emerald-400" />
+                    <Shield className="w-3.5 h-3.5 text-emerald-700" />
                     <span>Max Session Duration (Cost Limit)</span>
                   </span>
                 </label>
@@ -294,14 +294,14 @@ export const SettingsWorkspace: React.FC = () => {
                 </Button>
 
                 {testStatus === 'success' && (
-                  <span className="text-xs text-emerald-400 flex items-center gap-1 font-medium animate-fade-in">
+                  <span className="text-xs text-emerald-700 flex items-center gap-1 font-medium animate-fade-in">
                     <CheckCircle2 className="w-3.5 h-3.5" />
                     <span>Decart Realtime Connected</span>
                   </span>
                 )}
 
                 {testStatus === 'preview' && (
-                  <span className="text-xs text-amber-400 flex items-center gap-1 font-medium animate-fade-in">
+                  <span className="text-xs text-amber-800 flex items-center gap-1 font-medium animate-fade-in">
                     <AlertCircle className="w-3.5 h-3.5" />
                     <span>Local Preview Mode Active (0 API Cost)</span>
                   </span>
@@ -310,7 +310,7 @@ export const SettingsWorkspace: React.FC = () => {
 
               <div className="flex items-center gap-2">
                 {saveNotice && (
-                  <span className="text-xs text-emerald-400 font-medium animate-fade-in">
+                  <span className="text-xs text-emerald-700 font-medium animate-fade-in">
                     Saved!
                   </span>
                 )}
@@ -318,7 +318,7 @@ export const SettingsWorkspace: React.FC = () => {
                   variant="primary"
                   size="sm"
                   onClick={handleSaveLiveConfig}
-                  className="text-xs bg-[#00B4D8] hover:bg-[#0096C7] shadow-indigo-600/20"
+                  className="text-xs bg-[#007E93] hover:bg-[#006779] shadow-teal-900/15"
                 >
                   Save Live Engine Settings
                 </Button>
@@ -354,7 +354,7 @@ export const SettingsWorkspace: React.FC = () => {
               className="p-3 rounded-xl bg-white shadow-xs border border-zinc-200 flex items-center justify-between text-xs"
             >
               <span className="text-zinc-700 font-medium">{item.name}</span>
-              <span className="text-[11px] text-emerald-400 font-mono">
+              <span className="text-[11px] text-emerald-700 font-mono">
                 {item.status}
               </span>
             </div>

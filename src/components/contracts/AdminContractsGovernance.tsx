@@ -110,7 +110,7 @@ export const AdminContractsGovernance: React.FC = () => {
             <h1 className="text-xl sm:text-2xl font-bold text-zinc-900 font-display">
               Commercial Contract Governance
             </h1>
-            <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 font-bold border border-rose-500/30">
+            <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-rose-50 text-rose-800 font-bold border border-rose-200">
               Super Admin Enclave
             </span>
           </div>
@@ -131,7 +131,7 @@ export const AdminContractsGovernance: React.FC = () => {
               onClick={() => setActiveView(v.id as any)}
               className={`min-h-[36px] px-3.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${
                 activeView === v.id
-                  ? 'bg-zinc-100 text-zinc-700 border border-zinc-200 text-white font-bold shadow-sm'
+                  ? 'bg-[#E9FAFC] text-[#005564] border border-[#A6E5EC] font-bold shadow-sm'
                   : 'text-zinc-500 hover:text-zinc-800'
               }`}
             >
@@ -142,8 +142,8 @@ export const AdminContractsGovernance: React.FC = () => {
       </div>
 
       {feedback && (
-        <div className="p-3.5 rounded-xl bg-emerald-950/40 border border-emerald-500/30 text-emerald-300 text-xs font-medium flex items-center gap-2 animate-fade-in">
-          <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+        <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-medium flex items-center gap-2 animate-fade-in">
+          <CheckCircle2 className="w-4 h-4 text-emerald-700 shrink-0" />
           <span>{feedback}</span>
         </div>
       )}
@@ -193,7 +193,7 @@ export const AdminContractsGovernance: React.FC = () => {
                 </thead>
                 <tbody className="divide-y divide-zinc-800/60 font-sans">
                   {filteredContracts.map((c) => (
-                    <tr key={c.id} className="hover:bg-zinc-850/50 transition-colors">
+                    <tr key={c.id} className="hover:bg-zinc-200/50 transition-colors">
                       <td className="py-3.5 px-4 font-mono text-zinc-500">{c.contractNumber}</td>
                       <td className="py-3.5 px-4 font-semibold text-zinc-800">{c.brandName}</td>
                       <td className="py-3.5 px-4">
@@ -209,7 +209,7 @@ export const AdminContractsGovernance: React.FC = () => {
                       <td className="py-3.5 px-4 text-zinc-700 max-w-xs truncate">
                         {c.projectName}
                       </td>
-                      <td className="py-3.5 px-4 font-mono font-bold text-emerald-400">
+                      <td className="py-3.5 px-4 font-mono font-bold text-emerald-700">
                         ${c.payment.totalAmount.toLocaleString()}
                       </td>
                       <td className="py-3.5 px-4">
@@ -282,7 +282,7 @@ export const AdminContractsGovernance: React.FC = () => {
             </div>
           ) : (
             <div className="p-8 rounded-2xl bg-zinc-50 border border-zinc-200 text-center space-y-2">
-              <CheckCircle2 className="w-8 h-8 text-emerald-400 mx-auto" />
+              <CheckCircle2 className="w-8 h-8 text-emerald-700 mx-auto" />
               <h4 className="text-sm font-bold text-white">Dispute Queue Empty</h4>
               <p className="text-xs text-zinc-500">
                 100% of contracts are operating smoothly without active disputes.
@@ -390,7 +390,7 @@ export const AdminContractsGovernance: React.FC = () => {
           <div className="pt-2 border-t border-zinc-200 flex justify-end">
             <button
               type="submit"
-              className="min-h-[44px] px-6 rounded-xl bg-[#00B4D8] hover:bg-[#0096C7] text-white font-bold text-xs cursor-pointer shadow-md shadow-indigo-600/30"
+              className="min-h-[44px] px-6 rounded-xl bg-[#007E93] hover:bg-[#006779] text-white font-bold text-xs cursor-pointer shadow-md shadow-teal-900/20"
             >
               Save Platform Policies
             </button>
@@ -417,7 +417,7 @@ export const AdminContractsGovernance: React.FC = () => {
             <div className="p-3.5 rounded-xl bg-zinc-50 border border-zinc-200 space-y-2">
               <div className="flex justify-between text-zinc-500 font-mono">
                 <span>Total Protected Escrow:</span>
-                <span className="text-emerald-400 font-bold">
+                <span className="text-emerald-700 font-bold">
                   ${selectedDisputeContract.payment.totalAmount.toLocaleString()}
                 </span>
               </div>

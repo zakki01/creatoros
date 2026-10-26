@@ -28,12 +28,12 @@ export const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/45 backdrop-blur-md animate-fade-in">
       <div className="relative w-full max-w-md rounded-2xl bg-white border border-zinc-200 p-6 shadow-2xl space-y-5">
         <div className="flex items-start justify-between">
-          <div className="w-10 h-10 rounded-xl bg-[#00B4D8]/10 border border-[#00B4D8]/20 text-[#0096C7] flex items-center justify-center">
+          <div className="w-10 h-10 rounded-xl bg-[#00B4D8]/10 border border-[#00B4D8]/20 text-[#007E93] flex items-center justify-center">
             <Mail className="w-5 h-5" />
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded-lg text-zinc-500 hover:text-white hover:bg-zinc-100 transition-colors"
+            className="p-1 rounded-lg text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 transition-colors"
           >
             <X className="w-4 h-4" />
           </button>
@@ -49,13 +49,13 @@ export const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
         </div>
 
         {submitted ? (
-          <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs space-y-2">
+          <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-500/30 text-emerald-800 text-xs space-y-2">
             <div className="flex items-center gap-2 font-semibold">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+              <CheckCircle2 className="w-4 h-4 text-emerald-700" />
               <span>Reset Link Sent!</span>
             </div>
             <p className="text-[11px] text-zinc-700">
-              Check your inbox at <span className="font-mono text-white">{email}</span> for instructions to reset your password.
+              Check your inbox at <span className="font-mono text-zinc-900">{email}</span> for instructions to reset your password.
             </p>
             <button
               onClick={onClose}
@@ -82,7 +82,7 @@ export const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
 
             <button
               type="submit"
-              className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-[#00B4D8] hover:bg-[#0096C7] text-white text-xs font-semibold shadow-lg shadow-indigo-600/25 transition-all"
+              className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-[#007E93] hover:bg-[#006779] text-white text-xs font-semibold shadow-lg shadow-teal-900/15 transition-all"
             >
               <span>Send Recovery Link</span>
               <ArrowRight className="w-3.5 h-3.5" />

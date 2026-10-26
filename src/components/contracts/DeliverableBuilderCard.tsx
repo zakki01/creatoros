@@ -74,7 +74,7 @@ export const DeliverableBuilderCard: React.FC<DeliverableBuilderCardProps> = ({
       {/* Header bar */}
       <div className="flex items-center justify-between gap-3 pb-3 border-b border-black/[0.06]">
         <div className="flex items-center gap-2.5">
-          <span className="w-6 h-6 rounded-lg bg-[#00B4D8]/10 border border-[#00B4D8]/20 text-[#0096C7] font-mono text-xs font-bold flex items-center justify-center">
+          <span className="w-6 h-6 rounded-lg bg-[#00B4D8]/10 border border-[#00B4D8]/20 text-[#007E93] font-mono text-xs font-bold flex items-center justify-center">
             {index + 1}
           </span>
           <div className="flex items-center gap-2">
@@ -139,7 +139,7 @@ export const DeliverableBuilderCard: React.FC<DeliverableBuilderCardProps> = ({
                   onClick={() => onUpdate({ ...deliverable, type })}
                   className={`min-h-[36px] px-3 py-1.5 rounded-xl text-xs font-medium transition-all cursor-pointer ${
                     deliverable.type === type
-                      ? 'bg-[#00B4D8] text-white font-semibold shadow-xs'
+                      ? 'bg-[#007E93] text-white font-semibold shadow-xs'
                       : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200 hover:text-zinc-900 border border-zinc-200'
                   }`}
                 >

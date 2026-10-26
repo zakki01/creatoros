@@ -57,7 +57,7 @@ export const CampaignsList: React.FC<CampaignsListProps> = ({
           >
             <div className="flex items-start justify-between gap-2">
               <div>
-                <h3 className="text-base font-bold text-zinc-900 group-hover:text-[#0096C7] transition-colors">
+                <h3 className="text-base font-bold text-zinc-900 group-hover:text-[#007E93] transition-colors">
                   {camp.name}
                 </h3>
                 <p className="text-xs text-zinc-500 mt-0.5">{camp.objective}</p>
@@ -104,7 +104,7 @@ export const CampaignsList: React.FC<CampaignsListProps> = ({
 
             <div className="flex items-center justify-between text-xs pt-1 border-t border-zinc-200/60 text-zinc-500">
               <span>Deadline: {camp.timeline.endDate}</span>
-              <span className="text-[#0096C7] inline-flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+              <span className="text-[#007E93] inline-flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
                 <span>Open Campaign</span>
                 <ChevronRight className="w-3.5 h-3.5" />
               </span>

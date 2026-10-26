@@ -71,7 +71,7 @@ export const TeamManagementSettings: React.FC = () => {
             <h2 className="text-sm font-semibold text-zinc-800">
               Team & Role-Based Access Control (RBAC)
             </h2>
-            <span className="px-2 py-0.5 rounded-full text-[10px] font-mono bg-indigo-500/10 text-[#0096C7] border border-[#00B4D8]/20">
+            <span className="px-2 py-0.5 rounded-full text-[10px] font-mono bg-[#007E93]/10 text-[#007E93] border border-[#00B4D8]/20">
               Enterprise Security
             </span>
           </div>
@@ -88,7 +88,7 @@ export const TeamManagementSettings: React.FC = () => {
               onClick={() => setActiveTab('members')}
               className={`px-3 py-1 rounded-md transition-all ${
                 activeTab === 'members'
-                  ? 'bg-zinc-800 text-white font-medium'
+                  ? 'bg-[#007E93] text-white font-medium'
                   : 'text-zinc-500 hover:text-zinc-800'
               }`}
             >
@@ -99,7 +99,7 @@ export const TeamManagementSettings: React.FC = () => {
               onClick={() => setActiveTab('audit')}
               className={`px-3 py-1 rounded-md transition-all flex items-center gap-1.5 ${
                 activeTab === 'audit'
-                  ? 'bg-zinc-800 text-white font-medium'
+                  ? 'bg-[#007E93] text-white font-medium'
                   : 'text-zinc-500 hover:text-zinc-800'
               }`}
             >
@@ -112,7 +112,7 @@ export const TeamManagementSettings: React.FC = () => {
             <button
               type="button"
               onClick={() => setIsInviteModalOpen(true)}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#00B4D8] hover:bg-[#0096C7] text-white text-xs font-semibold shadow-sm shadow-indigo-600/30 transition-all"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#007E93] hover:bg-[#006779] text-white text-xs font-semibold shadow-sm shadow-teal-900/20 transition-all"
             >
               <UserPlus className="w-3.5 h-3.5" />
               <span>Invite Member</span>
@@ -124,10 +124,10 @@ export const TeamManagementSettings: React.FC = () => {
       {/* Current User Active Role Pill */}
       <div className="p-3 rounded-xl bg-white shadow-xs border border-zinc-200 flex items-center justify-between text-xs">
         <div className="flex items-center gap-2">
-          <ShieldCheck className="w-4 h-4 text-emerald-400" />
+          <ShieldCheck className="w-4 h-4 text-emerald-700" />
           <span className="text-zinc-700">
             Your Active Role:{' '}
-            <strong className="text-white font-mono uppercase tracking-wider">{businessRole.replace('_', ' ')}</strong>
+            <strong className="text-zinc-900 font-mono uppercase tracking-wider">{businessRole.replace('_', ' ')}</strong>
           </span>
         </div>
         <span className="text-zinc-500 text-[11px]">
@@ -155,8 +155,8 @@ export const TeamManagementSettings: React.FC = () => {
                     <span
                       className={`text-[10px] px-2 py-0.2 rounded-full font-mono ${
                         member.status === 'active'
-                          ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
-                          : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'
+                          ? 'bg-emerald-50 text-emerald-700 border border-emerald-500/20'
+                          : 'bg-amber-50 text-amber-800 border border-amber-500/20'
                       }`}
                     >
                       {member.status}
@@ -205,7 +205,7 @@ export const TeamManagementSettings: React.FC = () => {
             <div key={log.id} className="p-3 flex items-start justify-between gap-3 text-xs">
               <div className="space-y-0.5">
                 <div className="flex items-center gap-2">
-                  <span className="font-mono font-semibold text-[#0096C7] text-[11px]">
+                  <span className="font-mono font-semibold text-[#007E93] text-[11px]">
                     [{log.action}]
                   </span>
                   <span className="text-zinc-800 font-medium">{log.category}</span>
@@ -223,15 +223,15 @@ export const TeamManagementSettings: React.FC = () => {
       {isInviteModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/45 backdrop-blur-md animate-fade-in">
           <div className="w-full max-w-md rounded-2xl bg-white border border-zinc-200 p-6 shadow-2xl space-y-4">
-            <div className="flex items-center justify-between pb-2 border-b border-zinc-850">
-              <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                <UserPlus className="w-4 h-4 text-[#0096C7]" />
+            <div className="flex items-center justify-between pb-2 border-b border-zinc-200">
+              <h3 className="text-sm font-bold text-zinc-900 flex items-center gap-2">
+                <UserPlus className="w-4 h-4 text-[#007E93]" />
                 <span>Invite Workspace Collaborator</span>
               </h3>
               <button
                 type="button"
                 onClick={() => setIsInviteModalOpen(false)}
-                className="text-zinc-500 hover:text-white transition-colors cursor-pointer"
+                className="text-zinc-600 hover:text-zinc-900 transition-colors cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -246,7 +246,7 @@ export const TeamManagementSettings: React.FC = () => {
                   value={inviteName}
                   onChange={(e) => setInviteName(e.target.value)}
                   placeholder="e.g. Jordan Blake"
-                  className="w-full bg-white border border-zinc-200 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]"
+                  className="w-full bg-white border border-zinc-200 rounded-lg px-3 py-2 text-xs text-zinc-900 focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]"
                 />
               </div>
 
@@ -258,7 +258,7 @@ export const TeamManagementSettings: React.FC = () => {
                   value={inviteEmail}
                   onChange={(e) => setInviteEmail(e.target.value)}
                   placeholder="jordan@company.com"
-                  className="w-full bg-white border border-zinc-200 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]"
+                  className="w-full bg-white border border-zinc-200 rounded-lg px-3 py-2 text-xs text-zinc-900 focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]"
                 />
               </div>
 
@@ -267,7 +267,7 @@ export const TeamManagementSettings: React.FC = () => {
                 <select
                   value={inviteRole}
                   onChange={(e) => setInviteRole(e.target.value as BusinessRole)}
-                  className="w-full bg-white border border-zinc-200 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]"
+                  className="w-full bg-white border border-zinc-200 rounded-lg px-3 py-2 text-xs text-zinc-900 focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]"
                 >
                   <option value="business_admin">Admin</option>
                   <option value="campaign_manager">Campaign Manager</option>
@@ -290,9 +290,9 @@ export const TeamManagementSettings: React.FC = () => {
                   {ROLE_PERMISSIONS[inviteRole].map((perm: string) => (
                     <span
                       key={perm}
-                      className="px-2 py-0.5 rounded bg-zinc-800 text-[10px] font-mono text-[#0096C7] flex items-center gap-1"
+                      className="px-2 py-0.5 rounded bg-zinc-100 text-[10px] font-mono text-[#007E93] flex items-center gap-1"
                     >
-                      <CheckCircle2 className="w-2.5 h-2.5 text-emerald-400" />
+                      <CheckCircle2 className="w-2.5 h-2.5 text-emerald-700" />
                       <span>{perm.replace('can', '')}</span>
                     </span>
                   ))}
@@ -303,13 +303,13 @@ export const TeamManagementSettings: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setIsInviteModalOpen(false)}
-                  className="px-3 py-1.5 rounded-lg text-xs text-zinc-500 hover:text-white"
+                  className="px-3 py-1.5 rounded-lg text-xs text-zinc-600 hover:text-zinc-900"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-1.5 rounded-lg bg-[#00B4D8] hover:bg-[#0096C7] text-white text-xs font-semibold shadow-sm"
+                  className="px-4 py-1.5 rounded-lg bg-[#007E93] hover:bg-[#006779] text-white text-xs font-semibold shadow-sm"
                 >
                   Send Invitation
                 </button>

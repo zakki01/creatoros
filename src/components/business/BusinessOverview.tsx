@@ -83,7 +83,7 @@ export const BusinessOverview: React.FC<BusinessOverviewProps> = ({
           <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider block">
             Active Campaigns
           </span>
-          <span className="text-2xl font-bold font-mono text-white mt-1 block">
+          <span className="text-2xl font-bold font-mono text-zinc-900 mt-1 block">
             {campaigns.filter((c) => c.status === 'Active').length}
           </span>
         </div>
@@ -92,7 +92,7 @@ export const BusinessOverview: React.FC<BusinessOverviewProps> = ({
           <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider block">
             Creators in Roster
           </span>
-          <span className="text-2xl font-bold font-mono text-white mt-1 block">
+          <span className="text-2xl font-bold font-mono text-zinc-900 mt-1 block">
             {creators.length}
           </span>
         </div>
@@ -101,7 +101,7 @@ export const BusinessOverview: React.FC<BusinessOverviewProps> = ({
           <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider block">
             Pending Approvals
           </span>
-          <span className="text-2xl font-bold font-mono text-[#0096C7] mt-1 block">
+          <span className="text-2xl font-bold font-mono text-[#007E93] mt-1 block">
             {pendingApprovals.length}
           </span>
         </div>
@@ -110,7 +110,7 @@ export const BusinessOverview: React.FC<BusinessOverviewProps> = ({
           <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider block">
             Budget / Spend
           </span>
-          <span className="text-2xl font-bold font-mono text-white mt-1 block">
+          <span className="text-2xl font-bold font-mono text-zinc-900 mt-1 block">
             ₹{(totalSpent / 100000).toFixed(1)}L <span className="text-xs text-zinc-500 font-normal">/ ₹{(totalBudget / 100000).toFixed(1)}L</span>
           </span>
         </div>
@@ -139,7 +139,7 @@ export const BusinessOverview: React.FC<BusinessOverviewProps> = ({
                 className="p-4 rounded-2xl bg-white shadow-xs border border-black/[0.08] hover:border-black/15 backdrop-blur-xl transition-all duration-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
               >
                 <div className="flex items-start gap-3">
-                  <span className="w-5 h-5 rounded-full bg-zinc-850 border border-black/[0.08] text-zinc-700 text-[11px] font-mono font-semibold flex items-center justify-center shrink-0 mt-0.5">
+                  <span className="w-5 h-5 rounded-full bg-zinc-100 border border-zinc-200 text-zinc-700 text-[11px] font-mono font-semibold flex items-center justify-center shrink-0 mt-0.5">
                     {idx + 1}
                   </span>
                   <div>
@@ -202,7 +202,7 @@ export const BusinessOverview: React.FC<BusinessOverviewProps> = ({
             >
               <div className="flex items-start justify-between gap-2">
                 <div>
-                  <h3 className="text-base font-bold text-zinc-900 group-hover:text-[#0096C7] transition-colors">
+                  <h3 className="text-base font-bold text-zinc-900 group-hover:text-[#007E93] transition-colors">
                     {camp.name}
                   </h3>
                   <p className="text-xs text-zinc-500 mt-0.5">{camp.objective}</p>
@@ -254,7 +254,7 @@ export const BusinessOverview: React.FC<BusinessOverviewProps> = ({
       {/* 5. "AI INSIGHTS" (Only Useful Contextual Recommendations) */}
       <div className="space-y-3">
         <h2 className="text-sm font-semibold text-zinc-800 uppercase tracking-wider flex items-center gap-2">
-          <Sparkles className="w-3.5 h-3.5 text-[#0096C7]" />
+          <Sparkles className="w-3.5 h-3.5 text-[#007E93]" />
           <span>AI insights</span>
         </h2>
 

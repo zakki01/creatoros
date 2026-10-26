@@ -36,7 +36,7 @@ export const ReactionPicker: React.FC<ReactionPickerProps> = ({
     >
       {/* Compact Reaction Tray */}
       <div
-        className={`flex items-center gap-1 p-1.5 rounded-full bg-[#121218]/95 backdrop-blur-xl border border-white/[0.14] shadow-2xl shadow-black/80 transition-all ${
+        className={`flex items-center gap-1 p-1.5 rounded-full bg-white/95 backdrop-blur-xl border border-zinc-200 shadow-xl shadow-slate-900/15 transition-all ${
           position === 'top' ? 'bottom-full mb-2' : 'top-full mt-2'
         }`}
       >
@@ -52,8 +52,8 @@ export const ReactionPicker: React.FC<ReactionPickerProps> = ({
               title={item.label}
               className={`w-9 h-9 rounded-full flex items-center justify-center text-xl hover:scale-130 active:scale-95 transition-all duration-150 cursor-pointer ${
                 isSelected
-                  ? 'bg-white/20 ring-1 ring-white/40 scale-110'
-                  : 'hover:bg-white/10'
+                  ? 'bg-sky-50 ring-1 ring-sky-200 scale-110'
+                  : 'hover:bg-zinc-100'
               }`}
             >
               <span className="transform transition-transform">{item.emoji}</span>
@@ -65,7 +65,7 @@ export const ReactionPicker: React.FC<ReactionPickerProps> = ({
         <button
           onClick={() => setShowFullPicker(!showFullPicker)}
           title="More reactions"
-          className="w-8 h-8 rounded-full flex items-center justify-center text-zinc-400 hover:text-white hover:bg-white/10 transition-all cursor-pointer border-l border-white/10 pl-1"
+          className="w-8 h-8 rounded-full flex items-center justify-center text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 transition-all cursor-pointer border-l border-zinc-200 pl-1"
         >
           <Plus className="w-4 h-4" />
         </button>

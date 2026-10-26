@@ -116,7 +116,7 @@ export const ContentApprovalWorkspace: React.FC = () => {
                   onClick={() => setSelectedSubmissionId(sub.id)}
                   className={`p-4 rounded-2xl border transition-all cursor-pointer space-y-2 ${
                     isSelected
-                      ? 'bg-white border-[#00B4D8] shadow-lg shadow-xs ring-1 ring-indigo-500'
+                      ? 'bg-white border-[#00B4D8] shadow-lg shadow-xs ring-1 ring-[#007E93]'
                       : 'bg-white shadow-xs border-zinc-200 hover:border-zinc-300 hover:bg-zinc-100/90'
                   }`}
                 >
@@ -215,8 +215,8 @@ export const ContentApprovalWorkspace: React.FC = () => {
                     <div className="p-4 rounded-2xl bg-[#00B4D8]/10 border border-[#00B4D8]/30 space-y-3">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                          <Sparkles className="w-4 h-4 text-[#0096C7]" />
-                          <h4 className="text-xs font-semibold text-[#0096C7] uppercase tracking-wider">
+                          <Sparkles className="w-4 h-4 text-[#007E93]" />
+                          <h4 className="text-xs font-semibold text-[#007E93] uppercase tracking-wider">
                             AI Pre-Check Verification
                           </h4>
                         </div>
@@ -238,7 +238,7 @@ export const ContentApprovalWorkspace: React.FC = () => {
                         {/* Product Visible */}
                         <div className="flex items-start gap-2.5 p-2 rounded-xl bg-zinc-50 border border-zinc-200">
                           {selectedSub.aiPreCheck.productVisible ? (
-                            <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                            <CheckCircle2 className="w-4 h-4 text-emerald-700 shrink-0 mt-0.5" />
                           ) : (
                             <XCircle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
                           )}
@@ -253,7 +253,7 @@ export const ContentApprovalWorkspace: React.FC = () => {
                         {/* Brand Mention */}
                         <div className="flex items-start gap-2.5 p-2 rounded-xl bg-zinc-50 border border-zinc-200">
                           {selectedSub.aiPreCheck.brandMention ? (
-                            <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                            <CheckCircle2 className="w-4 h-4 text-emerald-700 shrink-0 mt-0.5" />
                           ) : (
                             <XCircle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
                           )}
@@ -268,9 +268,9 @@ export const ContentApprovalWorkspace: React.FC = () => {
                         {/* Required CTA */}
                         <div className="flex items-start gap-2.5 p-2 rounded-xl bg-zinc-50 border border-zinc-200">
                           {selectedSub.aiPreCheck.requiredCta ? (
-                            <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                            <CheckCircle2 className="w-4 h-4 text-emerald-700 shrink-0 mt-0.5" />
                           ) : (
-                            <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                            <AlertTriangle className="w-4 h-4 text-amber-800 shrink-0 mt-0.5" />
                           )}
                           <div>
                             <span className="font-semibold text-zinc-800">Required CTA:</span>
@@ -283,7 +283,7 @@ export const ContentApprovalWorkspace: React.FC = () => {
                         {/* Duration */}
                         <div className="flex items-start gap-2.5 p-2 rounded-xl bg-zinc-50 border border-zinc-200">
                           {selectedSub.aiPreCheck.durationCompliant ? (
-                            <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                            <CheckCircle2 className="w-4 h-4 text-emerald-700 shrink-0 mt-0.5" />
                           ) : (
                             <XCircle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
                           )}
@@ -305,7 +305,7 @@ export const ContentApprovalWorkspace: React.FC = () => {
                         {selectedSub.hashtags.map((tag, idx) => (
                           <span
                             key={idx}
-                            className="text-[10px] text-[#0096C7] bg-indigo-950/40 px-2 py-0.5 rounded-md"
+                            className="text-[10px] text-[#006C80] bg-[#E9FAFC] border border-[#007E93]/15 px-2 py-0.5 rounded-md"
                           >
                             {tag}
                           </span>

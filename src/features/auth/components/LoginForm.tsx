@@ -95,7 +95,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
           id="rememberMe"
           checked={rememberMe}
           onChange={(e) => setRememberMe(e.target.checked)}
-          className="rounded border-zinc-300/60 bg-white/90 text-indigo-500 focus:ring-0 focus:ring-offset-0 w-3.5 h-3.5 cursor-pointer accent-indigo-500"
+          className="rounded border-zinc-300/60 bg-white/90 text-[#007E93] focus:ring-0 focus:ring-offset-0 w-3.5 h-3.5 cursor-pointer accent-indigo-500"
         />
         <label htmlFor="rememberMe" className="text-xs text-zinc-500 cursor-pointer select-none">
           Keep me signed in on this device

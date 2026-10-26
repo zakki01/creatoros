@@ -15,7 +15,7 @@ export const Skeleton: React.FC<SkeletonProps> = ({
   style,
   ...props
 }) => {
-  const baseAnimation = 'animate-pulse bg-white/[0.06]';
+  const baseAnimation = 'animate-pulse bg-zinc-200/80';
 
   const variantStyles = {
     text: 'h-4 w-full rounded-md',

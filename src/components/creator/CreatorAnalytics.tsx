@@ -39,7 +39,7 @@ export const CreatorAnalytics: React.FC = () => {
               Verified
             </Badge>
           </div>
-          <p className="text-xs text-zinc-400 mt-0.5">
+          <p className="text-xs text-zinc-600 mt-0.5">
             30-day reach and campaign performance
           </p>
         </div>
@@ -47,7 +47,7 @@ export const CreatorAnalytics: React.FC = () => {
         <Button
           variant="secondary"
           size="md"
-          leftIcon={<Download className="w-3.5 h-3.5 text-emerald-400" />}
+          leftIcon={<Download className="w-3.5 h-3.5 text-emerald-700" />}
           onClick={() => setIsReportModalOpen(true)}
         >
           Export Kit
@@ -60,15 +60,15 @@ export const CreatorAnalytics: React.FC = () => {
           const Icon = m.icon;
           return (
             <SpatialCard key={idx} surface={2} interactive className="p-4 space-y-2">
-              <div className="flex items-center justify-between text-zinc-400">
+              <div className="flex items-center justify-between text-zinc-600">
                 <span className="text-[11px] font-medium truncate">{m.label}</span>
-                <Icon className="w-3.5 h-3.5 text-indigo-400" />
+                <Icon className="w-3.5 h-3.5 text-[#007E93]" />
               </div>
               <div>
                 <p className="text-xl font-bold text-zinc-900 font-mono tracking-tight">
                   {m.value}
                 </p>
-                <span className="text-[10px] text-emerald-400 font-mono font-semibold">
+                <span className="text-[10px] text-emerald-700 font-mono font-semibold">
                   {m.delta}
                 </span>
               </div>
@@ -84,11 +84,11 @@ export const CreatorAnalytics: React.FC = () => {
             <h3 className="text-sm font-bold text-zinc-900 font-display">
               Reach Velocity
             </h3>
-            <p className="text-[11px] text-zinc-400">
+            <p className="text-[11px] text-zinc-600">
               184K impressions · +18% vs last 30d
             </p>
           </div>
-          <span className="px-2.5 py-1 rounded-full text-[10px] font-mono font-semibold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+          <span className="px-2.5 py-1 rounded-full text-[10px] font-mono font-semibold bg-emerald-50 text-emerald-800 border border-emerald-500/30">
             Peak: 48.2K / day
           </span>
         </div>
@@ -101,13 +101,13 @@ export const CreatorAnalytics: React.FC = () => {
           >
             <defs>
               <linearGradient id="spatialChartFill" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#7C5CFF" stopOpacity="0.38" />
-                <stop offset="65%" stopColor="#38BDF8" stopOpacity="0.1" />
-                <stop offset="100%" stopColor="#090A0F" stopOpacity="0" />
+                <stop offset="0%" stopColor="#007E93" stopOpacity="0.38" />
+                <stop offset="65%" stopColor="#8EDCE5" stopOpacity="0.1" />
+                <stop offset="100%" stopColor="#EDF3F6" stopOpacity="0" />
               </linearGradient>
               <linearGradient id="spatialChartStroke" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0%" stopColor="#7C5CFF" />
-                <stop offset="55%" stopColor="#38BDF8" />
+                <stop offset="0%" stopColor="#007E93" />
+                <stop offset="55%" stopColor="#8EDCE5" />
                 <stop offset="100%" stopColor="#10B981" />
               </linearGradient>
               <filter id="pointGlow" x="-40%" y="-40%" width="180%" height="180%">
@@ -117,9 +117,9 @@ export const CreatorAnalytics: React.FC = () => {
             </defs>
 
             {/* Subtle horizontal reference lines */}
-            <line x1="0" y1="35" x2="600" y2="35" stroke="rgba(255,255,255,0.05)" strokeDasharray="4 4" />
-            <line x1="0" y1="85" x2="600" y2="85" stroke="rgba(255,255,255,0.05)" strokeDasharray="4 4" />
-            <line x1="0" y1="135" x2="600" y2="135" stroke="rgba(255,255,255,0.05)" />
+            <line x1="0" y1="35" x2="600" y2="35" stroke="rgba(100,116,139,0.18)" strokeDasharray="4 4" />
+            <line x1="0" y1="85" x2="600" y2="85" stroke="rgba(100,116,139,0.18)" strokeDasharray="4 4" />
+            <line x1="0" y1="135" x2="600" y2="135" stroke="rgba(100,116,139,0.18)" />
 
             {/* Area under curve */}
             <path
@@ -180,15 +180,15 @@ export const CreatorAnalytics: React.FC = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent" />
                 <div className="absolute bottom-2.5 left-2.5 right-2.5 flex justify-between text-xs text-white">
                   <span className="font-mono font-semibold">{(item.views / 1000).toFixed(0)}K Views</span>
-                  <span className="font-mono text-emerald-400 font-semibold">
+                  <span className="font-mono text-emerald-800 font-semibold">
                     {(item.engagement / 1000).toFixed(1)}K Likes
                   </span>
                 </div>
               </div>
 
               <div className="p-3.5">
-                <h4 className="text-xs font-bold text-zinc-100 line-clamp-1">{item.title}</h4>
-                <p className="text-[11px] text-zinc-400 mt-0.5">{item.type}</p>
+                <h4 className="text-xs font-bold text-zinc-900 line-clamp-1">{item.title}</h4>
+                <p className="text-[11px] text-zinc-600 mt-0.5">{item.type}</p>
               </div>
             </SpatialCard>
           ))}

@@ -15,16 +15,16 @@ export const DemoAccessCard: React.FC<DemoAccessCardProps> = ({
   return (
     <div className="surface-soft-recessed p-4 rounded-2xl space-y-3">
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-1.5 text-xs font-semibold text-zinc-300 uppercase tracking-wider">
-          <Sparkles className="w-3.5 h-3.5 text-sky-400" />
+        <div className="flex items-center gap-1.5 text-xs font-semibold text-zinc-700 uppercase tracking-wider">
+          <Sparkles className="w-3.5 h-3.5 text-[#007E93]" />
           <span>Explore CreatorOS</span>
         </div>
-        <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-zinc-800/80 text-zinc-300 border border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]">
+        <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-white text-zinc-700 border border-zinc-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]">
           Instant preview
         </span>
       </div>
 
-      <p className="text-[11px] text-zinc-400">
+      <p className="text-[11px] text-zinc-600">
         Instantly explore with active campaigns, contracts, and deliverables.
       </p>
 
@@ -39,15 +39,15 @@ export const DemoAccessCard: React.FC<DemoAccessCardProps> = ({
           <div className="flex items-center gap-2.5 min-w-0">
             <BrandLogo size="xs" iconOnly />
             <div className="truncate">
-              <span className="text-xs font-semibold text-zinc-200 block truncate group-hover:text-sky-300">
+              <span className="text-xs font-semibold text-zinc-900 block truncate group-hover:text-[#007E93]">
                 Creator Experience
               </span>
-              <span className="text-[10px] text-zinc-500 block truncate">
+              <span className="text-[10px] text-zinc-600 block truncate">
                 Rohan Sharma (Fashion)
               </span>
             </div>
           </div>
-          <ArrowRight className="w-3.5 h-3.5 text-zinc-500 group-hover:text-sky-400 transition-transform group-hover:translate-x-0.5" />
+          <ArrowRight className="w-3.5 h-3.5 text-zinc-500 group-hover:text-[#007E93] transition-transform group-hover:translate-x-0.5" />
         </button>
 
         {/* Brand Demo */}
@@ -58,19 +58,19 @@ export const DemoAccessCard: React.FC<DemoAccessCardProps> = ({
           className="btn-soft-raised flex items-center justify-between p-3 rounded-xl text-left transition-all group cursor-pointer"
         >
           <div className="flex items-center gap-2.5 min-w-0">
-            <div className="w-8 h-8 rounded-lg bg-indigo-500/15 border border-indigo-500/20 text-indigo-400 flex items-center justify-center shrink-0">
+            <div className="w-8 h-8 rounded-lg bg-[#E9FAFC] border border-[#B5E6EC] text-[#006779] flex items-center justify-center shrink-0">
               <Building2 className="w-4 h-4" />
             </div>
             <div className="truncate">
-              <span className="text-xs font-semibold text-zinc-200 block truncate group-hover:text-indigo-300">
+              <span className="text-xs font-semibold text-zinc-900 block truncate group-hover:text-[#006779]">
                 Brand Workspace
               </span>
-              <span className="text-[10px] text-zinc-500 block truncate">
+              <span className="text-[10px] text-zinc-600 block truncate">
                 Aura Streetwear Co.
               </span>
             </div>
           </div>
-          <ArrowRight className="w-3.5 h-3.5 text-zinc-500 group-hover:text-indigo-400 transition-transform group-hover:translate-x-0.5" />
+          <ArrowRight className="w-3.5 h-3.5 text-zinc-500 group-hover:text-[#007E93] transition-transform group-hover:translate-x-0.5" />
         </button>
       </div>
 

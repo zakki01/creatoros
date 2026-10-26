@@ -226,9 +226,9 @@ Every production begins with intentional craft. In this article, we break down l
         />
 
         {/* Header */}
-        <div className="px-5 py-4 border-b border-black/[0.08] bg-white/[0.02] flex items-center justify-between">
+        <div className="px-5 py-4 border-b border-black/[0.08] bg-white flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-indigo-500/20 border border-[#00B4D8]/35 text-[#0096C7] flex items-center justify-center">
+            <div className="w-8 h-8 rounded-xl bg-[#007E93]/10 border border-[#00B4D8]/35 text-[#007E93] flex items-center justify-center">
               <Sparkles className="w-4 h-4" />
             </div>
             <div>
@@ -241,14 +241,14 @@ Every production begins with intentional craft. In this article, we break down l
 
           <button
             onClick={onClose}
-            className="p-1.5 rounded-xl text-zinc-500 hover:text-white hover:bg-white/[0.08] transition-all cursor-pointer"
+            className="p-1.5 rounded-xl text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 transition-all cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Visual Selection Cards for Format (Reel / Shot / Blog) */}
-        <div className="p-4 sm:p-5 border-b border-black/[0.06] bg-black/25">
+        <div className="p-4 sm:p-5 border-b border-black/[0.06] bg-zinc-50">
           <div className="grid grid-cols-3 gap-3">
             {[
               {
@@ -282,7 +282,7 @@ Every production begins with intentional craft. In this article, we break down l
                   onClick={() => setContentType(type.id as PostContentType)}
                   className={`group relative overflow-hidden rounded-2xl text-left transition-all cursor-pointer flex flex-col justify-between ${
                     isSelected
-                      ? 'surface-3 border-[#00B4D8]/70 ring-1 ring-indigo-500/40 shadow-[0_12px_24px_-6px_rgba(99,102,241,0.35)] -translate-y-0.5'
+                      ? 'surface-3 border-[#007E93]/50 ring-1 ring-[#007E93]/20 shadow-[0_10px_22px_-10px_rgba(0,126,147,0.25)] -translate-y-0.5'
                       : 'surface-2 hover:border-black/15 hover:-translate-y-0.5'
                   }`}
                 >
@@ -293,17 +293,17 @@ Every production begins with intentional craft. In this article, we break down l
                       className="w-full h-full object-cover opacity-55 group-hover:scale-105 transition-transform duration-300"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#12121B] via-black/30 to-transparent" />
-                    <div className="absolute top-2 left-2.5 p-1 rounded-lg bg-black/60 backdrop-blur-md border border-black/10 text-[#0096C7]">
+                    <div className="absolute top-2 left-2.5 p-1 rounded-lg bg-black/60 backdrop-blur-md border border-black/10 text-[#007E93]">
                       <Icon className="w-3.5 h-3.5" />
                     </div>
                     {isSelected && (
-                      <div className="absolute top-2 right-2 w-4 h-4 rounded-full bg-indigo-500 text-white flex items-center justify-center">
+                      <div className="absolute top-2 right-2 w-4 h-4 rounded-full bg-[#007E93] text-white flex items-center justify-center">
                         <Check className="w-2.5 h-2.5" />
                       </div>
                     )}
                   </div>
                   <div className="p-2.5">
-                    <span className="text-xs font-bold text-white block">{type.label}</span>
+                    <span className="text-xs font-bold text-zinc-900 block">{type.label}</span>
                     <span className="text-[10px] text-zinc-500 block truncate">{type.sub}</span>
                   </div>
                 </button>
@@ -334,7 +334,7 @@ Every production begins with intentional craft. In this article, we break down l
                       }}
                       className={`p-2 rounded-xl border text-left text-xs transition-all cursor-pointer ${
                         videoUrl === preset.videoUrl
-                          ? 'border-[#00B4D8] bg-[#00B4D8]/10 text-white'
+                          ? 'border-[#00B4D8] bg-[#E9FAFC] text-[#005564]'
                           : 'border-black/[0.06] bg-zinc-50 text-zinc-500 hover:text-zinc-800'
                       }`}
                     >
@@ -357,7 +357,7 @@ Every production begins with intentional craft. In this article, we break down l
                     type="url"
                     value={videoUrl}
                     onChange={(e) => setVideoUrl(e.target.value)}
-                    className="w-full bg-white shadow-sm border border-black/[0.08] rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]"
+                    className="w-full bg-white shadow-sm border border-zinc-200 rounded-xl px-3 py-2 text-xs text-zinc-900 placeholder-zinc-500 focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]"
                   />
                 </div>
                 <div>
@@ -369,7 +369,7 @@ Every production begins with intentional craft. In this article, we break down l
                     value={duration}
                     onChange={(e) => setDuration(e.target.value)}
                     placeholder="0:30"
-                    className="w-full bg-white shadow-sm border border-black/[0.08] rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]"
+                    className="w-full bg-white shadow-sm border border-zinc-200 rounded-xl px-3 py-2 text-xs text-zinc-900 placeholder-zinc-500 focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]"
                   />
                 </div>
               </div>
@@ -400,7 +400,7 @@ Every production begins with intentional craft. In this article, we break down l
                     type="url"
                     value={reelThumbnail}
                     onChange={(e) => setReelThumbnail(e.target.value)}
-                    className="w-full bg-white shadow-sm border border-black/[0.08] rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]"
+                    className="w-full bg-white shadow-sm border border-zinc-200 rounded-xl px-3 py-2 text-xs text-zinc-900 placeholder-zinc-500 focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]"
                   />
                 </div>
               </div>
@@ -425,7 +425,7 @@ Every production begins with intentional craft. In this article, we break down l
                       }}
                       className={`p-2 rounded-xl border text-left text-xs transition-all cursor-pointer ${
                         imageUrl === preset.url
-                          ? 'border-[#00B4D8] bg-[#00B4D8]/10 text-white'
+                          ? 'border-[#00B4D8] bg-[#E9FAFC] text-[#005564]'
                           : 'border-black/[0.06] bg-zinc-50 text-zinc-500 hover:text-zinc-800'
                       }`}
                     >
@@ -447,7 +447,7 @@ Every production begins with intentional craft. In this article, we break down l
                     type="url"
                     value={imageUrl}
                     onChange={(e) => setImageUrl(e.target.value)}
-                    className="w-full bg-white shadow-sm border border-black/[0.08] rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]"
+                    className="w-full bg-white shadow-sm border border-zinc-200 rounded-xl px-3 py-2 text-xs text-zinc-900 placeholder-zinc-500 focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]"
                   />
                 </div>
                 <div>
@@ -481,7 +481,7 @@ Every production begins with intentional craft. In this article, we break down l
                   value={blogTitle}
                   onChange={(e) => setBlogTitle(e.target.value)}
                   placeholder="e.g. How We Built Our Latest Streetwear Collection"
-                  className="w-full bg-white shadow-sm border border-black/[0.08] rounded-xl px-3 py-2 text-sm text-white font-semibold placeholder-zinc-500 focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]"
+                  className="w-full bg-white shadow-sm border border-zinc-200 rounded-xl px-3 py-2 text-sm text-zinc-900 font-semibold placeholder-zinc-500 focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]"
                 />
               </div>
 
@@ -494,7 +494,7 @@ Every production begins with intentional craft. In this article, we break down l
                     type="url"
                     value={blogCoverImage}
                     onChange={(e) => setBlogCoverImage(e.target.value)}
-                    className="w-full bg-white shadow-sm border border-black/[0.08] rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]"
+                    className="w-full bg-white shadow-sm border border-zinc-200 rounded-xl px-3 py-2 text-xs text-zinc-900 placeholder-zinc-500 focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]"
                   />
                 </div>
                 <div>
@@ -506,7 +506,7 @@ Every production begins with intentional craft. In this article, we break down l
                     value={readingTime}
                     onChange={(e) => setReadingTime(e.target.value)}
                     placeholder="4 min read"
-                    className="w-full bg-white shadow-sm border border-black/[0.08] rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]"
+                    className="w-full bg-white shadow-sm border border-zinc-200 rounded-xl px-3 py-2 text-xs text-zinc-900 placeholder-zinc-500 focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]"
                   />
                 </div>
               </div>
@@ -538,7 +538,7 @@ Every production begins with intentional craft. In this article, we break down l
                   <button
                     type="button"
                     onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-                    className="text-zinc-500 hover:text-amber-300 text-xs flex items-center gap-1 cursor-pointer transition-colors"
+                    className="text-zinc-500 hover:text-amber-800 text-xs flex items-center gap-1 cursor-pointer transition-colors"
                     title="Insert emoji"
                   >
                     <Smile className="w-3.5 h-3.5" />
@@ -576,7 +576,7 @@ Every production begins with intentional craft. In this article, we break down l
               <button
                 type="button"
                 onClick={() => setShowOptionalDetails(!showOptionalDetails)}
-                className="text-xs font-semibold text-[#0096C7] hover:text-[#0096C7] flex items-center gap-1.5 cursor-pointer py-1"
+                className="text-xs font-semibold text-[#007E93] hover:text-[#007E93] flex items-center gap-1.5 cursor-pointer py-1"
               >
                 <span>{showOptionalDetails ? '− Hide Optional Details' : '+ Add Optional Details (Tags, Mention, Campaign)'}</span>
               </button>
@@ -586,7 +586,7 @@ Every production begins with intentional craft. In this article, we break down l
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <label className="text-[11px] font-medium text-zinc-500 block mb-1 flex items-center gap-1">
-                        <Tag className="w-3 h-3 text-[#0096C7]" />
+                        <Tag className="w-3 h-3 text-[#007E93]" />
                         <span>Tags</span>
                       </label>
                       <input
@@ -594,13 +594,13 @@ Every production begins with intentional craft. In this article, we break down l
                         value={tags}
                         onChange={(e) => setTags(e.target.value)}
                         placeholder="#Streetwear, #Lookbook"
-                        className="w-full bg-white shadow-sm border border-black/[0.08] rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]"
+                        className="w-full bg-white shadow-sm border border-zinc-200 rounded-xl px-3 py-2 text-xs text-zinc-900 placeholder-zinc-500 focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]"
                       />
                     </div>
 
                     <div>
                       <label className="text-[11px] font-medium text-zinc-500 block mb-1 flex items-center gap-1">
-                        <AtSign className="w-3 h-3 text-emerald-400" />
+                        <AtSign className="w-3 h-3 text-emerald-700" />
                         <span>Mention Creator or Brand</span>
                       </label>
                       <input
@@ -608,14 +608,14 @@ Every production begins with intentional craft. In this article, we break down l
                         value={mention}
                         onChange={(e) => setMention(e.target.value)}
                         placeholder="@rohan.kicks or @aurastreetwear"
-                        className="w-full bg-white shadow-sm border border-black/[0.08] rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]"
+                        className="w-full bg-white shadow-sm border border-zinc-200 rounded-xl px-3 py-2 text-xs text-zinc-900 placeholder-zinc-500 focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]"
                       />
                     </div>
                   </div>
 
                   <div>
                     <label className="text-[11px] font-medium text-zinc-500 block mb-1 flex items-center gap-1">
-                      <Briefcase className="w-3 h-3 text-amber-400" />
+                      <Briefcase className="w-3 h-3 text-amber-800" />
                       <span>Link Campaign Brief</span>
                     </label>
                     <select
@@ -657,15 +657,15 @@ Every production begins with intentional craft. In this article, we break down l
             </button>
 
             {publishedSuccess ? (
-              <div className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs font-semibold animate-fade-in">
-                <Check className="w-4 h-4 text-emerald-400" />
+              <div className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-50 border border-emerald-500/40 text-emerald-800 text-xs font-semibold animate-fade-in">
+                <Check className="w-4 h-4 text-emerald-700" />
                 <span>Published ✓</span>
               </div>
             ) : (
               <button
                 type="button"
                 onClick={() => handlePublish('published')}
-                className="px-4 py-2 rounded-xl bg-[#00B4D8] hover:bg-[#0096C7] active:scale-95 text-xs font-semibold text-white transition-all cursor-pointer flex items-center gap-1.5 shadow-sm shadow-xs"
+                className="px-4 py-2 rounded-xl bg-[#007E93] hover:bg-[#006779] active:scale-95 text-xs font-semibold text-white transition-all cursor-pointer flex items-center gap-1.5 shadow-sm shadow-xs"
               >
                 <Send className="w-3.5 h-3.5" />
                 <span>Publish {contentType.charAt(0).toUpperCase() + contentType.slice(1)}</span>

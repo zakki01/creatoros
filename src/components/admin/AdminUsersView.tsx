@@ -218,7 +218,7 @@ export const AdminUsersView: React.FC = () => {
               onClick={() => setRoleFilter(tab.id)}
               className={`px-3 py-1.5 rounded-lg text-xs font-sans font-medium transition-all shrink-0 cursor-pointer ${
                 roleFilter === tab.id
-                  ? 'bg-[#00B4D8] text-white shadow-xs'
+                  ? 'bg-[#007E93] text-white shadow-xs'
                   : 'bg-zinc-100 text-zinc-600 hover:text-zinc-900'
               }`}
             >
@@ -301,12 +301,12 @@ export const AdminUsersView: React.FC = () => {
                     {/* Role */}
                     <td className="py-3.5 px-4">
                       {account.role === 'creator' && (
-                        <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-500/10 text-emerald-300 border border-emerald-500/20 font-semibold">
+                        <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-50 text-emerald-800 border border-emerald-500/20 font-semibold">
                           CREATOR
                         </span>
                       )}
                       {account.role === 'business' && (
-                        <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-[#00B4D8]/10 text-[#0096C7] border border-[#00B4D8]/20 font-semibold">
+                        <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-[#00B4D8]/10 text-[#007E93] border border-[#00B4D8]/20 font-semibold">
                           BRAND
                         </span>
                       )}
@@ -341,7 +341,7 @@ export const AdminUsersView: React.FC = () => {
                           SUSPENDED
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-50 text-emerald-700 border border-emerald-500/20">
                           <CheckCircle className="w-3 h-3" />
                           ACTIVE
                         </span>

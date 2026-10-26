@@ -25,10 +25,10 @@ export const Progress: React.FC<ProgressProps> = ({
   };
 
   const colorStyles = {
-    brand: 'bg-indigo-600',
+    brand: 'bg-[#007E93]',
     emerald: 'bg-emerald-500',
     amber: 'bg-amber-500',
-    gradient: 'bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500',
+    gradient: 'bg-gradient-to-r from-[#007E93] via-[#16A4B8] to-[#66D5E3]',
   };
 
   return (
@@ -36,10 +36,10 @@ export const Progress: React.FC<ProgressProps> = ({
       {showLabel && (
         <div className="flex justify-between items-center text-xs text-zinc-400 mb-1.5">
           <span>Progress</span>
-          <span className="font-mono font-medium text-zinc-200">{Math.round(clampedValue)}%</span>
+          <span className="font-mono font-medium text-zinc-800">{Math.round(clampedValue)}%</span>
         </div>
       )}
-      <div className={clsx('w-full bg-zinc-800/80 rounded-full overflow-hidden p-0.5', heightStyles[size])}>
+      <div className={clsx('w-full bg-zinc-200 rounded-full overflow-hidden p-0.5', heightStyles[size])}>
         <div
           className={clsx('h-full rounded-full transition-all duration-500', colorStyles[color])}
           style={{ width: `${clampedValue}%` }}

@@ -109,20 +109,20 @@ const ToastCard: React.FC<{ toast: ToastItem; onDismiss: () => void }> = ({
 }) => {
   const iconConfig: Record<ToastType, { icon: React.ReactNode; color: string }> = {
     success: {
-      icon: <CheckCircle2 className="w-5 h-5 text-emerald-400" />,
-      color: 'border-emerald-500/30 bg-emerald-950/20',
+      icon: <CheckCircle2 className="w-5 h-5 text-emerald-700" />,
+      color: 'border-emerald-500/30 bg-emerald-50',
     },
     error: {
-      icon: <AlertCircle className="w-5 h-5 text-rose-400" />,
-      color: 'border-rose-500/30 bg-rose-950/20',
+      icon: <AlertCircle className="w-5 h-5 text-rose-700" />,
+      color: 'border-rose-200 bg-rose-50',
     },
     warning: {
-      icon: <AlertTriangle className="w-5 h-5 text-amber-400" />,
-      color: 'border-amber-500/30 bg-amber-950/20',
+      icon: <AlertTriangle className="w-5 h-5 text-amber-800" />,
+      color: 'border-amber-500/30 bg-amber-50',
     },
     info: {
-      icon: <Info className="w-5 h-5 text-indigo-400" />,
-      color: 'border-indigo-500/30 bg-indigo-950/20',
+      icon: <Info className="w-5 h-5 text-[#007E93]" />,
+      color: 'border-[#007E93]/25 bg-[#E9FAFC]',
     },
   };
 
@@ -132,7 +132,7 @@ const ToastCard: React.FC<{ toast: ToastItem; onDismiss: () => void }> = ({
     <div
       role="alert"
       className={clsx(
-        'pointer-events-auto flex items-start gap-3 p-3.5 rounded-xl border backdrop-blur-xl bg-[#121218]/95 shadow-2xl shadow-black/80',
+        'pointer-events-auto flex items-start gap-3 p-3.5 rounded-xl border backdrop-blur-xl bg-white/95 text-zinc-900 shadow-xl shadow-slate-900/10',
         'animate-in fade-in slide-in-from-top-2 duration-200',
         cfg.color
       )}
@@ -140,16 +140,16 @@ const ToastCard: React.FC<{ toast: ToastItem; onDismiss: () => void }> = ({
       <div className="shrink-0 mt-0.5">{cfg.icon}</div>
       <div className="flex-1 min-w-0 pr-1">
         {toast.title && (
-          <h4 className="text-xs font-semibold text-zinc-100 mb-0.5">{toast.title}</h4>
+          <h4 className="text-xs font-semibold text-zinc-900 mb-0.5">{toast.title}</h4>
         )}
-        <p className="text-xs text-zinc-300 leading-relaxed break-words">{toast.message}</p>
+        <p className="text-xs text-zinc-700 leading-relaxed break-words">{toast.message}</p>
       </div>
       <IconButton
         aria-label="Dismiss toast"
         variant="ghost"
         size="sm"
         onClick={onDismiss}
-        className="-mr-1.5 -mt-1.5 text-zinc-500 hover:text-zinc-300"
+        className="-mr-1.5 -mt-1.5 text-zinc-500 hover:text-zinc-800"
       >
         <X className="w-4 h-4" />
       </IconButton>

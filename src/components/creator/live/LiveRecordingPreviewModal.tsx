@@ -97,7 +97,7 @@ export const LiveRecordingPreviewModal: React.FC<LiveRecordingPreviewModalProps>
         {/* Header */}
         <div className="p-4 border-b border-zinc-200 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+            <div className="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center">
               <Film className="w-4 h-4" />
             </div>
             <div>
@@ -112,7 +112,7 @@ export const LiveRecordingPreviewModal: React.FC<LiveRecordingPreviewModalProps>
 
           <button
             onClick={onClose}
-            className="p-1 rounded-lg text-zinc-500 hover:text-white hover:bg-zinc-100 transition-colors"
+            className="p-1 rounded-lg text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 transition-colors"
           >
             <X className="w-4 h-4" />
           </button>
@@ -158,7 +158,7 @@ export const LiveRecordingPreviewModal: React.FC<LiveRecordingPreviewModalProps>
           <div className="space-y-4 flex flex-col justify-between">
             <div className="space-y-3.5">
               <div className="flex items-center gap-1.5 pb-2 border-b border-zinc-200/60">
-                <Layers className="w-4 h-4 text-emerald-400" />
+                <Layers className="w-4 h-4 text-emerald-700" />
                 <h3 className="text-xs font-semibold text-zinc-800 uppercase tracking-wider">
                   Submit Directly to Campaign
                 </h3>
@@ -211,8 +211,8 @@ export const LiveRecordingPreviewModal: React.FC<LiveRecordingPreviewModalProps>
               </div>
 
               {/* AI Pre-check Reminder */}
-              <div className="p-2.5 rounded-lg bg-[#00B4D8]/10 border border-indigo-500/20 text-[11px] text-[#0096C7] flex items-start gap-2">
-                <Sparkles className="w-3.5 h-3.5 text-[#0096C7] shrink-0 mt-0.5" />
+              <div className="p-2.5 rounded-lg bg-[#00B4D8]/10 border border-[#007E93]/20 text-[11px] text-[#007E93] flex items-start gap-2">
+                <Sparkles className="w-3.5 h-3.5 text-[#007E93] shrink-0 mt-0.5" />
                 <span>
                   Automatic AI Pre-check will run compliance against the brand guidelines upon submission.
                 </span>
@@ -222,8 +222,8 @@ export const LiveRecordingPreviewModal: React.FC<LiveRecordingPreviewModalProps>
             {/* Submission Button */}
             <div className="pt-3">
               {submittedNotice ? (
-                <div className="flex items-center justify-center gap-2 p-3 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs font-semibold">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                <div className="flex items-center justify-center gap-2 p-3 rounded-xl bg-emerald-50 border border-emerald-500/40 text-emerald-800 text-xs font-semibold">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-700" />
                   <span>Submitted Successfully! Added to review queue.</span>
                 </div>
               ) : (

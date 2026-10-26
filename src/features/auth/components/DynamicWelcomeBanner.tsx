@@ -63,7 +63,7 @@ export const DynamicWelcomeBanner: React.FC<DynamicWelcomeBannerProps> = ({
             className={`px-2.5 py-1 rounded-full text-[10px] sm:text-[11px] font-sans tracking-wide backdrop-blur-md border ${
               isCreator
                 ? 'bg-sky-500/15 border-sky-400/30 text-sky-200'
-                : 'bg-indigo-500/15 border-indigo-400/30 text-indigo-200'
+                : 'bg-[#007E93]/10 border-indigo-400/30 text-[#005564]'
             }`}
           >
             <span className="inline-block w-1.5 h-1.5 rounded-full bg-current animate-pulse mr-1.5 align-middle" />

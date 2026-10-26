@@ -127,7 +127,7 @@ export const CreatorDiscovery: React.FC = () => {
           <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
-            className="bg-zinc-800 text-zinc-800 text-xs px-2.5 py-1.5 rounded-xl border border-zinc-300 focus:outline-none"
+            className="bg-white text-zinc-800 text-xs px-3 py-2 rounded-xl border border-zinc-300 shadow-[inset_0_1px_2px_rgba(23,37,54,0.05)] focus:outline-none focus:ring-2 focus:ring-[#007E93]/20 focus:border-[#007E93]"
           >
             {categories.map((c) => (
               <option key={c} value={c}>
@@ -140,7 +140,7 @@ export const CreatorDiscovery: React.FC = () => {
           <select
             value={selectedLocation}
             onChange={(e) => setSelectedLocation(e.target.value)}
-            className="bg-zinc-800 text-zinc-800 text-xs px-2.5 py-1.5 rounded-xl border border-zinc-300 focus:outline-none"
+            className="bg-white text-zinc-800 text-xs px-3 py-2 rounded-xl border border-zinc-300 shadow-[inset_0_1px_2px_rgba(23,37,54,0.05)] focus:outline-none focus:ring-2 focus:ring-[#007E93]/20 focus:border-[#007E93]"
           >
             {locations.map((l) => (
               <option key={l} value={l}>
@@ -153,7 +153,7 @@ export const CreatorDiscovery: React.FC = () => {
           <select
             value={selectedReliability}
             onChange={(e) => setSelectedReliability(e.target.value)}
-            className="bg-zinc-800 text-zinc-800 text-xs px-2.5 py-1.5 rounded-xl border border-zinc-300 focus:outline-none"
+            className="bg-white text-zinc-800 text-xs px-3 py-2 rounded-xl border border-zinc-300 shadow-[inset_0_1px_2px_rgba(23,37,54,0.05)] focus:outline-none focus:ring-2 focus:ring-[#007E93]/20 focus:border-[#007E93]"
           >
             <option value="All">All Reliability Scores</option>
             <option value="95+">Top Tier (&gt;95% On-Time)</option>
@@ -180,7 +180,7 @@ export const CreatorDiscovery: React.FC = () => {
                     <img
                       src={creator.avatar}
                       alt={creator.name}
-                      className="w-12 h-12 rounded-2xl object-cover ring-1 ring-zinc-700 shrink-0"
+                      className="w-12 h-12 rounded-2xl object-cover ring-1 ring-zinc-200 shrink-0"
                     />
                     <div>
                       <div className="flex items-center gap-1.5">
@@ -188,7 +188,7 @@ export const CreatorDiscovery: React.FC = () => {
                           {creator.name}
                         </h3>
                         {creator.verified && (
-                          <ShieldCheck className="w-4 h-4 text-[#0096C7] shrink-0" />
+                          <ShieldCheck className="w-4 h-4 text-[#007E93] shrink-0" />
                         )}
                       </div>
                       <p className="text-[11px] text-zinc-500 font-mono">@{creator.handle}</p>
@@ -201,10 +201,10 @@ export const CreatorDiscovery: React.FC = () => {
                   {/* AI Match Fit Badge (Clickable to show WHY) */}
                   <button
                     onClick={() => setExpandedWhyId(isWhyExpanded ? null : creator.id)}
-                    className="flex items-center gap-1 px-2.5 py-1 rounded-xl bg-indigo-950/40 hover:bg-indigo-950/60 border border-[#00B4D8]/40 text-[#0096C7] text-xs font-semibold shrink-0 transition-colors"
+                    className="flex items-center gap-1 px-2.5 py-1 rounded-xl bg-[#E9FAFC] hover:bg-[#D7F3F6] border border-[#00B4D8]/40 text-[#007E93] text-xs font-semibold shrink-0 transition-colors"
                     title="Click to view AI Match explanation"
                   >
-                    <Sparkles className="w-3 h-3 text-[#0096C7] animate-pulse-subtle" />
+                    <Sparkles className="w-3 h-3 text-[#007E93] animate-pulse-subtle" />
                     <span>{creator.aiMatchScore || 92}% Fit</span>
                   </button>
                 </div>
@@ -212,7 +212,7 @@ export const CreatorDiscovery: React.FC = () => {
                 {/* AI Match Explanation Drawer if expanded */}
                 {isWhyExpanded && creator.aiMatchFactors && (
                   <div className="p-3.5 rounded-2xl bg-[#00B4D8]/10 border border-[#00B4D8]/30 text-xs space-y-2 animate-slide-up">
-                    <div className="flex items-center justify-between text-[#0096C7] font-semibold text-[11px] uppercase tracking-wider">
+                    <div className="flex items-center justify-between text-[#007E93] font-semibold text-[11px] uppercase tracking-wider">
                       <span>Why this creator matches:</span>
                       <button
                         onClick={() => setExpandedWhyId(null)}
@@ -245,7 +245,7 @@ export const CreatorDiscovery: React.FC = () => {
                   </div>
                   <div className="border-x border-zinc-200">
                     <p className="text-[10px] text-zinc-500 font-medium">Engagement</p>
-                    <p className="text-xs font-bold text-[#0096C7] font-mono mt-0.5">
+                    <p className="text-xs font-bold text-[#007E93] font-mono mt-0.5">
                       {creator.avgEngagement}%
                     </p>
                   </div>
@@ -264,7 +264,7 @@ export const CreatorDiscovery: React.FC = () => {
                     <span>{creator.location.split(',')[0]}</span>
                   </span>
                   <span className="flex items-center gap-1">
-                    <Clock className="w-3.5 h-3.5 text-emerald-400" />
+                    <Clock className="w-3.5 h-3.5 text-emerald-700" />
                     <span>{creator.reliabilityMetrics.onTimeDelivery}% On-Time</span>
                   </span>
                 </div>
@@ -285,7 +285,7 @@ export const CreatorDiscovery: React.FC = () => {
                   size="sm"
                   disabled={isInvited}
                   onClick={() => inviteCreator(creator.id, activeCampaign.id, creator.estimatedRate)}
-                  leftIcon={isInvited ? <CheckCircle className="w-3.5 h-3.5 text-emerald-400" /> : <Send className="w-3.5 h-3.5" />}
+                  leftIcon={isInvited ? <CheckCircle className="w-3.5 h-3.5 text-emerald-700" /> : <Send className="w-3.5 h-3.5" />}
                   className="flex-1 text-xs"
                 >
                   {isInvited ? 'Invited ✓' : 'Invite'}

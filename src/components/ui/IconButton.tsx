@@ -42,19 +42,19 @@ export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
 
     const variantStyles = {
       ghost:
-        'bg-transparent hover:bg-white/10 active:bg-white/15 text-zinc-400 hover:text-zinc-100 border-transparent',
+        'bg-transparent hover:bg-zinc-100 active:bg-zinc-200 text-zinc-600 hover:text-zinc-900 border-transparent',
       subtle:
-        'bg-white/[0.05] hover:bg-white/[0.1] active:bg-white/[0.15] text-zinc-300 hover:text-white border border-white/[0.08]',
+        'bg-white hover:bg-zinc-50 active:bg-zinc-100 text-zinc-700 hover:text-zinc-900 border border-zinc-200 shadow-sm',
       outline:
-        'bg-transparent hover:bg-white/[0.08] active:bg-white/[0.12] text-zinc-300 hover:text-white border border-white/20',
+        'bg-white hover:bg-zinc-50 active:bg-zinc-100 text-zinc-700 hover:text-zinc-900 border border-zinc-300',
       primary:
-        'bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 text-white shadow-sm shadow-indigo-500/20 border border-indigo-500/40',
+        'bg-[#007E93] hover:bg-[#006779] active:bg-[#005564] text-white shadow-sm shadow-teal-900/15 border border-[#006779]/25',
       danger:
-        'bg-rose-500/10 hover:bg-rose-500/20 active:bg-rose-500/30 text-rose-400 hover:text-rose-300 border border-rose-500/20',
+        'bg-rose-50 hover:bg-rose-100 active:bg-rose-200 text-rose-700 hover:text-rose-800 border border-rose-200',
     };
 
     const badgeColorStyles = {
-      primary: 'bg-indigo-500 text-white',
+      primary: 'bg-[#007E93] text-white',
       danger: 'bg-rose-500 text-white',
       success: 'bg-emerald-500 text-white',
     };
@@ -69,7 +69,7 @@ export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
           // Guaranteed touch target wrapper: 44px minimum touch hit area
           'relative inline-flex items-center justify-center shrink-0 min-w-[44px] min-h-[44px] p-0 select-none cursor-pointer',
           // Reset default button styling
-          'focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950',
+          'focus:outline-none focus-visible:ring-2 focus-visible:ring-[#007E93] focus-visible:ring-offset-2 focus-visible:ring-offset-white',
           'disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none',
           'transition-transform duration-150 active:scale-95',
           className

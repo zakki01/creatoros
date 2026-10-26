@@ -92,7 +92,7 @@ export const AiCampaignArchitect: React.FC<AiCampaignArchitectProps> = ({
 
       {/* Input Prompt Terminal */}
       <div className="p-6 rounded-3xl bg-white border border-zinc-300 shadow-2xl relative overflow-hidden">
-        <div className="flex items-center gap-2 text-xs font-semibold text-[#0096C7] mb-3 uppercase tracking-wider">
+        <div className="flex items-center gap-2 text-xs font-semibold text-[#007E93] mb-3 uppercase tracking-wider">
           <Sparkles className="w-4 h-4" />
           <span>Strategic Intent Input</span>
         </div>
@@ -118,7 +118,7 @@ export const AiCampaignArchitect: React.FC<AiCampaignArchitectProps> = ({
                     else if (sp.includes('3.5 lakh')) setBudget(350000);
                     else setBudget(500000);
                   }}
-                  className="text-[11px] px-2.5 py-1 rounded-lg bg-zinc-800 text-zinc-500 hover:text-zinc-800 hover:bg-zinc-700/60 transition-colors truncate max-w-xs"
+                  className="text-[11px] px-2.5 py-1 rounded-lg bg-zinc-100 text-zinc-600 hover:text-zinc-800 hover:bg-zinc-200 transition-colors truncate max-w-xs"
                 >
                   {sp.slice(0, 38)}...
                 </button>
@@ -145,7 +145,7 @@ export const AiCampaignArchitect: React.FC<AiCampaignArchitectProps> = ({
           {/* Executive Strategy Banner */}
           <div className="p-5 rounded-2xl bg-[#00B4D8]/10 border border-[#00B4D8]/30 flex items-start justify-between gap-4">
             <div className="space-y-1">
-              <h3 className="text-sm font-semibold text-[#0096C7]">
+              <h3 className="text-sm font-semibold text-[#007E93]">
                 Executive Strategy & Market Resonance
               </h3>
               <p className="text-xs text-zinc-700 leading-relaxed max-w-3xl">
@@ -156,7 +156,7 @@ export const AiCampaignArchitect: React.FC<AiCampaignArchitectProps> = ({
             <Button
               variant="secondary"
               size="sm"
-              leftIcon={<Sliders className="w-3.5 h-3.5 text-[#0096C7]" />}
+              leftIcon={<Sliders className="w-3.5 h-3.5 text-[#007E93]" />}
               onClick={() => onOpenSimulator(budget)}
               className="shrink-0 text-xs"
             >
@@ -170,7 +170,7 @@ export const AiCampaignArchitect: React.FC<AiCampaignArchitectProps> = ({
             <Card className="p-5 space-y-4">
               <div className="flex items-center justify-between">
                 <h3 className="text-sm font-semibold text-zinc-900 flex items-center gap-2">
-                  <Users className="w-4 h-4 text-[#0096C7]" />
+                  <Users className="w-4 h-4 text-[#007E93]" />
                   <span>Creator Portfolio Mix</span>
                 </h3>
                 <span className="text-xs font-mono text-zinc-500">
@@ -186,7 +186,7 @@ export const AiCampaignArchitect: React.FC<AiCampaignArchitectProps> = ({
                   >
                     <div className="flex items-center justify-between text-xs">
                       <span className="font-semibold text-zinc-800">{mix.tier}</span>
-                      <span className="font-mono text-[#0096C7] font-semibold">
+                      <span className="font-mono text-[#007E93] font-semibold">
                         {mix.count} creators ({mix.percentage}% allocation)
                       </span>
                     </div>
@@ -202,10 +202,10 @@ export const AiCampaignArchitect: React.FC<AiCampaignArchitectProps> = ({
             <Card className="p-5 space-y-4">
               <div className="flex items-center justify-between">
                 <h3 className="text-sm font-semibold text-zinc-900 flex items-center gap-2">
-                  <DollarSign className="w-4 h-4 text-emerald-400" />
+                  <DollarSign className="w-4 h-4 text-emerald-700" />
                   <span>Suggested Budget Allocation</span>
                 </h3>
-                <span className="text-xs font-mono text-emerald-400 font-semibold">
+                <span className="text-xs font-mono text-emerald-700 font-semibold">
                   ₹{(budget / 100000).toFixed(1)}L Total
                 </span>
               </div>
@@ -222,7 +222,7 @@ export const AiCampaignArchitect: React.FC<AiCampaignArchitectProps> = ({
                         ₹{(alloc.amount / 1000).toLocaleString()}k ({alloc.percentage}%)
                       </span>
                     </div>
-                    <div className="w-full bg-zinc-800 h-1.5 rounded-full overflow-hidden">
+                    <div className="w-full bg-zinc-100 h-1.5 rounded-full overflow-hidden">
                       <div
                         className="bg-emerald-500 h-full rounded-full"
                         style={{ width: `${alloc.percentage}%` }}
@@ -248,7 +248,7 @@ export const AiCampaignArchitect: React.FC<AiCampaignArchitectProps> = ({
                     key={idx}
                     className="p-3 rounded-xl bg-zinc-50/50 border border-zinc-200 text-xs text-zinc-700 flex items-center gap-2.5"
                   >
-                    <CheckCircle2 className="w-4 h-4 text-[#0096C7] shrink-0" />
+                    <CheckCircle2 className="w-4 h-4 text-[#007E93] shrink-0" />
                     <span>{del}</span>
                   </div>
                 ))}
@@ -258,7 +258,7 @@ export const AiCampaignArchitect: React.FC<AiCampaignArchitectProps> = ({
             {/* Timeline */}
             <Card className="p-5 space-y-3">
               <h3 className="text-sm font-semibold text-zinc-900 flex items-center gap-2">
-                <Calendar className="w-4 h-4 text-[#0096C7]" />
+                <Calendar className="w-4 h-4 text-[#007E93]" />
                 <span>Campaign Timeline Phases</span>
               </h3>
               <div className="space-y-2">
@@ -271,7 +271,7 @@ export const AiCampaignArchitect: React.FC<AiCampaignArchitectProps> = ({
                       <span className="font-semibold text-zinc-800">{time.phase}</span>
                       <p className="text-[11px] text-zinc-500 mt-0.5">{time.focus}</p>
                     </div>
-                    <span className="text-[11px] text-[#0096C7] font-mono font-medium shrink-0 bg-indigo-950/40 px-2 py-0.5 rounded border border-[#00B4D8]/20">
+                    <span className="text-[11px] text-[#007E93] font-mono font-medium shrink-0 bg-[#E9FAFC] px-2 py-0.5 rounded border border-[#00B4D8]/20">
                       {time.duration}
                     </span>
                   </div>
@@ -284,7 +284,7 @@ export const AiCampaignArchitect: React.FC<AiCampaignArchitectProps> = ({
           <Card className="p-5 space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="text-sm font-semibold text-zinc-900 flex items-center gap-2">
-                <TrendingUp className="w-4 h-4 text-[#0096C7]" />
+                <TrendingUp className="w-4 h-4 text-[#007E93]" />
                 <span>Algorithmic Projected KPIs</span>
               </h3>
               <Badge variant="brand" size="sm">

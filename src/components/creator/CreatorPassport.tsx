@@ -98,7 +98,7 @@ export const CreatorPassport: React.FC = () => {
           <h1 className="text-xl sm:text-2xl font-bold text-zinc-900 font-display tracking-tight">
             Passport
           </h1>
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 whitespace-nowrap shrink-0">
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-500/30 whitespace-nowrap shrink-0">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
             Verified ID
           </span>
@@ -109,12 +109,12 @@ export const CreatorPassport: React.FC = () => {
             type="button"
             onClick={handleShare}
             data-testid="passport-share-btn"
-            className="depth-btn-secondary min-h-[38px] px-3.5 py-1.5 rounded-xl text-xs font-semibold text-zinc-100 flex items-center gap-1.5 cursor-pointer"
+            className="depth-btn-secondary min-h-[38px] px-3.5 py-1.5 rounded-xl text-xs font-semibold text-zinc-900 flex items-center gap-1.5 cursor-pointer"
           >
             {copied ? (
-              <Check className="w-3.5 h-3.5 text-emerald-400" />
+              <Check className="w-3.5 h-3.5 text-emerald-700" />
             ) : (
-              <Share2 className="w-3.5 h-3.5 text-emerald-400" />
+              <Share2 className="w-3.5 h-3.5 text-emerald-700" />
             )}
             <span>{copied ? 'Copied' : 'Share'}</span>
           </button>
@@ -134,21 +134,21 @@ export const CreatorPassport: React.FC = () => {
       {/* 3D Spatial Identity Card Hero (Desktop & Mobile Intentional Layout) */}
       <div
         data-testid="passport-identity-card"
-        className="relative rounded-3xl p-5 sm:p-7 overflow-hidden border border-emerald-500/25 bg-gradient-to-br from-[#121521]/95 via-[#0F111A]/95 to-[#0B1917]/90 shadow-[0_24px_60px_-15px_rgba(0,0,0,0.85),0_0_40px_-10px_rgba(16,185,129,0.16),inset_0_1px_0_0_rgba(255,255,255,0.16)] backdrop-blur-2xl"
+        className="relative rounded-3xl p-5 sm:p-7 overflow-hidden border border-[#D4DEE7] bg-gradient-to-br from-white via-[#F7FAFC] to-[#EAF5F6] shadow-[0_12px_32px_-18px_rgba(23,37,54,0.24),inset_0_1px_0_rgba(255,255,255,0.98)] backdrop-blur-2xl"
       >
         {/* Subtle Emerald Verification Glow + Soft Purple Ambient Light */}
         <div
           className="pointer-events-none absolute -top-24 -right-16 w-72 h-72 rounded-full opacity-35 blur-3xl"
           style={{
             background:
-              'radial-gradient(circle, rgba(16,185,129,0.45) 0%, rgba(16,185,129,0.05) 65%, transparent 80%)',
+              'radial-gradient(circle, rgba(0,126,147,0.18) 0%, rgba(0,126,147,0.03) 65%, transparent 80%)',
           }}
         />
         <div
           className="pointer-events-none absolute -bottom-24 -left-16 w-72 h-72 rounded-full opacity-30 blur-3xl"
           style={{
             background:
-              'radial-gradient(circle, rgba(124,92,255,0.42) 0%, rgba(56,189,248,0.08) 65%, transparent 80%)',
+              'radial-gradient(circle, rgba(0,126,147,0.10) 0%, rgba(0,126,147,0.025) 65%, transparent 80%)',
           }}
         />
 
@@ -163,10 +163,10 @@ export const CreatorPassport: React.FC = () => {
                   name={creator.name}
                   size="2xl"
                   ring="success"
-                  className="rounded-2xl shadow-[0_14px_30px_rgba(0,0,0,0.65)]"
+                  className="rounded-2xl shadow-[0_8px_20px_rgba(23,37,54,0.16)]"
                 />
                 <div
-                  className="absolute -bottom-1.5 -right-1.5 w-6 h-6 rounded-full bg-emerald-500 text-zinc-950 flex items-center justify-center ring-2 ring-[#0E1118] shadow-[0_4px_12px_rgba(16,185,129,0.5)]"
+                  className="absolute -bottom-1.5 -right-1.5 w-6 h-6 rounded-full bg-emerald-500 text-zinc-950 flex items-center justify-center ring-2 ring-white shadow-[0_4px_12px_rgba(16,185,129,0.5)]"
                   title="Verified Identity"
                 >
                   <ShieldCheck className="w-3.5 h-3.5 stroke-[2.5]" />
@@ -180,66 +180,66 @@ export const CreatorPassport: React.FC = () => {
                     {creator.name}
                   </h2>
                   <span
-                    className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-emerald-500/20 text-emerald-400 text-[11px] font-bold"
+                    className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-bold"
                     title="Verified"
                   >
                     ✓
                   </span>
                 </div>
 
-                <p className="text-xs font-mono text-zinc-400">
+                <p className="text-xs font-mono text-zinc-500">
                   @{creator.handle.replace('@', '')}
                 </p>
 
-                <p className="text-xs sm:text-sm font-medium text-zinc-200">
+                <p className="text-xs sm:text-sm font-medium text-zinc-700">
                   Streetwear &amp; Sneaker Culture
                 </p>
 
                 {/* Status Line */}
-                <div className="flex items-center gap-2 pt-1 text-xs text-zinc-300 flex-wrap">
-                  <span className="inline-flex items-center gap-1.5 text-emerald-400 font-semibold">
+                <div className="flex items-center gap-2 pt-1 text-xs text-zinc-600 flex-wrap">
+                  <span className="inline-flex items-center gap-1.5 text-emerald-700 font-semibold">
                     <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.9)]" />
                     Verified
                   </span>
                   <span className="text-zinc-600">·</span>
-                  <span className="font-medium text-zinc-200">96 Reputation</span>
+                  <span className="font-medium text-zinc-700">96 Reputation</span>
                   <span className="text-zinc-600">·</span>
-                  <span className="text-emerald-300 font-medium">{creator.availability}</span>
+                  <span className="text-emerald-800 font-medium">{creator.availability}</span>
                 </div>
               </div>
             </div>
 
             {/* Compact 4-Metric Spatial Row */}
-            <div className="grid grid-cols-4 gap-2 sm:gap-3 bg-black/35 border border-white/[0.08] rounded-2xl p-3 sm:px-4 sm:py-3 backdrop-blur-xl shrink-0">
+            <div className="grid grid-cols-4 gap-2 sm:gap-3 bg-white/80 border border-zinc-200 rounded-2xl p-3 sm:px-4 sm:py-3 backdrop-blur-xl shrink-0">
               <div className="text-center px-1 sm:px-2">
-                <p className="text-base sm:text-lg font-bold text-emerald-400 font-mono leading-tight">
+                <p className="text-base sm:text-lg font-bold text-emerald-700 font-mono leading-tight">
                   96
                 </p>
-                <span className="text-[10px] text-zinc-400 font-medium">Reputation</span>
+                <span className="text-[10px] text-zinc-500 font-medium">Reputation</span>
               </div>
-              <div className="text-center px-1 sm:px-2 border-l border-white/[0.07]">
-                <p className="text-base sm:text-lg font-bold text-white font-mono leading-tight">
+              <div className="text-center px-1 sm:px-2 border-l border-zinc-200">
+                <p className="text-base sm:text-lg font-bold text-zinc-900 font-mono leading-tight">
                   {reachFormatted}
                 </p>
-                <span className="text-[10px] text-zinc-400 font-medium">Reach</span>
+                <span className="text-[10px] text-zinc-500 font-medium">Reach</span>
               </div>
-              <div className="text-center px-1 sm:px-2 border-l border-white/[0.07]">
-                <p className="text-base sm:text-lg font-bold text-white font-mono leading-tight">
+              <div className="text-center px-1 sm:px-2 border-l border-zinc-200">
+                <p className="text-base sm:text-lg font-bold text-zinc-900 font-mono leading-tight">
                   {creator.avgEngagement}%
                 </p>
-                <span className="text-[10px] text-zinc-400 font-medium">Engagement</span>
+                <span className="text-[10px] text-zinc-500 font-medium">Engagement</span>
               </div>
-              <div className="text-center px-1 sm:px-2 border-l border-white/[0.07]">
-                <p className="text-base sm:text-lg font-bold text-white font-mono leading-tight">
+              <div className="text-center px-1 sm:px-2 border-l border-zinc-200">
+                <p className="text-base sm:text-lg font-bold text-zinc-900 font-mono leading-tight">
                   {creator.pastCampaignsCount}
                 </p>
-                <span className="text-[10px] text-zinc-400 font-medium">Projects</span>
+                <span className="text-[10px] text-zinc-500 font-medium">Projects</span>
               </div>
             </div>
           </div>
 
           {/* Compact Credential Indicators Row: ✓ Identity · ✓ Experience · ✓ Channels · ✓ Reputation */}
-          <div className="pt-3 border-t border-white/[0.08] flex flex-col gap-2.5">
+          <div className="pt-3 border-t border-zinc-200 flex flex-col gap-2.5">
             <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
               {CREDENTIAL_INDICATORS.map((cred) => {
                 const isSelected = activeCredential?.id === cred.id;
@@ -253,17 +253,17 @@ export const CreatorPassport: React.FC = () => {
                     data-testid={`passport-credential-${cred.id}`}
                     className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition-all cursor-pointer border ${
                       isSelected
-                        ? 'bg-emerald-500/20 text-emerald-200 border-emerald-500/45 shadow-[0_0_16px_rgba(16,185,129,0.25)]'
-                        : 'bg-white/[0.04] hover:bg-white/[0.08] text-zinc-200 border-white/[0.08]'
+                        ? 'bg-emerald-50 text-emerald-800 border-emerald-200 shadow-sm'
+                        : 'bg-white hover:bg-zinc-50 text-zinc-700 border-zinc-200'
                     }`}
                   >
-                    <span className="text-emerald-400 font-bold">✓</span>
+                    <span className="text-emerald-700 font-bold">✓</span>
                     <span>{cred.label}</span>
                   </button>
                 );
               })}
 
-              <span className="ml-auto hidden md:inline-flex items-center gap-1.5 text-[11px] text-zinc-400">
+              <span className="ml-auto hidden md:inline-flex items-center gap-1.5 text-[11px] text-zinc-500">
                 <MapPin className="w-3.5 h-3.5 text-zinc-500" />
                 {creator.location}
               </span>
@@ -271,22 +271,22 @@ export const CreatorPassport: React.FC = () => {
 
             {/* Expandable Credential Detail Strip */}
             {activeCredential && (
-              <div className="p-3 rounded-2xl bg-black/45 border border-emerald-500/30 flex items-center justify-between gap-3 animate-fade-in">
+              <div className="p-3 rounded-2xl bg-white/90 border border-emerald-200 flex items-center justify-between gap-3 animate-fade-in">
                 <div className="space-y-0.5 min-w-0">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-semibold text-emerald-300">
+                    <span className="text-xs font-semibold text-emerald-800">
                       {activeCredential.title}
                     </span>
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300">
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800">
                       {activeCredential.meta}
                     </span>
                   </div>
-                  <p className="text-xs text-zinc-300">{activeCredential.summary}</p>
+                  <p className="text-xs text-zinc-700">{activeCredential.summary}</p>
                 </div>
                 <button
                   type="button"
                   onClick={() => setActiveCredential(null)}
-                  className="p-1 rounded-lg text-zinc-400 hover:text-white shrink-0"
+                  className="p-1 rounded-lg text-zinc-500 hover:text-zinc-900 shrink-0"
                   aria-label="Close credential details"
                 >
                   <X className="w-3.5 h-3.5" />
@@ -307,14 +307,14 @@ export const CreatorPassport: React.FC = () => {
           <SpatialCard surface={2} className="md:col-span-2 p-5 space-y-3">
             <div className="flex items-center justify-between">
               <h3 className="text-sm font-semibold text-zinc-900 font-display">Bio</h3>
-              <span className="text-[11px] text-zinc-400">
+              <span className="text-[11px] text-zinc-500">
                 {creator.languages.join(' · ')}
               </span>
             </div>
 
             <div>
               <p
-                className={`text-xs sm:text-sm text-zinc-300 leading-relaxed ${
+                className={`text-xs sm:text-sm text-zinc-700 leading-relaxed ${
                   bioExpanded ? '' : 'line-clamp-2'
                 }`}
               >
@@ -324,7 +324,7 @@ export const CreatorPassport: React.FC = () => {
                 type="button"
                 onClick={() => setBioExpanded(!bioExpanded)}
                 data-testid="passport-bio-more-btn"
-                className="mt-1.5 inline-flex items-center gap-1 text-xs font-semibold text-indigo-400 hover:text-indigo-300 cursor-pointer"
+                className="mt-1.5 inline-flex items-center gap-1 text-xs font-semibold text-[#007E93] hover:text-[#006779] cursor-pointer"
               >
                 <span>{bioExpanded ? 'Less' : 'More'}</span>
                 {bioExpanded ? (
@@ -339,7 +339,7 @@ export const CreatorPassport: React.FC = () => {
               {creator.verifiedBadges.map((b, idx) => (
                 <span
                   key={idx}
-                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/25 text-[11px] font-medium text-emerald-300"
+                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-50 border border-emerald-500/25 text-[11px] font-medium text-emerald-800"
                 >
                   <CheckCircle className="w-3 h-3" />
                   {b}
@@ -355,10 +355,10 @@ export const CreatorPassport: React.FC = () => {
               {Object.entries(creator.rateCard).map(([format, fee]) => (
                 <div
                   key={format}
-                  className="p-2.5 rounded-xl bg-white/[0.03] border border-white/[0.07]"
+                  className="p-2.5 rounded-xl bg-white border border-zinc-200"
                 >
-                  <p className="text-[11px] text-zinc-400 truncate">{format}</p>
-                  <p className="text-sm font-bold font-mono text-white mt-0.5">
+                  <p className="text-[11px] text-zinc-500 truncate">{format}</p>
+                  <p className="text-sm font-bold font-mono text-zinc-900 mt-0.5">
                     ₹{fee?.toLocaleString()}
                   </p>
                 </div>
@@ -375,7 +375,7 @@ export const CreatorPassport: React.FC = () => {
             <SpatialCard key={idx} surface={2} className="p-5 space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-white/[0.06] border border-white/[0.08] flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-xl bg-zinc-50 border border-zinc-200 flex items-center justify-center">
                     {p.platform === 'Instagram' ? (
                       <InstagramIcon className="w-5 h-5 text-pink-400" />
                     ) : (
@@ -384,27 +384,27 @@ export const CreatorPassport: React.FC = () => {
                   </div>
                   <div>
                     <div className="flex items-center gap-1.5">
-                      <h4 className="text-sm font-bold text-white">{p.platform}</h4>
-                      {p.verified && <CheckCircle className="w-3.5 h-3.5 text-emerald-400" />}
+                      <h4 className="text-sm font-bold text-zinc-900">{p.platform}</h4>
+                      {p.verified && <CheckCircle className="w-3.5 h-3.5 text-emerald-700" />}
                     </div>
-                    <span className="text-xs text-zinc-400 font-mono">{p.handle}</span>
+                    <span className="text-xs text-zinc-500 font-mono">{p.handle}</span>
                   </div>
                 </div>
-                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-500/30">
                   Synced
                 </span>
               </div>
 
               <div className="grid grid-cols-2 gap-2.5">
-                <div className="p-3 rounded-xl bg-white/[0.03] border border-white/[0.06]">
-                  <span className="text-[10px] text-zinc-400">Followers</span>
-                  <p className="text-base font-bold font-mono text-white mt-0.5">
+                <div className="p-3 rounded-xl bg-white border border-zinc-200">
+                  <span className="text-[10px] text-zinc-500">Followers</span>
+                  <p className="text-base font-bold font-mono text-zinc-900 mt-0.5">
                     {(p.followers / 1000).toFixed(0)}K
                   </p>
                 </div>
-                <div className="p-3 rounded-xl bg-white/[0.03] border border-white/[0.06]">
-                  <span className="text-[10px] text-zinc-400">Engagement</span>
-                  <p className="text-base font-bold font-mono text-emerald-400 mt-0.5">
+                <div className="p-3 rounded-xl bg-white border border-zinc-200">
+                  <span className="text-[10px] text-zinc-500">Engagement</span>
+                  <p className="text-base font-bold font-mono text-emerald-700 mt-0.5">
                     {p.engagementRate}%
                   </p>
                 </div>
@@ -439,8 +439,8 @@ export const CreatorPassport: React.FC = () => {
                   </div>
                 </div>
                 <div className="p-3.5">
-                  <p className="text-xs font-semibold text-white line-clamp-1">{p.title}</p>
-                  <p className="text-[11px] text-zinc-400 mt-0.5">
+                  <p className="text-xs font-semibold text-zinc-900 line-clamp-1">{p.title}</p>
+                  <p className="text-[11px] text-zinc-500 mt-0.5">
                     {p.type} · {p.campaignName}
                   </p>
                 </div>
@@ -450,15 +450,15 @@ export const CreatorPassport: React.FC = () => {
 
           <SpatialCard surface={2} className="p-5 grid grid-cols-1 sm:grid-cols-2 gap-5">
             <div className="space-y-2.5">
-              <h4 className="text-xs font-semibold text-zinc-200">Top Cities</h4>
+              <h4 className="text-xs font-semibold text-zinc-800">Top Cities</h4>
               <div className="space-y-2">
                 {creator.audienceBreakdown.topLocations.map((loc, idx) => (
                   <div key={idx} className="space-y-1">
                     <div className="flex justify-between text-xs">
-                      <span className="text-zinc-300">{loc.city}</span>
-                      <span className="font-mono text-zinc-400">{loc.pct}%</span>
+                      <span className="text-zinc-700">{loc.city}</span>
+                      <span className="font-mono text-zinc-600">{loc.pct}%</span>
                     </div>
-                    <div className="w-full bg-zinc-800/80 h-1.5 rounded-full overflow-hidden">
+                    <div className="w-full bg-zinc-200 h-1.5 rounded-full overflow-hidden">
                       <div
                         className="bg-emerald-500 h-full rounded-full"
                         style={{ width: `${loc.pct}%` }}
@@ -470,17 +470,17 @@ export const CreatorPassport: React.FC = () => {
             </div>
 
             <div className="space-y-2.5">
-              <h4 className="text-xs font-semibold text-zinc-200">Age Split</h4>
+              <h4 className="text-xs font-semibold text-zinc-800">Age Split</h4>
               <div className="space-y-2">
                 {creator.audienceBreakdown.ageSplit.map((a, idx) => (
                   <div key={idx} className="space-y-1">
                     <div className="flex justify-between text-xs">
-                      <span className="text-zinc-300">{a.range}</span>
-                      <span className="font-mono text-zinc-400">{a.pct}%</span>
+                      <span className="text-zinc-700">{a.range}</span>
+                      <span className="font-mono text-zinc-600">{a.pct}%</span>
                     </div>
-                    <div className="w-full bg-zinc-800/80 h-1.5 rounded-full overflow-hidden">
+                    <div className="w-full bg-zinc-200 h-1.5 rounded-full overflow-hidden">
                       <div
-                        className="bg-indigo-500 h-full rounded-full"
+                        className="bg-[#007E93] h-full rounded-full"
                         style={{ width: `${a.pct}%` }}
                       />
                     </div>
@@ -499,17 +499,17 @@ export const CreatorPassport: React.FC = () => {
             <SpatialCard key={t.id} surface={2} className="p-5 space-y-2.5">
               <div className="flex items-center justify-between">
                 <div>
-                  <h4 className="text-xs font-bold text-white">{t.brandName}</h4>
-                  <p className="text-[11px] text-zinc-400">
+                  <h4 className="text-xs font-bold text-zinc-900">{t.brandName}</h4>
+                  <p className="text-[11px] text-zinc-500">
                     {t.authorName} · {t.authorRole}
                   </p>
                 </div>
-                <div className="flex items-center gap-1 text-amber-400">
+                <div className="flex items-center gap-1 text-amber-800">
                   <Star className="w-3.5 h-3.5 fill-current" />
                   <span className="text-xs font-bold font-mono">{t.rating}.0</span>
                 </div>
               </div>
-              <p className="text-xs text-zinc-300 leading-relaxed">"{t.comment}"</p>
+              <p className="text-xs text-zinc-700 leading-relaxed">"{t.comment}"</p>
               <div className="flex justify-between text-[10px] text-zinc-500 pt-1">
                 <span>{t.verifiedCampaign}</span>
                 <span>{t.date}</span>

@@ -59,7 +59,7 @@ export const ByokAiSettings: React.FC = () => {
           <h2 className="text-sm font-semibold text-zinc-800">
             Bring Your Own AI (BYOK Inference)
           </h2>
-          <span className="px-2 py-0.5 rounded-full text-[10px] font-mono bg-purple-500/10 text-purple-400 border border-purple-500/20">
+          <span className="px-2 py-0.5 rounded-full text-[10px] font-mono bg-violet-50 text-violet-800 border border-violet-200">
             Multi-LLM
           </span>
         </div>
@@ -84,14 +84,14 @@ export const ByokAiSettings: React.FC = () => {
               onClick={() => handleProviderSelect(p.id)}
               className={`p-3.5 rounded-xl border text-left transition-all ${
                 isSelected
-                  ? 'bg-white border-[#00B4D8]/80 ring-1 ring-indigo-500/30'
+                  ? 'bg-white border-[#00B4D8]/80 ring-1 ring-[#007E93]/25'
                   : 'bg-zinc-50 border-zinc-200 hover:border-zinc-300'
               }`}
             >
               <div className="flex items-center justify-between mb-1.5">
-                <span className="text-xs font-bold text-white">{p.name}</span>
+                <span className="text-xs font-bold text-zinc-900">{p.name}</span>
                 <span className={`text-[10px] px-1.5 py-0.2 rounded font-mono ${
-                  isSelected ? 'bg-indigo-500/20 text-[#0096C7]' : 'bg-zinc-800 text-zinc-500'
+                  isSelected ? 'bg-[#007E93]/10 text-[#007E93]' : 'bg-zinc-100 text-zinc-600'
                 }`}>
                   {p.badge}
                 </span>
@@ -107,7 +107,7 @@ export const ByokAiSettings: React.FC = () => {
         <div className="p-4 rounded-xl bg-white shadow-xs border border-zinc-200 space-y-3 animate-fade-in">
           <div className="flex items-center justify-between">
             <label className="text-xs font-semibold text-zinc-700 flex items-center gap-1.5">
-              <Key className="w-3.5 h-3.5 text-[#0096C7]" />
+              <Key className="w-3.5 h-3.5 text-[#007E93]" />
               <span>{selectedProvider.toUpperCase()} Secret Key</span>
             </label>
             <span className="text-[11px] text-zinc-500 font-mono">
@@ -122,12 +122,12 @@ export const ByokAiSettings: React.FC = () => {
                 value={apiKeyInput}
                 onChange={(e) => setApiKeyInput(e.target.value)}
                 placeholder={`Paste your ${selectedProvider} API key...`}
-                className="w-full bg-white border border-zinc-200 rounded-lg px-3 py-2 text-xs text-white font-mono focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] pr-9"
+                className="w-full bg-white border border-zinc-200 rounded-lg px-3 py-2 text-xs text-zinc-900 font-mono focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] pr-9"
               />
               <button
                 type="button"
                 onClick={() => setShowKey(!showKey)}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white"
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-900"
               >
                 {showKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
@@ -136,7 +136,7 @@ export const ByokAiSettings: React.FC = () => {
               type="button"
               onClick={handleSaveKey}
               disabled={!apiKeyInput.trim()}
-              className="px-3.5 py-2 rounded-lg bg-[#00B4D8] hover:bg-[#0096C7] disabled:opacity-40 text-white text-xs font-medium transition-colors"
+              className="px-3.5 py-2 rounded-lg bg-[#007E93] hover:bg-[#006779] disabled:opacity-40 text-white text-xs font-medium transition-colors"
             >
               Save Key
             </button>
@@ -153,13 +153,13 @@ export const ByokAiSettings: React.FC = () => {
               </button>
 
               {testState === 'success' && (
-                <span className="text-emerald-400 flex items-center gap-1 text-xs">
+                <span className="text-emerald-700 flex items-center gap-1 text-xs">
                   <CheckCircle2 className="w-3.5 h-3.5" />
                   <span>API Handshake Verified</span>
                 </span>
               )}
               {testState === 'fallback' && (
-                <span className="text-amber-400 flex items-center gap-1 text-xs">
+                <span className="text-amber-800 flex items-center gap-1 text-xs">
                   <AlertCircle className="w-3.5 h-3.5" />
                   <span>Falling back to CreatorOS Default Engine</span>
                 </span>

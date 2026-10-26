@@ -125,15 +125,15 @@ export const PostCard: React.FC<PostCardProps> = ({
           <img
             src={post.authorAvatar}
             alt={post.authorName}
-            className="w-10 h-10 rounded-full object-cover ring-1 ring-white/10 group-hover:ring-indigo-500/50 transition-all shrink-0"
+            className="w-10 h-10 rounded-full object-cover ring-1 ring-white/10 group-hover:ring-[#007E93]/35 transition-all shrink-0"
           />
           <div className="min-w-0">
             <div className="flex items-center gap-1.5 flex-wrap">
-              <span className="font-bold text-xs text-white group-hover:text-[#0096C7] transition-colors truncate">
+              <span className="font-bold text-xs text-zinc-900 group-hover:text-[#007E93] transition-colors truncate">
                 {post.authorName}
               </span>
               {post.authorVerified && (
-                <ShieldCheck className="w-3.5 h-3.5 text-[#0096C7] shrink-0" />
+                <ShieldCheck className="w-3.5 h-3.5 text-[#007E93] shrink-0" />
               )}
               <span className="text-[11px] text-zinc-500 font-mono truncate">
                 {post.authorHandle}
@@ -162,7 +162,7 @@ export const PostCard: React.FC<PostCardProps> = ({
         {/* Header Right: Connect CTA + Contextual More Menu */}
         <div className="flex items-center gap-2 shrink-0">
           {isConnected ? (
-            <span className="px-2.5 py-1 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold flex items-center gap-1">
+            <span className="px-2.5 py-1 rounded-xl bg-emerald-50 border border-emerald-500/20 text-emerald-700 text-xs font-semibold flex items-center gap-1">
               <Check className="w-3 h-3" />
               <span className="hidden sm:inline">Connected</span>
             </span>
@@ -191,7 +191,7 @@ export const PostCard: React.FC<PostCardProps> = ({
                 e.stopPropagation();
                 setShowMoreMenu(!showMoreMenu);
               }}
-              className="p-1.5 rounded-lg text-zinc-500 hover:text-white hover:bg-zinc-100 transition-colors cursor-pointer"
+              className="p-1.5 rounded-lg text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 transition-colors cursor-pointer"
               aria-label="More post options"
             >
               <MoreHorizontal className="w-4 h-4" />
@@ -207,7 +207,7 @@ export const PostCard: React.FC<PostCardProps> = ({
                     onOpenShare(post);
                     setShowMoreMenu(false);
                   }}
-                  className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs text-zinc-700 hover:text-white hover:bg-zinc-100 transition-colors cursor-pointer"
+                  className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs text-zinc-700 hover:text-zinc-900 hover:bg-zinc-100 transition-colors cursor-pointer"
                 >
                   <Share2 className="w-3.5 h-3.5 text-zinc-500" />
                   <span>Share Post</span>
@@ -217,7 +217,7 @@ export const PostCard: React.FC<PostCardProps> = ({
                     onOpenDetail(post);
                     setShowMoreMenu(false);
                   }}
-                  className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs text-zinc-700 hover:text-white hover:bg-zinc-100 transition-colors cursor-pointer"
+                  className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs text-zinc-700 hover:text-zinc-900 hover:bg-zinc-100 transition-colors cursor-pointer"
                 >
                   <ExternalLink className="w-3.5 h-3.5 text-zinc-500" />
                   <span>View Details</span>
@@ -228,7 +228,7 @@ export const PostCard: React.FC<PostCardProps> = ({
                       onReportPost(post);
                       setShowMoreMenu(false);
                     }}
-                    className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 transition-colors cursor-pointer border-t border-black/[0.04] mt-1 pt-1"
+                    className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs text-rose-700 hover:text-rose-800 hover:bg-rose-50 transition-colors cursor-pointer border-t border-black/[0.04] mt-1 pt-1"
                   >
                     <Flag className="w-3.5 h-3.5 text-rose-400" />
                     <span>Report Post</span>
@@ -291,7 +291,7 @@ export const PostCard: React.FC<PostCardProps> = ({
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
             <div className="absolute bottom-3 left-4 right-4">
-              <span className="text-[10px] font-mono text-[#0096C7] uppercase tracking-wider block mb-1">
+              <span className="text-[10px] font-mono text-[#007E93] uppercase tracking-wider block mb-1">
                 {post.blogReadingTime || '4 min read'}
               </span>
               <h3 className="text-sm sm:text-base font-bold text-white line-clamp-1 font-display">
@@ -333,7 +333,7 @@ export const PostCard: React.FC<PostCardProps> = ({
                 setShowReactionPicker(!showReactionPicker);
               }}
               className={`min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl transition-all active:scale-90 cursor-pointer ${
-                post.likedByMe ? 'text-rose-400 font-semibold' : 'text-zinc-700 hover:text-white'
+                post.likedByMe ? 'text-rose-600 font-semibold' : 'text-zinc-700 hover:text-zinc-900'
               }`}
               title="Like / React (Press & hold for reaction tray)"
               aria-label="Like post"
@@ -363,7 +363,7 @@ export const PostCard: React.FC<PostCardProps> = ({
           {/* Comment Button (44px hit-box) */}
           <button
             onClick={() => onOpenComments(post)}
-            className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl text-zinc-700 hover:text-white transition-all active:scale-90 cursor-pointer"
+            className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl text-zinc-700 hover:text-zinc-900 transition-all active:scale-90 cursor-pointer"
             title="Comments"
             aria-label="View comments"
           >
@@ -373,7 +373,7 @@ export const PostCard: React.FC<PostCardProps> = ({
           {/* Share Button (44px hit-box) */}
           <button
             onClick={() => onOpenShare(post)}
-            className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl text-zinc-700 hover:text-white transition-all active:scale-90 cursor-pointer"
+            className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl text-zinc-700 hover:text-zinc-900 transition-all active:scale-90 cursor-pointer"
             title="Share"
             aria-label="Share post"
           >
@@ -385,7 +385,7 @@ export const PostCard: React.FC<PostCardProps> = ({
         <button
           onClick={() => togglePostSave(post.id)}
           className={`min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl transition-all active:scale-90 cursor-pointer ${
-            post.savedByMe ? 'text-[#0096C7]' : 'text-zinc-500 hover:text-white'
+            post.savedByMe ? 'text-[#007E93]' : 'text-zinc-500 hover:text-zinc-900'
           }`}
           title={post.savedByMe ? 'Remove from saved' : 'Save drop'}
           aria-label="Save post"
@@ -397,13 +397,13 @@ export const PostCard: React.FC<PostCardProps> = ({
       {/* 4. ENGAGEMENT SUMMARY & SHORT CAPTION */}
       <div className="px-3.5 sm:px-4 py-2 space-y-1.5 text-xs text-left">
         {/* Likes Count */}
-        <div className="font-semibold text-white">
+        <div className="font-semibold text-zinc-900">
           <span className="font-mono">{post.likes.toLocaleString()}</span> likes
         </div>
 
         {/* Short Caption with 'more' opening Detail View (Strictly single excerpt, zero duplicate) */}
         <div className="text-zinc-700 leading-relaxed">
-          <strong className="text-white mr-1.5 font-medium">{post.authorName}</strong>
+          <strong className="text-zinc-900 mr-1.5 font-semibold">{post.authorName}</strong>
           <span className="line-clamp-2 inline">
             {post.shortExcerpt || post.content}
           </span>
@@ -421,7 +421,7 @@ export const PostCard: React.FC<PostCardProps> = ({
             {post.tags.slice(0, 3).map((tag, idx) => (
               <span
                 key={idx}
-                className="text-[11px] font-mono text-[#0096C7] hover:text-[#0096C7] cursor-pointer"
+                className="text-[11px] font-mono text-[#007E93] hover:text-[#007E93] cursor-pointer"
               >
                 {tag}
               </span>
@@ -433,16 +433,16 @@ export const PostCard: React.FC<PostCardProps> = ({
         {opp && (
           <div className="mt-2 p-2.5 rounded-xl bg-white shadow-sm border border-black/[0.08] flex items-center justify-between gap-3">
             <div className="min-w-0 space-y-0.5">
-              <span className="text-[10px] font-mono uppercase text-amber-400 font-semibold flex items-center gap-1">
-                <Sparkles className="w-3 h-3 text-amber-400" />
+              <span className="text-[10px] font-mono uppercase text-amber-800 font-semibold flex items-center gap-1">
+                <Sparkles className="w-3 h-3 text-amber-800" />
                 Casting Call
               </span>
-              <h4 className="text-xs font-bold text-white truncate">{opp.title}</h4>
+              <h4 className="text-xs font-bold text-zinc-900 truncate">{opp.title}</h4>
               <p className="text-[10px] text-zinc-500 font-mono truncate">{opp.requiredNiche} • {opp.budgetFormatted}</p>
             </div>
             <button
               onClick={() => onOpenDetail(post)}
-              className="text-[11px] font-semibold text-[#0096C7] hover:text-[#0096C7] shrink-0 cursor-pointer flex items-center gap-1"
+              className="text-[11px] font-semibold text-[#007E93] hover:text-[#007E93] shrink-0 cursor-pointer flex items-center gap-1"
             >
               <span>View Brief</span>
               <ArrowRight className="w-3 h-3" />

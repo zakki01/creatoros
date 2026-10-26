@@ -87,7 +87,7 @@ export const AdminOverviewView: React.FC<AdminOverviewViewProps> = ({ onNavigate
                 <ShieldCheck className="w-3 h-3 text-rose-400" />
                 Root Command Center
               </span>
-              <span className="px-2.5 py-1 rounded-full text-[10px] font-mono bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 flex items-center gap-1.5">
+              <span className="px-2.5 py-1 rounded-full text-[10px] font-mono bg-emerald-50 border border-emerald-500/30 text-emerald-800 flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
                 Telemetry Operational
               </span>
@@ -119,7 +119,7 @@ export const AdminOverviewView: React.FC<AdminOverviewViewProps> = ({ onNavigate
               className={`px-3.5 py-2 rounded-xl text-xs font-sans font-semibold transition-all flex items-center gap-2 cursor-pointer shadow-sm ${
                 platformSettings.maintenanceMode
                   ? 'bg-amber-500 hover:bg-amber-400 text-zinc-950 ring-2 ring-amber-400/40'
-                  : 'bg-white hover:bg-rose-950/40 border border-rose-500/30 text-rose-300'
+                  : 'bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-800'
               }`}
             >
               <AlertTriangle className="w-3.5 h-3.5" />
@@ -136,10 +136,10 @@ export const AdminOverviewView: React.FC<AdminOverviewViewProps> = ({ onNavigate
         <div className="p-4 rounded-2xl bg-white shadow-sm border border-black/[0.08] backdrop-blur-xl flex items-center justify-between">
           <div className="space-y-1">
             <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-500">API Response</span>
-            <div className="text-xl font-bold font-mono text-emerald-400">14.2 ms</div>
+            <div className="text-xl font-bold font-mono text-emerald-700">14.2 ms</div>
             <span className="text-[10px] text-zinc-500 font-sans">99.99% under 50ms</span>
           </div>
-          <div className="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center">
+          <div className="w-9 h-9 rounded-xl bg-emerald-50 border border-emerald-500/20 text-emerald-700 flex items-center justify-center">
             <Zap className="w-4 h-4" />
           </div>
         </div>
@@ -158,10 +158,10 @@ export const AdminOverviewView: React.FC<AdminOverviewViewProps> = ({ onNavigate
         <div className="p-4 rounded-2xl bg-white shadow-sm border border-black/[0.08] backdrop-blur-xl flex items-center justify-between">
           <div className="space-y-1">
             <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-500">CDN Cache Ratio</span>
-            <div className="text-xl font-bold font-mono text-[#0096C7]">99.4%</div>
+            <div className="text-xl font-bold font-mono text-[#007E93]">99.4%</div>
             <span className="text-[10px] text-zinc-500 font-sans">Edge hit rate optimal</span>
           </div>
-          <div className="w-9 h-9 rounded-xl bg-[#00B4D8]/10 border border-[#00B4D8]/20 text-[#0096C7] flex items-center justify-center">
+          <div className="w-9 h-9 rounded-xl bg-[#00B4D8]/10 border border-[#00B4D8]/20 text-[#007E93] flex items-center justify-center">
             <Globe className="w-4 h-4" />
           </div>
         </div>
@@ -201,7 +201,7 @@ export const AdminOverviewView: React.FC<AdminOverviewViewProps> = ({ onNavigate
           </div>
           <div className="pt-2 border-t border-black/[0.06] flex items-center justify-between text-[11px] text-zinc-500">
             <span>Identity verification</span>
-            <span className="text-emerald-400 font-medium">96.8% valid</span>
+            <span className="text-emerald-700 font-medium">96.8% valid</span>
           </div>
         </div>
 
@@ -211,7 +211,7 @@ export const AdminOverviewView: React.FC<AdminOverviewViewProps> = ({ onNavigate
           className="p-5 rounded-2xl bg-white shadow-sm border border-black/[0.08] hover:border-black/15 transition-all cursor-pointer group space-y-3"
         >
           <div className="flex items-center justify-between">
-            <div className="w-8 h-8 rounded-lg bg-[#00B4D8]/10 text-[#0096C7] flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-[#00B4D8]/10 text-[#007E93] flex items-center justify-center">
               <Film className="w-4 h-4" />
             </div>
             <ArrowUpRight className="w-4 h-4 text-zinc-600 group-hover:text-zinc-700 transition-colors" />
@@ -226,7 +226,7 @@ export const AdminOverviewView: React.FC<AdminOverviewViewProps> = ({ onNavigate
           </div>
           <div className="pt-2 border-t border-black/[0.06] flex items-center justify-between text-[11px] text-zinc-500">
             <span>Flagged for review</span>
-            <span className={flaggedPosts.length > 0 ? 'text-amber-400 font-medium' : 'text-zinc-500'}>
+            <span className={flaggedPosts.length > 0 ? 'text-amber-800 font-medium' : 'text-zinc-500'}>
               {flaggedPosts.length} flagged
             </span>
           </div>
@@ -238,13 +238,13 @@ export const AdminOverviewView: React.FC<AdminOverviewViewProps> = ({ onNavigate
           className="p-5 rounded-2xl bg-white shadow-sm border border-black/[0.08] hover:border-black/15 transition-all cursor-pointer group space-y-3"
         >
           <div className="flex items-center justify-between">
-            <div className="w-8 h-8 rounded-lg bg-emerald-500/15 text-emerald-400 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center">
               <Layers className="w-4 h-4" />
             </div>
             <ArrowUpRight className="w-4 h-4 text-zinc-600 group-hover:text-zinc-700 transition-colors" />
           </div>
           <div>
-            <div className="text-2xl font-bold font-mono text-emerald-400 tracking-tight">
+            <div className="text-2xl font-bold font-mono text-emerald-700 tracking-tight">
               ₹{(totalEscrowSecured / 100000).toFixed(1)}L Escrow
             </div>
             <p className="text-xs text-zinc-500 font-light mt-0.5">
@@ -253,7 +253,7 @@ export const AdminOverviewView: React.FC<AdminOverviewViewProps> = ({ onNavigate
           </div>
           <div className="pt-2 border-t border-black/[0.06] flex items-center justify-between text-[11px] text-zinc-500">
             <span>Milestone payout success</span>
-            <span className="text-emerald-400 font-medium">99.8%</span>
+            <span className="text-emerald-700 font-medium">99.8%</span>
           </div>
         </div>
 
@@ -310,7 +310,7 @@ export const AdminOverviewView: React.FC<AdminOverviewViewProps> = ({ onNavigate
           <div className="space-y-2.5">
             {pendingReports.length === 0 ? (
               <div className="p-8 rounded-2xl bg-zinc-50 border border-black/[0.08] text-center space-y-2">
-                <CheckCircle2 className="w-8 h-8 text-emerald-400 mx-auto" />
+                <CheckCircle2 className="w-8 h-8 text-emerald-700 mx-auto" />
                 <h4 className="text-sm font-medium text-zinc-900">Queue is Clean</h4>
                 <p className="text-xs text-zinc-500">
                   No pending abuse or violation reports at this moment.
@@ -355,7 +355,7 @@ export const AdminOverviewView: React.FC<AdminOverviewViewProps> = ({ onNavigate
         <div className="lg:col-span-5 space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Zap className="w-4 h-4 text-amber-400" />
+              <Zap className="w-4 h-4 text-amber-800" />
               <h2 className="text-sm font-semibold text-zinc-900 uppercase tracking-wider font-mono">
                 Feature Engine Status
               </h2>
@@ -392,8 +392,8 @@ export const AdminOverviewView: React.FC<AdminOverviewViewProps> = ({ onNavigate
                 <span
                   className={`text-[10px] font-mono px-2 py-0.5 rounded ${
                     f.active
-                      ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
-                      : 'bg-zinc-800 text-zinc-500'
+                      ? 'bg-emerald-50 text-emerald-700 border border-emerald-500/20'
+                      : 'bg-zinc-100 text-zinc-600'
                   }`}
                 >
                   {f.active ? 'ENABLED' : 'DISABLED'}
@@ -426,7 +426,7 @@ export const AdminOverviewView: React.FC<AdminOverviewViewProps> = ({ onNavigate
             {adminActivityLogs.slice(0, 4).map((log) => (
               <div key={log.id} className="p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
                 <div className="flex items-center gap-3">
-                  <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-zinc-800 text-zinc-700 font-semibold">
+                  <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-zinc-100 text-zinc-700 font-semibold">
                     {log.action}
                   </span>
                   <span className="text-zinc-800 font-medium">{log.details || log.target}</span>

@@ -112,7 +112,7 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="pointer-events-auto max-w-[440px] w-full rounded-3xl overflow-hidden bg-white/95 border border-black/[0.08] shadow-[0_28px_70px_rgba(0,0,0,0.85)] backdrop-blur-xl flex flex-col"
+            className="pointer-events-auto max-w-[440px] w-full rounded-3xl overflow-hidden bg-white/95 border border-black/[0.08] shadow-[0_24px_60px_rgba(23,37,54,0.18)] backdrop-blur-xl flex flex-col"
           >
             <div className="px-4 py-3 flex items-center gap-2.5 border-b border-black/[0.06]">
               <Avatar
@@ -150,7 +150,7 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
           - Mobile (<sm): Bottom Sheet (max-h-[72dvh], rounded-t-3xl) leaving post partially visible behind sheet
       */}
       <aside
-        className="fixed z-50 flex flex-col bg-white/98 border-black/[0.08] shadow-[0_-20px_60px_rgba(0,0,0,0.85)] backdrop-blur-2xl text-zinc-900 transition-all duration-300 overflow-hidden
+        className="fixed z-50 flex flex-col bg-white/98 border-black/[0.08] shadow-[0_-20px_60px_rgba(23,37,54,0.18)] backdrop-blur-2xl text-zinc-900 transition-all duration-300 overflow-hidden
           inset-x-0 bottom-0 max-h-[72dvh] rounded-t-3xl border-t
           sm:inset-y-0 sm:right-0 sm:left-auto sm:h-full sm:max-h-full sm:w-[390px] sm:rounded-none sm:border-l sm:border-t-0 animate-in slide-in-from-bottom sm:slide-in-from-right duration-200"
         role="dialog"
@@ -162,16 +162,16 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
           className="sm:hidden w-full pt-2.5 pb-1 flex justify-center cursor-pointer select-none"
           onClick={onClose}
         >
-          <div className="w-9 h-1 bg-white/20 rounded-full" />
+          <div className="w-9 h-1 bg-zinc-300 rounded-full" />
         </div>
 
         {/* Clean Header: ONLY Comments + Count + [X] */}
-        <header className="px-4 py-3 border-b border-white/[0.07] flex items-center justify-between shrink-0">
+        <header className="px-4 py-3 border-b border-zinc-200 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-2">
             <h2 className="text-sm font-semibold text-zinc-900 tracking-tight">
               Comments
             </h2>
-            <span className="text-xs px-2 py-0.5 rounded-full bg-white/[0.07] text-zinc-700 font-medium">
+            <span className="text-xs px-2 py-0.5 rounded-full bg-zinc-100 text-zinc-700 border border-zinc-200 font-medium">
               {totalCommentsCount}
             </span>
           </div>
@@ -237,7 +237,7 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
                             alt="Comment GIF"
                             className="w-full h-full object-cover block"
                           />
-                          <span className="absolute bottom-1.5 right-1.5 px-1.5 py-0.5 rounded bg-black/80 text-[9px] font-bold text-[#0096C7] border border-black/[0.08]">
+                          <span className="absolute bottom-1.5 right-1.5 px-1.5 py-0.5 rounded bg-black/80 text-[9px] font-bold text-[#007E93] border border-black/[0.08]">
                             GIF
                           </span>
                         </div>
@@ -357,7 +357,7 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
                                       alt="Reply GIF"
                                       className="max-h-32 w-auto object-contain block"
                                     />
-                                    <span className="absolute bottom-1 right-1 px-1 py-0.2 rounded bg-black/75 text-[8px] font-bold text-[#0096C7]">
+                                    <span className="absolute bottom-1 right-1 px-1 py-0.2 rounded bg-black/75 text-[8px] font-bold text-[#007E93]">
                                       GIF
                                     </span>
                                   </div>
@@ -401,9 +401,9 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
 
         {/* Replying To Bar */}
         {replyingTo && (
-          <div className="px-4 py-1.5 bg-indigo-950/40 border-t border-[#00B4D8]/20 text-[11px] text-[#0096C7] flex items-center justify-between shrink-0">
+          <div className="px-4 py-1.5 bg-[#E9FAFC] border-t border-[#007E93]/20 text-[11px] text-[#007E93] flex items-center justify-between shrink-0">
             <span className="flex items-center gap-1.5 truncate">
-              <CornerDownRight className="w-3 h-3 text-[#0096C7] shrink-0" />
+              <CornerDownRight className="w-3 h-3 text-[#007E93] shrink-0" />
               Replying to <strong className="text-zinc-900">{replyingTo.authorName}</strong>
             </span>
             <button
@@ -429,7 +429,7 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
                   alt={pendingGif.title || 'GIF'}
                   className="w-full h-full object-cover"
                 />
-                <span className="absolute bottom-0.5 right-0.5 px-1 rounded bg-black/80 text-[8px] font-bold text-[#0096C7]">
+                <span className="absolute bottom-0.5 right-0.5 px-1 rounded bg-black/80 text-[8px] font-bold text-[#007E93]">
                   GIF
                 </span>
               </div>
@@ -440,7 +440,7 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
             <button
               type="button"
               onClick={() => setPendingGif(null)}
-              className="p-1 rounded-lg text-zinc-500 hover:text-zinc-900 hover:bg-white/10"
+              className="p-1 rounded-lg text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100"
               aria-label="Remove GIF"
             >
               <X className="w-3.5 h-3.5" />
@@ -449,7 +449,7 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
         )}
 
         {/* Persistent Bottom Composer: [avatar] [ Add a comment... 😊 ] [Send] */}
-        <footer className="p-3 border-t border-black/[0.08] bg-[#09090d]/95 backdrop-blur-md pb-safe relative shrink-0 z-10">
+        <footer className="p-3 border-t border-zinc-200 bg-white/95 backdrop-blur-md pb-safe relative shrink-0 z-10">
           {showEmojiPicker && (
             <div className="fixed bottom-20 left-3 right-3 sm:left-auto sm:right-3 sm:absolute sm:bottom-full sm:mb-2 z-50 flex justify-end">
               <EmojiPicker
@@ -488,7 +488,7 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
                     : 'Add a comment...'
                 }
                 data-testid="comment-composer-input"
-                className="w-full bg-white/90 border border-white/[0.1] rounded-xl pl-3 pr-9 py-2 min-h-[40px] text-xs text-zinc-900 placeholder-zinc-500 focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]/70 transition-all"
+                className="w-full bg-white border border-zinc-200 rounded-xl pl-3 pr-9 py-2 min-h-[40px] text-xs text-zinc-900 placeholder-zinc-500 focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]/70 transition-all"
               />
 
               <button
@@ -497,7 +497,7 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
                 data-testid="comment-emoji-gif-btn"
                 className={`absolute right-1.5 w-7 h-7 rounded-lg flex items-center justify-center transition-colors cursor-pointer ${
                   showEmojiPicker || pendingGif
-                    ? 'text-[#0096C7] bg-[#00B4D8]/10'
+                    ? 'text-[#007E93] bg-[#00B4D8]/10'
                     : 'text-zinc-500 hover:text-zinc-800'
                 }`}
                 title="Emoji & GIF"
@@ -511,7 +511,7 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
               type="submit"
               disabled={!commentText.trim() && !pendingGif}
               data-testid="comment-send-btn"
-              className="min-w-[40px] min-h-[40px] px-3 rounded-xl bg-[#00B4D8] hover:bg-[#0096C7] disabled:opacity-40 text-zinc-900 text-xs font-semibold transition-all cursor-pointer flex items-center justify-center shrink-0 active:scale-95"
+              className="min-w-[40px] min-h-[40px] px-3 rounded-xl bg-[#007E93] hover:bg-[#006779] disabled:opacity-40 text-white text-xs font-semibold transition-all cursor-pointer flex items-center justify-center shrink-0 active:scale-95"
               aria-label="Send comment"
             >
               <Send className="w-3.5 h-3.5" />

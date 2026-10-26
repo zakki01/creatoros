@@ -69,8 +69,8 @@ export const CreatorDeliverables: React.FC<{
               variant="outline"
               size="sm"
               onClick={() => onNavigate('live')}
-              leftIcon={<Video className="w-3.5 h-3.5 text-[#0096C7]" />}
-              className="border-[#00B4D8]/30 hover:border-indigo-500/60 text-zinc-800"
+              leftIcon={<Video className="w-3.5 h-3.5 text-[#007E93]" />}
+              className="border-[#00B4D8]/30 hover:border-[#007E93]/40 text-zinc-800"
             >
               Live Studio
             </Button>
@@ -157,12 +157,12 @@ export const CreatorDeliverables: React.FC<{
               <div className="flex items-center justify-between text-[11px] text-zinc-500 pt-1 border-t border-zinc-200">
                 <span>Submitted: {sub.submittedAt.split(' ')[0]}</span>
                 {sub.status === 'approved' ? (
-                  <span className="text-emerald-400 font-medium inline-flex items-center gap-1">
+                  <span className="text-emerald-700 font-medium inline-flex items-center gap-1">
                     <CheckCircle2 className="w-3 h-3" />
                     Ready for scheduled drop
                   </span>
                 ) : (
-                  <span className="text-amber-400 font-medium">Brand evaluating cut</span>
+                  <span className="text-amber-800 font-medium">Brand evaluating cut</span>
                 )}
               </div>
             </Card>

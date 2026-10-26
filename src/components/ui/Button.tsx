@@ -32,7 +32,7 @@ export const Button: React.FC<ButtonProps> = ({
 
   const variantStyles = {
     primary:
-      'depth-btn-primary text-slate-950 font-semibold focus:ring-[#00B4D8] active:translate-y-[1px]',
+      'depth-btn-primary text-white font-semibold focus:ring-[#007E93] active:translate-y-[1px]',
     secondary:
       'depth-btn-secondary text-zinc-900 font-medium focus:ring-zinc-400 active:translate-y-[1px]',
     outline:
@@ -42,7 +42,7 @@ export const Button: React.FC<ButtonProps> = ({
     danger:
       'bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 shadow-sm hover:-translate-y-[1px] active:translate-y-[1px] focus:ring-rose-500',
     ai:
-      'bg-gradient-to-r from-cyan-600 via-sky-600 to-indigo-600 text-white border border-white/30 shadow-md hover:-translate-y-[1px] active:translate-y-[1px] focus:ring-cyan-500',
+      'bg-gradient-to-r from-[#078FA5] to-[#006C80] text-white border border-[#006779]/20 shadow-sm hover:-translate-y-[1px] active:translate-y-[1px] focus:ring-[#007E93]',
   };
 
   return (

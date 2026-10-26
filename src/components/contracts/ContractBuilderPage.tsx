@@ -321,7 +321,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
           {currentStep === 7 ? (
             <button
               onClick={() => setShowSendConfirmation(true)}
-              className="min-h-[44px] px-4 py-2 rounded-xl bg-[#00B4D8] hover:bg-[#0096C7] text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm shadow-[#00B4D8]/20 transition-all cursor-pointer"
+              className="min-h-[44px] px-4 py-2 rounded-xl bg-[#007E93] hover:bg-[#006779] text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm shadow-[#00B4D8]/20 transition-all cursor-pointer"
             >
               <Send className="w-3.5 h-3.5" />
               <span>Send Contract</span>
@@ -329,7 +329,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
           ) : (
             <button
               onClick={() => setCurrentStep((prev) => Math.min(7, prev + 1))}
-              className="min-h-[44px] px-4 py-2 rounded-xl bg-[#00B4D8] hover:bg-[#0096C7] text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm shadow-[#00B4D8]/20 transition-all cursor-pointer"
+              className="min-h-[44px] px-4 py-2 rounded-xl bg-[#007E93] hover:bg-[#006779] text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm shadow-[#00B4D8]/20 transition-all cursor-pointer"
             >
               <span>Next</span>
               <ChevronRight className="w-4 h-4" />
@@ -350,19 +350,19 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                 onClick={() => setCurrentStep(idx)}
                 className={`min-h-[44px] px-3.5 py-2 rounded-xl text-xs font-medium flex items-center gap-2 transition-all cursor-pointer ${
                   isCurrent
-                    ? 'bg-zinc-800 text-white font-bold border border-black/[0.08] shadow-sm'
+                    ? 'bg-[#007E93] text-white font-bold border border-black/[0.08] shadow-sm'
                     : isCompleted
-                    ? 'bg-zinc-50/60 text-emerald-400 hover:bg-zinc-800 border border-transparent'
-                    : 'bg-zinc-50/30 text-zinc-500 hover:bg-zinc-850 hover:text-zinc-700 border border-transparent'
+                    ? 'bg-zinc-50/60 text-emerald-700 hover:bg-zinc-100 border border-transparent'
+                    : 'bg-zinc-50/30 text-zinc-500 hover:bg-zinc-200 hover:text-zinc-700 border border-transparent'
                 }`}
               >
                 <span
                   className={`w-5 h-5 rounded-full text-[10px] font-mono flex items-center justify-center ${
                     isCurrent
-                      ? 'bg-indigo-600 text-white'
+                      ? 'bg-[#007E93] text-white'
                       : isCompleted
-                      ? 'bg-emerald-500/20 text-emerald-300'
-                      : 'bg-zinc-800 text-zinc-500'
+                      ? 'bg-emerald-50 text-emerald-800'
+                      : 'bg-zinc-100 text-zinc-600'
                   }`}
                 >
                   {isCompleted ? '✓' : `0${idx + 1}`}
@@ -383,7 +383,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
             <div className="p-4 rounded-2xl bg-white border border-black/[0.08] shadow-xs space-y-2">
               <div className="flex items-center justify-between">
                 <span className="text-[11px] font-medium text-zinc-500 flex items-center gap-1.5">
-                  <Sparkles className="w-3.5 h-3.5 text-[#0096C7]" />
+                  <Sparkles className="w-3.5 h-3.5 text-[#007E93]" />
                   <span>Start from Verified Contract Template</span>
                 </span>
                 <span className="text-[10px] text-zinc-500 font-mono">Optional</span>
@@ -395,10 +395,10 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                     onClick={() => handleApplyTemplate(tpl.id)}
                     className="p-2.5 rounded-xl bg-zinc-50 hover:bg-white border border-zinc-200 hover:border-[#00B4D8]/30 text-left transition-all cursor-pointer group"
                   >
-                    <span className="text-[9px] font-mono text-[#0096C7] font-semibold block uppercase">
+                    <span className="text-[9px] font-mono text-[#007E93] font-semibold block uppercase">
                       {tpl.category}
                     </span>
-                    <span className="text-xs font-semibold text-zinc-800 group-hover:text-white line-clamp-1">
+                    <span className="text-xs font-semibold text-zinc-800 group-hover:text-zinc-950 line-clamp-1">
                       {tpl.title}
                     </span>
                   </button>
@@ -428,11 +428,11 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                     />
                     <div>
                       <div className="flex items-center gap-1.5">
-                        <h4 className="text-sm font-bold text-white">{contractDraft.creatorName}</h4>
+                        <h4 className="text-sm font-bold text-zinc-900">{contractDraft.creatorName}</h4>
                         {contractDraft.creatorVerified && (
-                          <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                          <ShieldCheck className="w-3.5 h-3.5 text-emerald-700" />
                         )}
-                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-mono">
+                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 font-mono">
                           Verified Creator
                         </span>
                       </div>
@@ -471,7 +471,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                           onClick={() => setCategoryFilter(cat)}
                           className={`min-h-[40px] px-3 rounded-xl text-xs font-medium transition-colors shrink-0 cursor-pointer ${
                             categoryFilter === cat
-                              ? 'bg-zinc-800 text-white font-semibold'
+                              ? 'bg-[#007E93] text-white font-semibold'
                               : 'bg-white text-zinc-500 hover:text-zinc-800'
                           }`}
                         >
@@ -497,7 +497,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                             <div className="flex items-center gap-1">
                               <h5 className="text-xs font-bold text-zinc-900 truncate">{c.name}</h5>
                               {c.verified && (
-                                <ShieldCheck className="w-3 h-3 text-emerald-400 shrink-0" />
+                                <ShieldCheck className="w-3 h-3 text-emerald-700 shrink-0" />
                               )}
                             </div>
                             <p className="text-[10px] text-zinc-500 font-mono truncate">{c.handle}</p>
@@ -519,7 +519,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                               creatorVerified: c.verified,
                             }));
                           }}
-                          className="min-h-[44px] px-3.5 py-2 rounded-xl bg-[#00B4D8] hover:bg-[#0096C7] text-white text-xs font-semibold transition-all shrink-0 cursor-pointer"
+                          className="min-h-[44px] px-3.5 py-2 rounded-xl bg-[#007E93] hover:bg-[#006779] text-white text-xs font-semibold transition-all shrink-0 cursor-pointer"
                         >
                           Select
                         </button>
@@ -644,7 +644,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                 <button
                   type="button"
                   onClick={handleAddDeliverable}
-                  className="min-h-[44px] px-3.5 py-2 rounded-xl bg-[#00B4D8] hover:bg-[#0096C7] text-white text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer shadow-sm shadow-[#00B4D8]/20"
+                  className="min-h-[44px] px-3.5 py-2 rounded-xl bg-[#007E93] hover:bg-[#006779] text-white text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer shadow-sm shadow-[#00B4D8]/20"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   <span>Add Deliverable</span>
@@ -676,7 +676,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                     <button
                       type="button"
                       onClick={handleAddDeliverable}
-                      className="min-h-[44px] px-4 py-2 rounded-xl bg-indigo-600 text-white text-xs font-semibold cursor-pointer"
+                      className="min-h-[44px] px-4 py-2 rounded-xl bg-[#007E93] text-white text-xs font-semibold cursor-pointer"
                     >
                       + Add Deliverable Now
                     </button>
@@ -795,11 +795,11 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                     </span>
                   </div>
 
-                  <div className="h-px bg-zinc-800 my-1" />
+                  <div className="h-px bg-zinc-100 my-1" />
 
-                  <div className="flex justify-between items-center text-sm font-bold text-white">
+                  <div className="flex justify-between items-center text-sm font-bold text-zinc-900">
                     <span>Total Deposit Required</span>
-                    <span className="text-emerald-400">
+                    <span className="text-emerald-700">
                       ${contractDraft.payment?.totalAmount.toLocaleString()}
                     </span>
                   </div>
@@ -854,7 +854,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                           }}
                           className={`min-h-[40px] px-3.5 py-2 rounded-xl text-xs font-medium transition-all cursor-pointer ${
                             isSelected
-                              ? 'bg-indigo-600 text-white font-semibold shadow-sm'
+                              ? 'bg-[#007E93] text-white font-semibold shadow-sm'
                               : 'bg-white text-zinc-500 hover:text-zinc-800 border border-zinc-200'
                           }`}
                         >
@@ -885,7 +885,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                             }
                             className={`min-h-[36px] px-3 py-1.5 rounded-xl text-xs font-medium transition-all cursor-pointer ${
                               contractDraft.usageRights?.duration === dur
-                                ? 'bg-indigo-600 text-white font-semibold'
+                                ? 'bg-[#007E93] text-white font-semibold'
                                 : 'bg-white text-zinc-500 hover:text-zinc-800 border border-zinc-200'
                             }`}
                           >
@@ -913,7 +913,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                           }
                           className={`min-h-[36px] px-3 py-1.5 rounded-xl text-xs font-medium transition-all cursor-pointer ${
                             contractDraft.usageRights?.territory === ter
-                              ? 'bg-indigo-600 text-white font-semibold'
+                              ? 'bg-[#007E93] text-white font-semibold'
                               : 'bg-white text-zinc-500 hover:text-zinc-800 border border-zinc-200'
                           }`}
                         >
@@ -1123,7 +1123,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
               <div className="p-6 sm:p-8 rounded-2xl bg-white border border-black/[0.08] space-y-6 text-xs text-zinc-700 shadow-sm font-sans shadow-xl">
                 <div className="border-b border-black/[0.08] pb-6 flex items-start justify-between gap-4">
                   <div>
-                    <span className="text-[10px] font-mono uppercase tracking-widest text-[#0096C7] block font-semibold">
+                    <span className="text-[10px] font-mono uppercase tracking-widest text-[#007E93] block font-semibold">
                       CreatorOS Verified Commercial Agreement
                     </span>
                     <h2 className="text-xl font-bold text-zinc-900 font-display mt-1">
@@ -1168,7 +1168,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
 
                   <div>
                     <span className="text-[10px] uppercase font-mono text-zinc-500 block">Protected Compensation</span>
-                    <p className="text-xs font-bold text-emerald-400 font-mono mt-1">
+                    <p className="text-xs font-bold text-emerald-700 font-mono mt-1">
                       ${contractDraft.payment?.creatorPayment.toLocaleString()} USD
                     </p>
                   </div>
@@ -1204,7 +1204,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
           {/* STEP 08: SEND & DISPATCH */}
           {currentStep === 7 && (
             <div className="p-6 sm:p-8 rounded-2xl bg-white border border-black/[0.08] shadow-sm text-center space-y-5">
-              <div className="w-12 h-12 rounded-2xl bg-[#00B4D8]/10 text-[#0096C7] flex items-center justify-center mx-auto ring-1 ring-[#00B4D8]/30">
+              <div className="w-12 h-12 rounded-2xl bg-[#00B4D8]/10 text-[#007E93] flex items-center justify-center mx-auto ring-1 ring-[#00B4D8]/30">
                 <Send className="w-6 h-6" />
               </div>
 
@@ -1222,7 +1222,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                 </div>
                 <div className="flex justify-between text-zinc-500">
                   <span>Creator Compensation:</span>
-                  <span className="font-mono font-bold text-emerald-400">
+                  <span className="font-mono font-bold text-emerald-700">
                     ${contractDraft.payment?.creatorPayment.toLocaleString()}
                   </span>
                 </div>
@@ -1253,7 +1253,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                 <button
                   type="button"
                   onClick={handleFinalSend}
-                  className="w-full sm:w-auto min-h-[44px] px-8 py-2.5 rounded-xl bg-[#00B4D8] hover:bg-[#0096C7] text-white text-xs font-bold shadow-lg shadow-[#00B4D8]/20 transition-all cursor-pointer flex items-center justify-center gap-2"
+                  className="w-full sm:w-auto min-h-[44px] px-8 py-2.5 rounded-xl bg-[#007E93] hover:bg-[#006779] text-white text-xs font-bold shadow-lg shadow-[#00B4D8]/20 transition-all cursor-pointer flex items-center justify-center gap-2"
                 >
                   <Send className="w-4 h-4" />
                   <span>Send Contract</span>
@@ -1291,7 +1291,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                   </div>
                 </div>
               ) : (
-                <p className="text-[11px] text-amber-400/80 flex items-center gap-1">
+                <p className="text-[11px] text-amber-800/80 flex items-center gap-1">
                   <AlertTriangle className="w-3 h-3" /> Select creator in Step 01
                 </p>
               )}
@@ -1330,7 +1330,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                   <span>Protection (20%):</span>
                   <span className="text-zinc-800">${contractDraft.payment?.protectionAmount}</span>
                 </div>
-                <div className="flex justify-between font-bold text-emerald-400 pt-1 border-t border-zinc-200">
+                <div className="flex justify-between font-bold text-emerald-700 pt-1 border-t border-zinc-200">
                   <span>Total Protected:</span>
                   <span>${contractDraft.payment?.totalAmount.toLocaleString()}</span>
                 </div>
@@ -1339,12 +1339,12 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
 
             {/* Risk Warnings count if any */}
             {currentRisks.length > 0 && (
-              <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-300 text-[11px] flex items-center justify-between">
+              <div className="p-2.5 rounded-xl bg-amber-50 border border-amber-500/20 text-amber-800 text-[11px] flex items-center justify-between">
                 <span>⚠ {currentRisks.length} issue(s) flagged</span>
                 <button
                   type="button"
                   onClick={() => setCurrentStep(6)}
-                  className="font-bold underline hover:text-white"
+                  className="font-bold underline hover:text-zinc-950"
                 >
                   Review
                 </button>
@@ -1379,7 +1379,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                   setShowSendConfirmation(false);
                   handleFinalSend();
                 }}
-                className="min-h-[44px] px-5 rounded-xl bg-[#00B4D8] hover:bg-[#0096C7] text-white text-xs font-bold shadow-md shadow-[#00B4D8]/20 cursor-pointer"
+                className="min-h-[44px] px-5 rounded-xl bg-[#007E93] hover:bg-[#006779] text-white text-xs font-bold shadow-md shadow-[#00B4D8]/20 cursor-pointer"
               >
                 Send Contract
               </button>
