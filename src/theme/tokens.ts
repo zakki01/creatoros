@@ -1,0 +1,71 @@
+/**
+ * CreatorOS Centralized Design Tokens
+ * Light Studio Theme & Neumorphic-Glass Hybrid Foundation
+ */
+
+export const tokens = {
+  colors: {
+    // CreatorOS Brand Identity (derived from official logo emblem)
+    brandPrimary: '#111827', // Charcoal deep slate
+    brandSecondary: '#374151', // Studio medium slate
+    brandAccent: '#00B4D8', // Electric Cyan / Ocean Blue
+    brandAccentHover: '#0096C7',
+    brandAccentLight: 'rgba(0, 180, 216, 0.12)',
+
+    // Surface Grays & Studio Foundation
+    surfaceStudio: '#E2E5E9',
+    surfaceCard: '#EAECEF',
+    surfaceCardHighlight: '#FFFFFF',
+    surfaceGlass: 'rgba(245, 247, 250, 0.78)',
+    surfaceRecessed: '#D3D7DE',
+    surfaceInput: '#FFFFFF',
+
+    // Typography
+    textPrimary: '#0F172A',
+    textSecondary: '#475569',
+    textMuted: '#64748B',
+    textInverse: '#FFFFFF',
+
+    // Borders & Dividers
+    borderSubtle: 'rgba(0, 0, 0, 0.08)',
+    borderMedium: 'rgba(0, 0, 0, 0.14)',
+    borderHighlight: 'rgba(255, 255, 255, 0.85)',
+    borderFocus: '#00B4D8',
+
+    // Feedback
+    success: '#059669',
+    warning: '#D97706',
+    danger: '#E11D48',
+  },
+
+  shadows: {
+    // Soft UI / Neumorphism
+    cardFloating:
+      '0 24px 48px -12px rgba(15, 23, 42, 0.18), 0 8px 16px -4px rgba(15, 23, 42, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.95)',
+    controlRaised:
+      '0 4px 12px rgba(15, 23, 42, 0.1), inset 0 1px 1px rgba(255, 255, 255, 0.95), inset 0 -1px 2px rgba(0, 0, 0, 0.06)',
+    controlRecessed:
+      'inset 2px 2px 5px rgba(15, 23, 42, 0.14), inset -1px -1px 3px rgba(255, 255, 255, 0.8)',
+    inputRecessed:
+      'inset 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 0 rgba(255, 255, 255, 0.8)',
+    pillActive:
+      '0 3px 8px rgba(15, 23, 42, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.35)',
+    accentActive:
+      '0 3px 12px rgba(0, 180, 216, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.6)',
+  },
+
+  radius: {
+    sm: '8px',
+    md: '12px',
+    lg: '16px',
+    xl: '24px',
+    card: '28px',
+    full: '9999px',
+  },
+
+  typography: {
+    fontFamily: "'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+  },
+} as const;
+
+export type ThemeTokens = typeof tokens;

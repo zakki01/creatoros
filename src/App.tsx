@@ -283,13 +283,7 @@ const MainApp: React.FC = () => {
   if (!isAuthenticated) {
     return (
       <WelcomePage
-        initialAuthTab={authTab}
-        onGetStarted={() => {
-          setAuthTab('signup');
-        }}
-        onSignIn={() => {
-          setAuthTab('login');
-        }}
+        initialAuthMode={authTab === 'signup' ? 'register' : 'signin'}
         onDemoAccess={(demoRole) => {
           loginAsDemo(demoRole, 'home');
         }}

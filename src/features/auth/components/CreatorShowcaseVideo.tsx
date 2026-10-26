@@ -149,7 +149,7 @@ export const CreatorShowcaseVideo: React.FC<CreatorShowcaseVideoProps> = ({
 
   return (
     <div
-      className={`relative w-full h-full min-h-[460px] sm:min-h-[520px] lg:min-h-[600px] rounded-[32px] overflow-hidden bg-[#0A0A0E] shadow-[0_24px_64px_-16px_rgba(0,0,0,0.85)] border border-white/10 select-none group flex flex-col justify-center items-center ${className}`}
+      className={`relative w-full h-full min-h-[460px] sm:min-h-[520px] lg:min-h-[580px] rounded-[28px] overflow-hidden bg-[#0A0A0E] shadow-[0_24px_50px_-12px_rgba(15,23,42,0.22)] border border-black/10 select-none group flex flex-col justify-center items-center ${className}`}
     >
       {/* Background Video Player */}
       {hasError ? (

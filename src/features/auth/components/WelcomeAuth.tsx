@@ -5,37 +5,36 @@ import {
   KeyRound,
   Eye,
   EyeOff,
-  User,
   Loader2,
   AlertCircle,
 } from 'lucide-react';
-import { AuthTab, LoginCredentials, SignUpCredentials } from '../types';
 import { AuthService } from '../services/authService';
 import { OAuthNoticeModal } from './OAuthNoticeModal';
 import { ForgotPasswordModal } from './ForgotPasswordModal';
 import { useAppState } from '../../../context/StateContext';
 import { UserRole } from '../../../types';
 
+export type AuthPanelMode = 'signin' | 'register';
+
 export interface WelcomeAuthProps {
-  initialTab?: AuthTab;
+  initialMode?: AuthPanelMode;
   onAuthSuccess?: (role: UserRole) => void;
   className?: string;
 }
 
 export const WelcomeAuth: React.FC<WelcomeAuthProps> = ({
-  initialTab = 'login',
+  initialMode = 'signin',
   onAuthSuccess,
   className = '',
 }) => {
   const { setRole, triggerCelebration } = useAppState();
 
-  const [activeTab, setActiveTab] = useState<AuthTab>(initialTab);
+  const [mode, setMode] = useState<AuthPanelMode>(initialMode);
   const [selectedRole, setSelectedRole] = useState<UserRole>('creator');
 
   // Form Fields
   const [email, setEmail] = useState('creator@demo.creatoros.ai');
   const [password, setPassword] = useState('password123');
-  const [name, setName] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
   // States
@@ -46,40 +45,18 @@ export const WelcomeAuth: React.FC<WelcomeAuthProps> = ({
   const [oauthNoticeProvider, setOauthNoticeProvider] = useState<'google' | 'apple' | 'facebook' | null>(null);
   const [isForgotModalOpen, setIsForgotModalOpen] = useState(false);
 
-  // Synchronize when initialTab prop changes externally (e.g. clicking header buttons)
+  // Synchronize when initialMode changes externally
   useEffect(() => {
-    setActiveTab(initialTab);
+    setMode(initialMode);
     setErrorMessage(null);
-  }, [initialTab]);
+  }, [initialMode]);
 
-  const handleLoginSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
 
     if (!email || !password) {
       setErrorMessage('Please enter both email and password.');
-      return;
-    }
-
-    setIsLoading(true);
-    try {
-      const user = await AuthService.loginWithEmail({ email, password });
-      setRole(user.role);
-      triggerCelebration();
-      onAuthSuccess?.(user.role);
-    } catch (err: any) {
-      setErrorMessage(err.message || 'Login failed. Please check credentials.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleSignUpSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setErrorMessage(null);
-
-    if (!name || !email || !password) {
-      setErrorMessage('Please fill in all required fields.');
       return;
     }
     if (password.length < 6) {
@@ -89,17 +66,28 @@ export const WelcomeAuth: React.FC<WelcomeAuthProps> = ({
 
     setIsLoading(true);
     try {
-      const user = await AuthService.signUpWithEmail({
-        name,
-        email,
-        password,
-        role: selectedRole,
-      });
-      setRole(user.role);
-      triggerCelebration();
-      onAuthSuccess?.(user.role);
+      if (mode === 'signin') {
+        const user = await AuthService.loginWithEmail({ email, password });
+        setRole(user.role);
+        triggerCelebration();
+        onAuthSuccess?.(user.role);
+      } else {
+        // Derive name if not explicitly prompted in the minimal PDF layout
+        const derivedName = email.split('@')[0] || 'Creator';
+        const formattedName = derivedName.charAt(0).toUpperCase() + derivedName.slice(1);
+
+        const user = await AuthService.signUpWithEmail({
+          name: formattedName,
+          email,
+          password,
+          role: selectedRole,
+        });
+        setRole(user.role);
+        triggerCelebration();
+        onAuthSuccess?.(user.role);
+      }
     } catch (err: any) {
-      setErrorMessage(err.message || 'Registration failed.');
+      setErrorMessage(err.message || `${mode === 'signin' ? 'Sign in' : 'Registration'} failed.`);
     } finally {
       setIsLoading(false);
     }
@@ -139,20 +127,20 @@ export const WelcomeAuth: React.FC<WelcomeAuthProps> = ({
 
   return (
     <div
-      className={`auth-pdf-card rounded-[32px] p-6 sm:p-8 lg:p-9 w-full max-w-[440px] mx-auto select-none transition-all ${className}`}
+      className={`studio-card-soft rounded-[28px] p-6 sm:p-8 lg:p-9 w-full max-w-[430px] mx-auto select-none transition-all ${className}`}
     >
       {/* ======================================================================= */}
-      {/* 1. TOP TAB SWITCHER: [ Sign in ] | [ Register <UserPlus /> ]            */}
+      {/* 1. TOP SEGMENTED SWITCHER: [ Sign in ] | [ Register <UserPlus /> ]      */}
       {/* ======================================================================= */}
       <div className="auth-pdf-tab-track rounded-full p-1.5 flex items-center justify-between mb-6">
         <button
           type="button"
           onClick={() => {
-            setActiveTab('login');
+            setMode('signin');
             setErrorMessage(null);
           }}
           className={`flex-1 py-2.5 rounded-full text-xs sm:text-sm font-semibold tracking-wide transition-all cursor-pointer text-center ${
-            activeTab === 'login'
+            mode === 'signin'
               ? 'auth-pdf-pill-active'
               : 'text-zinc-700 hover:text-zinc-950'
           }`}
@@ -163,11 +151,11 @@ export const WelcomeAuth: React.FC<WelcomeAuthProps> = ({
         <button
           type="button"
           onClick={() => {
-            setActiveTab('signup');
+            setMode('register');
             setErrorMessage(null);
           }}
           className={`flex-1 py-2.5 rounded-full text-xs sm:text-sm font-semibold tracking-wide transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
-            activeTab === 'signup'
+            mode === 'register'
               ? 'auth-pdf-pill-active'
               : 'text-zinc-700 hover:text-zinc-950'
           }`}
@@ -178,9 +166,9 @@ export const WelcomeAuth: React.FC<WelcomeAuthProps> = ({
       </div>
 
       {/* ======================================================================= */}
-      {/* 2. ROLE TOGGLE (SHOWN ONLY WHEN REGISTER TAB IS ACTIVE)                 */}
+      {/* 2. ROLE TOGGLE: CREATOR | BRAND (ONLY SHOWN IN REGISTER MODE)           */}
       {/* ======================================================================= */}
-      {activeTab === 'signup' && (
+      {mode === 'register' && (
         <div className="flex items-center gap-2.5 mb-5 animate-fade-in">
           <button
             type="button"
@@ -216,47 +204,22 @@ export const WelcomeAuth: React.FC<WelcomeAuthProps> = ({
       )}
 
       {/* ======================================================================= */}
-      {/* 3. AUTH FORM BODY                                                       */}
+      {/* 3. INPUT FORM                                                           */}
       {/* ======================================================================= */}
-      <form
-        onSubmit={activeTab === 'login' ? handleLoginSubmit : handleSignUpSubmit}
-        className="space-y-4"
-      >
-        {/* Full Name Field (Only on Register) */}
-        {activeTab === 'signup' && (
-          <div className="space-y-1.5 text-left">
-            <label className="text-xs sm:text-sm font-bold text-zinc-900 block font-sans">
-              Full Name
-            </label>
-            <div className="auth-pdf-input-box rounded-lg flex items-center px-3.5 py-2.5">
-              <User className="w-5 h-5 text-zinc-400 mr-2.5 shrink-0" />
-              <input
-                type="text"
-                required
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="e.g. Alex Rivera"
-                disabled={isLoading}
-                autoComplete="name"
-                className="w-full text-xs sm:text-sm text-zinc-900 placeholder:text-zinc-400 bg-transparent outline-none font-sans"
-              />
-            </div>
-          </div>
-        )}
-
+      <form onSubmit={handleSubmit} className="space-y-4">
         {/* Email Field */}
         <div className="space-y-1.5 text-left">
           <label className="text-xs sm:text-sm font-bold text-zinc-900 block font-sans">
             Email
           </label>
-          <div className="auth-pdf-input-box rounded-lg flex items-center px-3.5 py-2.5">
-            <Mail className="w-5 h-5 text-zinc-400 mr-2.5 shrink-0" />
+          <div className="studio-input-soft rounded-lg flex items-center px-3.5 py-2.5">
+            <Mail className="w-4 h-4 text-zinc-400 mr-2.5 shrink-0" />
             <input
               type="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="name@example.com"
+              placeholder="creator@demo.creatoros.ai"
               disabled={isLoading}
               autoComplete="email"
               className="w-full text-xs sm:text-sm text-zinc-900 placeholder:text-zinc-400 bg-transparent outline-none font-sans"
@@ -269,9 +232,9 @@ export const WelcomeAuth: React.FC<WelcomeAuthProps> = ({
           <label className="text-xs sm:text-sm font-bold text-zinc-900 block font-sans">
             Password
           </label>
-          <div className="auth-pdf-input-box rounded-lg flex items-center px-3 py-2">
-            {/* Key icon in grey badge matching PDF reference */}
-            <span className="w-6 h-6 rounded bg-[#808894] text-white flex items-center justify-center mr-2.5 shrink-0 shadow-sm">
+          <div className="studio-input-soft rounded-lg flex items-center px-3 py-2">
+            {/* Key icon badge matching PDF reference */}
+            <span className="w-6 h-6 rounded bg-[#7A828F] text-white flex items-center justify-center mr-2.5 shrink-0 shadow-sm">
               <KeyRound className="w-3.5 h-3.5" />
             </span>
             <input
@@ -281,7 +244,7 @@ export const WelcomeAuth: React.FC<WelcomeAuthProps> = ({
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
               disabled={isLoading}
-              autoComplete={activeTab === 'login' ? 'current-password' : 'new-password'}
+              autoComplete={mode === 'signin' ? 'current-password' : 'new-password'}
               className="w-full text-xs sm:text-sm text-zinc-900 placeholder:text-zinc-400 bg-transparent outline-none font-sans"
             />
             <button
@@ -300,28 +263,26 @@ export const WelcomeAuth: React.FC<WelcomeAuthProps> = ({
             </button>
           </div>
 
-          {/* Forgot Password Link (Only in Sign in mode) */}
-          {activeTab === 'login' && (
-            <div className="flex justify-end pt-0.5">
-              <button
-                type="button"
-                onClick={() => setIsForgotModalOpen(true)}
-                className="text-[11px] sm:text-xs text-[#1E7BB8] hover:text-[#145380] italic font-semibold cursor-pointer transition-colors focus:outline-none"
-              >
-                Forgot password
-              </button>
-            </div>
-          )}
+          {/* Forgot password link */}
+          <div className="flex justify-end pt-0.5">
+            <button
+              type="button"
+              onClick={() => setIsForgotModalOpen(true)}
+              className="text-[11px] sm:text-xs text-[#1E7BB8] hover:text-[#0F5A8F] italic font-semibold cursor-pointer transition-colors focus:outline-none"
+            >
+              Forgot password
+            </button>
+          </div>
         </div>
 
         {/* ===================================================================== */}
-        {/* 4. MAIN ACTION BUTTON (Sign in / Create Account)                      */}
+        {/* 4. PRIMARY ACTION BUTTON (Sign in / Register)                         */}
         {/* ===================================================================== */}
         <div className="pt-2">
           <button
             type="submit"
             disabled={isLoading}
-            className={`auth-pdf-submit-btn w-full py-3 sm:py-3.5 rounded-full text-xs sm:text-sm font-bold tracking-wide flex items-center justify-center cursor-pointer transition-all ${
+            className={`studio-btn-primary w-full py-3 sm:py-3.5 rounded-full text-xs sm:text-sm font-bold tracking-wide flex items-center justify-center cursor-pointer ${
               isLoading ? 'opacity-70 cursor-not-allowed' : ''
             }`}
           >
@@ -331,7 +292,7 @@ export const WelcomeAuth: React.FC<WelcomeAuthProps> = ({
                 <span>Processing...</span>
               </div>
             ) : (
-              <span>{activeTab === 'login' ? 'Sign in' : 'Create Account'}</span>
+              <span>{mode === 'signin' ? 'Sign in' : 'Register'}</span>
             )}
           </button>
         </div>
@@ -347,7 +308,7 @@ export const WelcomeAuth: React.FC<WelcomeAuthProps> = ({
             onClick={() => handleSocialSelect('google')}
             aria-label="Continue with Google"
             title="Continue with Google"
-            className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-white border border-zinc-200/90 shadow-[0_2px_6px_rgba(0,0,0,0.1),inset_0_1px_1px_rgba(255,255,255,0.9)] flex items-center justify-center hover:scale-105 active:scale-95 transition-transform cursor-pointer"
+            className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-white border border-zinc-200/90 shadow-[0_2px_6px_rgba(15,23,42,0.08),inset_0_1px_1px_rgba(255,255,255,0.9)] flex items-center justify-center hover:scale-105 active:scale-95 transition-transform cursor-pointer"
           >
             <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24">
               <path
@@ -376,7 +337,7 @@ export const WelcomeAuth: React.FC<WelcomeAuthProps> = ({
             onClick={() => handleSocialSelect('facebook')}
             aria-label="Continue with Facebook"
             title="Continue with Facebook"
-            className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-[#1877F2] shadow-[0_2px_8px_rgba(24,119,242,0.35)] flex items-center justify-center hover:scale-105 active:scale-95 transition-transform cursor-pointer"
+            className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-[#1877F2] shadow-[0_2px_8px_rgba(24,119,242,0.3)] flex items-center justify-center hover:scale-105 active:scale-95 transition-transform cursor-pointer"
           >
             <svg className="w-5 h-5 fill-white shrink-0" viewBox="0 0 24 24">
               <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
@@ -390,7 +351,7 @@ export const WelcomeAuth: React.FC<WelcomeAuthProps> = ({
             onClick={() => handleSocialSelect('apple')}
             aria-label="Continue with Apple"
             title="Continue with Apple"
-            className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-black shadow-[0_2px_8px_rgba(0,0,0,0.3)] flex items-center justify-center hover:scale-105 active:scale-95 transition-transform cursor-pointer"
+            className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-[#0F172A] shadow-[0_2px_8px_rgba(15,23,42,0.25)] flex items-center justify-center hover:scale-105 active:scale-95 transition-transform cursor-pointer"
           >
             <svg className="w-5 h-5 fill-white shrink-0" viewBox="0 0 24 24">
               <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.38c.62-.75 1.04-1.8 0.93-2.85-.9.04-2 .6-2.65 1.35-.58.67-1.09 1.74-.96 2.77.99.08 2.06-.52 2.68-1.27z" />

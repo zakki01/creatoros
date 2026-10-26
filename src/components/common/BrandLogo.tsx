@@ -6,6 +6,8 @@ export type BrandLogoSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 export interface BrandLogoProps {
   /** Size preset for icon and typography */
   size?: BrandLogoSize;
+  /** Visual variant: dark canvas (white text) vs light studio canvas (charcoal text) */
+  variant?: 'dark' | 'light';
   /** Force hiding or showing text */
   showText?: boolean;
   /** Convenience shortcut for icon-only display (e.g. collapsed sidebars or mobile) */
@@ -81,6 +83,7 @@ const sizeConfig: Record<
 
 export const BrandLogo: React.FC<BrandLogoProps> = ({
   size = 'md',
+  variant = 'dark',
   showText = true,
   iconOnly = false,
   responsiveHideText = false,
@@ -93,6 +96,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
 }) => {
   const conf = sizeConfig[size] || sizeConfig.md;
   const displayTitle = showText && !iconOnly;
+  const isLight = variant === 'light';
 
   return (
     <div
@@ -103,9 +107,15 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
     >
       {/* Logo Icon Mark with breathing room, no distortion, object-fit contain */}
       <div
-        className={`relative flex items-center justify-center shrink-0 ${conf.iconSize} ${conf.containerPadding} ${conf.imgRounded} bg-black/40 border border-white/10 shadow-sm`}
+        className={`relative flex items-center justify-center shrink-0 ${conf.iconSize} ${conf.containerPadding} ${conf.imgRounded} ${
+          isLight
+            ? 'bg-white/90 border border-black/10 shadow-[0_2px_8px_rgba(0,0,0,0.06)]'
+            : 'bg-black/40 border border-white/10 shadow-sm'
+        }`}
         style={{
-          boxShadow: '0 2px 8px -2px rgba(0, 168, 255, 0.12)',
+          boxShadow: isLight
+            ? '0 2px 8px -2px rgba(0, 180, 216, 0.25)'
+            : '0 2px 8px -2px rgba(0, 168, 255, 0.12)',
         }}
       >
         <img
@@ -126,15 +136,21 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
         >
           <div className="flex items-center gap-1.5">
             <span
-              className={`font-display font-bold tracking-tight text-white ${conf.textSize} ${textClassName}`}
+              className={`font-display font-bold tracking-tight ${
+                isLight ? 'text-zinc-900' : 'text-white'
+              } ${conf.textSize} ${textClassName}`}
             >
               Creator
-              <span className="text-sky-400 font-extrabold ml-0.5">OS</span>
+              <span className="text-[#00B4D8] font-extrabold ml-0.5">OS</span>
             </span>
 
             {badgeText && (
               <span
-                className={`font-mono font-medium rounded text-zinc-400 bg-zinc-900 border border-zinc-800 ${conf.badgeSize}`}
+                className={`font-mono font-medium rounded ${
+                  isLight
+                    ? 'text-zinc-600 bg-zinc-200 border border-zinc-300'
+                    : 'text-zinc-400 bg-zinc-900 border border-zinc-800'
+                } ${conf.badgeSize}`}
               >
                 {badgeText}
               </span>
@@ -142,7 +158,11 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
           </div>
 
           {subtitle && (
-            <span className="text-[10px] text-zinc-400 tracking-wider font-mono uppercase mt-0.5">
+            <span
+              className={`text-[10px] tracking-wider font-mono uppercase mt-0.5 ${
+                isLight ? 'text-zinc-500' : 'text-zinc-400'
+              }`}
+            >
               {subtitle}
             </span>
           )}

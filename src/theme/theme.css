@@ -1,0 +1,108 @@
+/**
+ * CreatorOS Theme Tokens CSS Custom Properties
+ */
+
+:root {
+  --color-brand-primary: #111827;
+  --color-brand-secondary: #374151;
+  --color-brand-accent: #00B4D8;
+  --color-brand-accent-hover: #0096C7;
+  --color-brand-accent-light: rgba(0, 180, 216, 0.12);
+
+  --color-brand-text: #0F172A;
+  --color-brand-muted: #64748B;
+  --color-brand-text-inverse: #FFFFFF;
+
+  --color-surface: #E2E5E9;
+  --color-surface-card: #EAECEF;
+  --color-surface-glass: rgba(245, 247, 250, 0.82);
+  --color-surface-recessed: #D3D7DE;
+  --color-surface-input: #FFFFFF;
+
+  --color-border: rgba(0, 0, 0, 0.09);
+  --color-border-highlight: rgba(255, 255, 255, 0.9);
+
+  --color-success: #059669;
+  --color-warning: #D97706;
+  --color-danger: #E11D48;
+
+  --radius-card: 28px;
+}
+
+/* Studio Environment Background Layer */
+.welcome-studio-bg {
+  background-color: #E2E5E9;
+  background-image: 
+    linear-gradient(180deg, rgba(240, 243, 246, 0.45) 0%, rgba(220, 224, 230, 0.65) 100%),
+    url('/assets/images/studio-background.jpg');
+  background-size: cover;
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+/* Studio Glass / Neumorphic Surfaces */
+.studio-glass-panel {
+  background: var(--color-surface-glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--color-border-highlight);
+  border-bottom-color: rgba(0, 0, 0, 0.08);
+  box-shadow: 
+    0 20px 45px -12px rgba(15, 23, 42, 0.12),
+    0 4px 12px -2px rgba(15, 23, 42, 0.04),
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.95);
+}
+
+.studio-card-soft {
+  background: linear-gradient(165deg, #F0F2F5 0%, #E3E6EB 100%);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 
+    0 24px 50px -12px rgba(15, 23, 42, 0.14),
+    0 6px 16px -4px rgba(15, 23, 42, 0.06),
+    inset 0 1px 2px 0 rgba(255, 255, 255, 1),
+    inset 0 -1px 2px 0 rgba(0, 0, 0, 0.04);
+}
+
+.studio-input-soft {
+  background: #FFFFFF !important;
+  border: 1px solid #CBD1D8 !important;
+  box-shadow: 
+    inset 0 1px 3px rgba(15, 23, 42, 0.07),
+    0 1px 0 0 rgba(255, 255, 255, 0.9) !important;
+  color: var(--color-brand-text) !important;
+  transition: border-color 0.16s ease, box-shadow 0.16s ease;
+}
+
+.studio-input-soft:focus {
+  border-color: var(--color-brand-accent) !important;
+  box-shadow: 
+    inset 0 1px 3px rgba(15, 23, 42, 0.05),
+    0 0 0 2px rgba(0, 180, 216, 0.25) !important;
+}
+
+.studio-btn-primary {
+  background: linear-gradient(180deg, #DCE0E6 0%, #C7CCD5 50%, #B4BAC5 100%);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-top-color: #FFFFFF;
+  box-shadow: 
+    0 4px 12px rgba(15, 23, 42, 0.12),
+    inset 0 1px 2px rgba(255, 255, 255, 0.95),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.12);
+  color: #111827;
+  transition: transform 0.14s ease, box-shadow 0.14s ease, filter 0.14s ease;
+}
+
+.studio-btn-primary:hover:not(:disabled) {
+  filter: brightness(1.02);
+  transform: translateY(-1px);
+  box-shadow: 
+    0 6px 16px rgba(15, 23, 42, 0.16),
+    inset 0 1px 2px #FFFFFF,
+    inset 0 -1px 2px rgba(0, 0, 0, 0.12);
+}
+
+.studio-btn-primary:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: inset 0 2px 4px rgba(15, 23, 42, 0.18);
+}
