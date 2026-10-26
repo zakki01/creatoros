@@ -283,6 +283,9 @@ export interface AdminLoginCredentials {
 }
 
 class AdminAuthServiceSingleton {
+  private failedAttempts = 0;
+  private lockoutUntil = 0;
+
   getStoredSession(): AdminAuthSession | null {
     try {
       const raw = localStorage.getItem(ADMIN_AUTH_STORAGE_KEY);
@@ -316,26 +319,45 @@ class AdminAuthServiceSingleton {
   }
 
   async login(credentials: AdminLoginCredentials): Promise<AdminAuthSession> {
+    // Check brute-force lockout
+    if (Date.now() < this.lockoutUntil) {
+      const secondsRemaining = Math.ceil((this.lockoutUntil - Date.now()) / 1000);
+      throw new Error(`Too many failed login attempts. Enclave locked for ${secondsRemaining}s.`);
+    }
+
     const email = credentials.email.trim().toLowerCase();
     const password = credentials.password;
 
     // Simulate server-side admin authentication and security check
-    await new Promise((r) => setTimeout(r, 650));
+    await new Promise((r) => setTimeout(r, 450));
 
-    // Validation: Admin email requirement or standard mock credentials
+    // Validation: Admin email requirement
     if (!email || !password) {
+      this.failedAttempts++;
+      if (this.failedAttempts >= 5) {
+        this.lockoutUntil = Date.now() + 60000; // 1-minute lockout
+      }
       throw new Error('Please enter both admin email and password.');
     }
 
     if (password.length < 6) {
+      this.failedAttempts++;
+      if (this.failedAttempts >= 5) {
+        this.lockoutUntil = Date.now() + 60000;
+      }
       throw new Error('Invalid credentials. Password too short.');
     }
 
-    // Two factor verification validation (if entered, check format)
-    const twoFactorEntered = Boolean(credentials.twoFactorCode?.trim());
-    if (twoFactorEntered && credentials.twoFactorCode?.trim().length !== 6) {
-      throw new Error('2FA verification code must be a 6-digit numeric token.');
+    // Two factor verification validation (RFC 6238 TOTP format)
+    const twoFactorCode = credentials.twoFactorCode?.trim();
+    if (twoFactorCode && !/^\d{6}$/.test(twoFactorCode)) {
+      this.failedAttempts++;
+      throw new Error('2FA verification code must be a 6-digit numeric TOTP token.');
     }
+
+    // Reset failed attempts on success
+    this.failedAttempts = 0;
+    this.lockoutUntil = 0;
 
     const session: AdminAuthSession = {
       id: 'admin-sec-001',
@@ -347,7 +369,7 @@ class AdminAuthServiceSingleton {
       token: `admin_jwt_${Math.random().toString(36).substring(2)}_${Date.now()}`,
       loginTimestamp: Date.now(),
       expiresAt: Date.now() + 24 * 60 * 60 * 1000, // 24 hours validity
-      twoFactorVerified: twoFactorEntered || true,
+      twoFactorVerified: Boolean(twoFactorCode) || true,
     };
 
     this.saveSession(session);

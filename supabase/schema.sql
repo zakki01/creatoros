@@ -380,7 +380,28 @@ CREATE POLICY "Public profiles are viewable by everyone"
   ON public.profiles FOR SELECT USING (true);
 
 CREATE POLICY "Users can update own profile"
-  ON public.profiles FOR UPDATE USING (auth.uid() = id);
+  ON public.profiles FOR UPDATE USING (auth.uid() = id OR public.is_super_admin());
+
+CREATE POLICY "Users can insert own profile"
+  ON public.profiles FOR INSERT WITH CHECK (auth.uid() = id OR public.is_super_admin());
+
+-- Creator Profiles RLS
+CREATE POLICY "Creator profiles are viewable by everyone"
+  ON public.creator_profiles FOR SELECT USING (true);
+
+CREATE POLICY "Users can manage own creator profile"
+  ON public.creator_profiles FOR ALL
+  USING (auth.uid() = id OR public.is_super_admin())
+  WITH CHECK (auth.uid() = id OR public.is_super_admin());
+
+-- Brand Profiles RLS
+CREATE POLICY "Brand profiles are viewable by everyone"
+  ON public.brand_profiles FOR SELECT USING (true);
+
+CREATE POLICY "Users can manage own brand profile"
+  ON public.brand_profiles FOR ALL
+  USING (auth.uid() = id OR public.is_super_admin())
+  WITH CHECK (auth.uid() = id OR public.is_super_admin());
 
 -- Contracts: Brands and Creators can only view their own contracts
 CREATE POLICY "Users view own contracts"
@@ -394,6 +415,68 @@ CREATE POLICY "Brands can create contracts"
 CREATE POLICY "Contract parties can update own contract"
   ON public.contracts FOR UPDATE
   USING (brand_id = auth.uid() OR creator_id = auth.uid() OR public.is_super_admin());
+
+-- Contract Deliverables RLS
+CREATE POLICY "Contract parties see deliverables"
+  ON public.contract_deliverables FOR SELECT
+  USING (
+    EXISTS (
+      SELECT 1 FROM public.contracts c
+      WHERE c.id = contract_id AND (c.brand_id = auth.uid() OR c.creator_id = auth.uid())
+    ) OR public.is_super_admin()
+  );
+
+CREATE POLICY "Contract parties manage deliverables"
+  ON public.contract_deliverables FOR ALL
+  USING (
+    EXISTS (
+      SELECT 1 FROM public.contracts c
+      WHERE c.id = contract_id AND (c.brand_id = auth.uid() OR c.creator_id = auth.uid())
+    ) OR public.is_super_admin()
+  );
+
+-- Contract Deliveries RLS
+CREATE POLICY "Contract parties see deliveries"
+  ON public.contract_deliveries FOR SELECT
+  USING (
+    EXISTS (
+      SELECT 1 FROM public.contract_deliverables cd
+      JOIN public.contracts c ON c.id = cd.contract_id
+      WHERE cd.id = deliverable_id AND (c.brand_id = auth.uid() OR c.creator_id = auth.uid())
+    ) OR public.is_super_admin()
+  );
+
+CREATE POLICY "Contract parties manage deliveries"
+  ON public.contract_deliveries FOR ALL
+  USING (
+    EXISTS (
+      SELECT 1 FROM public.contract_deliverables cd
+      JOIN public.contracts c ON c.id = cd.contract_id
+      WHERE cd.id = deliverable_id AND (c.brand_id = auth.uid() OR c.creator_id = auth.uid())
+    ) OR public.is_super_admin()
+  );
+
+-- Contract Disputes RLS
+CREATE POLICY "Contract parties see disputes"
+  ON public.contract_disputes FOR SELECT
+  USING (
+    EXISTS (
+      SELECT 1 FROM public.contracts c
+      WHERE c.id = contract_id AND (c.brand_id = auth.uid() OR c.creator_id = auth.uid())
+    ) OR public.is_super_admin()
+  );
+
+CREATE POLICY "Contract parties raise disputes"
+  ON public.contract_disputes FOR INSERT
+  WITH CHECK (
+    raised_by_id = auth.uid() AND
+    (
+      EXISTS (
+        SELECT 1 FROM public.contracts c
+        WHERE c.id = contract_id AND (c.brand_id = auth.uid() OR c.creator_id = auth.uid())
+      ) OR public.is_super_admin()
+    )
+  );
 
 -- Support Tickets: Users can only see own tickets; Admins see all
 CREATE POLICY "Users see own support tickets"
@@ -504,3 +587,230 @@ CREATE POLICY "Participants upload conversation media"
       )
     )
   );
+
+
+-- =============================================================================
+-- 11. CREATOROS LIVE & AR PIPELINE
+-- =============================================================================
+
+CREATE TABLE IF NOT EXISTS public.live_sessions (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  host_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
+  title TEXT NOT NULL,
+  category TEXT NOT NULL DEFAULT 'Creative Studio',
+  status TEXT NOT NULL DEFAULT 'scheduled' CHECK (status IN ('scheduled', 'live', 'ended')),
+  stream_provider TEXT NOT NULL DEFAULT 'webrtc' CHECK (stream_provider IN ('webrtc', 'livekit', 'decart')),
+  room_id TEXT UNIQUE NOT NULL,
+  active_scene_id TEXT,
+  viewer_count INT NOT NULL DEFAULT 0,
+  peak_viewers INT NOT NULL DEFAULT 0,
+  is_recorded BOOLEAN NOT NULL DEFAULT false,
+  recording_url TEXT,
+  started_at TIMESTAMPTZ,
+  ended_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc', now()),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc', now())
+);
+
+CREATE TABLE IF NOT EXISTS public.live_participants (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  session_id UUID NOT NULL REFERENCES public.live_sessions(id) ON DELETE CASCADE,
+  user_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
+  role TEXT NOT NULL DEFAULT 'viewer' CHECK (role IN ('host', 'guest', 'viewer', 'moderator')),
+  is_muted BOOLEAN NOT NULL DEFAULT false,
+  is_banned BOOLEAN NOT NULL DEFAULT false,
+  joined_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc', now()),
+  left_at TIMESTAMPTZ,
+  UNIQUE(session_id, user_id)
+);
+
+CREATE TABLE IF NOT EXISTS public.live_chat_messages (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  session_id UUID NOT NULL REFERENCES public.live_sessions(id) ON DELETE CASCADE,
+  sender_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
+  content TEXT NOT NULL,
+  message_type TEXT NOT NULL DEFAULT 'chat' CHECK (message_type IN ('chat', 'gift', 'system', 'warning')),
+  gift_id TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc', now())
+);
+
+CREATE TABLE IF NOT EXISTS public.ar_effects (
+  id TEXT PRIMARY KEY,
+  creator_id UUID REFERENCES public.profiles(id) ON DELETE SET NULL,
+  name TEXT NOT NULL,
+  description TEXT,
+  category TEXT NOT NULL DEFAULT 'Filter', -- Filter, 3D Face, Mask, Studio LUT
+  thumbnail_url TEXT NOT NULL,
+  preview_url TEXT,
+  asset_url TEXT NOT NULL,
+  performance_tier TEXT NOT NULL DEFAULT 'medium' CHECK (performance_tier IN ('low', 'medium', 'high', 'extreme')),
+  is_approved BOOLEAN NOT NULL DEFAULT true,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc', now()),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc', now())
+);
+
+-- =============================================================================
+-- 12. VIRTUAL COINS, GIFTS & DOUBLE-ENTRY LEDGERS
+-- =============================================================================
+
+CREATE TABLE IF NOT EXISTS public.coin_packages (
+  id TEXT PRIMARY KEY,
+  name TEXT NOT NULL,
+  coins INT NOT NULL,
+  bonus_coins INT NOT NULL DEFAULT 0,
+  price_usd NUMERIC(10, 2) NOT NULL,
+  is_active BOOLEAN NOT NULL DEFAULT true,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc', now())
+);
+
+CREATE TABLE IF NOT EXISTS public.coin_ledger (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
+  transaction_type TEXT NOT NULL CHECK (transaction_type IN ('purchase', 'gift_sent', 'gift_received', 'payout', 'refund')),
+  amount INT NOT NULL, -- positive for credit, negative for debit
+  balance_after INT NOT NULL,
+  currency TEXT NOT NULL DEFAULT 'COINS',
+  reference_id TEXT, -- external transaction ID or gift transaction ID
+  metadata JSONB DEFAULT '{}',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc', now())
+);
+
+CREATE TABLE IF NOT EXISTS public.gift_catalog (
+  id TEXT PRIMARY KEY,
+  name TEXT NOT NULL,
+  icon_emoji TEXT NOT NULL,
+  coin_cost INT NOT NULL,
+  rarity TEXT NOT NULL DEFAULT 'common' CHECK (rarity IN ('common', 'rare', 'epic', 'legendary')),
+  animation_url TEXT,
+  is_active BOOLEAN NOT NULL DEFAULT true,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc', now())
+);
+
+CREATE TABLE IF NOT EXISTS public.gift_transactions (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  sender_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
+  recipient_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
+  live_session_id UUID REFERENCES public.live_sessions(id) ON DELETE SET NULL,
+  gift_id TEXT NOT NULL REFERENCES public.gift_catalog(id),
+  coin_amount INT NOT NULL,
+  creator_earning_usd NUMERIC(10, 2) NOT NULL,
+  platform_fee_usd NUMERIC(10, 2) NOT NULL,
+  status TEXT NOT NULL DEFAULT 'completed' CHECK (status IN ('pending', 'completed', 'refunded', 'disputed')),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc', now())
+);
+
+-- =============================================================================
+-- 13. WEBHOOK IDEMPOTENCY & FINANCIAL AUDIT
+-- =============================================================================
+
+CREATE TABLE IF NOT EXISTS public.webhook_events (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  event_id TEXT UNIQUE NOT NULL, -- Provider event ID (e.g. evt_123 or paypal webhook id)
+  provider TEXT NOT NULL CHECK (provider IN ('stripe', 'paypal', 'livekit')),
+  event_type TEXT NOT NULL,
+  signature_header TEXT NOT NULL,
+  payload JSONB NOT NULL,
+  status TEXT NOT NULL DEFAULT 'processed' CHECK (status IN ('pending', 'processed', 'failed', 'duplicate')),
+  error_message TEXT,
+  processed_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc', now()),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc', now())
+);
+
+-- =============================================================================
+-- 14. PLATFORM FEATURE FLAGS
+-- =============================================================================
+
+CREATE TABLE IF NOT EXISTS public.platform_feature_flags (
+  key TEXT PRIMARY KEY,
+  name TEXT NOT NULL,
+  enabled BOOLEAN NOT NULL DEFAULT true,
+  description TEXT,
+  category TEXT NOT NULL DEFAULT 'general',
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc', now())
+);
+
+-- =============================================================================
+-- 15. RLS POLICIES FOR NEW SUBSYSTEMS
+-- =============================================================================
+
+ALTER TABLE public.live_sessions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.live_participants ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.live_chat_messages ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.ar_effects ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.coin_packages ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.coin_ledger ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.gift_catalog ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.gift_transactions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.webhook_events ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.platform_feature_flags ENABLE ROW LEVEL SECURITY;
+
+-- Live Sessions
+CREATE POLICY "Public live sessions viewable"
+  ON public.live_sessions FOR SELECT USING (true);
+
+CREATE POLICY "Host manage own live session"
+  ON public.live_sessions FOR ALL
+  USING (host_id = auth.uid() OR public.is_super_admin())
+  WITH CHECK (host_id = auth.uid() OR public.is_super_admin());
+
+-- Live Participants
+CREATE POLICY "Participants view session members"
+  ON public.live_participants FOR SELECT USING (true);
+
+CREATE POLICY "Users join session or host manages"
+  ON public.live_participants FOR ALL
+  USING (
+    user_id = auth.uid() OR
+    EXISTS (
+      SELECT 1 FROM public.live_sessions s
+      WHERE s.id = session_id AND s.host_id = auth.uid()
+    ) OR
+    public.is_super_admin()
+  );
+
+-- Live Chat Messages
+CREATE POLICY "Live chat viewable by everyone in session"
+  ON public.live_chat_messages FOR SELECT USING (true);
+
+CREATE POLICY "Participants send live chat"
+  ON public.live_chat_messages FOR INSERT
+  WITH CHECK (
+    sender_id = auth.uid() AND
+    NOT EXISTS (
+      SELECT 1 FROM public.live_participants lp
+      WHERE lp.session_id = live_chat_messages.session_id AND lp.user_id = auth.uid() AND lp.is_banned = true
+    )
+  );
+
+-- AR Effects & Catalog
+CREATE POLICY "AR effects viewable by everyone"
+  ON public.ar_effects FOR SELECT USING (is_approved = true OR public.is_super_admin());
+
+CREATE POLICY "Coin packages and gifts viewable by everyone"
+  ON public.coin_packages FOR SELECT USING (is_active = true OR public.is_super_admin());
+
+CREATE POLICY "Gift catalog viewable by everyone"
+  ON public.gift_catalog FOR SELECT USING (is_active = true OR public.is_super_admin());
+
+-- Financial Ledgers: STRICT User Isolation & Admin Access
+CREATE POLICY "Users view own coin ledger"
+  ON public.coin_ledger FOR SELECT
+  USING (user_id = auth.uid() OR public.is_super_admin());
+
+CREATE POLICY "Gift transactions viewable by parties"
+  ON public.gift_transactions FOR SELECT
+  USING (sender_id = auth.uid() OR recipient_id = auth.uid() OR public.is_super_admin());
+
+-- Webhooks & Flags: Strictly Super Admin
+CREATE POLICY "Webhooks super admin only"
+  ON public.webhook_events FOR ALL
+  USING (public.is_super_admin())
+  WITH CHECK (public.is_super_admin());
+
+CREATE POLICY "Feature flags public read, admin write"
+  ON public.platform_feature_flags FOR SELECT USING (true);
+
+CREATE POLICY "Feature flags admin manage"
+  ON public.platform_feature_flags FOR ALL
+  USING (public.is_super_admin())
+  WITH CHECK (public.is_super_admin());

@@ -18,8 +18,11 @@ import { LiveReferencePanel } from './LiveReferencePanel';
 import { LiveControls } from './LiveControls';
 import { LiveSessionStatus } from './LiveSessionStatus';
 import { LiveRecordingPreviewModal } from './LiveRecordingPreviewModal';
+import { LiveAudienceModerationPanel } from './LiveAudienceModerationPanel';
+import { MessageSquare, Wand2 } from 'lucide-react';
 
 export const CreatorLiveStudio: React.FC = () => {
+  const [studioTab, setStudioTab] = useState<'audience' | 'scenes'>('audience');
   const [config] = useState(getStoredLiveEngineConfig);
   const [cameraStream, setCameraStream] = useState<MediaStream | null>(null);
   const [transformedStream, setTransformedStream] = useState<MediaStream | null>(null);
@@ -284,21 +287,57 @@ export const CreatorLiveStudio: React.FC = () => {
           </div>
         </div>
 
-        {/* Right: Scene Picker & Reference Panel */}
-        <div className="lg:col-span-5 space-y-5 surface-2 p-5 rounded-3xl">
-          <LiveScenePicker
-            selectedScene={activeScene}
-            onSelectScene={handleSelectScene}
-            disabled={isRecording}
-          />
+        {/* Right: Tabbed Audience Moderation vs Scene & Reference Picker */}
+        <div className="lg:col-span-5 space-y-4">
+          {/* Tab Switcher */}
+          <div className="flex items-center gap-1.5 p-1.5 rounded-2xl bg-zinc-200/70">
+            <button
+              type="button"
+              onClick={() => setStudioTab('audience')}
+              className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+                studioTab === 'audience'
+                  ? 'bg-white text-zinc-900 shadow-sm'
+                  : 'text-zinc-600 hover:text-zinc-900'
+              }`}
+            >
+              <MessageSquare className="w-3.5 h-3.5" />
+              <span>Audience &amp; Chat</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setStudioTab('scenes')}
+              className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+                studioTab === 'scenes'
+                  ? 'bg-white text-zinc-900 shadow-sm'
+                  : 'text-zinc-600 hover:text-zinc-900'
+              }`}
+            >
+              <Wand2 className="w-3.5 h-3.5" />
+              <span>AR Scenes &amp; Reference</span>
+            </button>
+          </div>
 
-          <div className="h-px bg-zinc-200" />
+          {studioTab === 'audience' ? (
+            <div className="h-[520px]">
+              <LiveAudienceModerationPanel isHost={true} />
+            </div>
+          ) : (
+            <div className="space-y-5 surface-2 p-5 rounded-3xl border border-zinc-200/80">
+              <LiveScenePicker
+                selectedScene={activeScene}
+                onSelectScene={handleSelectScene}
+                disabled={isRecording}
+              />
 
-          <LiveReferencePanel
-            referenceImage={referenceImage}
-            onReferenceImageChange={handleReferenceImageChange}
-            disabled={isRecording}
-          />
+              <div className="h-px bg-zinc-200" />
+
+              <LiveReferencePanel
+                referenceImage={referenceImage}
+                onReferenceImageChange={handleReferenceImageChange}
+                disabled={isRecording}
+              />
+            </div>
+          )}
         </div>
       </div>
 

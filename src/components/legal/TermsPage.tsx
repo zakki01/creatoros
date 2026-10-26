@@ -51,6 +51,9 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onBack }) => {
     { id: 'liability', num: '25', title: 'Limitation of Liability' },
     { id: 'changes', num: '26', title: 'Changes to Terms' },
     { id: 'contact', num: '27', title: 'Contact Information' },
+    { id: 'virtual-gifts', num: '28', title: 'Virtual Coins & Gift Ledgers' },
+    { id: 'live-streaming', num: '29', title: 'Live Broadcast & AR Guidelines' },
+    { id: 'dmca', num: '30', title: 'DMCA & Copyright Notice Procedure' },
   ];
 
   const handlePrint = () => {
@@ -441,6 +444,39 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onBack }) => {
               </div>
               <p className="text-xs text-zinc-700">
                 For commercial legal inquiries, dispute escalations, or regulatory compliance questions, contact the CreatorOS Legal Operations team at <strong className="text-white">legal@creatoros.ai</strong> or submit a formal request via the <a href="/support" className="text-[#007E93] underline hover:text-[#007E93]">CreatorOS Support Portal</a>.
+              </p>
+            </section>
+
+            {/* Section 28 */}
+            <section id="virtual-gifts" className="space-y-3 pt-6 border-t border-black/[0.06]">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-mono px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-zinc-300">28</span>
+                <h2 className="text-lg font-bold text-zinc-900 font-display">Virtual Coins &amp; Gift Ledgers</h2>
+              </div>
+              <p className="text-xs text-zinc-700">
+                CreatorOS Coins constitute limited, revocable, non-transferable digital licenses intended solely for peer appreciation and interactive broadcast engagement. Coins are not legal tender, cryptocurrency, or investment securities. Coin purchases are processed through verified payment providers and recorded immutably in a server-side double-entry ledger. When a user sends a virtual gift, 70% of the net nominal value is credited to the recipient creator's reward balance, and 30% is retained by CreatorOS as platform infrastructure maintenance fees.
+              </p>
+            </section>
+
+            {/* Section 29 */}
+            <section id="live-streaming" className="space-y-3 pt-6 border-t border-black/[0.06]">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-mono px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-zinc-300">29</span>
+                <h2 className="text-lg font-bold text-zinc-900 font-display">Live Broadcast &amp; AR Guidelines</h2>
+              </div>
+              <p className="text-xs text-zinc-700">
+                Live stream hosts are strictly liable for content transmitted during real-time sessions. Broadcasters must enforce chat moderation using platform controls (mute, kick, ban). Streaming copyrighted musical works or unauthorized sporting events without licenses is strictly prohibited and results in immediate automated stream termination. AR face effects, custom 3D models, and LUT filters must comply with community safety standards and may be automatically downgraded if client hardware latency exceeds platform thresholds.
+              </p>
+            </section>
+
+            {/* Section 30 */}
+            <section id="dmca" className="space-y-3 pt-6 border-t border-black/[0.06]">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-mono px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-zinc-300">30</span>
+                <h2 className="text-lg font-bold text-zinc-900 font-display">DMCA &amp; Copyright Notice Procedure</h2>
+              </div>
+              <p className="text-xs text-zinc-700">
+                CreatorOS respects intellectual property rights and complies with the Digital Millennium Copyright Act (17 U.S.C. § 512). Copyright holders may submit takedown notices to our designated copyright agent at <strong className="text-white">dmca@creatoros.ai</strong> including: identification of the copyrighted work, URL location of infringing material, a statement of good faith belief, and electronic signature. Repeat infringers will have their accounts and connected escrow privileges permanently terminated.
               </p>
             </section>
           </div>

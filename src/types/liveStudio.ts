@@ -88,7 +88,7 @@ export interface ILiveAIProvider {
 
 export interface LiveEngineConfig {
   enabled: boolean;
-  provider: 'decart' | 'mock';
+  provider: 'decart' | 'livekit' | 'webrtc' | 'mock';
   apiKey: string;
   apiEndpoint: string;
   defaultModel: string;
@@ -96,3 +96,58 @@ export interface LiveEngineConfig {
   enableAudio: boolean;
   defaultFps: number;
 }
+
+export type ArEffectType =
+  | 'face_mask'
+  | 'face_decoration'
+  | 'animated_face'
+  | 'beauty_filter'
+  | 'background'
+  | 'color_lut'
+  | 'accessory_3d';
+
+export interface ArEffect {
+  id: string;
+  creatorId?: string;
+  name: string;
+  description: string;
+  thumbnail: string;
+  previewUrl?: string;
+  assets: {
+    textureUrl?: string;
+    model3dUrl?: string;
+    lutUrl?: string;
+  };
+  type: ArEffectType;
+  version: string;
+  status: 'active' | 'archived';
+  moderationStatus: 'approved' | 'pending' | 'flagged';
+  performanceTier: 'low' | 'medium' | 'high';
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface LiveParticipant {
+  id: string;
+  name: string;
+  avatarUrl: string;
+  role: 'host' | 'guest' | 'viewer' | 'moderator';
+  isMuted: boolean;
+  isBanned: boolean;
+  joinedAt: string;
+}
+
+export interface LiveChatMessage {
+  id: string;
+  senderId: string;
+  senderName: string;
+  senderAvatar?: string;
+  content: string;
+  type: 'chat' | 'gift' | 'system' | 'moderation';
+  giftIcon?: string;
+  giftName?: string;
+  timestamp: string;
+}
+
+export type NetworkQuality = 'excellent' | 'good' | 'poor' | 'reconnecting';
+

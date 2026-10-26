@@ -5,6 +5,7 @@ import { BrandLogo } from './components/common/BrandLogo';
 import { AdminAuthService } from './features/auth/services/authService';
 import { ToastProvider } from './components/ui';
 import { DesignSystemDemo } from './components/ui/DesignSystemDemo';
+import { ErrorBoundary } from './components/common/ErrorBoundary';
 
 const BusinessLayout = lazy(() =>
   import('./components/business/BusinessLayout').then((m) => ({
@@ -305,10 +306,12 @@ const MainApp: React.FC = () => {
 
 export default function App() {
   return (
-    <StateProvider>
-      <ToastProvider>
-        <MainApp />
-      </ToastProvider>
-    </StateProvider>
+    <ErrorBoundary>
+      <StateProvider>
+        <ToastProvider>
+          <MainApp />
+        </ToastProvider>
+      </StateProvider>
+    </ErrorBoundary>
   );
 }
