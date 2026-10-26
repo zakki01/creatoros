@@ -31,6 +31,7 @@ export const CreatorDiscovery: React.FC = () => {
   const [selectedLocation, setSelectedLocation] = useState('All');
   const [selectedPlatform, setSelectedPlatform] = useState('All');
   const [selectedReliability, setSelectedReliability] = useState('All');
+  const [selectedAvailability, setSelectedAvailability] = useState('All');
   const [activeModalCreator, setActiveModalCreator] = useState<Creator | null>(null);
   const [expandedWhyId, setExpandedWhyId] = useState<string | null>(null);
 
@@ -70,7 +71,13 @@ export const CreatorDiscovery: React.FC = () => {
       (selectedReliability === '95+' && creator.reliabilityMetrics.onTimeDelivery >= 95) ||
       (selectedReliability === '90+' && creator.reliabilityMetrics.onTimeDelivery >= 90);
 
-    return matchesSearch && matchesCategory && matchesLocation && matchesPlatform && matchesReliability;
+    const matchesAvailability =
+      selectedAvailability === 'All' ||
+      (selectedAvailability === 'Available' && (creator.availabilityStatus === 'Available' || !creator.availabilityStatus)) ||
+      (selectedAvailability === 'Limited' && (creator.availabilityStatus === 'Limited Availability' || creator.availability === 'Limited Spots')) ||
+      (selectedAvailability === 'Booked' && (creator.availabilityStatus === 'Booked' || creator.availability?.includes('Booked')));
+
+    return matchesSearch && matchesCategory && matchesLocation && matchesPlatform && matchesReliability && matchesAvailability;
   });
 
   const isCreatorInvited = (creatorId: string) => {
@@ -117,7 +124,25 @@ export const CreatorDiscovery: React.FC = () => {
         </div>
 
         {/* Filter Pills */}
-        <div className="flex flex-wrap items-center gap-2 pt-1 text-xs">
+        <div className="flex items-center gap-1.5 p-1 rounded-2xl bg-zinc-100 border border-zinc-200 w-fit text-xs mb-3">
+        <span className="px-2.5 py-1 text-[11px] font-semibold text-zinc-500 font-mono uppercase">Availability:</span>
+        {['All', 'Available', 'Limited', 'Booked'].map((av) => (
+          <button
+            key={av}
+            type="button"
+            onClick={() => setSelectedAvailability(av)}
+            className={`px-3 py-1 rounded-xl font-medium transition-all cursor-pointer ${
+              selectedAvailability === av
+                ? 'bg-white text-zinc-900 shadow-xs font-semibold'
+                : 'text-zinc-600 hover:text-zinc-900'
+            }`}
+          >
+            {av === 'All' ? 'All Status' : av === 'Available' ? '● Available Now' : av === 'Limited' ? '● Limited Spots' : '● Booked'}
+          </button>
+        ))}
+      </div>
+
+      <div className="flex flex-wrap items-center gap-2 pt-1 text-xs">
           <div className="flex items-center gap-1.5 text-zinc-500 mr-2">
             <Filter className="w-3.5 h-3.5" />
             <span className="text-[11px] font-medium">Filters:</span>
@@ -258,6 +283,29 @@ export const CreatorDiscovery: React.FC = () => {
                 </div>
 
                 {/* Reliability & Location Strip */}
+                <div className="flex items-center justify-between text-xs pt-1">
+                  <div className="flex items-center gap-1.5">
+                    <span className={`w-2 h-2 rounded-full ${
+                      creator.availabilityStatus === 'Booked'
+                        ? 'bg-zinc-400'
+                        : creator.availabilityStatus === 'Limited Availability'
+                        ? 'bg-amber-500'
+                        : 'bg-emerald-500 animate-pulse'
+                    }`} />
+                    <span className="text-[11px] font-semibold text-zinc-800">
+                      {creator.availabilityStatus || 'Available Now'}
+                    </span>
+                    {creator.availableDates && (
+                      <span className="text-[10px] text-zinc-500 hidden sm:inline font-mono">
+                        ({creator.availableDates})
+                      </span>
+                    )}
+                  </div>
+                  <span className="text-[11px] font-mono text-zinc-500">
+                    Min: ₹{(creator.minimumRate || creator.estimatedRate).toLocaleString()}
+                  </span>
+                </div>
+
                 <div className="flex items-center justify-between text-xs text-zinc-500 pt-1">
                   <span className="flex items-center gap-1">
                     <MapPin className="w-3.5 h-3.5 text-zinc-500" />

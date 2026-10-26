@@ -23,6 +23,9 @@ import { Button } from '../ui/Button';
 import { Badge } from '../ui/Badge';
 import { Tabs } from '../ui/Tabs';
 import { useAppState } from '../../context/StateContext';
+import { ApproachCreatorModal } from './ApproachCreatorModal';
+import { ShareProfileModal } from '../common/ShareProfileModal';
+import { Share2 } from 'lucide-react';
 
 interface CreatorProfileModalProps {
   creator: Creator | null;
@@ -40,6 +43,8 @@ export const CreatorProfileModal: React.FC<CreatorProfileModalProps> = ({
   const { campaigns, activeCampaignId, inviteCreator } = useAppState();
   const [activeTab, setActiveTab] = useState('overview');
   const [invited, setInvited] = useState(false);
+  const [isApproachModalOpen, setIsApproachModalOpen] = useState(false);
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
   if (!creator) return null;
 
@@ -61,7 +66,8 @@ export const CreatorProfileModal: React.FC<CreatorProfileModalProps> = ({
   ];
 
   return (
-    <Modal
+    <>
+      <Modal
       isOpen={isOpen}
       onClose={onClose}
       maxWidth="4xl"
@@ -91,18 +97,25 @@ export const CreatorProfileModal: React.FC<CreatorProfileModalProps> = ({
           <div className="text-xs text-zinc-500">
             Targeting for: <strong className="text-zinc-800">{activeCampaign?.name}</strong>
           </div>
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2">
             <Button variant="ghost" size="sm" onClick={onClose}>
               Close
             </Button>
             <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setIsShareModalOpen(true)}
+              leftIcon={<Share2 className="w-3.5 h-3.5" />}
+            >
+              Share Profile
+            </Button>
+            <Button
               variant="primary"
               size="sm"
-              disabled={invited}
-              onClick={handleInvite}
-              leftIcon={invited ? <CheckCircle className="w-4 h-4" /> : <Send className="w-4 h-4" />}
+              onClick={() => setIsApproachModalOpen(true)}
+              leftIcon={<Send className="w-4 h-4" />}
             >
-              {invited ? 'Invited to Campaign' : `Invite (₹${creator.estimatedRate.toLocaleString()})`}
+              Approach Creator
             </Button>
           </div>
         </div>
@@ -115,6 +128,23 @@ export const CreatorProfileModal: React.FC<CreatorProfileModalProps> = ({
         {/* TAB 1: OVERVIEW */}
         {activeTab === 'overview' && (
           <div className="space-y-6 animate-fade-in">
+            {/* Live Availability Status */}
+            <div className="p-3.5 rounded-2xl bg-zinc-50 border border-zinc-200/80 flex items-center justify-between text-xs">
+              <div className="flex items-center gap-2.5">
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+                <span className="font-semibold text-zinc-900">
+                  Status: {creator.availabilityStatus || 'Available Now'}
+                </span>
+                {creator.availableDates && (
+                  <span className="text-zinc-500 font-mono text-[11px] hidden sm:inline">
+                    • {creator.availableDates}
+                  </span>
+                )}
+              </div>
+              <div className="text-zinc-600 font-mono text-[11px]">
+                Min. Rate: <strong className="text-zinc-900 font-semibold">₹{(creator.minimumRate || creator.estimatedRate).toLocaleString()}</strong>
+              </div>
+            </div>
             {/* Bio & Top Badges */}
             <div className="space-y-2.5">
               <p className="text-xs text-zinc-700 leading-relaxed">{creator.bio}</p>
@@ -401,5 +431,35 @@ export const CreatorProfileModal: React.FC<CreatorProfileModalProps> = ({
         )}
       </div>
     </Modal>
+
+      {/* Approach Creator Modal */}
+      <ApproachCreatorModal
+        isOpen={isApproachModalOpen}
+        onClose={() => setIsApproachModalOpen(false)}
+        creator={creator}
+        onSuccess={() => {
+          setInvited(true);
+        }}
+      />
+
+      {/* Share Profile Modal */}
+      <ShareProfileModal
+        isOpen={isShareModalOpen}
+        onClose={() => setIsShareModalOpen(false)}
+        profileData={{
+          id: creator.id,
+          name: creator.name,
+          handle: creator.handle,
+          avatar: creator.avatar,
+          role: 'creator',
+          category: creator.category,
+          followers: `${(creator.totalFollowers / 1000).toFixed(0)}k`,
+          engagementRate: creator.avgEngagement,
+          availabilityStatus: creator.availabilityStatus || 'Available Now',
+          verified: creator.verified,
+          bio: creator.bio,
+        }}
+      />
+    </>
   );
 };

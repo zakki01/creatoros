@@ -1,4 +1,4 @@
-export type MessageType = 'text' | 'image' | 'video' | 'file' | 'gif';
+export type MessageType = 'text' | 'image' | 'video' | 'file' | 'gif' | 'profile_card';
 export type AttachmentType = 'image' | 'video' | 'file' | 'gif';
 
 export interface GifMetadata {
@@ -33,6 +33,19 @@ export interface DirectMessage {
   reactions?: Record<string, number>;
   myReaction?: string;
   replyToId?: string;
+  profileCardData?: {
+    id: string;
+    name: string;
+    handle: string;
+    avatar: string;
+    role: 'creator' | 'business';
+    category?: string;
+    followers?: string;
+    engagementRate?: number;
+    availabilityStatus?: string;
+    verified?: boolean;
+    bio?: string;
+  };
 }
 
 export interface Conversation {

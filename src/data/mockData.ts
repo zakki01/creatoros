@@ -43,7 +43,7 @@ export const INITIAL_WORKSPACES: Workspace[] = [
 
 export const INITIAL_USER_PROFILES: Record<string, UserProfile> = {
   business: {
-    id: 'usr-brand-01',
+    id: 'brand-aura',
     name: 'Karan Singhania',
     email: 'karan@aurastreetwear.com',
     role: 'business',
@@ -52,7 +52,7 @@ export const INITIAL_USER_PROFILES: Record<string, UserProfile> = {
     title: 'Head of Growth & Influencer Ops',
   },
   creator: {
-    id: 'usr-creator-rohan',
+    id: 'cr-01',
     name: 'Rohan Sharma',
     email: 'rohan@rohankicks.studio',
     role: 'creator',
@@ -61,7 +61,7 @@ export const INITIAL_USER_PROFILES: Record<string, UserProfile> = {
     title: 'Top 1% Creator • Sneaker Connoisseur',
   },
   super_admin: {
-    id: 'usr-admin-01',
+    id: 'admin-001',
     name: 'Alex Vance',
     email: 'alex.vance@creatoros.ai',
     role: 'super_admin',
@@ -75,6 +75,9 @@ export const INITIAL_CREATORS: Creator[] = [
   {
     id: 'cr-01',
     name: 'Rohan Sharma',
+    availabilityStatus: 'Available',
+    availableDates: 'Available Now (Q4 2026 Drops)',
+    minimumRate: 25000,
     handle: 'rohan.kicks',
     avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80',
     category: 'Streetwear & Sneaker Culture',
@@ -188,6 +191,9 @@ export const INITIAL_CREATORS: Creator[] = [
   {
     id: 'cr-02',
     name: 'Aanya Deshmukh',
+    availabilityStatus: 'Available',
+    availableDates: 'Available This Month',
+    minimumRate: 20000,
     handle: 'aanya_style',
     avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80',
     category: 'High Fashion & Aesthetic UGC',
@@ -350,6 +356,9 @@ export const INITIAL_CREATORS: Creator[] = [
   {
     id: 'cr-04',
     name: 'Kabir Sen',
+    availabilityStatus: 'Booked',
+    availableDates: 'Booked until Nov 20',
+    minimumRate: 50000,
     handle: 'kabirtech',
     avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&auto=format&fit=crop&q=80',
     category: 'Tech, Design & Everyday Carry',

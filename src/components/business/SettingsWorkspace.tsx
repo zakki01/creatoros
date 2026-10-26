@@ -10,6 +10,8 @@ import {
   AlertCircle,
 } from 'lucide-react';
 import { useAppState } from '../../context/StateContext';
+import { useTheme } from '../../context/ThemeContext';
+import { Sun, Moon } from 'lucide-react';
 import { Button } from '../ui/Button';
 import {
   getStoredLiveEngineConfig,
@@ -20,6 +22,7 @@ import { ByokAiSettings } from './ByokAiSettings';
 
 export const SettingsWorkspace: React.FC = () => {
   const { workspace, resetDemoData, triggerCelebration } = useAppState();
+  const { theme, setTheme } = useTheme();
   const [aiEnabled, setAiEnabled] = useState(true);
 
   // Live Creator Engine configuration (buyer self-hosted Decart integration)
@@ -359,6 +362,54 @@ export const SettingsWorkspace: React.FC = () => {
               </span>
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* Appearance & Theme System */}
+      <div className="space-y-3 pt-6 border-t border-zinc-200">
+        <div>
+          <h2 className="text-sm font-semibold text-zinc-800">Appearance &amp; Theme</h2>
+          <p className="text-xs text-zinc-500 mt-0.5">
+            Select your preferred display theme for CreatorOS workspace.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-md">
+          <div
+            onClick={() => setTheme('light')}
+            className={`p-3.5 rounded-2xl border cursor-pointer flex items-center justify-between transition-all ${
+              theme === 'light'
+                ? 'bg-[#007E93]/10 border-[#007E93] shadow-xs'
+                : 'bg-white border-zinc-200 hover:border-zinc-300'
+            }`}
+          >
+            <div className="flex items-center gap-2.5">
+              <Sun className="w-4 h-4 text-amber-500" />
+              <div>
+                <p className="text-xs font-bold text-zinc-900">Light Studio</p>
+                <p className="text-[10px] text-zinc-500">Pristine physical light surface</p>
+              </div>
+            </div>
+            {theme === 'light' && <Check className="w-4 h-4 text-[#007E93]" />}
+          </div>
+
+          <div
+            onClick={() => setTheme('dark')}
+            className={`p-3.5 rounded-2xl border cursor-pointer flex items-center justify-between transition-all ${
+              theme === 'dark'
+                ? 'bg-[#007E93]/10 border-[#007E93] shadow-xs'
+                : 'bg-white border-zinc-200 hover:border-zinc-300'
+            }`}
+          >
+            <div className="flex items-center gap-2.5">
+              <Moon className="w-4 h-4 text-indigo-400" />
+              <div>
+                <p className="text-xs font-bold text-zinc-900">Dark Studio</p>
+                <p className="text-[10px] text-zinc-500">Near-black high contrast base</p>
+              </div>
+            </div>
+            {theme === 'dark' && <Check className="w-4 h-4 text-[#007E93]" />}
+          </div>
         </div>
       </div>
 

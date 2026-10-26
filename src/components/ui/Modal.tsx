@@ -43,7 +43,7 @@ export const Modal: React.FC<ModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto animate-fade-in">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-6 overflow-hidden animate-fade-in">
       {/* Backdrop */}
       <div
         className="fixed inset-0 bg-black/45 backdrop-blur-md transition-opacity"
@@ -53,7 +53,7 @@ export const Modal: React.FC<ModalProps> = ({
       {/* Modal Dialog (Surface 4 Floating Elevation) */}
       <div
         className={clsx(
-          'relative w-full rounded-3xl bg-white text-zinc-900 border border-black/[0.08] shadow-2xl flex flex-col max-h-[92vh] z-10 overflow-hidden animate-slide-up',
+          'relative w-full h-full sm:h-auto max-h-full sm:max-h-[92vh] rounded-none sm:rounded-3xl bg-white text-zinc-900 border-0 sm:border border-black/[0.08] shadow-2xl flex flex-col z-10 overflow-hidden animate-slide-up',
           maxWidths[maxWidth]
         )}
       >

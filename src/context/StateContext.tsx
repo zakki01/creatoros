@@ -203,6 +203,14 @@ interface StateContextType {
   setActiveCampaignId: (id: string) => void;
 
   // Actions
+  addOutreachItem: (item: OutreachItem) => void;
+  addNotification: (item: NotificationItem) => void;
+  updateCreatorAvailability: (
+    creatorId: string,
+    status: 'Available' | 'Limited Availability' | 'Booked',
+    dates?: string,
+    minRate?: number
+  ) => void;
   createCampaign: (newCampaign: Partial<Campaign>) => Campaign;
   inviteCreator: (creatorId: string, campaignId: string, customFee?: number) => void;
   acceptOpportunity: (outreachId: string) => void;
@@ -475,6 +483,7 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const userProfile = authUser
     ? {
         ...INITIAL_USER_PROFILES[role],
+        id: authUser.id,
         name: authUser.name,
         email: authUser.email,
         role: authUser.role,
@@ -517,6 +526,34 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const setWorkspace = (_ws: Workspace) => {
     // Allows switching workspaces if needed
+  };
+
+  const addOutreachItem = (item: OutreachItem) => {
+    setOutreachItems((prev) => [item, ...prev]);
+  };
+
+  const addNotification = (item: NotificationItem) => {
+    setNotifications((prev) => [item, ...prev]);
+  };
+
+  const updateCreatorAvailability = (
+    creatorId: string,
+    status: 'Available' | 'Limited Availability' | 'Booked',
+    dates?: string,
+    minRate?: number
+  ) => {
+    setCreators((prev) =>
+      prev.map((c) =>
+        c.id === creatorId
+          ? {
+              ...c,
+              availabilityStatus: status,
+              availableDates: dates ?? c.availableDates,
+              minimumRate: minRate ?? c.minimumRate,
+            }
+          : c
+      )
+    );
   };
 
   const triggerCelebration = () => {
@@ -1703,6 +1740,9 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         clearAllNotifications,
         resetDemoData,
         triggerCelebration,
+        addOutreachItem,
+        addNotification,
+        updateCreatorAvailability,
       }}
     >
       {children}

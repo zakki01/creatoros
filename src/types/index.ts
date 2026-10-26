@@ -165,6 +165,9 @@ export interface Creator {
   testimonials: CreatorTestimonial[];
   portfolio: CreatorPortfolioItem[];
   availability: 'Available' | 'Limited Spots' | 'Booked until Nov';
+  availabilityStatus?: 'Available' | 'Limited Availability' | 'Booked';
+  availableDates?: string;
+  minimumRate?: number;
   aiMatchScore?: number;
   aiMatchFactors?: {
     audienceMatch: string;
@@ -204,6 +207,17 @@ export interface OutreachItem {
   proposedFee: number;
   messages: OutreachMessage[];
   aiDraftProposal: string;
+  pitchDetails?: {
+    brandId?: string;
+    brandName?: string;
+    portfolioItems?: Array<{ title: string; url?: string; thumbnail?: string }>;
+    pitchDeckFileName?: string;
+    pitchDeckFileSize?: number;
+    availability?: string;
+    deliverableTypes?: string[];
+    usageRights?: string;
+    targetDeadline?: string;
+  };
 }
 
 export type ContentStatus =

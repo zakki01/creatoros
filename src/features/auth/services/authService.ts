@@ -7,6 +7,11 @@ import {
 import { UserRole } from '../../../types';
 
 const AUTH_STORAGE_KEY = 'creatoros_auth_session_v1';
+const REGISTERED_ACCOUNTS_KEY = 'creatoros_registered_accounts_v1';
+
+export const CANONICAL_CREATOR_ID = 'cr-01';
+export const CANONICAL_BRAND_ID = 'brand-aura';
+export const CANONICAL_ADMIN_ID = 'admin-001';
 
 export interface IAuthProvider {
   readonly id: string;
@@ -23,8 +28,7 @@ export class EmailAuthProvider implements IAuthProvider {
     return true;
   }
 
-  async login(credentials: LoginCredentials): Promise<AuthUser> {
-    // Validate credentials
+    async login(credentials: LoginCredentials): Promise<AuthUser> {
     if (!credentials.email || !credentials.password) {
       throw new Error('Please provide both email and password.');
     }
@@ -32,11 +36,65 @@ export class EmailAuthProvider implements IAuthProvider {
       throw new Error('Password must be at least 6 characters.');
     }
 
+    try {
+      const stored = localStorage.getItem(REGISTERED_ACCOUNTS_KEY);
+      if (stored) {
+        const accounts: Array<AuthUser & { password?: string }> = JSON.parse(stored);
+        const match = accounts.find(
+          (a) => a.email.toLowerCase() === credentials.email.trim().toLowerCase()
+        );
+        if (match) {
+          if (match.password && match.password !== credentials.password) {
+            throw new Error('Invalid credentials. Please verify your password.');
+          }
+          const { password: _, ...safeUser } = match;
+          return safeUser;
+        }
+      }
+    } catch (err: any) {
+      if (err.message && err.message.includes('Invalid credentials')) {
+        throw err;
+      }
+    }
+
+    const emailLower = credentials.email.trim().toLowerCase();
     const name = credentials.email.split('@')[0];
     const formattedName = name.charAt(0).toUpperCase() + name.slice(1);
 
+    if (emailLower.includes('admin')) {
+      return {
+        id: CANONICAL_ADMIN_ID,
+        name: `${formattedName} (Admin)`,
+        email: credentials.email,
+        role: 'super_admin',
+        avatarUrl:
+          'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200&auto=format&fit=crop&q=80',
+        handle: `@${name.toLowerCase()}`,
+        provider: 'email',
+        isDemo: false,
+      };
+    }
+
+    if (
+      emailLower.includes('brand') ||
+      emailLower.includes('business') ||
+      emailLower.includes('aura')
+    ) {
+      return {
+        id: CANONICAL_BRAND_ID,
+        name: `${formattedName} Co.`,
+        email: credentials.email,
+        role: 'business',
+        avatarUrl:
+          'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=200&auto=format&fit=crop&q=80',
+        handle: `@${name.toLowerCase()}`,
+        provider: 'email',
+        isDemo: false,
+      };
+    }
+
     return {
-      id: `usr-${Date.now()}`,
+      id: CANONICAL_CREATOR_ID,
       name: formattedName,
       email: credentials.email,
       role: 'creator',
@@ -56,10 +114,17 @@ export class EmailAuthProvider implements IAuthProvider {
       throw new Error('Password must be at least 6 characters.');
     }
 
-    return {
-      id: `usr-${Date.now()}`,
-      name: credentials.name,
-      email: credentials.email,
+    const assignedId =
+      credentials.role === 'creator'
+        ? CANONICAL_CREATOR_ID
+        : credentials.role === 'business'
+        ? CANONICAL_BRAND_ID
+        : CANONICAL_ADMIN_ID;
+
+    const newUser: AuthUser & { password?: string } = {
+      id: assignedId,
+      name: credentials.name.trim(),
+      email: credentials.email.trim(),
       role: credentials.role,
       avatarUrl:
         credentials.role === 'creator'
@@ -68,7 +133,23 @@ export class EmailAuthProvider implements IAuthProvider {
       handle: credentials.handle || `@${credentials.name.toLowerCase().replace(/\s+/g, '')}`,
       provider: 'email',
       isDemo: false,
+      password: credentials.password,
     };
+
+    try {
+      const stored = localStorage.getItem(REGISTERED_ACCOUNTS_KEY);
+      const accounts: any[] = stored ? JSON.parse(stored) : [];
+      const filtered = accounts.filter(
+        (a) => a.email.toLowerCase() !== credentials.email.trim().toLowerCase()
+      );
+      filtered.push(newUser);
+      localStorage.setItem(REGISTERED_ACCOUNTS_KEY, JSON.stringify(filtered));
+    } catch (err) {
+      console.warn('Could not persist registered account to storage:', err);
+    }
+
+    const { password: _, ...safeUser } = newUser;
+    return safeUser;
   }
 }
 
@@ -156,20 +237,20 @@ export class DemoAuthProvider implements IAuthProvider {
 
     if (role === 'creator') {
       return {
-        id: 'cr-101',
+        id: CANONICAL_CREATOR_ID,
         name: 'Rohan Sharma',
         email: 'rohan.sharma@creatoros.ai',
         role: 'creator',
         avatarUrl:
           'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80',
-        handle: '@rohansharma_style',
+        handle: '@rohan.kicks',
         provider: 'demo',
         isDemo: true,
       };
     }
 
     return {
-      id: 'biz-001',
+      id: CANONICAL_BRAND_ID,
       name: 'Aura Streetwear Co.',
       email: 'partnerships@aurastreetwear.com',
       role: 'business',

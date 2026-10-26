@@ -66,6 +66,43 @@
     caret-color: transparent;
   }
 
+  [data-theme="dark"],
+  .dark {
+    --background: 222 47% 6%;
+    --foreground: 210 40% 98%;
+    --card: 222 47% 9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222 47% 9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 190 100% 42%;
+    --primary-foreground: 222 47% 6%;
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 190 100% 42%;
+    --accent-foreground: 222 47% 6%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217 33% 17%;
+    --input: 217 33% 17%;
+    --ring: 190 100% 42%;
+
+    /* Spatial 3D Dark Studio System */
+    --surface-0: #0B0E14;
+    --surface-1: #151921;
+    --surface-2: #1A1F2C;
+    --surface-3: #222938;
+    --surface-4: #151921;
+
+    --glass-bg: rgba(21, 25, 33, 0.85);
+    --glass-bg-strong: rgba(21, 25, 33, 0.98);
+    --glass-bg-subtle: rgba(21, 25, 33, 0.65);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-border-hover: rgba(255, 255, 255, 0.15);
+    --glass-highlight: rgba(255, 255, 255, 0.12);
+  }
+
   * {
     @apply border-zinc-200;
   }
@@ -105,6 +142,52 @@
     @apply text-zinc-900 font-sans antialiased;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11", "tnum";
     font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  [data-theme="dark"] body {
+    background-color: #0B0E14;
+    background-image:
+      radial-gradient(ellipse 90% 60% at 50% -10%, rgba(0, 180, 216, 0.04), transparent 75%),
+      radial-gradient(ellipse 60% 45% at 85% 15%, rgba(124, 92, 255, 0.03), transparent 65%);
+    color: #F8FAFC !important;
+  }
+
+  [data-theme="dark"] .bg-white {
+    background-color: #151921 !important;
+    color: #F8FAFC !important;
+  }
+
+  [data-theme="dark"] .bg-zinc-50 {
+    background-color: #1A1F2C !important;
+  }
+
+  [data-theme="dark"] .bg-zinc-100 {
+    background-color: #222938 !important;
+  }
+
+  [data-theme="dark"] .text-zinc-900 {
+    color: #F8FAFC !important;
+  }
+
+  [data-theme="dark"] .text-zinc-800 {
+    color: #E2E8F0 !important;
+  }
+
+  [data-theme="dark"] .text-zinc-700 {
+    color: #CBD5E1 !important;
+  }
+
+  [data-theme="dark"] .text-zinc-600,
+  [data-theme="dark"] .text-zinc-500 {
+    color: #94A3B8 !important;
+  }
+
+  [data-theme="dark"] .border-zinc-200,
+  [data-theme="dark"] .border-zinc-300,
+  [data-theme="dark"] .border-black\/\[0\.08\],
+  [data-theme="dark"] .border-black\/\[0\.06\] {
+    border-color: rgba(255, 255, 255, 0.08) !important;
   }
 
   /* Interactive clickable elements */
@@ -603,10 +686,10 @@ button:not(:disabled):active,
 
 /* ========================================================================
    CREATOROS LIGHT STUDIO QUALITY LAYER
-   Fixes legacy dark utilities left in components migrated to the light theme.
-   Intentional media/video overlays remain dark; controls and data surfaces do not.
+   Scoped strictly to light theme so dark theme operates cleanly.
    ======================================================================== */
-:root {
+:root:not([data-theme="dark"]),
+[data-theme="light"] {
   color-scheme: light;
   --cos-canvas: #EDF0F4;
   --cos-surface: #FFFFFF;

@@ -13,6 +13,7 @@ import { useAppState } from '../../context/StateContext';
 import { IconButton } from '../ui/IconButton';
 import { Avatar } from '../ui/Avatar';
 import { Popover } from '../ui/Popover';
+import { ThemeToggle } from './ThemeToggle';
 
 interface TopBarProps {
   onOpenCommandPalette: () => void;
@@ -127,6 +128,9 @@ export const TopBar: React.FC<TopBarProps> = ({
             <Bell className="w-4 h-4 text-zinc-600" />
           </IconButton>
         </div>
+
+        {/* Global Light / Dark Theme Switcher */}
+        <ThemeToggle />
 
         {/* User Profile Avatar Popover Menu */}
         <Popover

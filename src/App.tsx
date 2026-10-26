@@ -1,5 +1,6 @@
 import React, { Suspense, lazy, useState, useEffect } from 'react';
 import { StateProvider, useAppState } from './context/StateContext';
+import { ThemeProvider } from './context/ThemeContext';
 import { WelcomePage } from './features/auth/components/WelcomePage';
 import { BrandLogo } from './components/common/BrandLogo';
 import { AdminAuthService } from './features/auth/services/authService';
@@ -292,14 +293,25 @@ const MainApp: React.FC = () => {
     );
   }
 
-  // Authenticated Public Role -> Creator or Brand Layout
+  // Authenticated Public Role -> Creator or Brand Layout with Strict Role Isolation
+  if (role === 'business') {
+    if (currentPath.startsWith('/creator')) {
+      window.history.replaceState(null, '', '/brand');
+    }
+    return (
+      <Suspense fallback={<AppLoadingScreen />}>
+        <BusinessLayout />
+      </Suspense>
+    );
+  }
+
+  // Creator workspace isolation
+  if (currentPath.startsWith('/brand')) {
+    window.history.replaceState(null, '', '/creator');
+  }
   return (
     <Suspense fallback={<AppLoadingScreen />}>
-      {role === 'business' || currentPath.startsWith('/brand') ? (
-        <BusinessLayout />
-      ) : (
-        <CreatorLayout />
-      )}
+      <CreatorLayout />
     </Suspense>
   );
 };
@@ -307,11 +319,13 @@ const MainApp: React.FC = () => {
 export default function App() {
   return (
     <ErrorBoundary>
-      <StateProvider>
-        <ToastProvider>
-          <MainApp />
-        </ToastProvider>
-      </StateProvider>
+      <ThemeProvider>
+        <StateProvider>
+          <ToastProvider>
+            <MainApp />
+          </ToastProvider>
+        </StateProvider>
+      </ThemeProvider>
     </ErrorBoundary>
   );
 }

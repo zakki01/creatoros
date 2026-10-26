@@ -40,6 +40,7 @@ import { InstagramIcon, YouTubeIcon } from '../common/PlatformIcons';
 import { AgeVerificationModal } from './AgeVerificationModal';
 import { ConnectModal } from '../common/ConnectModal';
 import { BlogPostModal } from '../common/BlogPostModal';
+import { ShareProfileModal } from '../common/ShareProfileModal';
 import { Creator } from '../../types';
 import { SocialPost } from '../../types/socialFeed';
 
@@ -57,6 +58,7 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
   const {
     creators,
     socialPosts,
+    updateCreatorAvailability,
     togglePostPin,
     triggerCelebration,
     ageVerification,
@@ -71,6 +73,13 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
   // Tabs: Showcase, Reels, Shots, Blogs, Campaigns, About, Analytics
   const [activeTab, setActiveTab] = useState<'showcase' | 'reels' | 'shots' | 'blogs' | 'campaigns' | 'about' | 'analytics'>('showcase');
   const [copied, setCopied] = useState(false);
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [isEditingAvailability, setIsEditingAvailability] = useState(false);
+  const [customAvailabilityStatus, setCustomAvailabilityStatus] = useState<'Available' | 'Limited Availability' | 'Booked'>(
+    (creatorData?.availabilityStatus as any) || 'Available'
+  );
+  const [customAvailableDates, setCustomAvailableDates] = useState(creatorData?.availableDates || 'Available Now (Q4 2026 Drops)');
+  const [customMinRate, setCustomMinRate] = useState<number>(creatorData?.minimumRate || creatorData?.estimatedRate || 25000);
   const [isAgeModalOpen, setIsAgeModalOpen] = useState(false);
   const [isConnectModalOpen, setIsConnectModalOpen] = useState(false);
   const [isAddShowcaseOpen, setIsAddShowcaseOpen] = useState(false);
@@ -104,10 +113,7 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
   const publicUrl = `https://creatoros.com/creator/${creator.handle.replace('@', '')}`;
 
   const handleShare = () => {
-    navigator.clipboard?.writeText?.(publicUrl);
-    setCopied(true);
-    triggerCelebration();
-    setTimeout(() => setCopied(false), 3000);
+    setIsShareModalOpen(true);
   };
 
   const handleCreateShowcase = (e: React.FormEvent) => {
@@ -911,6 +917,25 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
           </div>
         </div>
       )}
+
+      {/* Share Profile Modal */}
+      <ShareProfileModal
+        isOpen={isShareModalOpen}
+        onClose={() => setIsShareModalOpen(false)}
+        profileData={{
+          id: creator.id,
+          name: creator.name,
+          handle: creator.handle,
+          avatar: creator.avatar,
+          role: 'creator',
+          category: creator.category,
+          followers: `${(creator.totalFollowers / 1000).toFixed(0)}k`,
+          engagementRate: creator.avgEngagement,
+          availabilityStatus: customAvailabilityStatus,
+          verified: creator.verified,
+          bio: creator.bio,
+        }}
+      />
 
       {/* Blog Article Reader Modal */}
       {selectedBlogModal && (

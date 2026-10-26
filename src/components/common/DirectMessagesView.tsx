@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import {
+  ShieldCheck,
+  ExternalLink,
   Send,
   Paperclip,
   CheckCheck,
@@ -776,8 +778,46 @@ export const DirectMessagesView: React.FC = () => {
                           </div>
                         )}
 
-                        {msg.content && (
+                        {msg.content && msg.messageType !== 'profile_card' && (
                           <p className="leading-relaxed whitespace-pre-line text-xs sm:text-[13px]">{msg.content}</p>
+                        )}
+
+                        {/* Dedicated Rich Profile Card in Message Stream */}
+                        {msg.messageType === 'profile_card' && (
+                          <div className="my-2 p-3.5 rounded-2xl bg-white text-zinc-900 border border-zinc-200/90 shadow-sm max-w-[320px] sm:max-w-[360px] space-y-3 text-left">
+                            <div className="flex items-center gap-3">
+                              <img
+                                src={msg.profileCardData?.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80'}
+                                alt={msg.profileCardData?.name || 'Shared Profile'}
+                                className="w-12 h-12 rounded-2xl object-cover ring-1 ring-[#007E93]/20 shrink-0"
+                              />
+                              <div className="min-w-0 flex-1">
+                                <div className="flex items-center gap-1.5">
+                                  <h4 className="text-xs font-bold text-zinc-900 truncate">
+                                    {msg.profileCardData?.name || 'Rohan Sharma'}
+                                  </h4>
+                                  <ShieldCheck className="w-3.5 h-3.5 text-[#007E93] shrink-0" />
+                                </div>
+                                <p className="text-[11px] text-zinc-500 font-mono truncate">
+                                  {msg.profileCardData?.handle || '@rohan.kicks'}
+                                </p>
+                                <div className="flex items-center gap-1.5 mt-1 text-[10px] text-zinc-600">
+                                  <span>{msg.profileCardData?.category || 'Streetwear'}</span>
+                                  <span className="px-1.5 py-0.5 rounded-md bg-emerald-50 text-emerald-700 font-semibold border border-emerald-200">
+                                    {msg.profileCardData?.availabilityStatus || 'Available Now'}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="pt-2 border-t border-zinc-100 flex items-center justify-between text-[11px]">
+                              <span className="text-zinc-500 font-mono text-[10px]">CreatorOS Verified</span>
+                              <span className="text-[#007E93] font-semibold flex items-center gap-1">
+                                <span>Profile Attached</span>
+                                <ExternalLink className="w-3 h-3" />
+                              </span>
+                            </div>
+                          </div>
                         )}
 
                         {/* Dedicated Animated GIF Message Rendering */}

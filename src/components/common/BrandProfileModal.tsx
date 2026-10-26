@@ -21,6 +21,9 @@ import {
 import { useAppState } from '../../context/StateContext';
 import { ConnectModal } from './ConnectModal';
 import { BlogPostModal } from './BlogPostModal';
+import { PitchToBrandModal } from './PitchToBrandModal';
+import { ShareProfileModal } from './ShareProfileModal';
+import { Send, Share2 } from 'lucide-react';
 import { SocialPost } from '../../types/socialFeed';
 
 interface BrandProfileModalProps {
@@ -64,6 +67,9 @@ export const BrandProfileModal: React.FC<BrandProfileModalProps> = ({
   const [activeTab, setActiveTab] = useState<'about' | 'content' | 'reels' | 'shots' | 'blogs' | 'campaigns'>('about');
   const [isConnectModalOpen, setIsConnectModalOpen] = useState(false);
   const [selectedBlogModal, setSelectedBlogModal] = useState<SocialPost | null>(null);
+  const [isPitchModalOpen, setIsPitchModalOpen] = useState(false);
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [targetCampaignPitch, setTargetCampaignPitch] = useState<string | undefined>(undefined);
 
   const brandShots = socialPosts.filter(
     (p) =>
@@ -157,9 +163,9 @@ export const BrandProfileModal: React.FC<BrandProfileModalProps> = ({
 
   return (
     <>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/45 backdrop-blur-md animate-fade-in overflow-y-auto">
+      <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-6 bg-black/60 backdrop-blur-md animate-fade-in overflow-hidden">
         <div
-          className="relative w-full max-w-3xl rounded-2xl bg-white text-zinc-900 border border-black/[0.08] shadow-2xl text-zinc-900 overflow-hidden my-auto"
+          className="relative w-full h-full sm:h-auto max-h-full sm:max-h-[92vh] max-w-3xl rounded-none sm:rounded-3xl bg-white text-zinc-900 border-0 sm:border border-black/[0.08] shadow-2xl overflow-y-auto flex flex-col"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Close Button */}
@@ -208,11 +214,32 @@ export const BrandProfileModal: React.FC<BrandProfileModalProps> = ({
               </div>
 
               {/* Action Buttons */}
-              <div className="flex items-center gap-2 shrink-0">
+              <div className="flex flex-wrap items-center gap-2 shrink-0">
+                {/* Primary: Pitch to Brand */}
+                <button
+                  onClick={() => {
+                    setTargetCampaignPitch(undefined);
+                    setIsPitchModalOpen(true);
+                  }}
+                  className="min-h-[42px] px-4 py-2 rounded-xl bg-[#007E93] hover:bg-[#006779] text-white text-xs font-semibold flex items-center justify-center gap-1.5 shadow-sm transition-all cursor-pointer active:scale-95"
+                >
+                  <Send className="w-3.5 h-3.5" />
+                  <span>Pitch to Brand</span>
+                </button>
+
+                {/* Share Profile */}
+                <button
+                  onClick={() => setIsShareModalOpen(true)}
+                  className="min-h-[42px] px-3 py-2 rounded-xl bg-white shadow-sm hover:bg-zinc-100 border border-black/[0.08] text-zinc-800 text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                >
+                  <Share2 className="w-3.5 h-3.5 text-zinc-500" />
+                  <span>Share</span>
+                </button>
+
                 {connectionState === 'connected' ? (
                   <button
                     disabled
-                    className="min-h-[44px] px-4 py-2.5 rounded-xl bg-emerald-50 border border-emerald-500/30 text-emerald-700 text-xs font-semibold flex items-center justify-center gap-1.5"
+                    className="min-h-[42px] px-3.5 py-2 rounded-xl bg-emerald-50 border border-emerald-500/30 text-emerald-700 text-xs font-semibold flex items-center justify-center gap-1.5"
                   >
                     <Check className="w-3.5 h-3.5" />
                     <span>Connected ✓</span>
@@ -220,23 +247,15 @@ export const BrandProfileModal: React.FC<BrandProfileModalProps> = ({
                 ) : connectionState === 'pending' ? (
                   <button
                     disabled
-                    className="min-h-[44px] px-4 py-2.5 rounded-xl bg-amber-50 border border-amber-500/30 text-amber-800 text-xs font-semibold flex items-center justify-center gap-1.5"
+                    className="min-h-[42px] px-3.5 py-2 rounded-xl bg-amber-50 border border-amber-500/30 text-amber-800 text-xs font-semibold flex items-center justify-center gap-1.5"
                   >
                     <Clock className="w-3.5 h-3.5" />
-                    <span>Request Pending</span>
-                  </button>
-                ) : connectionState === 'active_campaign' ? (
-                  <button
-                    disabled
-                    className="min-h-[44px] px-4 py-2.5 rounded-xl bg-blue-500/15 border border-blue-500/30 text-blue-400 text-xs font-semibold flex items-center justify-center gap-1.5"
-                  >
-                    <Sparkles className="w-3.5 h-3.5" />
-                    <span>Active Campaign</span>
+                    <span>Pending</span>
                   </button>
                 ) : (
                   <button
                     onClick={() => setIsConnectModalOpen(true)}
-                    className="min-h-[44px] px-4 py-2.5 rounded-xl bg-[#007E93] hover:bg-[#006779] text-white text-xs font-semibold flex items-center justify-center gap-1.5 shadow-sm shadow-xs transition-all cursor-pointer active:scale-95"
+                    className="min-h-[42px] px-3.5 py-2 rounded-xl bg-zinc-100 hover:bg-zinc-200 border border-zinc-200 text-zinc-800 text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer active:scale-95"
                   >
                     <UserPlus className="w-3.5 h-3.5" />
                     <span>Connect</span>
@@ -245,7 +264,7 @@ export const BrandProfileModal: React.FC<BrandProfileModalProps> = ({
 
                 <button
                   onClick={handleMessageClick}
-                  className="min-h-[44px] px-4 py-2.5 rounded-xl bg-white shadow-sm hover:bg-zinc-100 border border-black/[0.08] text-zinc-800 text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                  className="min-h-[42px] px-3.5 py-2 rounded-xl bg-white shadow-sm hover:bg-zinc-100 border border-black/[0.08] text-zinc-800 text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer"
                 >
                   <MessageSquare className="w-3.5 h-3.5 text-zinc-500" />
                   <span>Message</span>
@@ -499,10 +518,14 @@ export const BrandProfileModal: React.FC<BrandProfileModalProps> = ({
                           {camp.budget}
                         </span>
                         <button
-                          onClick={() => setIsConnectModalOpen(true)}
-                          className="px-3 py-1 rounded-lg bg-[#007E93] hover:bg-[#006779] text-white text-[11px] font-semibold transition-all cursor-pointer"
+                          onClick={() => {
+                            setTargetCampaignPitch(camp.title);
+                            setIsPitchModalOpen(true);
+                          }}
+                          className="px-3.5 py-1.5 rounded-lg bg-[#007E93] hover:bg-[#006779] text-white text-[11px] font-semibold flex items-center gap-1.5 transition-all cursor-pointer active:scale-95 shadow-xs"
                         >
-                          Pitch Brief
+                          <Send className="w-3 h-3" />
+                          <span>Pitch for this Brief</span>
                         </button>
                       </div>
                     </div>
@@ -513,6 +536,36 @@ export const BrandProfileModal: React.FC<BrandProfileModalProps> = ({
           </div>
         </div>
       </div>
+
+      {/* Pitch to Brand Modal */}
+      <PitchToBrandModal
+        isOpen={isPitchModalOpen}
+        onClose={() => setIsPitchModalOpen(false)}
+        brandData={{
+          id: brandData.id,
+          name: brandData.name,
+          handle: brandData.handle,
+          logo: brandData.logo,
+          category: brandData.category,
+        }}
+        initialCampaignTitle={targetCampaignPitch}
+      />
+
+      {/* Share Profile Modal */}
+      <ShareProfileModal
+        isOpen={isShareModalOpen}
+        onClose={() => setIsShareModalOpen(false)}
+        profileData={{
+          id: brandData.id,
+          name: brandData.name,
+          handle: brandData.handle,
+          avatar: brandData.logo,
+          role: 'business',
+          category: brandData.category,
+          bio: brandData.bio,
+          verified: true,
+        }}
+      />
 
       {/* Connect Modal */}
       <ConnectModal
