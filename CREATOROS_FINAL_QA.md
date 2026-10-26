@@ -77,6 +77,63 @@ ALL CORRECTIVE PRODUCTION PASS CHECKS COMPLETED: PASS
 
 ---
 
+### Test Suite 3: Profile Relationships & Full-Screen TikTok/Reels Live (node scripts/verify-profile-live-corrective.cjs)
+`	ext
+================================================================
+CREATOROS — PROFILE RELATIONSHIP & FULL-SCREEN LIVE VERIFICATION
+================================================================
+
+[TEST 1] Creator Viewing Brand Profile
+  -> Discover Brand Card shows 'Pitch to Brand': PASS
+  -> Discover Brand Card hides 'Connect': PASS (Forbidden action absent)
+  -> Screenshot: verify_discover_brands_pitch.png
+  -> Opening BrandProfileModal for Aura Streetwear Co.
+  -> BrandProfileModal shows 'Pitch to Brand': PASS
+  -> BrandProfileModal shows 'Share': PASS
+  -> BrandProfileModal shows 'Message': PASS
+  -> BrandProfileModal hides 'Connect': PASS (Connect completely absent)
+  -> Screenshot: verify_brand_profile_correct_actions.png
+
+[TEST 2] Creator Viewing Own Profile
+  -> Own Profile shows 'Edit Profile': PASS
+  -> Own Profile shows 'Share Profile': PASS
+  -> Own Profile hides 'Pitch to Brand': PASS
+  -> Own Profile hides 'Approach Creator': PASS
+  -> Own Profile hides 'Connect': PASS
+  -> Screenshot: verify_creator_own_profile.png
+
+[TEST 3] Brand Viewing Creator Profile
+  -> Brand viewing Creator shows 'Approach Creator': PASS
+  -> Brand viewing Creator shows 'Invite to Campaign': PASS
+  -> Brand viewing Creator shows 'Share Profile': PASS
+  -> Brand viewing Creator shows 'Message': PASS
+  -> Screenshot: verify_brand_viewing_creator.png
+
+[TEST 4] True Full-Screen TikTok/Reels-Style Live (100dvh)
+  -> TopBar Hidden during Live: PASS (Hidden)
+  -> MobileBottomNav Hidden during Live: PASS (Hidden)
+  -> Inner phone frame absent (Full bleed 100dvh): PASS
+  -> Video element rendered: PASS
+  -> Exit button (X) present: PASS
+  -> Flip Camera button (44px) present: PASS
+  -> AR Effects button present: PASS
+  -> Beauty button present: PASS
+  -> Mic button present: PASS
+  -> Virtual Gifts button present: PASS
+  -> Share Stream button present: PASS
+  -> Transport status 'BLOCKED — credentials required': PASS (Truthful status)
+  -> Go Live action button present: PASS
+  -> Fullscreen Mobile Live Screenshot: verify_live_mobile_fullscreen_100dvh.png
+  -> Opening AR Effects Bottom Sheet over camera
+  -> AR Effects Bottom Sheet rendered over camera: PASS
+  -> AR Effects Bottom Sheet Screenshot: verify_live_effects_bottom_sheet.png
+
+================================================================
+ALL VERIFICATIONS COMPLETED SUCCESSFULLY: PASS (100%)
+================================================================
+`
+
+---
 ## 3. Verified Artifacts
 - Source Code: Complete, fully-functional CreatorOS repository on branch `corrective-production-pass` (merged to `master`).
 - Verification Scripts:

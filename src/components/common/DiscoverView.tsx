@@ -41,6 +41,7 @@ import { useAppState } from '../../context/StateContext';
 import { SocialPost, PostComment, FeedCategory, PostContentType } from '../../types/socialFeed';
 import { ConnectModal } from './ConnectModal';
 import { BrandProfileModal } from './BrandProfileModal';
+import { PitchToBrandModal } from './PitchToBrandModal';
 import { CreatorProfile } from '../creator/CreatorProfile';
 import { CreatePostModal } from './CreatePostModal';
 import { BlogPostModal } from './BlogPostModal';
@@ -96,6 +97,7 @@ export const DiscoverView: React.FC = () => {
 
   const [selectedBrandModalData, setSelectedBrandModalData] = useState<any | null>(null);
   const [selectedCreatorModal, setSelectedCreatorModal] = useState<Creator | null>(null);
+  const [pitchTargetBrand, setPitchTargetBrand] = useState<any | null>(null);
 
   // New Creation, Blog Reading, Reporting & Management Modals
   const [isCreatePostOpen, setIsCreatePostOpen] = useState(false);
@@ -631,29 +633,13 @@ export const DiscoverView: React.FC = () => {
                       View
                     </button>
 
-                    {bState === 'connected' ? (
-                      <span className="px-3.5 py-1.5 rounded-xl bg-emerald-50 border border-emerald-500/30 text-emerald-800 text-xs font-semibold flex items-center gap-1.5">
-                        <Check className="w-3.5 h-3.5" />
-                        <span>Connected</span>
-                      </span>
-                    ) : (
-                      <button
-                        onClick={() =>
-                          setConnectTarget({
-                            id: b.id,
-                            name: b.name,
-                            handle: b.handle,
-                            avatar: b.logo,
-                            role: 'business',
-                            category: b.category,
-                          })
-                        }
-                        className="px-4 py-1.5 rounded-xl depth-btn-primary text-white text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer"
-                      >
-                        <UserPlus className="w-3.5 h-3.5" />
-                        <span>Connect</span>
-                      </button>
-                    )}
+                    <button
+                      onClick={() => setPitchTargetBrand(b)}
+                      className="px-4 py-1.5 rounded-xl bg-[#007E93] hover:bg-[#006779] text-white text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer shadow-sm active:scale-95"
+                    >
+                      <Send className="w-3.5 h-3.5" />
+                      <span>Pitch to Brand</span>
+                    </button>
                   </div>
                 </SpatialCard>
               );
@@ -1010,6 +996,21 @@ export const DiscoverView: React.FC = () => {
           setSelectedBrandModalData(null);
           setCreatorActiveTab('messages');
         }}
+      />
+
+      {/* 10b. PITCH TO BRAND MODAL */}
+      <PitchToBrandModal
+        isOpen={!!pitchTargetBrand}
+        onClose={() => setPitchTargetBrand(null)}
+        brandData={
+          pitchTargetBrand || {
+            id: 'brand-aura',
+            name: 'Aura Streetwear Co.',
+            handle: '@aurastreetwear',
+            logo: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=150&auto=format&fit=crop&q=80',
+            category: 'Streetwear & Lifestyle',
+          }
+        }
       />
 
       {/* 11. CREATOR PROFILE MODAL */}

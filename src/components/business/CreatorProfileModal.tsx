@@ -15,6 +15,7 @@ import {
   Eye,
   Heart,
   ChevronRight,
+  PlusCircle,
 } from 'lucide-react';
 import { InstagramIcon, YouTubeIcon } from '../common/PlatformIcons';
 import { Creator, Campaign } from '../../types';
@@ -26,12 +27,14 @@ import { useAppState } from '../../context/StateContext';
 import { ApproachCreatorModal } from './ApproachCreatorModal';
 import { ShareProfileModal } from '../common/ShareProfileModal';
 import { Share2 } from 'lucide-react';
+import { resolveProfileActions } from '../../services/profileActionResolver';
 
 interface CreatorProfileModalProps {
   creator: Creator | null;
   isOpen: boolean;
   onClose: () => void;
   onInvite?: (creatorId: string) => void;
+  onOpenMessage?: (creatorId: string) => void;
 }
 
 export const CreatorProfileModal: React.FC<CreatorProfileModalProps> = ({
@@ -39,8 +42,9 @@ export const CreatorProfileModal: React.FC<CreatorProfileModalProps> = ({
   isOpen,
   onClose,
   onInvite,
+  onOpenMessage,
 }) => {
-  const { campaigns, activeCampaignId, inviteCreator } = useAppState();
+  const { campaigns, activeCampaignId, inviteCreator, conversations, setActiveConversationId, role, userProfile } = useAppState();
   const [activeTab, setActiveTab] = useState('overview');
   const [invited, setInvited] = useState(false);
   const [isApproachModalOpen, setIsApproachModalOpen] = useState(false);
@@ -48,12 +52,32 @@ export const CreatorProfileModal: React.FC<CreatorProfileModalProps> = ({
 
   if (!creator) return null;
 
+  const isOwnProfile = userProfile?.id === creator.id;
+  const profileActions = resolveProfileActions({
+    viewerRole: role,
+    profileRole: 'creator',
+    isOwnProfile,
+  });
+
   const activeCampaign = campaigns.find((c) => c.id === activeCampaignId) || campaigns[0];
 
   const handleInvite = () => {
     inviteCreator(creator.id, activeCampaign.id, creator.estimatedRate);
     setInvited(true);
     if (onInvite) onInvite(creator.id);
+  };
+
+  const handleMessageClick = () => {
+    if (onOpenMessage) {
+      onOpenMessage(creator.id);
+      onClose();
+    } else {
+      const existing = conversations.find((c) => c.participantId === creator.id);
+      if (existing) {
+        setActiveConversationId(existing.id);
+      }
+      onClose();
+    }
   };
 
   const tabs = [
@@ -93,30 +117,55 @@ export const CreatorProfileModal: React.FC<CreatorProfileModalProps> = ({
         </div>
       }
       footer={
-        <div className="flex items-center justify-between w-full">
-          <div className="text-xs text-zinc-500">
+        <div className="flex flex-col sm:flex-row items-center justify-between w-full gap-3">
+          <div className="text-xs text-zinc-500 truncate self-start sm:self-auto">
             Targeting for: <strong className="text-zinc-800">{activeCampaign?.name}</strong>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto justify-end">
             <Button variant="ghost" size="sm" onClick={onClose}>
               Close
             </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setIsShareModalOpen(true)}
-              leftIcon={<Share2 className="w-3.5 h-3.5" />}
-            >
-              Share Profile
-            </Button>
-            <Button
-              variant="primary"
-              size="sm"
-              onClick={() => setIsApproachModalOpen(true)}
-              leftIcon={<Send className="w-4 h-4" />}
-            >
-              Approach Creator
-            </Button>
+            {profileActions.canShare && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setIsShareModalOpen(true)}
+                leftIcon={<Share2 className="w-3.5 h-3.5" />}
+              >
+                Share Profile
+              </Button>
+            )}
+            {profileActions.canMessage && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleMessageClick}
+                leftIcon={<MessageSquare className="w-3.5 h-3.5" />}
+              >
+                Message
+              </Button>
+            )}
+            {profileActions.canInviteCampaign && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleInvite}
+                disabled={invited}
+                leftIcon={invited ? <CheckCircle className="w-3.5 h-3.5 text-emerald-600" /> : <PlusCircle className="w-3.5 h-3.5" />}
+              >
+                {invited ? 'Invited ✓' : 'Invite to Campaign'}
+              </Button>
+            )}
+            {profileActions.canApproach && (
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={() => setIsApproachModalOpen(true)}
+                leftIcon={<Send className="w-4 h-4" />}
+              >
+                Approach Creator
+              </Button>
+            )}
           </div>
         </div>
       }

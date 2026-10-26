@@ -81,12 +81,14 @@ export const CreatorLayout: React.FC = () => {
     setCreatorActiveTab(tab);
   };
 
+  const isLiveTab = activeTab === 'live';
+
   return (
     <div className="flex h-dvh w-full bg-[#EAECEF] text-zinc-900 overflow-hidden font-sans">
-      {/* Elevated Spatial Glass Sidebar Rail */}
+      {/* Elevated Spatial Glass Sidebar Rail (Hidden in Live Studio) */}
       <aside
         className={`h-full border-r border-black/[0.08] bg-[#DFE3E8]/90 backdrop-blur-2xl shadow-sm hidden md:flex flex-col justify-between transition-all duration-200 z-30 shrink-0 ${
-          isSidebarCollapsed ? 'w-16' : 'w-56'
+          isLiveTab ? 'md:hidden' : isSidebarCollapsed ? 'w-16' : 'w-56'
         }`}
       >
         {/* Creator Brand Header */}
@@ -183,15 +185,23 @@ export const CreatorLayout: React.FC = () => {
 
       {/* Main Canvas with Sticky TopBar */}
       <div className="flex-1 flex flex-col h-full overflow-hidden">
-        {/* TopBar */}
-        <TopBar
-          onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
-          onOpenNotifications={() => setIsNotificationsOpen(true)}
-          onOpenMessages={() => handleNavigate('messages')}
-        />
+        {/* TopBar - Hidden during Live Studio to provide 100dvh immersive full-screen */}
+        {!isLiveTab && (
+          <TopBar
+            onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
+            onOpenNotifications={() => setIsNotificationsOpen(true)}
+            onOpenMessages={() => handleNavigate('messages')}
+          />
+        )}
 
         {/* Content Canvas */}
-        <main className="flex-1 overflow-y-auto px-4 sm:px-8 py-6 pb-24 md:pb-6 w-full">
+        <main
+          className={`flex-1 w-full ${
+            isLiveTab
+              ? 'p-0 overflow-hidden h-full bg-black'
+              : 'overflow-y-auto px-4 sm:px-8 py-6 pb-24 md:pb-6'
+          }`}
+        >
           {activeTab === 'home' && (
             <CreatorHome
               onNavigate={handleNavigate}
@@ -240,15 +250,15 @@ export const CreatorLayout: React.FC = () => {
           {activeTab === 'live' && (
             <React.Suspense
               fallback={
-                <div className="h-96 w-full flex flex-col items-center justify-center space-y-3">
+                <div className="h-full w-full flex flex-col items-center justify-center space-y-3 bg-black text-white">
                   <div className="w-9 h-9 rounded-xl bg-[#007E93]/20 text-[#007E93] flex items-center justify-center animate-pulse">
                     <Video className="w-4 h-4" />
                   </div>
-                  <span className="text-xs font-mono text-zinc-400">Loading Live AI Studio...</span>
+                  <span className="text-xs font-mono text-zinc-400">Loading Live Studio...</span>
                 </div>
               }
             >
-              <CreatorLiveStudio />
+              <CreatorLiveStudio onExit={() => handleNavigate('home')} />
             </React.Suspense>
           )}
         </main>
@@ -277,24 +287,26 @@ export const CreatorLayout: React.FC = () => {
       {/* Pro Tier & 7-Day Trial Modal */}
       <ProUpgradeModal />
 
-      {/* Mobile Bottom Navigation Bar (Fitts's Law 44px + Safe Area Insets) */}
-      <MobileBottomNav
-        items={[
-          { id: 'home', label: 'Home', icon: Home },
-          { id: 'campaigns', label: 'Campaigns', icon: Layers },
-          { id: 'discover', label: 'Discover', icon: Compass },
-          {
-            id: 'messages',
-            label: 'Messages',
-            icon: MessageSquare,
-            badge: totalUnreadMessages > 0 ? totalUnreadMessages : undefined,
-          },
-          { id: 'profile', label: 'Profile', icon: User },
-        ]}
-        activeTab={activeTab}
-        onNavigate={handleNavigate}
-        accentColor="emerald"
-      />
+      {/* Mobile Bottom Navigation Bar (Fitts's Law 44px + Safe Area Insets) - Hidden in Live Studio */}
+      {!isLiveTab && (
+        <MobileBottomNav
+          items={[
+            { id: 'home', label: 'Home', icon: Home },
+            { id: 'campaigns', label: 'Campaigns', icon: Layers },
+            { id: 'discover', label: 'Discover', icon: Compass },
+            {
+              id: 'messages',
+              label: 'Messages',
+              icon: MessageSquare,
+              badge: totalUnreadMessages > 0 ? totalUnreadMessages : undefined,
+            },
+            { id: 'profile', label: 'Profile', icon: User },
+          ]}
+          activeTab={activeTab}
+          onNavigate={handleNavigate}
+          accentColor="emerald"
+        />
+      )}
     </div>
   );
 };

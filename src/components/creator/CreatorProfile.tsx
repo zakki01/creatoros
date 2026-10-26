@@ -28,6 +28,8 @@ import {
   Camera,
   BookOpen,
   FileText,
+  Edit3,
+  Send,
 } from 'lucide-react';
 import { useAppState } from '../../context/StateContext';
 import { Card } from '../ui/Card';
@@ -41,6 +43,8 @@ import { AgeVerificationModal } from './AgeVerificationModal';
 import { ConnectModal } from '../common/ConnectModal';
 import { BlogPostModal } from '../common/BlogPostModal';
 import { ShareProfileModal } from '../common/ShareProfileModal';
+import { ApproachCreatorModal } from '../business/ApproachCreatorModal';
+import { resolveProfileActions } from '../../services/profileActionResolver';
 import { Creator } from '../../types';
 import { SocialPost } from '../../types/socialFeed';
 
@@ -109,6 +113,13 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
 
   const connectionState = connections[creator.id] || 'connect';
   const isOwnProfile = role === 'creator' && !isPublicView && creator.id === 'cr-01';
+  const [isApproachModalOpen, setIsApproachModalOpen] = useState(false);
+
+  const profileActions = resolveProfileActions({
+    viewerRole: role,
+    profileRole: 'creator',
+    isOwnProfile,
+  });
 
   const publicUrl = `https://creatoros.com/creator/${creator.handle.replace('@', '')}`;
 
@@ -239,11 +250,11 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
             {isOwnProfile ? (
               <>
                 <button
-                  onClick={() => setCreatorActiveTab('passport')}
-                  className="depth-btn-secondary flex-1 sm:flex-none min-h-[40px] px-3.5 py-2 rounded-xl text-xs font-semibold border border-emerald-500/30 text-emerald-800 flex items-center justify-center gap-1.5 cursor-pointer"
+                  onClick={() => setCreatorActiveTab('settings')}
+                  className="depth-btn-secondary flex-1 sm:flex-none min-h-[40px] px-3.5 py-2 rounded-xl text-xs font-semibold text-zinc-800 flex items-center justify-center gap-1.5 cursor-pointer"
                 >
-                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-700" />
-                  <span>Passport</span>
+                  <Edit3 className="w-3.5 h-3.5 text-zinc-600" />
+                  <span>Edit Profile</span>
                 </button>
 
                 <button
@@ -251,7 +262,15 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
                   className="depth-btn-secondary flex-1 sm:flex-none min-h-[40px] px-3.5 py-2 rounded-xl text-xs text-zinc-800 font-semibold flex items-center justify-center gap-1.5 cursor-pointer"
                 >
                   <Share2 className="w-3.5 h-3.5 text-zinc-500" />
-                  <span>{copied ? 'Copied' : 'Share'}</span>
+                  <span>{copied ? 'Copied' : 'Share Profile'}</span>
+                </button>
+
+                <button
+                  onClick={() => setCreatorActiveTab('passport')}
+                  className="depth-btn-secondary flex-1 sm:flex-none min-h-[40px] px-3.5 py-2 rounded-xl text-xs font-semibold border border-emerald-500/30 text-emerald-800 flex items-center justify-center gap-1.5 cursor-pointer"
+                >
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-700" />
+                  <span>Passport</span>
                 </button>
 
                 <button
@@ -264,50 +283,80 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
               </>
             ) : (
               <>
-                {connectionState === 'connected' ? (
+                {/* Brand viewing Creator: Approach Creator */}
+                {profileActions.canApproach && (
                   <button
-                    disabled
-                    className="flex-1 sm:flex-none min-h-[42px] px-3.5 py-2 rounded-xl bg-emerald-50 border border-emerald-500/30 text-emerald-700 text-xs font-semibold flex items-center justify-center gap-1.5"
+                    onClick={() => setIsApproachModalOpen(true)}
+                    className="depth-btn-primary flex-1 sm:flex-none min-h-[42px] px-4 py-2 rounded-xl text-white text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 shadow-sm"
                   >
-                    <Check className="w-4 h-4" />
-                    <span>Connected</span>
-                  </button>
-                ) : connectionState === 'pending' ? (
-                  <button
-                    disabled
-                    className="flex-1 sm:flex-none min-h-[42px] px-3.5 py-2 rounded-xl bg-amber-50 border border-amber-500/30 text-amber-800 text-xs font-semibold flex items-center justify-center gap-1.5"
-                  >
-                    <Clock className="w-4 h-4" />
-                    <span>Pending</span>
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => setIsConnectModalOpen(true)}
-                    className="depth-btn-primary flex-1 sm:flex-none min-h-[42px] px-4 py-2 rounded-xl text-white text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer"
-                  >
-                    <UserPlus className="w-3.5 h-3.5" />
-                    <span>Connect</span>
+                    <Send className="w-3.5 h-3.5" />
+                    <span>Approach Creator</span>
                   </button>
                 )}
 
-                <button
-                  onClick={handleMessageClick}
-                  className="depth-btn-secondary flex-1 sm:flex-none min-h-[42px] px-3.5 py-2 rounded-xl text-zinc-800 text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer"
-                >
-                  <MessageSquare className="w-3.5 h-3.5 text-zinc-500" />
-                  <span>Message</span>
-                </button>
+                {/* Creator viewing Creator: Connect */}
+                {profileActions.canConnect && (
+                  connectionState === 'connected' ? (
+                    <button
+                      disabled
+                      className="flex-1 sm:flex-none min-h-[42px] px-3.5 py-2 rounded-xl bg-emerald-50 border border-emerald-500/30 text-emerald-700 text-xs font-semibold flex items-center justify-center gap-1.5"
+                    >
+                      <Check className="w-4 h-4" />
+                      <span>Connected</span>
+                    </button>
+                  ) : connectionState === 'pending' ? (
+                    <button
+                      disabled
+                      className="flex-1 sm:flex-none min-h-[42px] px-3.5 py-2 rounded-xl bg-amber-50 border border-amber-500/30 text-amber-800 text-xs font-semibold flex items-center justify-center gap-1.5"
+                    >
+                      <Clock className="w-4 h-4" />
+                      <span>Pending</span>
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => setIsConnectModalOpen(true)}
+                      className="depth-btn-primary flex-1 sm:flex-none min-h-[42px] px-4 py-2 rounded-xl text-white text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer"
+                    >
+                      <UserPlus className="w-3.5 h-3.5" />
+                      <span>Connect</span>
+                    </button>
+                  )
+                )}
 
-                <button
-                  onClick={() => {
-                    window.history.pushState({}, '', `/brand/contracts/new?creatorId=${creator.id}`);
-                    window.dispatchEvent(new PopStateEvent('popstate'));
-                  }}
-                  className="depth-btn-primary flex-1 sm:flex-none min-h-[42px] px-4 py-2 rounded-xl text-white text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer"
-                >
-                  <FileText className="w-3.5 h-3.5" />
-                  <span>Create Contract</span>
-                </button>
+                {/* Share Profile */}
+                {profileActions.canShare && (
+                  <button
+                    onClick={handleShare}
+                    className="depth-btn-secondary flex-1 sm:flex-none min-h-[42px] px-3.5 py-2 rounded-xl text-zinc-800 text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer"
+                  >
+                    <Share2 className="w-3.5 h-3.5 text-zinc-500" />
+                    <span>Share Profile</span>
+                  </button>
+                )}
+
+                {/* Message */}
+                {profileActions.canMessage && (
+                  <button
+                    onClick={handleMessageClick}
+                    className="depth-btn-secondary flex-1 sm:flex-none min-h-[42px] px-3.5 py-2 rounded-xl text-zinc-800 text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer"
+                  >
+                    <MessageSquare className="w-3.5 h-3.5 text-zinc-500" />
+                    <span>Message</span>
+                  </button>
+                )}
+
+                {role === 'business' && (
+                  <button
+                    onClick={() => {
+                      window.history.pushState({}, '', `/brand/contracts/new?creatorId=${creator.id}`);
+                      window.dispatchEvent(new PopStateEvent('popstate'));
+                    }}
+                    className="depth-btn-primary flex-1 sm:flex-none min-h-[42px] px-4 py-2 rounded-xl text-white text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer"
+                  >
+                    <FileText className="w-3.5 h-3.5" />
+                    <span>Create Contract</span>
+                  </button>
+                )}
               </>
             )}
           </div>
@@ -935,6 +984,13 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
           verified: creator.verified,
           bio: creator.bio,
         }}
+      />
+
+      {/* Approach Creator Modal */}
+      <ApproachCreatorModal
+        isOpen={isApproachModalOpen}
+        onClose={() => setIsApproachModalOpen(false)}
+        creator={creator}
       />
 
       {/* Blog Article Reader Modal */}

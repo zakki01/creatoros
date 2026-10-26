@@ -23,6 +23,7 @@ import { ConnectModal } from './ConnectModal';
 import { BlogPostModal } from './BlogPostModal';
 import { PitchToBrandModal } from './PitchToBrandModal';
 import { ShareProfileModal } from './ShareProfileModal';
+import { resolveProfileActions } from '../../services/profileActionResolver';
 import { Send, Share2 } from 'lucide-react';
 import { SocialPost } from '../../types/socialFeed';
 
@@ -63,13 +64,20 @@ export const BrandProfileModal: React.FC<BrandProfileModalProps> = ({
   },
   onOpenMessage,
 }) => {
-  const { connections, socialPosts, setCreatorActiveTab } = useAppState();
+  const { connections, socialPosts, setCreatorActiveTab, role, userProfile } = useAppState();
   const [activeTab, setActiveTab] = useState<'about' | 'content' | 'reels' | 'shots' | 'blogs' | 'campaigns'>('about');
   const [isConnectModalOpen, setIsConnectModalOpen] = useState(false);
   const [selectedBlogModal, setSelectedBlogModal] = useState<SocialPost | null>(null);
   const [isPitchModalOpen, setIsPitchModalOpen] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [targetCampaignPitch, setTargetCampaignPitch] = useState<string | undefined>(undefined);
+
+  const isOwnProfile = userProfile?.id === brandData.id;
+  const profileActions = resolveProfileActions({
+    viewerRole: role,
+    profileRole: 'business',
+    isOwnProfile,
+  });
 
   const brandShots = socialPosts.filter(
     (p) =>
@@ -213,62 +221,72 @@ export const BrandProfileModal: React.FC<BrandProfileModalProps> = ({
                 </div>
               </div>
 
-              {/* Action Buttons */}
+              {/* Action Buttons (Strict Profile Relationship Resolution) */}
               <div className="flex flex-wrap items-center gap-2 shrink-0">
                 {/* Primary: Pitch to Brand */}
-                <button
-                  onClick={() => {
-                    setTargetCampaignPitch(undefined);
-                    setIsPitchModalOpen(true);
-                  }}
-                  className="min-h-[42px] px-4 py-2 rounded-xl bg-[#007E93] hover:bg-[#006779] text-white text-xs font-semibold flex items-center justify-center gap-1.5 shadow-sm transition-all cursor-pointer active:scale-95"
-                >
-                  <Send className="w-3.5 h-3.5" />
-                  <span>Pitch to Brand</span>
-                </button>
-
-                {/* Share Profile */}
-                <button
-                  onClick={() => setIsShareModalOpen(true)}
-                  className="min-h-[42px] px-3 py-2 rounded-xl bg-white shadow-sm hover:bg-zinc-100 border border-black/[0.08] text-zinc-800 text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer"
-                >
-                  <Share2 className="w-3.5 h-3.5 text-zinc-500" />
-                  <span>Share</span>
-                </button>
-
-                {connectionState === 'connected' ? (
+                {profileActions.canPitch && (
                   <button
-                    disabled
-                    className="min-h-[42px] px-3.5 py-2 rounded-xl bg-emerald-50 border border-emerald-500/30 text-emerald-700 text-xs font-semibold flex items-center justify-center gap-1.5"
+                    onClick={() => {
+                      setTargetCampaignPitch(undefined);
+                      setIsPitchModalOpen(true);
+                    }}
+                    className="min-h-[42px] px-4 py-2 rounded-xl bg-[#007E93] hover:bg-[#006779] text-white text-xs font-semibold flex items-center justify-center gap-1.5 shadow-sm transition-all cursor-pointer active:scale-95"
                   >
-                    <Check className="w-3.5 h-3.5" />
-                    <span>Connected ✓</span>
-                  </button>
-                ) : connectionState === 'pending' ? (
-                  <button
-                    disabled
-                    className="min-h-[42px] px-3.5 py-2 rounded-xl bg-amber-50 border border-amber-500/30 text-amber-800 text-xs font-semibold flex items-center justify-center gap-1.5"
-                  >
-                    <Clock className="w-3.5 h-3.5" />
-                    <span>Pending</span>
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => setIsConnectModalOpen(true)}
-                    className="min-h-[42px] px-3.5 py-2 rounded-xl bg-zinc-100 hover:bg-zinc-200 border border-zinc-200 text-zinc-800 text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer active:scale-95"
-                  >
-                    <UserPlus className="w-3.5 h-3.5" />
-                    <span>Connect</span>
+                    <Send className="w-3.5 h-3.5" />
+                    <span>Pitch to Brand</span>
                   </button>
                 )}
 
-                <button
-                  onClick={handleMessageClick}
-                  className="min-h-[42px] px-3.5 py-2 rounded-xl bg-white shadow-sm hover:bg-zinc-100 border border-black/[0.08] text-zinc-800 text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer"
-                >
-                  <MessageSquare className="w-3.5 h-3.5 text-zinc-500" />
-                  <span>Message</span>
-                </button>
+                {/* Share Profile */}
+                {profileActions.canShare && (
+                  <button
+                    onClick={() => setIsShareModalOpen(true)}
+                    className="min-h-[42px] px-3 py-2 rounded-xl bg-white shadow-sm hover:bg-zinc-100 border border-black/[0.08] text-zinc-800 text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                  >
+                    <Share2 className="w-3.5 h-3.5 text-zinc-500" />
+                    <span>Share</span>
+                  </button>
+                )}
+
+                {/* Direct Message */}
+                {profileActions.canMessage && (
+                  <button
+                    onClick={handleMessageClick}
+                    className="min-h-[42px] px-3.5 py-2 rounded-xl bg-white shadow-sm hover:bg-zinc-100 border border-black/[0.08] text-zinc-800 text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                  >
+                    <MessageSquare className="w-3.5 h-3.5 text-zinc-500" />
+                    <span>Message</span>
+                  </button>
+                )}
+
+                {/* Connect is strictly guarded by relationship resolver (Never allowed for Creator -> Brand) */}
+                {profileActions.canConnect && (
+                  connectionState === 'connected' ? (
+                    <button
+                      disabled
+                      className="min-h-[42px] px-3.5 py-2 rounded-xl bg-emerald-50 border border-emerald-500/30 text-emerald-700 text-xs font-semibold flex items-center justify-center gap-1.5"
+                    >
+                      <Check className="w-3.5 h-3.5" />
+                      <span>Connected ✓</span>
+                    </button>
+                  ) : connectionState === 'pending' ? (
+                    <button
+                      disabled
+                      className="min-h-[42px] px-3.5 py-2 rounded-xl bg-amber-50 border border-amber-500/30 text-amber-800 text-xs font-semibold flex items-center justify-center gap-1.5"
+                    >
+                      <Clock className="w-3.5 h-3.5" />
+                      <span>Pending</span>
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => setIsConnectModalOpen(true)}
+                      className="min-h-[42px] px-3.5 py-2 rounded-xl bg-zinc-100 hover:bg-zinc-200 border border-zinc-200 text-zinc-800 text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer active:scale-95"
+                    >
+                      <UserPlus className="w-3.5 h-3.5" />
+                      <span>Connect</span>
+                    </button>
+                  )
+                )}
               </div>
             </div>
 

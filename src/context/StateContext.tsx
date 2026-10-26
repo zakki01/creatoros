@@ -30,6 +30,7 @@ import {
 import { AiCampaignEngine } from '../services/aiService';
 import { AuthUser, AuthMode, AuthTab } from '../features/auth/types';
 import { AuthService } from '../features/auth/services/authService';
+import { validateRelationshipAction } from '../services/profileActionResolver';
 import {
   BusinessRole,
   CreatorRole,
@@ -244,7 +245,23 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     return AuthService.getStoredSession() ? 'app' : 'welcome';
   });
   const [authTab, setAuthTab] = useState<AuthTab>('login');
-  const [creatorActiveTab, setCreatorActiveTab] = useState<string>('home');
+  const [creatorActiveTab, setCreatorActiveTabState] = useState<string>(() => {
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      const tabParam = urlParams.get('tab');
+      if (tabParam) return tabParam;
+      return localStorage.getItem('creatoros_creator_active_tab') || 'home';
+    } catch {
+      return 'home';
+    }
+  });
+
+  const setCreatorActiveTab = (tab: string) => {
+    setCreatorActiveTabState(tab);
+    try {
+      localStorage.setItem('creatoros_creator_active_tab', tab);
+    } catch {}
+  };
 
   const [role, setRoleState] = useState<UserRole>(() => {
     const session = AuthService.getStoredSession();
@@ -1515,6 +1532,19 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     targetRole: 'creator' | 'business' | 'super_admin',
     message?: string
   ) => {
+    // Relationship Action Policy Authorization
+    const authCheck = validateRelationshipAction(
+      'connect',
+      role,
+      targetRole === 'business' ? 'business' : 'creator',
+      userProfile?.id === targetId
+    );
+
+    if (!authCheck.allowed) {
+      console.warn(`[RelationshipPolicy] Connection rejected: ${authCheck.reason}`);
+      return;
+    }
+
     setConnections((prev) => ({
       ...prev,
       [targetId]: 'pending',

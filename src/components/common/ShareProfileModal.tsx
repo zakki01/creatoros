@@ -35,10 +35,12 @@ export const ShareProfileModal: React.FC<ShareProfileModalProps> = ({
   onClose,
   profileData,
 }) => {
-  const { conversations, sendDirectMessage, setActiveConversationId, setCreatorActiveTab } =
+  const { conversations, sendDirectMessage, setActiveConversationId, setCreatorActiveTab, campaigns, inviteCreator, role } =
     useAppState();
   const [copied, setCopied] = useState(false);
   const [sentChatId, setSentChatId] = useState<string | null>(null);
+  const [selectedCampaignId, setSelectedCampaignId] = useState(campaigns[0]?.id || '');
+  const [campaignShared, setCampaignShared] = useState(false);
 
   if (!isOpen) return null;
 
@@ -48,6 +50,29 @@ export const ShareProfileModal: React.FC<ShareProfileModalProps> = ({
     navigator.clipboard.writeText(publicUrl);
     setCopied(true);
     setTimeout(() => setCopied(false), 2200);
+  };
+
+  const handleNativeShare = async () => {
+    if (typeof navigator !== 'undefined' && (navigator as any).share) {
+      try {
+        await (navigator as any).share({
+          title: `${profileData.name} on CreatorOS`,
+          text: `Check out ${profileData.name} (${profileData.handle}) on CreatorOS`,
+          url: publicUrl,
+        });
+      } catch (err) {
+        // User cancelled or share dismissed
+      }
+    } else {
+      handleCopyLink();
+    }
+  };
+
+  const handleShareToCampaign = () => {
+    if (!selectedCampaignId) return;
+    inviteCreator(profileData.id, selectedCampaignId, 25000);
+    setCampaignShared(true);
+    setTimeout(() => setCampaignShared(false), 2500);
   };
 
   const handleShareToConversation = (conversationId: string) => {
@@ -121,7 +146,7 @@ export const ShareProfileModal: React.FC<ShareProfileModalProps> = ({
             </div>
           </div>
 
-          {/* 1. Copy Public Link */}
+          {/* 1. Copy Public Link & Native Share */}
           <div className="space-y-1.5">
             <label className="text-xs font-semibold text-zinc-800 block">Public Profile URL</label>
             <div className="flex items-center gap-2">
@@ -131,13 +156,54 @@ export const ShareProfileModal: React.FC<ShareProfileModalProps> = ({
               <button
                 type="button"
                 onClick={handleCopyLink}
-                className="px-4 py-2 text-xs font-semibold rounded-xl bg-[#007E93] hover:bg-[#006779] text-white flex items-center gap-1.5 shrink-0 transition-all cursor-pointer active:scale-95 shadow-xs"
+                className="px-3.5 py-2 text-xs font-semibold rounded-xl bg-[#007E93] hover:bg-[#006779] text-white flex items-center gap-1.5 shrink-0 transition-all cursor-pointer active:scale-95 shadow-xs"
               >
                 {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
-                <span>{copied ? 'Copied!' : 'Copy Link'}</span>
+                <span>{copied ? 'Copied!' : 'Copy'}</span>
+              </button>
+              <button
+                type="button"
+                onClick={handleNativeShare}
+                className="px-3 py-2 text-xs font-semibold rounded-xl bg-zinc-100 hover:bg-zinc-200 text-zinc-800 border border-zinc-200 flex items-center gap-1.5 shrink-0 transition-all cursor-pointer active:scale-95 shadow-xs"
+                title="Share via device system dialog"
+              >
+                <Share2 className="w-3.5 h-3.5 text-zinc-600" />
+                <span>Share...</span>
               </button>
             </div>
           </div>
+
+          {/* Share to Brand Campaign */}
+          {role === 'business' && profileData.role === 'creator' && campaigns.length > 0 && (
+            <div className="space-y-2 p-3.5 rounded-2xl bg-teal-50/60 border border-teal-200/60">
+              <label className="text-xs font-semibold text-teal-900 flex items-center justify-between">
+                <span>Add Creator to Campaign Brief</span>
+                <span className="text-[10px] text-teal-700 font-mono">Brand Workspace</span>
+              </label>
+              <div className="flex items-center gap-2">
+                <select
+                  value={selectedCampaignId}
+                  onChange={(e) => setSelectedCampaignId(e.target.value)}
+                  className="flex-1 px-3 py-2 text-xs bg-white rounded-xl border border-teal-200 text-zinc-800 focus:outline-none focus:ring-1 focus:ring-[#007E93]"
+                >
+                  {campaigns.map((c) => (
+                    <option key={c.id} value={c.id}>
+                      {c.name} ({c.brandName})
+                    </option>
+                  ))}
+                </select>
+                <button
+                  type="button"
+                  onClick={handleShareToCampaign}
+                  disabled={campaignShared}
+                  className="px-3.5 py-2 text-xs font-semibold rounded-xl bg-[#007E93] hover:bg-[#006779] text-white flex items-center gap-1.5 shrink-0 transition-all cursor-pointer shadow-xs active:scale-95"
+                >
+                  {campaignShared ? <Check className="w-3.5 h-3.5" /> : <Send className="w-3.5 h-3.5" />}
+                  <span>{campaignShared ? 'Added ✓' : 'Add to Brief'}</span>
+                </button>
+              </div>
+            </div>
+          )}
 
           {/* 2. Send Direct to Active Conversations */}
           <div className="space-y-2">
