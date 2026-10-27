@@ -35,7 +35,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
   return (
     <nav
       aria-label="Mobile Bottom Navigation"
-      className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/92 backdrop-blur-2xl rounded-t-2xl border-t border-black/[0.08] shadow-lg px-1.5 pt-1 pb-[calc(0.25rem+env(safe-area-inset-bottom,0px))] flex items-center justify-around"
+      className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[var(--surface-glass-strong)] backdrop-blur-2xl rounded-t-2xl border-t border-[var(--border)] shadow-lg text-[var(--text-primary)] px-1.5 pt-1 pb-[calc(0.25rem+env(safe-area-inset-bottom,0px))] flex items-center justify-around"
     >
       {items.map((item) => {
         const Icon = item.icon;
@@ -53,8 +53,8 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
               'relative flex flex-col items-center justify-center min-w-[52px] min-h-[44px] py-1 px-1.5 rounded-xl transition-all cursor-pointer select-none',
               'focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00B4D8]',
               isActive
-                ? clsx(activeColorStyles[accentColor], 'bg-black/[0.04] shadow-xs')
-                : 'text-zinc-500 hover:text-zinc-800'
+                ? clsx(activeColorStyles[accentColor], 'bg-[var(--surface-muted)] shadow-xs')
+                : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
             )}
           >
             <div className="relative flex items-center justify-center">
@@ -87,7 +87,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
             <span
               className={clsx(
                 'text-[10px] tracking-tight mt-1 transition-colors leading-none',
-                isActive ? 'text-zinc-900 font-semibold' : 'text-zinc-500 font-normal'
+                isActive ? 'text-[var(--text-primary)] font-semibold' : 'text-[var(--text-muted)] font-normal'
               )}
             >
               {item.label}

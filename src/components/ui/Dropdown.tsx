@@ -38,7 +38,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
         <div role="menu" className="flex flex-col">
           {items.map((item, idx) => {
             if (item.divider) {
-              return <div key={`div-${idx}`} className="my-1.5 border-t border-zinc-200" />;
+              return <div key={`div-${idx}`} className="my-1.5 border-t border-[var(--border)]" />;
             }
 
             return (
@@ -55,8 +55,8 @@ export const Dropdown: React.FC<DropdownProps> = ({
                   // Ensure minimum comfortable tap target
                   'min-h-[44px]',
                   item.danger
-                    ? 'text-rose-600 hover:text-rose-700 hover:bg-rose-50'
-                    : 'text-zinc-700 hover:text-zinc-900 hover:bg-zinc-100',
+                    ? 'text-rose-600 dark:text-rose-400 hover:bg-rose-500/10'
+                    : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-muted)]',
                   item.disabled && 'opacity-40 cursor-not-allowed pointer-events-none'
                 )}
               >

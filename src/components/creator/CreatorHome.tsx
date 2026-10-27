@@ -204,7 +204,7 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
         >
           <div className="flex items-start justify-between gap-3">
             <div className="flex items-center gap-3">
-              <div className="w-11 h-11 rounded-2xl bg-amber-50 border border-amber-200 text-amber-700 flex items-center justify-center shadow-xs shrink-0">
+              <div className="w-11 h-11 rounded-2xl bg-amber-500/10 border border-amber-500/25 text-amber-700 flex items-center justify-center shadow-xs shrink-0">
                 <FileText className="w-5 h-5" />
               </div>
               <div>
@@ -220,7 +220,7 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
             <span className="text-lg font-bold font-mono text-emerald-700">$1,500</span>
           </div>
 
-          <div className="flex items-center justify-between pt-2 border-t border-zinc-200">
+          <div className="flex items-center justify-between pt-2 border-t border-[var(--border)]">
             <span className="text-xs text-zinc-500 font-mono">Summer Capsule · 2 Deliverables</span>
             <Button
               variant="primary"
@@ -281,16 +281,16 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
             <Film className="w-4 h-4 text-zinc-500" />
           </div>
           <div className="grid grid-cols-3 gap-2 pt-0.5 text-center">
-            <div className="p-2 rounded-xl bg-zinc-50 border border-zinc-200">
-              <span className="text-base font-bold font-mono text-zinc-900">{draftsCount}</span>
+            <div className="p-2 rounded-xl bg-[var(--surface-muted)] border border-[var(--border)]">
+              <span className="text-base font-bold font-mono text-[var(--text-primary)]">{draftsCount}</span>
               <p className="text-[10px] text-zinc-500">Drafts</p>
             </div>
-            <div className="p-2 rounded-xl bg-amber-50 border border-amber-200">
-              <span className="text-base font-bold font-mono text-amber-800">{pendingApprovalCount}</span>
+            <div className="p-2 rounded-xl bg-amber-500/10 border border-amber-500/25">
+              <span className="text-base font-bold font-mono text-amber-700 dark:text-amber-400">{pendingApprovalCount}</span>
               <p className="text-[10px] text-amber-700">Pending</p>
             </div>
-            <div className="p-2 rounded-xl bg-emerald-50 border border-emerald-200">
-              <span className="text-base font-bold font-mono text-emerald-800">{approvedCount}</span>
+            <div className="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/25">
+              <span className="text-base font-bold font-mono text-emerald-700 dark:text-emerald-400">{approvedCount}</span>
               <p className="text-[10px] text-emerald-700">Approved</p>
             </div>
           </div>
@@ -400,7 +400,7 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
                   <span className="text-zinc-500 text-[11px]">Milestone</span>
                   <span className="font-semibold text-emerald-700 text-[11px]">Draft Review</span>
                 </div>
-                <div className="w-full bg-zinc-200 h-1.5 rounded-full overflow-hidden">
+                <div className="w-full bg-[var(--surface-recessed)] h-1.5 rounded-full overflow-hidden">
                   <div className="bg-gradient-to-r from-[#00B4D8] to-emerald-500 h-full rounded-full w-2/3" />
                 </div>
                 <div className="flex justify-between text-[10px] text-zinc-500 font-mono">

@@ -22,13 +22,13 @@ export const Badge: React.FC<BadgeProps> = ({
   };
 
   const variantStyles = {
-    brand: 'bg-sky-50 text-sky-800 border border-sky-200/90',
-    purple: 'bg-purple-50 text-purple-800 border border-purple-200/90',
-    success: 'bg-emerald-50 text-emerald-800 border border-emerald-200/90',
-    warning: 'bg-amber-50 text-amber-800 border border-amber-200/90',
-    danger: 'bg-rose-50 text-rose-800 border border-rose-200/90',
-    neutral: 'bg-zinc-100 text-zinc-700 border border-zinc-200',
-    outline: 'bg-transparent text-zinc-600 border border-zinc-300',
+    brand: 'bg-sky-500/10 text-sky-700 dark:text-sky-300 border border-sky-500/25',
+    purple: 'bg-purple-500/10 text-purple-700 dark:text-purple-300 border border-purple-500/25',
+    success: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/25',
+    warning: 'bg-amber-500/10 text-amber-700 dark:text-amber-300 border border-amber-500/25',
+    danger: 'bg-rose-500/10 text-rose-700 dark:text-rose-300 border border-rose-500/25',
+    neutral: 'bg-[var(--surface-muted)] text-[var(--text-secondary)] border border-[var(--border)]',
+    outline: 'bg-transparent text-[var(--text-secondary)] border border-[var(--border)]',
   };
 
   const dotColors = {

@@ -155,7 +155,7 @@ export const TopBar: React.FC<TopBarProps> = ({
               <div className="px-3.5 py-2.5 border-b border-[var(--border)] bg-[var(--surface-muted)]/50">
                 <div className="flex items-center justify-between gap-2">
                   <p className="text-xs font-semibold text-[var(--text-primary)] truncate">{userProfile.name}</p>
-                  <span className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-sky-50 text-sky-800 border border-sky-200">
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-sky-500/10 text-sky-700 dark:text-sky-300 border border-sky-500/25">
                     {role === 'super_admin' ? 'Admin' : role === 'business' ? 'Brand' : 'Creator'}
                   </span>
                 </div>
@@ -165,7 +165,7 @@ export const TopBar: React.FC<TopBarProps> = ({
                     <User className="w-3 h-3 text-zinc-500" />
                     {role === 'business' ? businessRole : creatorRole}
                   </span>
-                  <span className="text-amber-700 font-medium">Pro • {trialDaysLeft}d left</span>
+                  <span className="text-amber-600 dark:text-amber-400 font-medium">Pro • {trialDaysLeft}d left</span>
                 </div>
               </div>
 
@@ -176,7 +176,7 @@ export const TopBar: React.FC<TopBarProps> = ({
                     setIsProModalOpen(true);
                     close();
                   }}
-                  className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium text-amber-700 hover:text-amber-800 hover:bg-amber-50 transition-colors cursor-pointer select-none"
+                  className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium text-amber-600 dark:text-amber-400 hover:bg-amber-500/10 transition-colors cursor-pointer select-none"
                 >
                   <Zap className="w-3.5 h-3.5 text-amber-600" />
                   <span>Upgrade to Pro Plan</span>
@@ -200,7 +200,7 @@ export const TopBar: React.FC<TopBarProps> = ({
                     logout();
                     close();
                   }}
-                  className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs text-rose-600 hover:text-rose-700 hover:bg-rose-50 transition-colors cursor-pointer select-none"
+                  className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs text-rose-600 dark:text-rose-400 hover:bg-rose-500/10 transition-colors cursor-pointer select-none"
                 >
                   <LogOut className="w-3.5 h-3.5 text-rose-600" />
                   <span>Sign Out</span>

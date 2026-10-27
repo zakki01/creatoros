@@ -98,7 +98,7 @@ export const Popover: React.FC<PopoverProps> = ({
         <div
           role="region"
           className={clsx(
-            'absolute z-50 min-w-[200px] overflow-hidden rounded-xl bg-white text-zinc-900 border border-zinc-200 shadow-xl shadow-black/10',
+            'absolute z-50 min-w-[200px] overflow-hidden rounded-2xl bg-[var(--surface-elevated)] text-[var(--text-primary)] border border-[var(--border)] shadow-xl shadow-black/20',
             'animate-in fade-in zoom-in-95 duration-150',
             placementStyles[placement][align],
             className

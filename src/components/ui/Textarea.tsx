@@ -52,12 +52,12 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
       <div className="w-full space-y-1.5">
         <div className="flex items-center justify-between">
           {label && (
-            <label className="block text-xs font-medium text-zinc-700">
+            <label className="block text-xs font-medium text-[var(--text-secondary)]">
               {label}
             </label>
           )}
           {showCharCount && maxLength && (
-            <span className="text-[11px] text-zinc-500">
+            <span className="text-[11px] text-[var(--text-muted)]">
               {currentLen}/{maxLength}
             </span>
           )}
@@ -76,8 +76,8 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
               }
             }}
             className={clsx(
-              'w-full bg-white text-zinc-900 placeholder-zinc-400 text-sm rounded-xl',
-              'border border-zinc-300 shadow-sm focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] focus:outline-none',
+              'w-full bg-[var(--surface)] text-[var(--text-primary)] placeholder-[var(--text-muted)] text-sm rounded-xl',
+              'border border-[var(--border)] shadow-xs focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] focus:outline-none',
               'transition-colors duration-150 py-2.5 px-3.5 resize-none leading-relaxed',
               error && 'border-rose-500 focus:border-rose-500 focus:ring-rose-500',
               className
@@ -89,7 +89,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         {error ? (
           <p className="text-xs text-rose-600 mt-1">{error}</p>
         ) : helperText ? (
-          <p className="text-xs text-zinc-500 mt-1">{helperText}</p>
+          <p className="text-xs text-[var(--text-muted)] mt-1">{helperText}</p>
         ) : null}
       </div>
     );

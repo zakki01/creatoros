@@ -61,7 +61,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
       {isVisible && !disabled && content && (
         <span
           role="tooltip"
-          className={`absolute ${positionClasses[position]} z-50 px-2 py-0.5 text-[11px] font-medium text-zinc-900 bg-white/95 border border-black/[0.08] rounded-md shadow-lg backdrop-blur-md whitespace-nowrap pointer-events-none animate-in fade-in zoom-in-95 duration-150`}
+          className={`absolute ${positionClasses[position]} z-50 px-2 py-0.5 text-[11px] font-medium text-[var(--text-primary)] bg-[var(--surface-elevated)] border border-[var(--border)] rounded-lg shadow-lg backdrop-blur-md whitespace-nowrap pointer-events-none animate-in fade-in zoom-in-95 duration-150`}
         >
           {content}
         </span>

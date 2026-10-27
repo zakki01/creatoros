@@ -34,13 +34,13 @@ export const Button: React.FC<ButtonProps> = ({
     primary:
       'depth-btn-primary text-white font-semibold focus:ring-[#007E93] active:translate-y-[1px]',
     secondary:
-      'depth-btn-secondary text-zinc-900 font-medium focus:ring-zinc-400 active:translate-y-[1px]',
+      'depth-btn-secondary text-[var(--text-primary)] font-medium focus:ring-zinc-400 active:translate-y-[1px]',
     outline:
-      'bg-white hover:bg-zinc-50 text-zinc-800 hover:text-zinc-950 border border-zinc-200/90 hover:border-zinc-300 shadow-sm active:translate-y-[1px] focus:ring-zinc-400',
+      'bg-[var(--surface)] hover:bg-[var(--surface-muted)] text-[var(--text-primary)] border border-[var(--border)] shadow-sm active:translate-y-[1px] focus:ring-zinc-400',
     ghost:
-      'bg-transparent hover:bg-black/[0.05] text-zinc-600 hover:text-zinc-900 focus:ring-zinc-400',
+      'bg-transparent hover:bg-[var(--surface-muted)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] focus:ring-zinc-400',
     danger:
-      'bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 shadow-sm hover:-translate-y-[1px] active:translate-y-[1px] focus:ring-rose-500',
+      'bg-rose-500/10 hover:bg-rose-500/20 text-rose-600 dark:text-rose-400 border border-rose-500/25 shadow-sm hover:-translate-y-[1px] active:translate-y-[1px] focus:ring-rose-500',
     ai:
       'bg-gradient-to-r from-[#078FA5] to-[#006C80] text-white border border-[#006779]/20 shadow-sm hover:-translate-y-[1px] active:translate-y-[1px] focus:ring-[#007E93]',
   };

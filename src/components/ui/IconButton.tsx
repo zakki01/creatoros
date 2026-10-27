@@ -42,15 +42,15 @@ export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
 
     const variantStyles = {
       ghost:
-        'bg-transparent hover:bg-zinc-100 active:bg-zinc-200 text-zinc-600 hover:text-zinc-900 border-transparent',
+        'bg-transparent hover:bg-[var(--surface-muted)] active:bg-[var(--surface-recessed)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] border-transparent',
       subtle:
-        'bg-white hover:bg-zinc-50 active:bg-zinc-100 text-zinc-700 hover:text-zinc-900 border border-zinc-200 shadow-sm',
+        'bg-[var(--surface)] hover:bg-[var(--surface-muted)] active:bg-[var(--surface-recessed)] text-[var(--text-primary)] border border-[var(--border)] shadow-xs',
       outline:
-        'bg-white hover:bg-zinc-50 active:bg-zinc-100 text-zinc-700 hover:text-zinc-900 border border-zinc-300',
+        'bg-[var(--surface)] hover:bg-[var(--surface-muted)] active:bg-[var(--surface-recessed)] text-[var(--text-primary)] border border-[var(--border)]',
       primary:
         'bg-[#007E93] hover:bg-[#006779] active:bg-[#005564] text-white shadow-sm shadow-teal-900/15 border border-[#006779]/25',
       danger:
-        'bg-rose-50 hover:bg-rose-100 active:bg-rose-200 text-rose-700 hover:text-rose-800 border border-rose-200',
+        'bg-rose-500/10 hover:bg-rose-500/20 active:bg-rose-500/25 text-rose-600 dark:text-rose-400 border border-rose-500/25',
     };
 
     const badgeColorStyles = {

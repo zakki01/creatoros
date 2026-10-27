@@ -53,7 +53,7 @@ export const Modal: React.FC<ModalProps> = ({
       {/* Modal Dialog (Surface 4 Floating Elevation) */}
       <div
         className={clsx(
-          'relative w-full h-full sm:h-auto max-h-full sm:max-h-[92vh] rounded-none sm:rounded-3xl bg-white text-zinc-900 border-0 sm:border border-black/[0.08] shadow-2xl flex flex-col z-10 overflow-hidden animate-slide-up',
+          'relative w-full h-full sm:h-auto max-h-full sm:max-h-[92vh] rounded-none sm:rounded-3xl bg-[var(--surface-elevated)] text-[var(--text-primary)] border-0 sm:border border-[var(--border)] shadow-2xl flex flex-col z-10 overflow-hidden animate-slide-up',
           maxWidths[maxWidth]
         )}
       >
@@ -64,33 +64,33 @@ export const Modal: React.FC<ModalProps> = ({
         />
 
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-200/80 bg-zinc-50/80">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--border)] bg-[var(--surface-muted)]/80 text-[var(--text-primary)]">
           <div>
             {typeof title === 'string' ? (
-              <h2 className="text-base sm:text-lg font-semibold text-zinc-900 font-display tracking-tight">
+              <h2 className="text-base sm:text-lg font-semibold text-[var(--text-primary)] font-display tracking-tight">
                 {title}
               </h2>
             ) : (
               title
             )}
             {description && (
-              <p className="text-xs text-zinc-500 mt-0.5">{description}</p>
+              <p className="text-xs text-[var(--text-muted)] mt-0.5">{description}</p>
             )}
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-xl text-zinc-400 hover:text-zinc-800 hover:bg-black/[0.05] transition-colors"
+            className="p-1.5 rounded-xl text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-muted)] transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Content */}
-        <div className="px-6 py-5 overflow-y-auto flex-1 text-zinc-900">{children}</div>
+        <div className="px-6 py-5 overflow-y-auto flex-1 text-[var(--text-primary)]">{children}</div>
 
         {/* Footer */}
         {footer && (
-          <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-zinc-200/80 bg-zinc-50/90">
+          <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-[var(--border)] bg-[var(--surface-muted)]/80">
             {footer}
           </div>
         )}

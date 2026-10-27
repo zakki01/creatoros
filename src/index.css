@@ -403,6 +403,31 @@
   transform: translateY(-1px);
 }
 
+[data-theme="dark"] .depth-btn-secondary,
+.dark .depth-btn-secondary {
+  background: linear-gradient(180deg, #222938 0%, #171C26 100%);
+  color: #F8FAFC;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-top-color: rgba(255, 255, 255, 0.22);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.1), 0 2px 6px -1px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .depth-btn-secondary:hover:not(:disabled),
+.dark .depth-btn-secondary:hover:not(:disabled) {
+  background: linear-gradient(180deg, #2A3346 0%, #1C2330 100%);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #FFFFFF;
+}
+
+[data-theme="dark"] .spatial-dock,
+.dark .spatial-dock {
+  background: rgba(21, 25, 33, 0.90);
+  border-color: rgba(255, 255, 255, 0.08);
+  border-top-color: rgba(255, 255, 255, 0.16);
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5), inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+}
+
+
 /* Floating Glass Dock */
 .spatial-dock {
   background: rgba(255, 255, 255, 0.92);
