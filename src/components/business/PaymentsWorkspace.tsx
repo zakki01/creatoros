@@ -44,28 +44,28 @@ export const PaymentsWorkspace: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl sm:text-3xl font-bold text-zinc-900 font-display">
+            <h1 className="text-2xl sm:text-3xl font-bold text-[var(--text-primary)] font-display">
               Payments & Milestone Escrow
             </h1>
             <Badge variant="brand" size="sm">
               Secured Payouts
             </Badge>
           </div>
-          <p className="text-sm text-zinc-500 mt-1">
+          <p className="text-sm text-[var(--text-secondary)] mt-1">
             Automated milestone escrow releases: Contract Signature → Advance → Content Approval → Final Drop.
           </p>
         </div>
 
         <div className="flex items-center gap-3">
-          <Card className="px-4 py-2 border border-emerald-200 bg-emerald-50 text-center">
-            <span className="text-[10px] text-zinc-600 uppercase">Total Settled</span>
-            <p className="text-sm font-bold font-mono text-emerald-700">
+          <Card className="px-4 py-2 border border-emerald-500/30 bg-emerald-500/10 text-center">
+            <span className="text-[10px] text-[var(--text-secondary)] uppercase">Total Settled</span>
+            <p className="text-sm font-bold font-mono text-emerald-600 dark:text-emerald-400">
               ₹{(totalPaid / 1000).toLocaleString()}k
             </p>
           </Card>
-          <Card className="px-4 py-2 border border-amber-200 bg-amber-50 text-center">
-            <span className="text-[10px] text-zinc-600 uppercase">In Escrow</span>
-            <p className="text-sm font-bold font-mono text-amber-800">
+          <Card className="px-4 py-2 border border-amber-500/30 bg-amber-500/10 text-center">
+            <span className="text-[10px] text-[var(--text-secondary)] uppercase">In Escrow</span>
+            <p className="text-sm font-bold font-mono text-amber-600 dark:text-amber-400">
               ₹{(totalPending / 1000).toLocaleString()}k
             </p>
           </Card>
@@ -76,7 +76,7 @@ export const PaymentsWorkspace: React.FC = () => {
       <Card className="overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-white shadow-xs text-zinc-500 border-b border-zinc-200 uppercase text-[10px] font-semibold tracking-wider">
+            <thead className="bg-[var(--surface-muted)] text-[var(--text-secondary)] border-b border-[var(--border)] uppercase text-[10px] font-semibold tracking-wider">
               <tr>
                 <th className="py-3 px-4">Invoice #</th>
                 <th className="py-3 px-4">Creator</th>
@@ -91,7 +91,7 @@ export const PaymentsWorkspace: React.FC = () => {
             <tbody className="divide-y divide-zinc-200">
               {payments.map((p) => (
                 <tr key={p.id} className="hover:bg-zinc-100 transition-colors">
-                  <td className="py-3.5 px-4 font-mono text-zinc-500 font-medium">
+                  <td className="py-3.5 px-4 font-mono text-[var(--text-muted)] font-medium">
                     {p.invoiceNumber}
                   </td>
                   <td className="py-3.5 px-4">
@@ -104,19 +104,19 @@ export const PaymentsWorkspace: React.FC = () => {
                       <span className="font-semibold text-zinc-800">{p.creatorName}</span>
                     </div>
                   </td>
-                  <td className="py-3.5 px-4 text-zinc-500">{p.campaignName}</td>
+                  <td className="py-3.5 px-4 text-[var(--text-muted)]">{p.campaignName}</td>
                   <td className="py-3.5 px-4">
                     <span className="px-2 py-0.5 rounded-lg bg-slate-100 text-slate-700 text-[11px] font-medium border border-slate-200">
                       {p.milestone}
                     </span>
                   </td>
-                  <td className="py-3.5 px-4 font-mono font-bold text-zinc-900">
+                  <td className="py-3.5 px-4 font-mono font-bold text-[var(--text-primary)]">
                     ₹{p.amount.toLocaleString()}
                   </td>
                   <td className="py-3.5 px-4">{getStatusBadge(p.status)}</td>
-                  <td className="py-3.5 px-4 font-mono text-zinc-500">
+                  <td className="py-3.5 px-4 font-mono text-[var(--text-muted)]">
                     {p.paidDate ? (
-                      <span className="text-emerald-700 font-semibold">Paid on {p.paidDate}</span>
+                      <span className="text-emerald-600 dark:text-emerald-400 font-semibold">Paid on {p.paidDate}</span>
                     ) : (
                       <span>Due {p.dueDate}</span>
                     )}
@@ -132,12 +132,12 @@ export const PaymentsWorkspace: React.FC = () => {
                         Release Payout
                       </Button>
                     ) : p.status === 'paid' ? (
-                      <span className="text-xs text-zinc-500 font-mono flex items-center justify-end gap-1">
-                        <CheckCircle className="w-3.5 h-3.5 text-emerald-700" />
+                      <span className="text-xs text-[var(--text-muted)] font-mono flex items-center justify-end gap-1">
+                        <CheckCircle className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
                         <span>Completed</span>
                       </span>
                     ) : (
-                      <span className="text-xs text-zinc-500">Awaiting Content</span>
+                      <span className="text-xs text-[var(--text-muted)]">Awaiting Content</span>
                     )}
                   </td>
                 </tr>

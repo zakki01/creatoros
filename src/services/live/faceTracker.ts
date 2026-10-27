@@ -1,7 +1,8 @@
 /**
  * CreatorOS Realtime Computer Vision & Face Landmark Tracking Pipeline
  *
- * Backed by MediaPipe Face Landmarker (@mediapipe/tasks-vision) and ARCompositor.
+ * Backed by MediaPipe Face Landmarker (@mediapipe/tasks-vision), JeelizTrackerAdapter,
+ * and ARCompositor.
  * Eradicates heuristic skin-color guessing and mathematical approximations.
  * Computes authentic 478-point normalized facial landmarks, head roll angle in radians (atan2),
  * dynamic eye distance scale, and procedural AR accessories.
@@ -10,12 +11,24 @@
 import { FaceLandmarks, ARTrackingState, ARTrackerStatus } from '../../types';
 import { mediaPipeLandmarkerSingleton, MediaPipeLandmarkerService } from './mediaPipeLandmarker';
 import { ARCompositor, CREATOROS_EFFECTS_CATALOG } from './arCompositor';
+import { FaceTrackerFactory } from './faceTrackerFactory';
+import { IFaceTracker, FaceTrackerResult, FaceTrackerStatus, FaceTrackerEngineType } from './faceTrackerTypes';
 
-export { type FaceLandmarks, type ARTrackingState, type ARTrackerStatus };
+export {
+  type FaceLandmarks,
+  type ARTrackingState,
+  type ARTrackerStatus,
+  type IFaceTracker,
+  type FaceTrackerResult,
+  type FaceTrackerStatus,
+  type FaceTrackerEngineType,
+  FaceTrackerFactory,
+};
 
 export class RealtimeFaceTracker {
   private compositor: ARCompositor;
   private landmarker: MediaPipeLandmarkerService;
+  private tracker: IFaceTracker;
   private lastLandmarks: FaceLandmarks | null = null;
   private status: ARTrackerStatus = 'ready';
   private listeners = new Set<(state: ARTrackingState) => void>();
@@ -24,6 +37,7 @@ export class RealtimeFaceTracker {
   constructor() {
     this.compositor = new ARCompositor();
     this.landmarker = mediaPipeLandmarkerSingleton;
+    this.tracker = FaceTrackerFactory.getTracker();
 
     this.unsubLandmarker = this.landmarker.subscribe((arState, landmarks) => {
       if (arState === 'ar_unavailable') {
@@ -36,6 +50,15 @@ export class RealtimeFaceTracker {
       this.lastLandmarks = landmarks;
       this.notifyState();
     });
+  }
+
+  public getTrackerEngine(): IFaceTracker {
+    return this.tracker;
+  }
+
+  public setTrackerEngine(engine: FaceTrackerEngineType): void {
+    FaceTrackerFactory.setActiveEngine(engine);
+    this.tracker = FaceTrackerFactory.getTracker(engine);
   }
 
   public subscribeState(listener: (state: ARTrackingState) => void): () => void {
