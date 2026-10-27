@@ -153,42 +153,7 @@
     color: #F8FAFC !important;
   }
 
-  [data-theme="dark"] .bg-white {
-    background-color: #151921 !important;
-    color: #F8FAFC !important;
-  }
 
-  [data-theme="dark"] .bg-zinc-50 {
-    background-color: #1A1F2C !important;
-  }
-
-  [data-theme="dark"] .bg-zinc-100 {
-    background-color: #222938 !important;
-  }
-
-  [data-theme="dark"] .text-zinc-900 {
-    color: #F8FAFC !important;
-  }
-
-  [data-theme="dark"] .text-zinc-800 {
-    color: #E2E8F0 !important;
-  }
-
-  [data-theme="dark"] .text-zinc-700 {
-    color: #CBD5E1 !important;
-  }
-
-  [data-theme="dark"] .text-zinc-600,
-  [data-theme="dark"] .text-zinc-500 {
-    color: #94A3B8 !important;
-  }
-
-  [data-theme="dark"] .border-zinc-200,
-  [data-theme="dark"] .border-zinc-300,
-  [data-theme="dark"] .border-black\/\[0\.08\],
-  [data-theme="dark"] .border-black\/\[0\.06\] {
-    border-color: rgba(255, 255, 255, 0.08) !important;
-  }
 
   /* Interactive clickable elements */
   button,
@@ -258,42 +223,30 @@
   min-height: 44px;
 }
 
-/* Spatial Surface Hierarchy Classes (Light Studio) */
+/* Semantic Surface Hierarchy Classes */
 .surface-0 {
-  background-color: var(--surface-0);
+  background-color: var(--background);
 }
 
 .surface-1 {
-  background: #FFFFFF;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: var(--surface);
+  border: 1px solid var(--border);
   box-shadow: var(--depth-1);
 }
 
 .surface-2 {
-  background: #F7F9FC;
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-top-color: rgba(255, 255, 255, 0.9);
-  box-shadow: var(--depth-1);
+  background: var(--surface);
+  border: 1px solid var(--border);
 }
 
 .surface-3 {
-  background: #E5EAF0;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-top-color: rgba(255, 255, 255, 0.95);
-  box-shadow: var(--depth-2);
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
 }
 
 .surface-4 {
-  background: #FFFFFF;
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(0, 0, 0, 0.09);
-  border-top-color: #FFFFFF;
-  box-shadow: var(--depth-3);
+  background: var(--surface-elevated);
+  border: 1px solid var(--border);
 }
 
 /* Glassmorphism & Spatial Card Layers */
@@ -737,8 +690,8 @@ textarea::placeholder {
   color: var(--cos-text-secondary) !important;
   border-color: var(--cos-border) !important;
 }
-[class~="bg-zinc-50"],
-[class~="bg-zinc-100"] {
+[data-theme="light"] [class~="bg-zinc-50"],
+[data-theme="light"] [class~="bg-zinc-100"] {
   background-color: #F1F4F8 !important;
 }
 [class~="hover:bg-zinc-50"]:hover,
@@ -789,10 +742,7 @@ textarea::placeholder {
   border-color: #B9C8D7;
   box-shadow: 0 5px 12px rgba(23, 37, 54, 0.06), 0 16px 28px -18px rgba(23, 37, 54, 0.22);
 }
-.surface-1 { background: #FFFFFF; border-color: #D9E1E9; }
-.surface-2 { background: #F7F9FC; border-color: #D9E1E9; }
-.surface-3 { background: #E8EDF3; border-color: #D2DBE5; }
-.surface-4 { background: rgba(255,255,255,.94); border-color: #D3DDE7; }
+
 
 @media (prefers-reduced-motion: reduce) {
   .animate-float-slow { animation: none !important; }
@@ -814,10 +764,10 @@ textarea[class~="text-white"]::placeholder { color: #64758A !important; }
 
 /* Final global contrast contract: neutral surfaces always use readable dark text. */
 .surface-1, .surface-2, .surface-3, .surface-4 {
-  color: var(--cos-text);
+  color: var(--text-primary);
 }
 .surface-1.text-white, .surface-2.text-white, .surface-3.text-white, .surface-4.text-white {
-  color: var(--cos-text) !important;
+  color: var(--text-primary) !important;
 }
 /* White text is appropriate on saturated primary buttons, never on a pale utility button. */
 .depth-btn-secondary:hover, .depth-btn-secondary:hover.text-white,

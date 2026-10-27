@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sparkles, Square, Circle, Mic, MicOff, RefreshCw, AlertTriangle } from 'lucide-react';
+import { Sparkles, Square, Circle, Mic, MicOff, RefreshCw, Settings2 } from 'lucide-react';
 import { AspectRatio, LiveConnectionState } from '../../../types';
 import { TransportStatus } from './LiveSessionStatus';
 
@@ -35,11 +35,12 @@ export const LiveControls: React.FC<LiveControlsProps> = ({
   const isLive = transportStatus === 'live' || connectionState === 'live';
   const isConnecting = transportStatus === 'connecting' || connectionState === 'connecting';
   const isError = transportStatus === 'error' || connectionState === 'error';
+  const isUnconfigured = transportStatus === 'unconfigured';
 
   return (
-    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-3.5 rounded-2xl surface-3 border border-zinc-200/80">
+    <div className="flex flex-col sm:flex-row items-center justify-between gap-3 p-3 rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-md">
       {/* Aspect Ratio Switcher */}
-      <div className="flex items-center gap-1 p-1 rounded-xl bg-white border border-zinc-200 shadow-inner">
+      <div className="flex items-center gap-1 p-1 rounded-xl bg-[var(--surface-muted)] border border-[var(--border)]">
         {(['9:16', '16:9', '1:1'] as AspectRatio[]).map((aspect) => (
           <button
             key={aspect}
@@ -48,8 +49,8 @@ export const LiveControls: React.FC<LiveControlsProps> = ({
             disabled={isLive || isRecording}
             className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-all ${
               aspectRatio === aspect
-                ? 'bg-[#E9FAFC] text-[#005564] border border-[#A6E5EC] shadow-sm'
-                : 'text-zinc-600 hover:text-zinc-900 border border-transparent hover:bg-zinc-100'
+                ? 'bg-[#007E93] text-white shadow-xs'
+                : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface)]'
             } ${isLive || isRecording ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'}`}
           >
             {aspect}
@@ -69,6 +70,19 @@ export const LiveControls: React.FC<LiveControlsProps> = ({
             <RefreshCw className="w-3.5 h-3.5" />
             <span>Retry Connection</span>
           </button>
+        ) : isUnconfigured ? (
+          <button
+            type="button"
+            onClick={onToggleLive}
+            disabled={!hasCamera || isConnecting}
+            className={`flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold depth-btn-primary text-white transition-all cursor-pointer ${
+              !hasCamera ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
+            title="Configure Live transport or preview locally"
+          >
+            <Settings2 className="w-3.5 h-3.5 text-amber-300" />
+            <span>Configure Live</span>
+          </button>
         ) : (
           <button
             type="button"
@@ -76,7 +90,7 @@ export const LiveControls: React.FC<LiveControlsProps> = ({
             disabled={!hasCamera || isConnecting}
             className={`flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-200 ${
               isLive
-                ? 'depth-btn-secondary text-zinc-900'
+                ? 'depth-btn-secondary text-[var(--text-primary)]'
                 : 'depth-btn-primary text-white'
             } ${!hasCamera || isConnecting ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
           >
@@ -87,13 +101,13 @@ export const LiveControls: React.FC<LiveControlsProps> = ({
               </>
             ) : isLive ? (
               <>
-                <Sparkles className="w-3.5 h-3.5 text-amber-800" />
-                <span>End Live</span>
+                <Square className="w-3.5 h-3.5 text-rose-500 fill-rose-500" />
+                <span>End Broadcast</span>
               </>
             ) : (
               <>
                 <Sparkles className="w-3.5 h-3.5" />
-                <span>Start Live</span>
+                <span>Go Live</span>
               </>
             )}
           </button>
@@ -107,7 +121,7 @@ export const LiveControls: React.FC<LiveControlsProps> = ({
           className={`flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-200 ${
             isRecording
               ? 'bg-rose-600 hover:bg-rose-500 text-white shadow-[0_0_20px_-4px_rgba(244,63,94,0.6)] animate-pulse'
-              : 'depth-btn-secondary text-zinc-900'
+              : 'bg-[var(--surface-muted)] hover:bg-[var(--surface)] text-[var(--text-primary)] border border-[var(--border)]'
           } ${!hasCamera ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
         >
           {isRecording ? (
@@ -126,13 +140,14 @@ export const LiveControls: React.FC<LiveControlsProps> = ({
         {/* Mic Toggle */}
         <button
           type="button"
+          aria-label="Toggle Microphone"
           onClick={onToggleAudio}
-          className={`p-2 rounded-xl border transition-all ${
+          className={`p-2 rounded-xl border transition-all cursor-pointer ${
             isAudioEnabled
-              ? 'depth-btn-secondary text-zinc-700 hover:text-zinc-900'
-              : 'bg-rose-500/15 border-rose-500/30 text-rose-400'
+              ? 'bg-[var(--surface-muted)] hover:bg-[var(--surface)] text-[var(--text-primary)] border-[var(--border)]'
+              : 'bg-rose-500/15 border-rose-500/30 text-rose-500'
           }`}
-          title={isAudioEnabled ? 'Mute mic' : 'Unmute mic'}
+          title={isAudioEnabled ? 'Mute microphone' : 'Unmute microphone'}
         >
           {isAudioEnabled ? (
             <Mic className="w-4 h-4" />

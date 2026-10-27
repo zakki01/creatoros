@@ -74,7 +74,7 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
           />
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-xl sm:text-2xl font-bold text-zinc-900 font-display tracking-tight">
+              <h1 className="text-xl sm:text-2xl font-bold text-[var(--text-primary)] font-display tracking-tight">
                 {currentCreator.name}
               </h1>
               <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200 shadow-xs">
@@ -118,7 +118,7 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
           glare
           glowColor="sky"
           onClick={() => onNavigate('live')}
-          className="lg:col-span-7 p-6 sm:p-7 bg-gradient-to-br from-white via-[#F4F6F9] to-[#E9EDF2] border border-black/[0.08] group shadow-sm"
+          className="lg:col-span-7 p-6 sm:p-7 group shadow-sm"
         >
           {/* Ambient radial 3D studio light */}
           <div
@@ -133,10 +133,10 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
                 <span>3D AI Environment</span>
               </div>
               <div>
-                <h2 className="text-xl sm:text-2xl font-bold text-zinc-900 font-display tracking-tight">
+                <h2 className="text-xl sm:text-2xl font-bold text-[var(--text-primary)] font-display tracking-tight">
                   Live Studio
                 </h2>
-                <p className="text-xs sm:text-sm text-zinc-600 mt-0.5">
+                <p className="text-xs sm:text-sm text-[var(--text-secondary)] mt-0.5">
                   Create and record in real time with spatial AI
                 </p>
               </div>
@@ -157,7 +157,7 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
 
             {/* Expressive 3D Camera / Studio Object */}
             <div className="relative shrink-0 self-center sm:self-auto">
-              <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-3xl bg-gradient-to-b from-white to-slate-100 border border-black/10 shadow-[inset_0_1px_0_0_#FFFFFF,0_12px_28px_-8px_rgba(15,23,42,0.14)] flex items-center justify-center animate-float-slow">
+              <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-3xl bg-[var(--surface-muted)] border border-[var(--border)] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1),0_12px_28px_-8px_rgba(15,23,42,0.14)] flex items-center justify-center animate-float-slow">
                 <svg
                   viewBox="0 0 120 120"
                   className="w-24 h-24 drop-shadow-[0_10px_20px_rgba(0,180,216,0.3)] group-hover:scale-105 transition-transform duration-300"
@@ -200,7 +200,7 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
           glare
           glowColor="amber"
           onClick={() => onNavigate('contracts')}
-          className="lg:col-span-5 p-6 flex flex-col justify-between gap-4 border border-amber-300/80 shadow-sm bg-white"
+          className="lg:col-span-5 p-6 flex flex-col justify-between gap-4 border border-amber-500/30 shadow-sm"
         >
           <div className="flex items-start justify-between gap-3">
             <div className="flex items-center gap-3">
@@ -212,7 +212,7 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
                   <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
                   Awaiting Signature
                 </span>
-                <h3 className="text-base font-bold text-zinc-900 mt-1">
+                <h3 className="text-base font-bold text-[var(--text-primary)] mt-1">
                   Aura Streetwear Co.
                 </h3>
               </div>
@@ -245,7 +245,7 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
           glare
           glowColor="sky"
           onClick={() => onNavigate('opportunities')}
-          className="p-5 flex flex-col justify-between space-y-3 bg-white border border-black/[0.08] shadow-sm"
+          className="p-5 flex flex-col justify-between space-y-3 shadow-sm"
         >
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-mono uppercase tracking-wider text-[#007E93] font-semibold">
@@ -254,7 +254,7 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
             <span className="w-2 h-2 rounded-full bg-[#00B4D8] animate-pulse" />
           </div>
           <div>
-            <h3 className="text-2xl font-bold text-zinc-900 font-display">
+            <h3 className="text-2xl font-bold text-[var(--text-primary)] font-display">
               {Math.max(1, incomingOpportunities.length)} New
             </h3>
             <p className="text-xs text-zinc-500 mt-0.5 truncate">
@@ -272,7 +272,7 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
           tilt
           glare
           onClick={() => onNavigate('content')}
-          className="p-5 flex flex-col justify-between space-y-3 bg-white border border-black/[0.08] shadow-sm"
+          className="p-5 flex flex-col justify-between space-y-3 shadow-sm"
         >
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-500 font-semibold">
@@ -306,7 +306,7 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
           glare
           glowColor="emerald"
           onClick={() => onNavigate('earnings')}
-          className="p-5 flex flex-col justify-between space-y-3 bg-white border border-black/[0.08] shadow-sm"
+          className="p-5 flex flex-col justify-between space-y-3 shadow-sm"
         >
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-mono uppercase tracking-wider text-emerald-700 font-semibold">
@@ -315,7 +315,7 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
             <CreditCard className="w-4 h-4 text-emerald-600" />
           </div>
           <div>
-            <h3 className="text-2xl font-bold text-zinc-900 font-mono">
+            <h3 className="text-2xl font-bold text-[var(--text-primary)] font-mono">
               ₹{(pendingEarnings || 82000).toLocaleString()}
             </h3>
             <p className="text-xs text-zinc-500 mt-0.5">
@@ -334,7 +334,7 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
           glare
           glowColor="sky"
           onClick={() => onNavigate('analytics')}
-          className="p-5 flex flex-col justify-between space-y-3 bg-white border border-black/[0.08] shadow-sm"
+          className="p-5 flex flex-col justify-between space-y-3 shadow-sm"
         >
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-500 font-semibold">
@@ -343,7 +343,7 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
             <TrendingUp className="w-4 h-4 text-emerald-600" />
           </div>
           <div>
-            <h3 className="text-2xl font-bold text-zinc-900 font-mono">
+            <h3 className="text-2xl font-bold text-[var(--text-primary)] font-mono">
               1.37M
             </h3>
             <p className="text-xs text-emerald-700 font-mono mt-0.5">
@@ -361,7 +361,7 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Layers className="w-4 h-4 text-[#007E93]" />
-            <h2 className="text-base font-bold text-zinc-900 font-display">Active Campaigns</h2>
+            <h2 className="text-base font-bold text-[var(--text-primary)] font-display">Active Campaigns</h2>
           </div>
           <Button
             variant="ghost"
@@ -380,11 +380,11 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
               key={item.id}
               surface={1}
               glare
-              className="p-5 space-y-4 bg-white border border-black/[0.08] shadow-sm"
+              className="p-5 space-y-4 shadow-sm"
             >
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <h3 className="text-sm font-bold text-zinc-900">{item.campaignName}</h3>
+                  <h3 className="text-sm font-bold text-[var(--text-primary)]">{item.campaignName}</h3>
                   <p className="text-xs text-zinc-500 mt-0.5">
                     Aura Streetwear Co.
                   </p>
@@ -395,7 +395,7 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
               </div>
 
               {/* Dimensional Milestone Bar */}
-              <div className="p-3 rounded-xl bg-zinc-50 border border-zinc-200 space-y-2 text-xs">
+              <div className="p-3 rounded-xl bg-[var(--surface-muted)] border border-[var(--border)] space-y-2 text-xs">
                 <div className="flex justify-between items-center">
                   <span className="text-zinc-500 text-[11px]">Milestone</span>
                   <span className="font-semibold text-emerald-700 text-[11px]">Draft Review</span>
@@ -412,13 +412,13 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
                 </div>
               </div>
 
-              <div className="flex items-center justify-between text-xs pt-1 border-t border-zinc-200">
+              <div className="flex items-center justify-between text-xs pt-1 border-t border-[var(--border)]">
                 <div className="flex items-center gap-1.5 text-zinc-500">
                   <Clock className="w-3.5 h-3.5 text-zinc-400" />
                   <span className="font-mono text-[11px]">48h left</span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <span className="text-zinc-900 font-mono font-semibold">
+                  <span className="text-[var(--text-primary)] font-mono font-semibold">
                     ₹{item.proposedFee.toLocaleString()}
                   </span>
                   <Button

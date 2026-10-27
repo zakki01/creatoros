@@ -134,20 +134,20 @@ export const BusinessLayout: React.FC = () => {
   };
 
   return (
-    <div className="flex h-dvh w-full bg-[#EAECEF] text-zinc-900 overflow-hidden font-sans">
+    <div className="flex h-dvh w-full bg-[var(--background)] text-[var(--text-primary)] overflow-hidden font-sans">
       {/* Elevated Spatial Glass Sidebar Rail */}
       <aside
-        className={`h-full border-r border-black/[0.08] bg-[#DFE3E8]/90 backdrop-blur-2xl shadow-sm hidden md:flex flex-col justify-between transition-all duration-200 z-30 shrink-0 ${
+        className={`h-full border-r border-[var(--border)] bg-[var(--sidebar)] backdrop-blur-2xl shadow-sm hidden md:flex flex-col justify-between transition-all duration-200 z-30 shrink-0 ${
           isSidebarCollapsed ? 'w-16' : 'w-56'
         }`}
       >
         {/* Brand Header */}
-        <div className="p-3.5 border-b border-black/[0.06] flex items-center justify-between">
+        <div className="p-3.5 border-b border-[var(--border)] flex items-center justify-between">
           <BrandLogo size="sm" iconOnly={isSidebarCollapsed} />
 
           <button
             onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
-            className="p-1.5 rounded-lg text-zinc-500 hover:text-zinc-900 hover:bg-black/[0.05] transition-all duration-200 cursor-pointer"
+            className="p-1.5 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-muted)] transition-all duration-200 cursor-pointer"
             title={isSidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
           >
             {isSidebarCollapsed ? (
@@ -170,8 +170,8 @@ export const BusinessLayout: React.FC = () => {
                 title={isSidebarCollapsed ? item.label : undefined}
                 className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-xl text-xs font-medium transition-all duration-200 cursor-pointer ${
                   isActive
-                    ? 'bg-white text-zinc-900 font-semibold shadow-xs border border-black/[0.06]'
-                    : 'text-zinc-600 hover:text-zinc-900 hover:bg-black/[0.04] hover:translate-x-0.5 border border-transparent'
+                    ? 'bg-[var(--surface)] text-[var(--text-primary)] font-semibold shadow-xs border border-[var(--border)]'
+                    : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-muted)] hover:translate-x-0.5 border border-transparent'
                 }`}
               >
                 <Icon
@@ -193,7 +193,7 @@ export const BusinessLayout: React.FC = () => {
 
           {/* Divider for Secondary Navigation */}
           <div className="pt-2 pb-1">
-            <div className="h-px bg-black/[0.06] mx-2" />
+            <div className="h-px bg-[var(--border)] mx-2" />
           </div>
 
           {/* Secondary Navigation */}
@@ -207,8 +207,8 @@ export const BusinessLayout: React.FC = () => {
                 title={isSidebarCollapsed ? item.label : undefined}
                 className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-xl text-xs font-medium transition-all duration-200 cursor-pointer ${
                   isActive
-                    ? 'bg-white text-zinc-900 font-semibold shadow-xs border border-black/[0.06]'
-                    : 'text-zinc-600 hover:text-zinc-900 hover:bg-black/[0.04] hover:translate-x-0.5 border border-transparent'
+                    ? 'bg-[var(--surface)] text-[var(--text-primary)] font-semibold shadow-xs border border-[var(--border)]'
+                    : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-muted)] hover:translate-x-0.5 border border-transparent'
                 }`}
               >
                 <Icon

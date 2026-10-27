@@ -50,7 +50,7 @@ interface CreatorLiveStudioProps {
 
 export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) => {
   const { userProfile } = useAppState();
-  const [studioTab, setStudioTab] = useState<'audience' | 'scenes'>('audience');
+  const [studioTab, setStudioTab] = useState<'audience' | 'scenes' | 'effects' | 'reference'>('effects');
   const [config] = useState(getStoredLiveEngineConfig);
 
   // Subsystem States (Strictly Decoupled)
@@ -88,7 +88,15 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
     { id: 'c3', user: 'rahul_visuals', text: 'What camera setup are you streaming from?' },
   ]);
   const [newCommentText, setNewCommentText] = useState('');
-  const [viewerCount, setViewerCount] = useState(1420);
+  const [viewerCount, setViewerCount] = useState(0);
+  const [arTrackingState, setArTrackingState] = useState(() => faceTrackerSingleton.getState());
+
+  useEffect(() => {
+    const unsub = faceTrackerSingleton.subscribeState((st) => {
+      setArTrackingState(st);
+    });
+    return () => unsub();
+  }, []);
 
   // Cost protection & countdown state
   const [remainingSeconds, setRemainingSeconds] = useState(config.maxSessionDurationSec || 60);
@@ -273,6 +281,7 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
       setTransportStatus('live');
       setConnectionState('live');
       setRecordingSeconds(0);
+    setViewerCount(0);
       setRemainingSeconds(config.maxSessionDurationSec || 60);
 
       clearInterval(countdownIntervalRef.current);
@@ -285,7 +294,7 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
           }
           return prev - 1;
         });
-        setViewerCount((v) => Math.max(100, v + (Math.floor(Math.random() * 9) - 4)));
+        setViewerCount((v) => (v === 0 ? 1 : v));
       }, 1000);
     } catch (err: any) {
       console.error('Live connect error:', err);
@@ -788,29 +797,29 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
       </div>
 
       {/* ========================================================================= */}
-      {/* 2. DESKTOP MULTI-PANEL LIVE STUDIO                                        */}
+      {/* 2. DESKTOP RESPONSIVE BROADCASTING WORKSPACE                               */}
       {/* ========================================================================= */}
-      <div className="hidden lg:block space-y-4 animate-fade-in p-6 max-w-6xl mx-auto">
-        {/* Studio Header */}
-        <div className="flex items-center justify-between gap-3">
+      <div className="hidden lg:flex flex-col h-full w-full animate-fade-in p-4 xl:p-6 overflow-hidden">
+        {/* Studio Top Controls Bar (using div to avoid competing header selector) */}
+        <div className="flex items-center justify-between gap-4 pb-3 border-b border-[var(--border)] shrink-0">
           <div className="flex items-center gap-3">
             {onExit && (
               <button
                 type="button"
                 onClick={onExit}
-                className="p-2 rounded-xl bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-200 transition-colors cursor-pointer"
+                className="p-2 rounded-xl bg-[var(--surface-muted)] hover:bg-[var(--surface)] border border-[var(--border)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors cursor-pointer"
                 title="Exit Live Studio"
               >
                 <X className="w-4 h-4" />
               </button>
             )}
             <div className="flex items-center gap-2.5">
-              <h1 className="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-white font-display tracking-tight">
+              <h1 className="text-xl font-bold text-[var(--text-primary)] font-display tracking-tight">
                 Live Studio
               </h1>
               <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-mono uppercase bg-[#007E93]/10 text-[#006779] dark:text-[#00B4D8] border border-[#007E93]/25">
                 <Sparkles className="w-3 h-3 text-[#007E93]" />
-                Realtime AI &amp; Face Tracking
+                Broadcasting Workspace
               </span>
             </div>
           </div>
@@ -826,35 +835,42 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
             maxDurationSeconds={config.maxSessionDurationSec || 60}
             isRecording={isRecording}
             recordingSeconds={recordingSeconds}
+            arStatus={arTrackingState.status}
+            faceDetected={arTrackingState.faceDetected}
+            faceConfidence={arTrackingState.confidence}
           />
         </div>
 
-        {/* Unconfigured Alert Banner on Desktop if attempting to go live without keys */}
+        {/* Unconfigured Alert Banner */}
         {transportStatus === 'unconfigured' && (
-          <div className="flex items-center justify-between p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-900 dark:text-amber-200 text-xs">
-            <div className="flex items-center gap-2.5">
-              <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
+          <div className="flex items-center justify-between p-2.5 mt-2 rounded-xl bg-amber-500/10 border border-amber-500/25 text-amber-900 dark:text-amber-200 text-xs shrink-0">
+            <div className="flex items-center gap-2">
+              <AlertTriangle className="w-4 h-4 text-amber-500 shrink-0" />
               <span>
-                <strong>LiveKit / Decart credentials required:</strong> Live audience broadcast requires active provider keys. Local camera preview, recording, and face tracking filters work offline.
+                <strong>LiveKit / Decart credentials required for broadcast:</strong> Local preview, 4K recording, and AR face tracking work offline.
               </span>
             </div>
           </div>
         )}
 
-        {/* Main Studio Viewport & Side Configuration */}
-        <div className="grid grid-cols-12 gap-4 items-start">
-          <div className="col-span-7 flex flex-col items-center justify-center space-y-3">
-            <LiveCamera
-              displayStream={displayStream}
-              connectionState={connectionState}
-              activeScene={activeScene}
-              aspectRatio={aspectRatio}
-              errorMessage={errorMessage}
-              onRequestCamera={requestCamera}
-            />
+        {/* Studio Workspace: Center Hero Viewport + Right Full-Height Audience Rail */}
+        <div className="flex-1 flex gap-5 pt-3 min-h-0 overflow-hidden">
+          {/* Main Hero Column: Camera + Controls + Lower Collapsible AR Panel */}
+          <div className="flex-1 flex flex-col items-center justify-between min-h-0 overflow-y-auto pr-1">
+            {/* Center Hero Camera Viewport */}
+            <div className="flex-1 flex items-center justify-center w-full min-h-0">
+              <LiveCamera
+                displayStream={displayStream}
+                connectionState={connectionState}
+                activeScene={activeScene}
+                aspectRatio={aspectRatio}
+                errorMessage={errorMessage}
+                onRequestCamera={requestCamera}
+              />
+            </div>
 
-            {/* Studio Controls */}
-            <div className="w-full">
+            {/* Studio Controls Row */}
+            <div className="w-full max-w-2xl shrink-0 pt-2.5 pb-2">
               <LiveControls
                 connectionState={connectionState}
                 transportStatus={transportStatus}
@@ -870,99 +886,106 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
                 onRetryTransport={handleRetryLive}
               />
             </div>
-          </div>
 
-          {/* Right: Tabbed Moderation vs AR Effects & Scenes */}
-          <div className="col-span-5 space-y-4">
-            <div className="flex items-center gap-1.5 p-1.5 rounded-2xl bg-zinc-200/70 dark:bg-zinc-800">
-              <button
-                type="button"
-                onClick={() => setStudioTab('audience')}
-                className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
-                  studioTab === 'audience'
-                    ? 'bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white shadow-sm'
-                    : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900'
-                }`}
-              >
-                <MessageSquare className="w-3.5 h-3.5" />
-                <span>Audience &amp; Chat</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setStudioTab('scenes')}
-                className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
-                  studioTab === 'scenes'
-                    ? 'bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white shadow-sm'
-                    : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900'
-                }`}
-              >
-                <Wand2 className="w-3.5 h-3.5" />
-                <span>AR Effects &amp; Scene</span>
-              </button>
-            </div>
-
-            {studioTab === 'audience' ? (
-              <div className="h-[520px]">
-                <LiveAudienceModerationPanel isHost={true} />
+            {/* Collapsible Lower Tools Bar: AR Filters, Scene, Reference */}
+            <div className="w-full max-w-2xl shrink-0">
+              <div className="flex items-center gap-1.5 p-1 rounded-xl bg-[var(--surface-muted)] border border-[var(--border)] mb-2">
+                <button
+                  type="button"
+                  onClick={() => setStudioTab('effects')}
+                  className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                    studioTab === 'effects' || studioTab === 'scenes'
+                      ? 'bg-[var(--surface)] text-[var(--text-primary)] shadow-xs'
+                      : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                  }`}
+                >
+                  <Wand2 className="w-3.5 h-3.5 text-[#007E93]" />
+                  <span>AR Filters &amp; Scenes</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setStudioTab('reference')}
+                  className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                    studioTab === 'reference'
+                      ? 'bg-[var(--surface)] text-[var(--text-primary)] shadow-xs'
+                      : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                  }`}
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                  <span>Reference &amp; Lighting</span>
+                </button>
               </div>
-            ) : (
-              <div className="space-y-5 surface-2 p-5 rounded-3xl border border-zinc-200/80 dark:border-zinc-800">
-                {/* Active AR Filter Selector */}
-                <div className="space-y-2">
-                  <span className="text-xs font-bold text-zinc-900 dark:text-white block font-display">
-                    Tracked AR Accessories &amp; Beauty
-                  </span>
-                  <div className="grid grid-cols-2 gap-2">
-                    <button
-                      type="button"
-                      onClick={() => handleSelectEffect(null)}
-                      className={`p-2 rounded-xl text-xs border text-left flex items-center gap-2 cursor-pointer transition-colors ${
-                        !activeEffectId
-                          ? 'bg-[#007E93]/10 border-[#007E93] font-semibold text-[#007E93]'
-                          : 'bg-white dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 text-zinc-800 dark:text-zinc-200'
-                      }`}
-                    >
-                      <span>🚫 Clean Video (No AR)</span>
-                    </button>
-                    {AR_EFFECTS_CATALOG.map((eff) => {
-                      const isSel = activeEffectId === eff.id;
-                      return (
-                        <button
-                          key={eff.id}
-                          type="button"
-                          onClick={() => handleSelectEffect(eff.id)}
-                          className={`p-2 rounded-xl text-xs border text-left flex items-center gap-2 cursor-pointer transition-colors ${
-                            isSel
-                              ? 'bg-[#007E93]/10 border-[#007E93] text-[#007E93] font-semibold'
-                              : 'bg-white dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 text-zinc-800 dark:text-zinc-200'
-                          }`}
-                        >
-                          <img src={eff.thumbnail} alt={eff.name} className="w-6 h-6 rounded-md object-cover" />
-                          <span className="truncate">{eff.name}</span>
-                        </button>
-                      );
-                    })}
+
+              {/* Active Sub-Panel */}
+              <div className="p-3 rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-xs">
+                {studioTab === 'reference' ? (
+                  <LiveReferencePanel
+                    referenceImage={referenceImage}
+                    onReferenceImageChange={handleReferenceImageChange}
+                    disabled={isRecording}
+                  />
+                ) : (
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-bold text-[var(--text-primary)] font-display">
+                        Tracked AR Accessories &amp; Beauty
+                      </span>
+                      {activeEffectId && (
+                        <span className="text-[10px] text-[#007E93] font-mono">
+                          Anchored to Landmarks
+                        </span>
+                      )}
+                    </div>
+                    <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+                      <button
+                        type="button"
+                        onClick={() => handleSelectEffect(null)}
+                        className={`p-2 rounded-xl text-xs border text-left flex flex-col items-center justify-center gap-1 cursor-pointer transition-colors ${
+                          !activeEffectId
+                            ? 'bg-[#007E93]/10 border-[#007E93] font-semibold text-[#007E93]'
+                            : 'bg-[var(--surface-muted)] border-[var(--border)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                        }`}
+                      >
+                        <span className="text-base">🚫</span>
+                        <span className="text-[10px] text-center font-medium">Clean Feed</span>
+                      </button>
+                      {AR_EFFECTS_CATALOG.map((eff) => {
+                        const isSel = activeEffectId === eff.id;
+                        return (
+                          <button
+                            key={eff.id}
+                            type="button"
+                            onClick={() => handleSelectEffect(eff.id)}
+                            className={`p-2 rounded-xl text-xs border text-left flex flex-col items-center justify-center gap-1 cursor-pointer transition-colors ${
+                              isSel
+                                ? 'bg-[#007E93]/10 border-[#007E93] text-[#007E93] font-semibold shadow-xs'
+                                : 'bg-[var(--surface-muted)] border-[var(--border)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                            }`}
+                          >
+                            <img src={eff.thumbnail} alt={eff.name} className="w-7 h-7 rounded-lg object-cover" />
+                            <span className="text-[10px] truncate max-w-full text-center">{eff.name}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    <div className="pt-2 border-t border-[var(--border)]">
+                      <LiveScenePicker
+                        selectedScene={activeScene}
+                        onSelectScene={handleSelectScene}
+                        disabled={isRecording}
+                      />
+                    </div>
                   </div>
-                </div>
-
-                <div className="h-px bg-zinc-200 dark:bg-zinc-700" />
-
-                <LiveScenePicker
-                  selectedScene={activeScene}
-                  onSelectScene={handleSelectScene}
-                  disabled={isRecording}
-                />
-
-                <div className="h-px bg-zinc-200 dark:bg-zinc-700" />
-
-                <LiveReferencePanel
-                  referenceImage={referenceImage}
-                  onReferenceImageChange={handleReferenceImageChange}
-                  disabled={isRecording}
-                />
+                )}
               </div>
-            )}
+            </div>
           </div>
+
+          {/* Right Rail: Full-Height Audience, Chat, Moderation, and Gifts */}
+          <aside className="w-80 xl:w-96 h-full flex flex-col shrink-0 min-h-0">
+            <LiveAudienceModerationPanel isHost={true} />
+          </aside>
         </div>
       </div>
 

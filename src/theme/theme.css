@@ -21,6 +21,7 @@
   --accent-foreground: #FFFFFF;
   --success: #047857;
   --danger: #B4233C;
+  --live-canvas: #090C10;
 
   /* Brand and Palette Tokens */
   --color-brand-primary: #123047;
@@ -67,6 +68,7 @@
   --accent-foreground: #0B0E14;
   --success: #10B981;
   --danger: #EF4444;
+  --live-canvas: #06080C;
 
   /* Brand and Palette Tokens */
   --color-brand-primary: #00B4D8;

@@ -36,7 +36,7 @@ class LiveStreamingServiceSingleton {
     isHost: true,
     connectionState: 'idle',
     networkQuality: 'excellent',
-    viewerCount: 142,
+    viewerCount: 0,
     participants: [
       {
         id: 'usr-v-01',
@@ -117,6 +117,11 @@ class LiveStreamingServiceSingleton {
 
   setConnectionState(status: LiveConnectionState): void {
     this.currentState.connectionState = status;
+    if (status === 'live') {
+      this.currentState.viewerCount = Math.max(1, this.currentState.participants.length);
+    } else {
+      this.currentState.viewerCount = 0;
+    }
     this.notify();
   }
 
