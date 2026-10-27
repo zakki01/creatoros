@@ -68,7 +68,7 @@ export const DeliverableBuilderCard: React.FC<DeliverableBuilderCardProps> = ({
       className={`p-4 rounded-2xl border transition-all ${
         hasErrors
           ? 'bg-amber-50/50 border-amber-300'
-          : 'bg-white border-black/[0.08] hover:border-black/15 shadow-xs'
+          : 'bg-[var(--surface)] border-[var(--border)] hover:border-[var(--border-strong)] shadow-xs text-[var(--text-primary)]'
       }`}
     >
       {/* Header bar */}
@@ -78,13 +78,13 @@ export const DeliverableBuilderCard: React.FC<DeliverableBuilderCardProps> = ({
             {index + 1}
           </span>
           <div className="flex items-center gap-2">
-            <span className="text-xs font-bold text-zinc-900 uppercase tracking-wide">
+            <span className="text-xs font-bold text-[var(--text-primary)] uppercase tracking-wide">
               {deliverable.type}
             </span>
-            <span className="text-[11px] font-mono text-zinc-500">
+            <span className="text-[11px] font-mono text-[var(--text-muted)]">
               × {deliverable.quantity || 1}
             </span>
-            <span className="text-[10px] px-2 py-0.5 rounded-full bg-zinc-100 text-zinc-700 font-mono border border-zinc-200">
+            <span className="text-[10px] px-2 py-0.5 rounded-full bg-zinc-100 text-[var(--text-secondary)] font-mono border border-[var(--border)]">
               {deliverable.format}
             </span>
           </div>
@@ -94,7 +94,7 @@ export const DeliverableBuilderCard: React.FC<DeliverableBuilderCardProps> = ({
           <button
             type="button"
             onClick={() => setIsEditing(!isEditing)}
-            className="min-h-[44px] min-w-[44px] rounded-xl hover:bg-zinc-100 text-zinc-400 hover:text-zinc-700 flex items-center justify-center transition-colors cursor-pointer"
+            className="min-h-[44px] min-w-[44px] rounded-xl hover:bg-zinc-100 text-zinc-400 hover:text-[var(--text-secondary)] flex items-center justify-center transition-colors cursor-pointer"
             title={isEditing ? 'Done editing' : 'Edit deliverable'}
             aria-label={isEditing ? 'Done editing' : 'Edit deliverable'}
           >
@@ -104,7 +104,7 @@ export const DeliverableBuilderCard: React.FC<DeliverableBuilderCardProps> = ({
           <button
             type="button"
             onClick={onDuplicate}
-            className="min-h-[44px] min-w-[44px] rounded-xl hover:bg-zinc-100 text-zinc-400 hover:text-zinc-700 flex items-center justify-center transition-colors cursor-pointer"
+            className="min-h-[44px] min-w-[44px] rounded-xl hover:bg-zinc-100 text-zinc-400 hover:text-[var(--text-secondary)] flex items-center justify-center transition-colors cursor-pointer"
             title="Duplicate deliverable"
             aria-label="Duplicate deliverable"
           >
@@ -128,7 +128,7 @@ export const DeliverableBuilderCard: React.FC<DeliverableBuilderCardProps> = ({
         <div className="pt-3.5 space-y-3.5 text-xs">
           {/* Type Selector */}
           <div>
-            <label className="text-[11px] font-medium text-zinc-700 block mb-1.5">
+            <label className="text-[11px] font-medium text-[var(--text-secondary)] block mb-1.5">
               Deliverable Format & Type
             </label>
             <div className="flex items-center gap-1.5 flex-wrap">
@@ -140,7 +140,7 @@ export const DeliverableBuilderCard: React.FC<DeliverableBuilderCardProps> = ({
                   className={`min-h-[36px] px-3 py-1.5 rounded-xl text-xs font-medium transition-all cursor-pointer ${
                     deliverable.type === type
                       ? 'bg-[#007E93] text-white font-semibold shadow-xs'
-                      : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200 hover:text-zinc-900 border border-zinc-200'
+                      : 'bg-zinc-100 text-[var(--text-secondary)] hover:bg-zinc-200 hover:text-[var(--text-primary)] border border-[var(--border)]'
                   }`}
                 >
                   {type}
@@ -152,7 +152,7 @@ export const DeliverableBuilderCard: React.FC<DeliverableBuilderCardProps> = ({
           {/* Grid: Quantity, Aspect Ratio, Duration, Due Date */}
           <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
             <div>
-              <label className="text-[11px] font-medium text-zinc-700 block mb-1">Quantity</label>
+              <label className="text-[11px] font-medium text-[var(--text-secondary)] block mb-1">Quantity</label>
               <input
                 type="number"
                 min="1"
@@ -161,7 +161,7 @@ export const DeliverableBuilderCard: React.FC<DeliverableBuilderCardProps> = ({
                 onChange={(e) =>
                   onUpdate({ ...deliverable, quantity: Math.max(1, parseInt(e.target.value) || 1) })
                 }
-                className="w-full min-h-[44px] px-3 py-2 rounded-xl bg-white border border-zinc-300 text-zinc-900 text-xs focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] font-mono shadow-xs"
+                className="w-full min-h-[44px] px-3 py-2 rounded-xl bg-[var(--input)] border border-[var(--border)] text-[var(--text-primary)] text-xs focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] font-mono shadow-xs"
               />
               {errors.quantity && (
                 <span className="text-[10px] text-rose-600 mt-1 block flex items-center gap-1 font-medium">
@@ -171,11 +171,11 @@ export const DeliverableBuilderCard: React.FC<DeliverableBuilderCardProps> = ({
             </div>
 
             <div>
-              <label className="text-[11px] font-medium text-zinc-700 block mb-1">Aspect Ratio</label>
+              <label className="text-[11px] font-medium text-[var(--text-secondary)] block mb-1">Aspect Ratio</label>
               <select
                 value={deliverable.format}
                 onChange={(e) => onUpdate({ ...deliverable, format: e.target.value as DeliverableFormat })}
-                className="w-full min-h-[44px] px-3 py-2 rounded-xl bg-white border border-zinc-300 text-zinc-900 text-xs focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] shadow-xs"
+                className="w-full min-h-[44px] px-3 py-2 rounded-xl bg-[var(--input)] border border-[var(--border)] text-[var(--text-primary)] text-xs focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] shadow-xs"
               >
                 {formatOptions.map((f) => (
                   <option key={f} value={f}>
@@ -186,7 +186,7 @@ export const DeliverableBuilderCard: React.FC<DeliverableBuilderCardProps> = ({
             </div>
 
             <div>
-              <label className="text-[11px] font-medium text-zinc-700 block mb-1">
+              <label className="text-[11px] font-medium text-[var(--text-secondary)] block mb-1">
                 Duration / Res (Opt)
               </label>
               <input
@@ -194,17 +194,17 @@ export const DeliverableBuilderCard: React.FC<DeliverableBuilderCardProps> = ({
                 placeholder="e.g. 30–60s, 4K"
                 value={deliverable.duration || ''}
                 onChange={(e) => onUpdate({ ...deliverable, duration: e.target.value })}
-                className="w-full min-h-[44px] px-3 py-2 rounded-xl bg-white border border-zinc-300 text-zinc-900 text-xs focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] shadow-xs"
+                className="w-full min-h-[44px] px-3 py-2 rounded-xl bg-[var(--input)] border border-[var(--border)] text-[var(--text-primary)] text-xs focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] shadow-xs"
               />
             </div>
 
             <div>
-              <label className="text-[11px] font-medium text-zinc-700 block mb-1">Milestone Deadline</label>
+              <label className="text-[11px] font-medium text-[var(--text-secondary)] block mb-1">Milestone Deadline</label>
               <input
                 type="date"
                 value={deliverable.dueDate || ''}
                 onChange={(e) => onUpdate({ ...deliverable, dueDate: e.target.value })}
-                className="w-full min-h-[44px] px-3 py-2 rounded-xl bg-white border border-zinc-300 text-zinc-900 text-xs focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] shadow-xs"
+                className="w-full min-h-[44px] px-3 py-2 rounded-xl bg-[var(--input)] border border-[var(--border)] text-[var(--text-primary)] text-xs focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] shadow-xs"
               />
               {errors.dueDate && (
                 <span className="text-[10px] text-rose-600 mt-1 block flex items-center gap-1 font-medium">
@@ -216,7 +216,7 @@ export const DeliverableBuilderCard: React.FC<DeliverableBuilderCardProps> = ({
 
           {/* Specifications */}
           <div>
-            <label className="text-[11px] font-medium text-zinc-700 block mb-1">
+            <label className="text-[11px] font-medium text-[var(--text-secondary)] block mb-1">
               Creative Specifications & Requirements
             </label>
             <textarea
@@ -224,7 +224,7 @@ export const DeliverableBuilderCard: React.FC<DeliverableBuilderCardProps> = ({
               placeholder="e.g. Product must appear in first 5 seconds. Must clearly show logo and include swipe-up promo link."
               value={deliverable.specifications}
               onChange={(e) => onUpdate({ ...deliverable, specifications: e.target.value })}
-              className="w-full p-3 rounded-xl bg-white border border-zinc-300 text-zinc-900 text-xs focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] leading-relaxed resize-none shadow-xs"
+              className="w-full p-3 rounded-xl bg-[var(--input)] border border-[var(--border)] text-[var(--text-primary)] text-xs focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] leading-relaxed resize-none shadow-xs"
             />
             {errors.specifications && (
               <span className="text-[10px] text-rose-600 mt-0.5 block flex items-center gap-1 font-medium">
@@ -240,7 +240,7 @@ export const DeliverableBuilderCard: React.FC<DeliverableBuilderCardProps> = ({
             <p className="text-zinc-800 font-medium leading-relaxed">
               {deliverable.specifications || 'No specific creative guidelines provided.'}
             </p>
-            <div className="flex items-center gap-3 text-[11px] text-zinc-500 flex-wrap">
+            <div className="flex items-center gap-3 text-[11px] text-[var(--text-muted)] flex-wrap">
               {deliverable.duration && (
                 <span className="flex items-center gap-1">
                   <Clock className="w-3 h-3 text-zinc-400" />

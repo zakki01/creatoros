@@ -45,7 +45,7 @@ export const TopBar: React.FC<TopBarProps> = ({
   ).length;
 
   return (
-    <header className="sticky top-0 z-30 w-full h-14 border-b border-black/[0.08] bg-white/85 backdrop-blur-2xl shadow-sm px-3 sm:px-6 flex items-center justify-between gap-2 sm:gap-4 shrink-0">
+    <header className="sticky top-0 z-30 w-full h-14 border-b border-[var(--border)] bg-[var(--header)] text-[var(--text-primary)] backdrop-blur-2xl shadow-xs px-3 sm:px-6 flex items-center justify-between gap-2 sm:gap-4 shrink-0">
       {/* Left: Workspace Identifier */}
       <div className="flex items-center gap-2.5 sm:gap-3.5 min-w-0">
         <div className="flex items-center gap-2.5 min-w-0">
@@ -56,10 +56,10 @@ export const TopBar: React.FC<TopBarProps> = ({
             className="shrink-0"
           />
           <div className="flex items-center gap-1.5 text-xs min-w-0">
-            <span className="font-semibold text-zinc-900 truncate max-w-[130px] sm:max-w-[200px] tracking-tight">
+            <span className="font-semibold text-[var(--text-primary)] truncate max-w-[130px] sm:max-w-[200px] tracking-tight">
               {workspace.name}
             </span>
-            <span className="hidden sm:inline-block text-[10px] text-zinc-500 uppercase tracking-wider font-mono shrink-0">
+            <span className="hidden sm:inline-block text-[10px] text-[var(--text-muted)] uppercase tracking-wider font-mono shrink-0">
               / {role === 'super_admin' ? 'Admin' : role === 'business' ? 'Brand' : 'Studio'}
             </span>
           </div>
@@ -69,13 +69,13 @@ export const TopBar: React.FC<TopBarProps> = ({
         <button
           type="button"
           onClick={onOpenCommandPalette}
-          className="hidden lg:flex items-center gap-2 ml-2 px-3 py-1.5 rounded-xl bg-[#E2E5E9]/60 hover:bg-[#E2E5E9] border border-black/[0.08] text-zinc-600 hover:text-zinc-900 text-xs transition-all duration-150 w-56 lg:w-64 justify-between cursor-pointer select-none"
+          className="hidden lg:flex items-center gap-2 ml-2 px-3 py-1.5 rounded-xl bg-[var(--surface-muted)] hover:bg-[var(--surface-elevated)] border border-[var(--border)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] text-xs transition-all duration-150 w-56 lg:w-64 justify-between cursor-pointer select-none"
         >
           <div className="flex items-center gap-2">
-            <Search className="w-3.5 h-3.5 text-zinc-500" />
-            <span className="text-zinc-600">Search or jump...</span>
+            <Search className="w-3.5 h-3.5 text-[var(--text-muted)]" />
+            <span className="text-[var(--text-secondary)]">Search or jump...</span>
           </div>
-          <div className="flex items-center gap-0.5 text-[10px] bg-white border border-black/10 px-1.5 py-0.5 rounded-md text-zinc-700 font-mono shadow-xs">
+          <div className="flex items-center gap-0.5 text-[10px] bg-[var(--surface)] border border-[var(--border)] px-1.5 py-0.5 rounded-md text-[var(--text-muted)] font-mono shadow-xs">
             <Command className="w-2.5 h-2.5" />
             <span>K</span>
           </div>
@@ -90,14 +90,14 @@ export const TopBar: React.FC<TopBarProps> = ({
             size="sm"
             onClick={onOpenCommandPalette}
           >
-            <Search className="w-4 h-4 text-zinc-600" />
+            <Search className="w-4 h-4 text-[var(--text-secondary)]" />
           </IconButton>
         </div>
       </div>
 
       {/* Right: Clean Floating Action Surface */}
       <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-        <div className="flex items-center gap-1 px-1.5 py-1 rounded-2xl bg-black/[0.04] border border-black/[0.08]">
+        <div className="flex items-center gap-1 px-1.5 py-1 rounded-2xl bg-[var(--surface-muted)] border border-[var(--border)]">
           {/* Direct Messages Shortcut (Desktop) */}
           {onOpenMessages && (
             <div className="hidden sm:flex">
@@ -110,7 +110,7 @@ export const TopBar: React.FC<TopBarProps> = ({
                 badge={totalUnreadMessages > 0 ? totalUnreadMessages : undefined}
                 badgeColor="primary"
               >
-                <MessageSquare className="w-4 h-4 text-zinc-600" />
+                <MessageSquare className="w-4 h-4 text-[var(--text-secondary)]" />
               </IconButton>
             </div>
           )}
@@ -125,7 +125,7 @@ export const TopBar: React.FC<TopBarProps> = ({
             badge={unreadNotificationsCount > 0 ? true : undefined}
             badgeColor="primary"
           >
-            <Bell className="w-4 h-4 text-zinc-600" />
+            <Bell className="w-4 h-4 text-[var(--text-secondary)]" />
           </IconButton>
         </div>
 
@@ -151,15 +151,15 @@ export const TopBar: React.FC<TopBarProps> = ({
             </div>
           }
           content={(close) => (
-            <div className="w-64 py-2 text-zinc-900">
-              <div className="px-3.5 py-2.5 border-b border-zinc-200 bg-zinc-50/50">
+            <div className="w-64 py-2 text-[var(--text-primary)] bg-[var(--surface-elevated)] border border-[var(--border)] rounded-2xl shadow-xl">
+              <div className="px-3.5 py-2.5 border-b border-[var(--border)] bg-[var(--surface-muted)]/50">
                 <div className="flex items-center justify-between gap-2">
-                  <p className="text-xs font-semibold text-zinc-900 truncate">{userProfile.name}</p>
+                  <p className="text-xs font-semibold text-[var(--text-primary)] truncate">{userProfile.name}</p>
                   <span className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-sky-50 text-sky-800 border border-sky-200">
                     {role === 'super_admin' ? 'Admin' : role === 'business' ? 'Brand' : 'Creator'}
                   </span>
                 </div>
-                <p className="text-[11px] text-zinc-500 truncate mt-0.5">{userProfile.email}</p>
+                <p className="text-[11px] text-[var(--text-muted)] truncate mt-0.5">{userProfile.email}</p>
                 <div className="mt-2 flex items-center justify-between text-[10px] text-zinc-500">
                   <span className="flex items-center gap-1">
                     <User className="w-3 h-3 text-zinc-500" />
@@ -188,7 +188,7 @@ export const TopBar: React.FC<TopBarProps> = ({
                     resetDemoData();
                     close();
                   }}
-                  className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 transition-colors cursor-pointer select-none"
+                  className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-muted)] transition-colors cursor-pointer select-none"
                 >
                   <RotateCcw className="w-3.5 h-3.5 text-zinc-500" />
                   <span>Reset Demo State</span>
@@ -207,7 +207,7 @@ export const TopBar: React.FC<TopBarProps> = ({
                 </button>
               </div>
 
-              <div className="px-3.5 py-2 border-t border-zinc-200 bg-zinc-50 text-[10px] text-zinc-500 leading-tight">
+              <div className="px-3.5 py-2 border-t border-[var(--border)] bg-[var(--surface-muted)] text-[var(--text-muted)] leading-tight">
                 Immutable account. To change role, sign out.
               </div>
             </div>

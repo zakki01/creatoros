@@ -61,15 +61,15 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
 
   if (!contract) {
     return (
-      <div className="p-8 rounded-2xl bg-white border border-black/[0.08] shadow-sm text-center space-y-4">
+      <div className="p-8 rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-sm text-center space-y-4">
         <AlertCircle className="w-8 h-8 text-rose-400 mx-auto" />
-        <h3 className="text-base font-bold text-zinc-900">Contract Not Found</h3>
+        <h3 className="text-base font-bold text-[var(--text-primary)]">Contract Not Found</h3>
         <p className="text-xs text-zinc-500">
           The requested agreement reference does not exist or has been archived.
         </p>
         <button
           onClick={onBack}
-          className="min-h-[44px] px-4 py-2 rounded-xl bg-zinc-100 text-zinc-700 border border-zinc-200 text-zinc-800 text-xs font-semibold cursor-pointer"
+          className="min-h-[44px] px-4 py-2 rounded-xl bg-zinc-100 text-[var(--text-secondary)] border border-[var(--border)] text-zinc-800 text-xs font-semibold cursor-pointer"
         >
           Return to Contracts
         </button>
@@ -173,11 +173,11 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
   return (
     <div className="max-w-6xl mx-auto space-y-6 pb-24 md:pb-12 animate-fade-in font-sans">
       {/* 1. Header Bar */}
-      <div className="p-4 sm:p-5 rounded-2xl bg-white/90 border border-black/[0.08] shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4 backdrop-blur-xl">
+      <div className="p-4 sm:p-5 rounded-2xl bg-[var(--surface)]/90 border border-[var(--border)] shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4 backdrop-blur-xl">
         <div className="flex items-center gap-3.5">
           <button
             onClick={onBack}
-            className="min-h-[44px] min-w-[44px] rounded-xl hover:bg-zinc-100 text-zinc-600 hover:text-zinc-900 flex items-center justify-center transition-colors cursor-pointer"
+            className="min-h-[44px] min-w-[44px] rounded-xl hover:bg-zinc-100 text-[var(--text-secondary)] hover:text-[var(--text-primary)] flex items-center justify-center transition-colors cursor-pointer"
             title="Back to contracts"
           >
             <ArrowLeft className="w-4 h-4" />
@@ -185,10 +185,10 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
 
           <div>
             <div className="flex items-center gap-2 flex-wrap">
-              <h1 className="text-base sm:text-lg font-bold text-zinc-900 font-display">
+              <h1 className="text-base sm:text-lg font-bold text-[var(--text-primary)] font-display">
                 {contract.projectName}
               </h1>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-zinc-100 text-zinc-700 border border-zinc-200">
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-zinc-100 text-[var(--text-secondary)] border border-[var(--border)]">
                 {contract.contractNumber}
               </span>
               <ContractStatusBadge status={contract.status} size="sm" />
@@ -205,7 +205,7 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
           {onOpenMessages && (
             <button
               onClick={() => onOpenMessages(contract.creatorId)}
-              className="min-h-[44px] px-3.5 py-2 rounded-xl bg-zinc-100 text-zinc-700 border border-zinc-200 hover:bg-zinc-200 text-zinc-800 text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
+              className="min-h-[44px] px-3.5 py-2 rounded-xl bg-zinc-100 text-[var(--text-secondary)] border border-[var(--border)] hover:bg-zinc-200 text-zinc-800 text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
             >
               <MessageSquare className="w-3.5 h-3.5 text-zinc-500" />
               <span>Project Chat</span>
@@ -232,7 +232,7 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
       )}
 
       {/* 2. Stepper Lifecycle Pipeline */}
-      <div className="p-4 rounded-2xl bg-white border border-black/[0.08] shadow-sm overflow-x-auto scrollbar-none">
+      <div className="p-4 rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-sm overflow-x-auto scrollbar-none">
         <div className="flex items-center justify-between min-w-[620px] gap-2">
           {steps.map((s, i) => (
             <React.Fragment key={s.label}>
@@ -241,14 +241,14 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
                   className={`w-6 h-6 rounded-full text-[10px] font-mono flex items-center justify-center font-bold ${
                     s.done
                       ? 'bg-emerald-500 text-black'
-                      : 'bg-zinc-100 text-zinc-700 border border-zinc-200 text-zinc-500'
+                      : 'bg-zinc-100 text-[var(--text-secondary)] border border-[var(--border)] text-zinc-500'
                   }`}
                 >
                   {s.done ? '✓' : i + 1}
                 </span>
                 <span
                   className={`text-xs font-medium ${
-                    s.done ? 'text-zinc-900 font-semibold' : 'text-zinc-500'
+                    s.done ? 'text-[var(--text-primary)] font-semibold' : 'text-zinc-500'
                   }`}
                 >
                   {s.label}
@@ -257,7 +257,7 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
               {i < steps.length - 1 && (
                 <div
                   className={`flex-1 h-0.5 mx-2 ${
-                    s.done ? 'bg-emerald-500/40' : 'bg-zinc-100 text-zinc-700 border border-zinc-200'
+                    s.done ? 'bg-emerald-500/40' : 'bg-zinc-100 text-[var(--text-secondary)] border border-[var(--border)]'
                   }`}
                 />
               )}
@@ -300,7 +300,7 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
               <div className="flex items-center gap-2.5">
                 <Clock className="w-4 h-4 text-amber-800 shrink-0" />
                 <div>
-                  <h4 className="font-bold text-zinc-900">Deliverable Under Brand Review</h4>
+                  <h4 className="font-bold text-[var(--text-primary)]">Deliverable Under Brand Review</h4>
                   <p className="text-[11px] text-zinc-500">
                     Review window: {contract.terms.reviewPeriodDays} business days. Please approve work or request revisions.
                   </p>
@@ -320,7 +320,7 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
               return (
                 <div
                   key={del.id}
-                  className="p-5 rounded-2xl bg-white border border-black/[0.08] shadow-sm space-y-4 text-xs"
+                  className="p-5 rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-sm space-y-4 text-xs"
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex items-center gap-2.5">
@@ -328,7 +328,7 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
                         {index + 1}
                       </span>
                       <div>
-                        <h4 className="text-sm font-bold text-zinc-900 uppercase tracking-wider">
+                        <h4 className="text-sm font-bold text-[var(--text-primary)] uppercase tracking-wider">
                           {del.type} × {del.quantity}
                         </h4>
                         <p className="text-[11px] text-zinc-500 font-mono">
@@ -345,20 +345,20 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
                           ? 'bg-amber-50 text-amber-800 border border-amber-500/30 animate-pulse'
                           : del.status === 'revision'
                           ? 'bg-orange-500/20 text-orange-300 border border-orange-500/30'
-                          : 'bg-zinc-100 text-zinc-700 border border-zinc-200 text-zinc-500'
+                          : 'bg-zinc-100 text-[var(--text-secondary)] border border-[var(--border)] text-zinc-500'
                       }`}
                     >
                       {del.status}
                     </span>
                   </div>
 
-                  <p className="text-zinc-700 leading-relaxed bg-zinc-50 p-3 rounded-xl border border-zinc-200">
+                  <p className="text-[var(--text-secondary)] leading-relaxed bg-zinc-50 p-3 rounded-xl border border-[var(--border)]">
                     {del.specifications}
                   </p>
 
                   {/* Submission History / Preview */}
                   {latestDelivery ? (
-                    <div className="p-4 rounded-xl bg-zinc-50 border border-zinc-200 space-y-3">
+                    <div className="p-4 rounded-xl bg-[var(--surface-muted)] border border-[var(--border)] space-y-3">
                       <div className="flex items-center justify-between text-[11px]">
                         <span className="font-bold text-[#006779] font-mono">
                           Submission v{latestDelivery.version}
@@ -368,7 +368,7 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
                         </span>
                       </div>
 
-                      <p className="text-zinc-700">{latestDelivery.creatorNotes}</p>
+                      <p className="text-[var(--text-secondary)]">{latestDelivery.creatorNotes}</p>
 
                       {/* Attached files preview */}
                       {latestDelivery.files && latestDelivery.files.length > 0 && (
@@ -376,7 +376,7 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
                           {latestDelivery.files.map((f) => (
                             <div
                               key={f.id}
-                              className="p-2.5 rounded-lg bg-zinc-50 border border-zinc-200 flex items-center justify-between"
+                              className="p-2.5 rounded-lg bg-[var(--surface-muted)] border border-[var(--border)] flex items-center justify-between"
                             >
                               <div className="flex items-center gap-2">
                                 <FileText className="w-3.5 h-3.5 text-zinc-500" />
@@ -392,7 +392,7 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
 
                       {/* Brand actions for submitted deliverable */}
                       {del.status === 'submitted' && viewerRole === 'brand' && (
-                        <div className="flex items-center gap-2 pt-2 border-t border-zinc-200">
+                        <div className="flex items-center gap-2 pt-2 border-t border-[var(--border)]">
                           <button
                             type="button"
                             onClick={() => setApprovingDeliverableId(del.id)}
@@ -408,7 +408,7 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
                               setSelectedDeliverableId(del.id);
                               setIsRevisionModalOpen(true);
                             }}
-                            className="min-h-[44px] px-4 py-2 rounded-xl bg-zinc-100 text-zinc-700 border border-zinc-200 hover:bg-zinc-200 text-zinc-800 text-xs font-semibold flex items-center gap-1.5 cursor-pointer"
+                            className="min-h-[44px] px-4 py-2 rounded-xl bg-zinc-100 text-[var(--text-secondary)] border border-[var(--border)] hover:bg-zinc-200 text-zinc-800 text-xs font-semibold flex items-center gap-1.5 cursor-pointer"
                           >
                             <RefreshCw className="w-3.5 h-3.5 text-zinc-500" />
                             <span>Request Revision</span>
@@ -417,7 +417,7 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
                       )}
                     </div>
                   ) : (
-                    <div className="text-[11px] text-zinc-500 italic p-3 bg-zinc-50 rounded-xl border border-zinc-200">
+                    <div className="text-[11px] text-zinc-500 italic p-3 bg-zinc-50 rounded-xl border border-[var(--border)]">
                       Creator has not submitted assets for this deliverable yet.
                     </div>
                   )}
@@ -430,15 +430,15 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
 
       {/* AGREEMENT TERMS TAB */}
       {activeTab === 'overview' && (
-        <div className="p-6 rounded-2xl bg-white border border-black/[0.08] space-y-6 text-xs text-zinc-700 shadow-sm">
-          <div className="flex justify-between items-center border-b border-zinc-200 pb-4">
+        <div className="p-6 rounded-2xl bg-[var(--surface)] border border-[var(--border)] space-y-6 text-xs text-[var(--text-secondary)] shadow-sm">
+          <div className="flex justify-between items-center border-b border-[var(--border)] pb-4">
             <div>
-              <h3 className="text-base font-bold text-zinc-900 font-display">Contract Terms & Rights</h3>
+              <h3 className="text-base font-bold text-[var(--text-primary)] font-display">Contract Terms & Rights</h3>
               <p className="text-[11px] text-zinc-500 font-mono">Version {contract.version}</p>
             </div>
             <button
               onClick={() => setIsAmendmentModalOpen(true)}
-              className="min-h-[44px] px-3.5 py-2 rounded-xl bg-zinc-100 text-zinc-700 border border-zinc-200 hover:bg-zinc-200 text-zinc-800 text-xs font-semibold cursor-pointer"
+              className="min-h-[44px] px-3.5 py-2 rounded-xl bg-zinc-100 text-[var(--text-secondary)] border border-[var(--border)] hover:bg-zinc-200 text-zinc-800 text-xs font-semibold cursor-pointer"
             >
               + Amend
             </button>
@@ -447,36 +447,36 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1">
               <span className="text-[10px] text-zinc-500 uppercase font-mono block">Channels</span>
-              <p className="font-semibold text-zinc-900">
+              <p className="font-semibold text-[var(--text-primary)]">
                 {contract.usageRights.usageTypes.join(', ')}
               </p>
             </div>
 
             <div className="space-y-1">
               <span className="text-[10px] text-zinc-500 uppercase font-mono block">Duration & Territory</span>
-              <p className="font-semibold text-zinc-900">
+              <p className="font-semibold text-[var(--text-primary)]">
                 {contract.usageRights.duration} • {contract.usageRights.territory}
               </p>
             </div>
 
             <div className="space-y-1">
               <span className="text-[10px] text-zinc-500 uppercase font-mono block">Revisions Included</span>
-              <p className="font-semibold text-zinc-900">
+              <p className="font-semibold text-[var(--text-primary)]">
                 {contract.terms.includedRevisions} revision rounds
               </p>
             </div>
 
             <div className="space-y-1">
               <span className="text-[10px] text-zinc-500 uppercase font-mono block">Approval Window</span>
-              <p className="font-semibold text-zinc-900">
+              <p className="font-semibold text-[var(--text-primary)]">
                 {contract.terms.reviewPeriodDays} business days
               </p>
             </div>
           </div>
 
-          <div className="space-y-2 pt-4 border-t border-zinc-200">
+          <div className="space-y-2 pt-4 border-t border-[var(--border)]">
             <span className="text-[10px] text-zinc-500 uppercase font-mono block">Cancellation Policy</span>
-            <p className="text-zinc-700 leading-relaxed bg-zinc-50 p-3 rounded-xl border border-zinc-200">
+            <p className="text-[var(--text-secondary)] leading-relaxed bg-zinc-50 p-3 rounded-xl border border-[var(--border)]">
               {contract.terms.cancellationTerms}
             </p>
           </div>
@@ -485,8 +485,8 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
 
       {/* AUDIT TRAIL TAB */}
       {activeTab === 'timeline' && (
-        <div className="p-5 rounded-2xl bg-white border border-black/[0.08] shadow-sm space-y-4 text-xs">
-          <h3 className="text-sm font-bold text-zinc-900 font-display">
+        <div className="p-5 rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-sm space-y-4 text-xs">
+          <h3 className="text-sm font-bold text-[var(--text-primary)] font-display">
             Immutable Chronological Audit Trail
           </h3>
 
@@ -494,12 +494,12 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
             {contract.auditTrail.map((event) => (
               <div
                 key={event.id}
-                className="p-3.5 rounded-xl bg-zinc-50 border border-zinc-200 flex items-start justify-between gap-3"
+                className="p-3.5 rounded-xl bg-[var(--surface-muted)] border border-[var(--border)] flex items-start justify-between gap-3"
               >
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="font-bold text-zinc-900">{event.action}</span>
-                    <span className="text-[9px] font-mono uppercase px-1.5 py-0.5 rounded bg-zinc-100 text-zinc-700 border border-zinc-200 text-zinc-500">
+                    <span className="font-bold text-[var(--text-primary)]">{event.action}</span>
+                    <span className="text-[9px] font-mono uppercase px-1.5 py-0.5 rounded bg-zinc-100 text-[var(--text-secondary)] border border-[var(--border)] text-zinc-500">
                       {event.actorRole}
                     </span>
                   </div>
@@ -517,9 +517,9 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
 
       {/* AMENDMENTS TAB */}
       {activeTab === 'amendments' && (
-        <div className="p-5 rounded-2xl bg-white border border-black/[0.08] shadow-sm space-y-4 text-xs">
+        <div className="p-5 rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-sm space-y-4 text-xs">
           <div className="flex justify-between items-center">
-            <h3 className="text-sm font-bold text-zinc-900 font-display">Formal Contract Amendments</h3>
+            <h3 className="text-sm font-bold text-[var(--text-primary)] font-display">Formal Contract Amendments</h3>
             <button
               onClick={() => setIsAmendmentModalOpen(true)}
               className="min-h-[44px] px-3.5 py-2 rounded-xl bg-[#007E93] hover:bg-[#006779] text-white font-semibold cursor-pointer"
@@ -533,10 +533,10 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
               {contract.amendments.map((amd) => (
                 <div
                   key={amd.id}
-                  className="p-4 rounded-xl bg-zinc-50 border border-zinc-200 space-y-2"
+                  className="p-4 rounded-xl bg-[var(--surface-muted)] border border-[var(--border)] space-y-2"
                 >
                   <div className="flex justify-between items-center">
-                    <span className="font-bold text-zinc-900">Amendment v{amd.version}</span>
+                    <span className="font-bold text-[var(--text-primary)]">Amendment v{amd.version}</span>
                     <span
                       className={`text-[10px] uppercase font-mono px-2 py-0.5 rounded-full ${
                         amd.status === 'approved'
@@ -549,7 +549,7 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
                       {amd.status}
                     </span>
                   </div>
-                  <p className="text-zinc-700">
+                  <p className="text-[var(--text-secondary)]">
                     <strong>Reason:</strong> {amd.reason}
                   </p>
                 </div>
@@ -563,8 +563,8 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
 
       {/* DISPUTE TAB */}
       {activeTab === 'dispute' && (
-        <div className="p-5 rounded-2xl bg-white border border-black/[0.08] shadow-sm space-y-4 text-xs">
-          <h3 className="text-sm font-bold text-zinc-900 font-display">Dispute Resolution</h3>
+        <div className="p-5 rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-sm space-y-4 text-xs">
+          <h3 className="text-sm font-bold text-[var(--text-primary)] font-display">Dispute Resolution</h3>
 
           {contract.dispute ? (
             <div className="p-4 rounded-xl bg-rose-50 border border-rose-200 space-y-3">
@@ -576,16 +576,16 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
                   Opened {new Date(contract.dispute.openedAt).toLocaleDateString()}
                 </span>
               </div>
-              <p className="text-zinc-700 leading-relaxed">{contract.dispute.description}</p>
-              <div className="p-3 bg-zinc-50 rounded-lg text-zinc-600 border border-zinc-200 text-[11px]">
+              <p className="text-[var(--text-secondary)] leading-relaxed">{contract.dispute.description}</p>
+              <div className="p-3 bg-zinc-50 rounded-lg text-[var(--text-secondary)] border border-[var(--border)] text-[11px]">
                 Status: <strong>{contract.dispute.status}</strong>. Evidence gathered: contract
                 clauses, direct messages, delivery logs, and payment escrow record. Super Admin
                 arbitration pending.
               </div>
             </div>
           ) : (
-            <div className="p-4 rounded-xl bg-zinc-50 border border-zinc-200 space-y-2">
-              <p className="text-zinc-700">
+            <div className="p-4 rounded-xl bg-[var(--surface-muted)] border border-[var(--border)] space-y-2">
+              <p className="text-[var(--text-secondary)]">
                 No disputes exist on this agreement. If a delivery milestone is breached or communication has broken down, either party may file a formal dispute.
               </p>
               <button
@@ -602,18 +602,18 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
       {/* APPROVE DELIVERABLE CONFIRMATION MODAL */}
       {approvingDeliverableId && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/45 backdrop-blur-md animate-fade-in">
-          <div className="w-full max-w-md p-6 rounded-2xl bg-white border border-black/[0.08] shadow-2xl text-zinc-900 border-emerald-500/30 space-y-4 text-xs shadow-2xl">
-            <h3 className="text-base font-bold text-zinc-900 font-display">Approve Deliverable</h3>
-            <p className="text-zinc-700 leading-relaxed">
+          <div className="w-full max-w-md p-6 rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-2xl text-[var(--text-primary)] border-emerald-500/30 space-y-4 text-xs shadow-2xl">
+            <h3 className="text-base font-bold text-[var(--text-primary)] font-display">Approve Deliverable</h3>
+            <p className="text-[var(--text-secondary)] leading-relaxed">
               Approve this submission? Protected payment will be released to{' '}
-              <strong className="text-zinc-900">{contract.creatorName}</strong>.
+              <strong className="text-[var(--text-primary)]">{contract.creatorName}</strong>.
             </p>
 
             <div className="flex items-center justify-end gap-2.5 pt-2">
               <button
                 type="button"
                 onClick={() => setApprovingDeliverableId(null)}
-                className="min-h-[44px] px-4 rounded-xl bg-zinc-100 text-zinc-700 border border-zinc-200 text-zinc-700 font-semibold cursor-pointer"
+                className="min-h-[44px] px-4 rounded-xl bg-zinc-100 text-[var(--text-secondary)] border border-[var(--border)] text-[var(--text-secondary)] font-semibold cursor-pointer"
               >
                 Cancel
               </button>
@@ -636,8 +636,8 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
       {/* REVISION REQUEST MODAL */}
       {isRevisionModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/45 backdrop-blur-md animate-fade-in">
-          <div className="w-full max-w-md p-6 rounded-2xl bg-white border border-black/[0.08] shadow-2xl text-zinc-900 border-zinc-200 space-y-4 text-xs shadow-2xl">
-            <h3 className="text-base font-bold text-zinc-900 font-display">Request Revision</h3>
+          <div className="w-full max-w-md p-6 rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-2xl text-[var(--text-primary)] border-[var(--border)] space-y-4 text-xs shadow-2xl">
+            <h3 className="text-base font-bold text-[var(--text-primary)] font-display">Request Revision</h3>
             <p className="text-zinc-500">
               Revision{' '}
               {(contract.deliveries?.filter((d) => d.deliverableId === selectedDeliverableId)?.length || 0) + 1} of{' '}
@@ -649,14 +649,14 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
               placeholder="e.g. Please trim intro to 3 seconds and highlight product texture..."
               value={revisionFeedback}
               onChange={(e) => setRevisionFeedback(e.target.value)}
-              className="w-full p-3 rounded-xl bg-white border border-zinc-200 text-zinc-900 text-xs focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] resize-none"
+              className="w-full p-3 rounded-xl bg-[var(--input)] border border-[var(--border)] text-[var(--text-primary)] text-xs focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] resize-none"
             />
 
             <div className="flex items-center justify-end gap-2.5">
               <button
                 type="button"
                 onClick={() => setIsRevisionModalOpen(false)}
-                className="min-h-[44px] px-4 rounded-xl bg-zinc-100 text-zinc-700 border border-zinc-200 text-zinc-700 font-semibold cursor-pointer"
+                className="min-h-[44px] px-4 rounded-xl bg-zinc-100 text-[var(--text-secondary)] border border-[var(--border)] text-[var(--text-secondary)] font-semibold cursor-pointer"
               >
                 Cancel
               </button>
@@ -675,14 +675,14 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
       {/* AMENDMENT REQUEST MODAL */}
       {isAmendmentModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/45 backdrop-blur-md animate-fade-in">
-          <div className="w-full max-w-md p-6 rounded-2xl bg-white border border-black/[0.08] shadow-2xl text-zinc-900 border-zinc-200 space-y-4 text-xs shadow-2xl">
-            <h3 className="text-base font-bold text-zinc-900 font-display">Propose Amendment</h3>
+          <div className="w-full max-w-md p-6 rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-2xl text-[var(--text-primary)] border-[var(--border)] space-y-4 text-xs shadow-2xl">
+            <h3 className="text-base font-bold text-[var(--text-primary)] font-display">Propose Amendment</h3>
             <p className="text-zinc-500">
               Contract amendments modify agreed terms and require approval by both parties.
             </p>
 
             <div>
-              <label className="text-[11px] font-medium text-zinc-700 block mb-1">
+              <label className="text-[11px] font-medium text-[var(--text-secondary)] block mb-1">
                 Reason
               </label>
               <input
@@ -690,19 +690,19 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
                 placeholder="e.g. Additional video requested"
                 value={amendmentReason}
                 onChange={(e) => setAmendmentReason(e.target.value)}
-                className="w-full min-h-[44px] px-3.5 py-2 rounded-xl bg-white border border-zinc-200 text-zinc-900 text-xs focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]"
+                className="w-full min-h-[44px] px-3.5 py-2 rounded-xl bg-[var(--input)] border border-[var(--border)] text-[var(--text-primary)] text-xs focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]"
               />
             </div>
 
             <div>
-              <label className="text-[11px] font-medium text-zinc-700 block mb-1">
+              <label className="text-[11px] font-medium text-[var(--text-secondary)] block mb-1">
                 Proposed Change
               </label>
               <textarea
                 rows={3}
                 value={amendmentChanges}
                 onChange={(e) => setAmendmentChanges(e.target.value)}
-                className="w-full p-3 rounded-xl bg-white border border-zinc-200 text-zinc-900 text-xs focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] resize-none"
+                className="w-full p-3 rounded-xl bg-[var(--input)] border border-[var(--border)] text-[var(--text-primary)] text-xs focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] resize-none"
               />
             </div>
 
@@ -710,7 +710,7 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
               <button
                 type="button"
                 onClick={() => setIsAmendmentModalOpen(false)}
-                className="min-h-[44px] px-4 rounded-xl bg-zinc-100 text-zinc-700 border border-zinc-200 text-zinc-700 font-semibold cursor-pointer"
+                className="min-h-[44px] px-4 rounded-xl bg-zinc-100 text-[var(--text-secondary)] border border-[var(--border)] text-[var(--text-secondary)] font-semibold cursor-pointer"
               >
                 Cancel
               </button>
@@ -729,20 +729,20 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
       {/* DISPUTE MODAL */}
       {isDisputeModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/45 backdrop-blur-md animate-fade-in">
-          <div className="w-full max-w-md p-6 rounded-2xl bg-white border border-black/[0.08] shadow-2xl text-zinc-900 border-rose-500/30 space-y-4 text-xs shadow-2xl">
+          <div className="w-full max-w-md p-6 rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-2xl text-[var(--text-primary)] border-rose-500/30 space-y-4 text-xs shadow-2xl">
             <h3 className="text-base font-bold text-rose-800 font-display">Dispute Resolution</h3>
             <p className="text-zinc-500">
               Opening a dispute freezes funds and escalates this agreement to Super Admin arbitration.
             </p>
 
             <div>
-              <label className="text-[11px] font-medium text-zinc-700 block mb-1">
+              <label className="text-[11px] font-medium text-[var(--text-secondary)] block mb-1">
                 Reason
               </label>
               <select
                 value={disputeReason}
                 onChange={(e) => setDisputeReason(e.target.value)}
-                className="w-full min-h-[44px] px-3.5 py-2 rounded-xl bg-white border border-zinc-200 text-zinc-900 text-xs focus:outline-none focus:border-rose-500"
+                className="w-full min-h-[44px] px-3.5 py-2 rounded-xl bg-[var(--input)] border border-[var(--border)] text-[var(--text-primary)] text-xs focus:outline-none focus:border-rose-500"
               >
                 <option value="Missed delivery deadline">Missed delivery deadline</option>
                 <option value="Deliverable non-compliance with brief">
@@ -755,7 +755,7 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
             </div>
 
             <div>
-              <label className="text-[11px] font-medium text-zinc-700 block mb-1">
+              <label className="text-[11px] font-medium text-[var(--text-secondary)] block mb-1">
                 Details & Evidence
               </label>
               <textarea
@@ -763,7 +763,7 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
                 placeholder="Explain the issue in detail..."
                 value={disputeDescription}
                 onChange={(e) => setDisputeDescription(e.target.value)}
-                className="w-full p-3 rounded-xl bg-white border border-zinc-200 text-zinc-900 text-xs focus:outline-none focus:border-rose-500 resize-none"
+                className="w-full p-3 rounded-xl bg-[var(--input)] border border-[var(--border)] text-[var(--text-primary)] text-xs focus:outline-none focus:border-rose-500 resize-none"
               />
             </div>
 
@@ -771,7 +771,7 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
               <button
                 type="button"
                 onClick={() => setIsDisputeModalOpen(false)}
-                className="min-h-[44px] px-4 rounded-xl bg-zinc-100 text-zinc-700 border border-zinc-200 text-zinc-700 font-semibold cursor-pointer"
+                className="min-h-[44px] px-4 rounded-xl bg-zinc-100 text-[var(--text-secondary)] border border-[var(--border)] text-[var(--text-secondary)] font-semibold cursor-pointer"
               >
                 Cancel
               </button>

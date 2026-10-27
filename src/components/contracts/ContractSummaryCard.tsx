@@ -36,7 +36,7 @@ export const ContractSummaryCard: React.FC<ContractSummaryCardProps> = ({
   return (
     <div
       onClick={() => onOpen(contract.id)}
-      className="group relative p-4 rounded-2xl bg-white hover:bg-slate-50/80 border border-black/[0.08] hover:border-black/20 transition-all duration-200 cursor-pointer flex flex-col justify-between gap-3 shadow-xs hover:shadow-sm"
+      className="group relative p-4 rounded-2xl bg-[var(--surface)] hover:bg-[var(--surface-elevated)] border border-[var(--border)] hover:border-[var(--border-strong)] text-[var(--text-primary)] transition-all duration-200 cursor-pointer flex flex-col justify-between gap-3 shadow-xs hover:shadow-sm"
     >
       {/* Top Row: Creator Avatar, Name & Status Badge */}
       <div className="flex items-start justify-between gap-3">
@@ -55,11 +55,11 @@ export const ContractSummaryCard: React.FC<ContractSummaryCardProps> = ({
           </div>
           <div className="min-w-0">
             <div className="flex items-center gap-1.5">
-              <h4 className="text-sm font-semibold text-zinc-900 truncate group-hover:text-[#007E93] transition-colors">
+              <h4 className="text-sm font-semibold text-[var(--text-primary)] truncate group-hover:text-[#007E93] transition-colors">
                 {contract.creatorName || 'Unassigned Creator'}
               </h4>
             </div>
-            <p className="text-[11px] text-zinc-500 font-mono truncate">
+            <p className="text-[11px] text-[var(--text-muted)] font-mono truncate">
               {contract.creatorHandle || '@creator'} • {contract.contractNumber}
             </p>
           </div>
@@ -70,10 +70,10 @@ export const ContractSummaryCard: React.FC<ContractSummaryCardProps> = ({
 
       {/* Middle: Project Title & Deliverables Summary */}
       <div className="space-y-1">
-        <p className="text-xs font-medium text-zinc-900 line-clamp-1">
+        <p className="text-xs font-medium text-[var(--text-primary)] line-clamp-1">
           {contract.projectName}
         </p>
-        <div className="flex items-center gap-2 text-[11px] text-zinc-500">
+        <div className="flex items-center gap-2 text-[11px] text-[var(--text-muted)]">
           <span className="truncate">
             {contract.deliverables.map((d) => `${d.quantity} ${d.type}`).join(', ') || 'No deliverables'}
           </span>
@@ -81,16 +81,16 @@ export const ContractSummaryCard: React.FC<ContractSummaryCardProps> = ({
       </div>
 
       {/* Bottom Row: Amount, Due Date, and Action */}
-      <div className="pt-2 border-t border-zinc-200 flex items-center justify-between text-xs">
+      <div className="pt-2 border-t border-[var(--border)] flex items-center justify-between text-xs">
         <div className="flex items-center gap-3">
           <div>
-            <span className="text-[10px] uppercase tracking-wider text-zinc-500 block">Compensation</span>
-            <span className="font-bold text-zinc-900 font-mono text-sm">{formattedAmount}</span>
+            <span className="text-[10px] uppercase tracking-wider text-[var(--text-muted)] block">Compensation</span>
+            <span className="font-bold text-[var(--text-primary)] font-mono text-sm">{formattedAmount}</span>
           </div>
 
           <div className="hidden sm:block h-6 w-px bg-zinc-200" />
 
-          <div className="flex items-center gap-1 text-zinc-500 text-[11px]">
+          <div className="flex items-center gap-1 text-[var(--text-muted)] text-[11px]">
             <Calendar className="w-3.5 h-3.5 text-zinc-400" />
             <span>Due {formattedDate}</span>
           </div>
@@ -101,7 +101,7 @@ export const ContractSummaryCard: React.FC<ContractSummaryCardProps> = ({
             e.stopPropagation();
             onOpen(contract.id);
           }}
-          className="min-h-[44px] min-w-[70px] px-3.5 py-2 rounded-xl bg-zinc-100 hover:bg-[#007E93] text-zinc-800 hover:text-white text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer border border-zinc-200 hover:border-[#007E93]"
+          className="min-h-[44px] min-w-[70px] px-3.5 py-2 rounded-xl bg-zinc-100 hover:bg-[#007E93] text-zinc-800 hover:text-white text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer border border-[var(--border)] hover:border-[#007E93]"
         >
           <span>Open</span>
           <ArrowRight className="w-3.5 h-3.5" />

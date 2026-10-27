@@ -209,14 +209,14 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
   };
 
   return (
-    <div className="space-y-5 animate-fade-in font-sans pb-24 md:pb-12 text-zinc-900">
+    <div className="space-y-5 animate-fade-in font-sans pb-24 md:pb-12 text-[var(--text-primary)]">
       {/* 1. Header: Clean title, zero marketing blurbs */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-xl sm:text-2xl font-bold text-zinc-900 tracking-tight font-display">
+          <h1 className="text-xl sm:text-2xl font-bold text-[var(--text-primary)] tracking-tight font-display">
             Contracts
           </h1>
-          <p className="text-xs text-zinc-500 mt-0.5">
+          <p className="text-xs text-[var(--text-secondary)] mt-0.5">
             Manage your brand partnerships and active agreements.
           </p>
         </div>
@@ -231,7 +231,7 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
       </div>
 
       {/* 2. Role-Aware Spatial Tabs Bar */}
-      <div className="flex items-center gap-1 p-1 rounded-xl bg-[#E2E5E9]/80 border border-black/[0.08] overflow-x-auto scrollbar-none shadow-inner">
+      <div className="flex items-center gap-1 p-1 rounded-xl bg-[var(--surface-muted)] border border-[var(--border)] overflow-x-auto scrollbar-none shadow-inner">
         {[
           { id: 'all', label: 'All', count: counts.all },
           { id: 'pending', label: 'Pending', count: counts.pending },
@@ -255,7 +255,7 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
                 className={`px-1.5 py-0.2 rounded-full text-[10px] font-mono ${
                   activeTab === tab.id
                     ? 'bg-sky-50 text-sky-800 font-bold'
-                    : 'bg-zinc-200 text-zinc-600'
+                    : 'bg-[var(--surface-muted)] text-[var(--text-muted)] border border-[var(--border)]'
                 }`}
               >
                 {tab.count}
@@ -284,10 +284,10 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
                 <div
                   key={c.id}
                   onClick={() => setSelectedContractId(c.id)}
-                  className={`group p-4 rounded-2xl transition-all cursor-pointer relative overflow-hidden bg-white border ${
+                  className={`group p-4 rounded-2xl transition-all cursor-pointer relative overflow-hidden bg-[var(--surface)] border ${
                     isSelected
-                      ? 'border-[#00B4D8] ring-2 ring-[#00B4D8]/30 shadow-md'
-                      : 'border-black/[0.08] hover:border-black/20 shadow-xs'
+                      ? 'border-[var(--accent)] ring-2 ring-[var(--accent)]/30 shadow-md'
+                      : 'border-[var(--border)] hover:border-[var(--border-strong)] shadow-xs'
                   }`}
                 >
                   {/* Top: Brand Logo, Brand Name & Status Badge */}
@@ -299,10 +299,10 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
                         className="w-9 h-9 rounded-xl object-cover ring-1 ring-black/10 shrink-0"
                       />
                       <div className="min-w-0">
-                        <h4 className="text-xs font-bold text-zinc-900 truncate">
+                        <h4 className="text-xs font-bold text-[var(--text-primary)] truncate">
                           {c.brandName}
                         </h4>
-                        <p className="text-[10px] text-zinc-500 font-mono truncate">
+                        <p className="text-[10px] text-[var(--text-muted)] font-mono truncate">
                           {c.contractNumber}
                         </p>
                       </div>
@@ -312,17 +312,17 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
                   </div>
 
                   {/* Project Name */}
-                  <h3 className="text-xs sm:text-sm font-bold text-zinc-900 mt-2.5 truncate">
+                  <h3 className="text-xs sm:text-sm font-bold text-[var(--text-primary)] mt-2.5 truncate">
                     {c.projectName}
                   </h3>
 
                   {/* Bottom: Money, Due Date & Quick Actions */}
-                  <div className="pt-2.5 mt-2.5 border-t border-zinc-200 flex items-center justify-between text-xs font-mono">
+                  <div className="pt-2.5 mt-2.5 border-t border-[var(--border)] flex items-center justify-between text-xs font-mono">
                     <div className="flex items-center gap-2">
                       <span className="font-bold text-emerald-700 text-sm">
                         ${c.payment.creatorPayment.toLocaleString()}
                       </span>
-                      <span className="text-[11px] text-zinc-500 font-sans">
+                      <span className="text-[11px] text-[var(--text-muted)] font-sans">
                         · Due {new Date(c.deadline).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                       </span>
                     </div>
@@ -348,7 +348,7 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
                               setSelectedContractId(c.id);
                               setIsDeclineModalOpen(true);
                             }}
-                            className="depth-btn-secondary px-2.5 py-1 rounded-lg text-zinc-700 hover:text-zinc-950 text-[11px] font-sans font-semibold cursor-pointer"
+                            className="px-2.5 py-1 rounded-lg bg-[var(--surface-muted)] hover:bg-[var(--surface-elevated)] border border-[var(--border)] text-[var(--text-primary)] text-[11px] font-sans font-semibold cursor-pointer transition-colors"
                           >
                             Decline
                           </button>
@@ -360,7 +360,7 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
                             e.stopPropagation();
                             setSelectedContractId(c.id);
                           }}
-                          className="depth-btn-secondary px-3 py-1 rounded-lg text-zinc-700 hover:text-zinc-950 text-[11px] font-sans font-semibold cursor-pointer"
+                          className="px-3 py-1 rounded-lg bg-[var(--surface-muted)] hover:bg-[var(--surface-elevated)] border border-[var(--border)] text-[var(--text-primary)] text-[11px] font-sans font-semibold cursor-pointer transition-colors"
                         >
                           View
                         </button>
@@ -375,9 +375,9 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
 
         {/* Right Column: Progressive Disclosure Detail View (7 Cols) */}
         {selectedContract ? (
-          <div className="lg:col-span-7 rounded-2xl bg-white border border-black/[0.08] shadow-sm p-4 sm:p-6 space-y-6 text-xs text-zinc-700 relative overflow-hidden">
+          <div className="lg:col-span-7 rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-sm p-4 sm:p-6 space-y-6 text-xs text-[var(--text-secondary)] relative overflow-hidden">
             {/* Header: Brand, Project, Status */}
-            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 border-b border-zinc-200 pb-4">
+            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 border-b border-[var(--border)] pb-4">
               <div>
                 <div className="flex items-center gap-2">
                   <span className="text-[10px] font-mono uppercase text-[#007E93] font-semibold">
@@ -388,7 +388,7 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
                     {selectedContract.brandName}
                   </span>
                 </div>
-                <h2 className="text-base sm:text-lg font-bold text-zinc-900 font-display mt-0.5">
+                <h2 className="text-base sm:text-lg font-bold text-[var(--text-primary)] font-display mt-0.5">
                   {selectedContract.projectName}
                 </h2>
               </div>
@@ -398,7 +398,7 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
                 {onOpenMessages && (
                   <button
                     onClick={() => onOpenMessages(selectedContract.brandId)}
-                    className="p-2 rounded-xl bg-zinc-100 hover:bg-zinc-200 border border-zinc-300 text-zinc-700 hover:text-zinc-900 transition-colors cursor-pointer"
+                    className="p-2 rounded-xl bg-[var(--surface-muted)] hover:bg-[var(--surface-elevated)] border border-[var(--border)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors cursor-pointer"
                     title="Message Brand"
                     aria-label="Message Brand"
                   >
@@ -460,7 +460,7 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
                 </div>
 
                 {selectedContract.deliveries[0]?.brandFeedback && (
-                  <p className="text-zinc-800 text-xs italic bg-white p-2.5 rounded-lg border border-amber-200">
+                  <p className="text-[var(--text-primary)] text-xs italic bg-white p-2.5 rounded-lg border border-amber-200">
                     "{selectedContract.deliveries[0].brandFeedback}"
                   </p>
                 )}
@@ -483,7 +483,7 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
             {/* Deliverables Section (Level 2) */}
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <h3 className="text-xs font-bold text-zinc-900 uppercase tracking-wider font-mono">
+                <h3 className="text-xs font-bold text-[var(--text-primary)] uppercase tracking-wider font-mono">
                   Deliverables
                 </h3>
                 {selectedContract.status === 'active' && (
@@ -509,14 +509,14 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
                   return (
                     <div
                       key={del.id}
-                      className="p-3.5 rounded-xl bg-zinc-50 border border-zinc-200 space-y-2"
+                      className="p-3.5 rounded-xl bg-[var(--surface-muted)] border border-[var(--border)] space-y-2"
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                          <span className="font-bold text-zinc-900 text-xs">
+                          <span className="font-bold text-[var(--text-primary)] text-xs">
                             {del.type} × {del.quantity}
                           </span>
-                          <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-200 text-zinc-700">
+                          <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[var(--surface)] text-[var(--text-secondary)] border border-[var(--border)]">
                             {del.format}
                           </span>
                         </div>
@@ -525,12 +525,12 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
                         </span>
                       </div>
 
-                      <p className="text-[11px] text-zinc-600 leading-relaxed">
+                      <p className="text-[11px] text-[var(--text-secondary)] leading-relaxed">
                         {del.specifications}
                       </p>
 
                       {hasDelivery && (
-                        <div className="p-2 rounded-lg bg-white border border-zinc-200 flex items-center justify-between text-[11px]">
+                        <div className="p-2 rounded-lg bg-[var(--surface)] border border-[var(--border)] flex items-center justify-between text-[11px]">
                           <span className="font-mono text-[#007E93] font-semibold">
                             Version {hasDelivery.version} Submitted
                           </span>
@@ -547,12 +547,12 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
 
             {/* Payment & Terms (Level 2 & 3) */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 font-mono text-xs">
-              <div className="p-3.5 rounded-xl bg-zinc-50 border border-zinc-200 space-y-1">
+              <div className="p-3.5 rounded-xl bg-[var(--surface-muted)] border border-[var(--border)] space-y-1">
                 <span className="text-[10px] uppercase text-zinc-500 block">Payment</span>
                 <span className="text-base font-bold text-emerald-700">
                   ${selectedContract.payment.creatorPayment.toLocaleString()}
                 </span>
-                <p className="text-[10px] text-zinc-500 font-sans">
+                <p className="text-[10px] text-[var(--text-muted)] font-sans">
                   {selectedContract.payment.paymentStatus === 'escrow_funded'
                     ? 'Protection funded ✓'
                     : selectedContract.payment.paymentStatus === 'paid'
@@ -561,19 +561,19 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
                 </p>
               </div>
 
-              <div className="p-3.5 rounded-xl bg-zinc-50 border border-zinc-200 space-y-1">
+              <div className="p-3.5 rounded-xl bg-[var(--surface-muted)] border border-[var(--border)] space-y-1">
                 <span className="text-[10px] uppercase text-zinc-500 block">Terms</span>
-                <p className="text-zinc-900 text-[11px] font-sans truncate">
+                <p className="text-[var(--text-primary)] text-[11px] font-sans truncate">
                   Usage: {selectedContract.usageRights.duration} • {selectedContract.usageRights.territory}
                 </p>
-                <p className="text-[10px] text-zinc-500 font-sans">
+                <p className="text-[10px] text-[var(--text-muted)] font-sans">
                   Revisions: {selectedContract.terms.includedRevisions} rounds included
                 </p>
               </div>
             </div>
 
             {/* Visual Progress Stepper (Section 17, 56) */}
-            <div className="space-y-2 pt-2 border-t border-zinc-200">
+            <div className="space-y-2 pt-2 border-t border-[var(--border)]">
               <h3 className="text-xs font-bold text-zinc-900 uppercase tracking-wider font-mono">
                 Timeline
               </h3>
@@ -609,7 +609,7 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
             </div>
 
             {/* Raise Issue / Support Action */}
-            <div className="pt-2 border-t border-zinc-200 flex items-center justify-between">
+            <div className="pt-2 border-t border-[var(--border)] flex items-center justify-between">
               <span className="text-[11px] text-zinc-500">
                 Need to amend scope or report a delivery issue?
               </span>
@@ -623,7 +623,7 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
             </div>
           </div>
         ) : (
-          <div className="lg:col-span-7 p-12 text-center rounded-2xl bg-white border border-zinc-200 text-xs text-zinc-500">
+          <div className="lg:col-span-7 p-12 text-center rounded-2xl bg-[var(--surface)] border border-[var(--border)] text-xs text-[var(--text-muted)]">
             Select a contract to review details.
           </div>
         )}
@@ -652,16 +652,16 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
       {/* 5. Accept Confirmation Dialog (Section 14) */}
       {isAcceptModalOpen && selectedContract && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/45 backdrop-blur-sm animate-fade-in">
-          <div className="w-full max-w-sm p-5 rounded-2xl bg-white border border-zinc-200 space-y-4 text-xs shadow-2xl text-zinc-900">
-            <h3 className="text-sm font-bold text-zinc-900">Accept this contract?</h3>
-            <p className="text-zinc-600 leading-relaxed text-[11px]">
+          <div className="w-full max-w-sm p-5 rounded-2xl bg-[var(--surface-elevated)] border border-[var(--border)] space-y-4 text-xs shadow-2xl text-[var(--text-primary)]">
+            <h3 className="text-sm font-bold text-[var(--text-primary)]">Accept this contract?</h3>
+            <p className="text-[var(--text-secondary)] leading-relaxed text-[11px]">
               You'll commit to the listed deliverables, deadline and terms for <strong>${selectedContract.payment.creatorPayment.toLocaleString()} USD</strong>.
             </p>
             <div className="flex items-center justify-end gap-2.5 pt-2">
               <button
                 type="button"
                 onClick={() => setIsAcceptModalOpen(false)}
-                className="min-h-[44px] px-4 rounded-xl bg-zinc-100 hover:bg-zinc-200 text-zinc-700 font-semibold cursor-pointer"
+                className="min-h-[44px] px-4 rounded-xl bg-[var(--surface-muted)] hover:bg-[var(--surface)] border border-[var(--border)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] font-semibold cursor-pointer"
               >
                 Cancel
               </button>
@@ -680,14 +680,14 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
       {/* 6. Decline Reason Dialog (Section 15) */}
       {isDeclineModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/45 backdrop-blur-sm animate-fade-in">
-          <div className="w-full max-w-sm p-5 rounded-2xl bg-white border border-zinc-200 space-y-4 text-xs shadow-2xl text-zinc-900">
-            <h3 className="text-sm font-bold text-zinc-900">Decline contract?</h3>
+          <div className="w-full max-w-sm p-5 rounded-2xl bg-[var(--surface-elevated)] border border-[var(--border)] space-y-4 text-xs shadow-2xl text-[var(--text-primary)]">
+            <h3 className="text-sm font-bold text-[var(--text-primary)]">Decline contract?</h3>
             <div className="space-y-2">
-              <label className="text-[11px] text-zinc-600 block font-medium">Reason (optional)</label>
+              <label className="text-[11px] text-[var(--text-secondary)] block font-medium">Reason (optional)</label>
               {['Budget', 'Timeline', 'Scope', 'Terms', 'Other'].map((reason) => (
                 <label
                   key={reason}
-                  className="flex items-center gap-2 p-2 rounded-lg bg-zinc-50 border border-zinc-200 cursor-pointer hover:bg-zinc-100"
+                  className="flex items-center gap-2 p-2 rounded-lg bg-[var(--surface-muted)] border border-[var(--border)] cursor-pointer hover:bg-[var(--surface)]"
                 >
                   <input
                     type="radio"
@@ -697,7 +697,7 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
                     onChange={(e) => setDeclineReason(e.target.value)}
                     className="text-[#00B4D8] focus:ring-0"
                   />
-                  <span className="text-zinc-800 text-xs">{reason}</span>
+                  <span className="text-[var(--text-primary)] text-xs">{reason}</span>
                 </label>
               ))}
             </div>
@@ -706,7 +706,7 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
               <button
                 type="button"
                 onClick={() => setIsDeclineModalOpen(false)}
-                className="min-h-[44px] px-4 rounded-xl bg-zinc-100 hover:bg-zinc-200 text-zinc-700 font-semibold cursor-pointer"
+                className="min-h-[44px] px-4 rounded-xl bg-[var(--surface-muted)] hover:bg-[var(--surface)] border border-[var(--border)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] font-semibold cursor-pointer"
               >
                 Cancel
               </button>
@@ -725,16 +725,16 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
       {/* 7. Deliverable Submission Modal (Section 19-20) */}
       {isSubmitModalOpen && selectedContract && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/45 backdrop-blur-sm animate-fade-in">
-          <div className="w-full max-w-md p-5 rounded-2xl bg-white border border-zinc-200 space-y-4 text-xs shadow-2xl text-zinc-900">
-            <h3 className="text-sm font-bold text-zinc-900">Submit Work</h3>
+          <div className="w-full max-w-md p-5 rounded-2xl bg-[var(--surface-elevated)] border border-[var(--border)] space-y-4 text-xs shadow-2xl text-[var(--text-primary)]">
+            <h3 className="text-sm font-bold text-[var(--text-primary)]">Submit Work</h3>
 
             {/* Deliverable Picker */}
             <div className="space-y-1.5">
-              <label className="text-[11px] text-zinc-600 font-medium">Deliverable</label>
+              <label className="text-[11px] text-[var(--text-secondary)] font-medium">Deliverable</label>
               <select
                 value={selectedDeliverableId || ''}
                 onChange={(e) => setSelectedDeliverableId(e.target.value)}
-                className="w-full p-2.5 rounded-xl bg-white border border-zinc-300 text-zinc-900 text-xs focus:outline-none focus:border-[#00B4D8]"
+                className="w-full p-2.5 rounded-xl bg-[var(--input)] border border-[var(--border)] text-[var(--text-primary)] text-xs focus:outline-none focus:border-[var(--accent)]"
               >
                 {selectedContract.deliverables.map((del) => (
                   <option key={del.id} value={del.id}>
@@ -745,9 +745,9 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
             </div>
 
             {/* Attached Files Simulation */}
-            <div className="p-3.5 rounded-xl border border-dashed border-zinc-300 bg-zinc-50 text-center space-y-1.5">
+            <div className="p-3.5 rounded-xl border border-dashed border-[var(--border)] bg-[var(--surface-muted)] text-center space-y-1.5">
               <Upload className="w-5 h-5 text-[#007E93] mx-auto" />
-              <p className="text-xs font-semibold text-zinc-900">2 files attached</p>
+              <p className="text-xs font-semibold text-[var(--text-primary)]">2 files attached</p>
               <ul className="text-[10px] text-zinc-500 font-mono space-y-0.5">
                 {uploadedFiles.map((fn, i) => (
                   <li key={i}>{fn}</li>
@@ -757,13 +757,13 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
 
             {/* Notes */}
             <div className="space-y-1.5">
-              <label className="text-[11px] text-zinc-600 font-medium">Notes (optional)</label>
+              <label className="text-[11px] text-[var(--text-secondary)] font-medium">Notes (optional)</label>
               <textarea
                 rows={2}
                 placeholder="Notes for brand review..."
                 value={deliveryNotes}
                 onChange={(e) => setDeliveryNotes(e.target.value)}
-                className="w-full p-2.5 rounded-xl bg-white border border-zinc-300 text-zinc-900 text-xs focus:outline-none focus:border-[#00B4D8] resize-none"
+                className="w-full p-2.5 rounded-xl bg-[var(--input)] border border-[var(--border)] text-[var(--text-primary)] text-xs focus:outline-none focus:border-[var(--accent)] resize-none"
               />
             </div>
 
@@ -771,7 +771,7 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
               <button
                 type="button"
                 onClick={() => setIsSubmitModalOpen(false)}
-                className="min-h-[44px] px-4 rounded-xl bg-zinc-100 hover:bg-zinc-200 text-zinc-700 font-semibold cursor-pointer"
+                className="min-h-[44px] px-4 rounded-xl bg-[var(--surface-muted)] hover:bg-[var(--surface)] border border-[var(--border)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] font-semibold cursor-pointer"
               >
                 Cancel
               </button>
@@ -790,15 +790,15 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
       {/* 8. Raise Issue (Dispute) Modal (Section 30) */}
       {isDisputeModalOpen && selectedContract && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/45 backdrop-blur-sm animate-fade-in">
-          <div className="w-full max-w-sm p-5 rounded-2xl bg-white border border-zinc-200 space-y-4 text-xs shadow-2xl text-zinc-900">
-            <h3 className="text-sm font-bold text-zinc-900">Raise Issue</h3>
+          <div className="w-full max-w-sm p-5 rounded-2xl bg-[var(--surface-elevated)] border border-[var(--border)] space-y-4 text-xs shadow-2xl text-[var(--text-primary)]">
+            <h3 className="text-sm font-bold text-[var(--text-primary)]">Raise Issue</h3>
 
             <div className="space-y-1.5">
-              <label className="text-[11px] text-zinc-600 font-medium">Category</label>
+              <label className="text-[11px] text-[var(--text-secondary)] font-medium">Category</label>
               <select
                 value={disputeCategory}
                 onChange={(e) => setDisputeCategory(e.target.value)}
-                className="w-full p-2.5 rounded-xl bg-white border border-zinc-300 text-zinc-900 text-xs focus:outline-none focus:border-[#00B4D8]"
+                className="w-full p-2.5 rounded-xl bg-[var(--input)] border border-[var(--border)] text-[var(--text-primary)] text-xs focus:outline-none focus:border-[var(--accent)]"
               >
                 {['Payment', 'Scope', 'Deadline', 'Deliverable', 'Revision', 'Usage', 'Other'].map((cat) => (
                   <option key={cat} value={cat}>
@@ -809,13 +809,13 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-[11px] text-zinc-600 font-medium">Describe issue</label>
+              <label className="text-[11px] text-[var(--text-secondary)] font-medium">Describe issue</label>
               <textarea
                 rows={3}
                 placeholder="Explain the issue for platform arbitration..."
                 value={disputeDescription}
                 onChange={(e) => setDisputeDescription(e.target.value)}
-                className="w-full p-2.5 rounded-xl bg-white border border-zinc-300 text-zinc-900 text-xs focus:outline-none focus:border-[#00B4D8] resize-none"
+                className="w-full p-2.5 rounded-xl bg-[var(--input)] border border-[var(--border)] text-[var(--text-primary)] text-xs focus:outline-none focus:border-[var(--accent)] resize-none"
               />
             </div>
 
@@ -823,7 +823,7 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
               <button
                 type="button"
                 onClick={() => setIsDisputeModalOpen(false)}
-                className="min-h-[44px] px-4 rounded-xl bg-zinc-100 hover:bg-zinc-200 text-zinc-700 font-semibold cursor-pointer"
+                className="min-h-[44px] px-4 rounded-xl bg-[var(--surface-muted)] hover:bg-[var(--surface)] border border-[var(--border)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] font-semibold cursor-pointer"
               >
                 Cancel
               </button>

@@ -134,16 +134,16 @@ export const SuperAdminLayout: React.FC<SuperAdminLayoutProps> = ({
   ];
 
   return (
-    <div className="flex h-screen w-full bg-[#EAECEF] text-zinc-900 overflow-hidden font-sans">
+    <div className="flex h-screen w-full bg-[var(--background)] text-[var(--text-primary)] overflow-hidden font-sans">
       {/* Sidebar */}
       <aside
-        className={`h-full border-r border-black/[0.08] bg-[#DFE3E8]/90 backdrop-blur-xl flex flex-col justify-between transition-all duration-200 z-30 shrink-0 ${
+        className={`h-full border-r border-[var(--border)] bg-[var(--sidebar)] backdrop-blur-xl flex flex-col justify-between transition-all duration-200 z-30 shrink-0 ${
           isSidebarCollapsed ? 'w-16' : 'w-60'
         }`}
       >
         {/* Brand / Admin Header */}
         <div>
-          <div className="p-3.5 border-b border-black/[0.06] flex items-center justify-between">
+          <div className="p-3.5 border-b border-[var(--border)] flex items-center justify-between">
             <div className="flex items-center gap-2.5">
               <BrandLogo size="sm" iconOnly={isSidebarCollapsed} />
               {!isSidebarCollapsed && (
@@ -178,8 +178,8 @@ export const SuperAdminLayout: React.FC<SuperAdminLayoutProps> = ({
                   onClick={() => handleTabChange(item.id)}
                   className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-sans font-medium transition-all cursor-pointer group ${
                     isActive
-                      ? 'bg-white text-rose-950 border border-rose-200 shadow-xs font-semibold'
-                      : 'text-zinc-600 hover:text-zinc-900 hover:bg-black/[0.04]'
+                      ? 'bg-[var(--surface)] text-[var(--text-primary)] border border-[var(--border)] shadow-xs font-semibold'
+                      : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-muted)]'
                   } ${isSidebarCollapsed ? 'justify-center px-0' : ''}`}
                   title={isSidebarCollapsed ? item.label : undefined}
                 >
@@ -210,9 +210,9 @@ export const SuperAdminLayout: React.FC<SuperAdminLayoutProps> = ({
         </div>
 
         {/* Bottom Profile / Exit */}
-        <div className="p-3 border-t border-black/[0.06] space-y-2">
+        <div className="p-3 border-t border-[var(--border)] space-y-2">
           {!isSidebarCollapsed && (
-            <div className="p-2.5 rounded-xl bg-white/80 border border-black/[0.08] flex items-center gap-2.5 shadow-xs">
+            <div className="p-2.5 rounded-xl bg-[var(--surface)] border border-[var(--border)] flex items-center gap-2.5 shadow-xs">
               <div className="w-7 h-7 rounded-lg bg-rose-100 text-rose-800 flex items-center justify-center font-bold text-xs shrink-0 font-mono">
                 {(adminSession?.name || 'Alex Vance')
                   .split(' ')
@@ -222,7 +222,7 @@ export const SuperAdminLayout: React.FC<SuperAdminLayoutProps> = ({
                   .slice(0, 2) || 'AV'}
               </div>
               <div className="min-w-0 truncate">
-                <span className="text-xs font-medium text-zinc-900 block truncate">
+                <span className="text-xs font-medium text-[var(--text-primary)] block truncate">
                   {adminSession?.name || 'Alex Vance'}
                 </span>
                 <span className="text-[10px] font-mono text-zinc-500 block truncate">Root Authority</span>
@@ -246,9 +246,9 @@ export const SuperAdminLayout: React.FC<SuperAdminLayoutProps> = ({
       {/* Main Workspace Frame */}
       <div className="flex-1 flex flex-col h-full min-w-0 overflow-hidden">
         {/* Top Bar */}
-        <header className="sticky top-0 z-30 w-full h-14 border-b border-black/[0.08] bg-white/85 backdrop-blur-xl px-4 lg:px-6 flex items-center justify-between gap-4">
+        <header className="sticky top-0 z-30 w-full h-14 border-b border-[var(--border)] bg-[var(--header)] text-[var(--text-primary)] backdrop-blur-xl px-4 lg:px-6 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <span className="text-xs font-semibold text-zinc-900 tracking-wide">
+            <span className="text-xs font-semibold text-[var(--text-primary)] tracking-wide">
               {navigationItems.find((n) => n.id === activeTab)?.label || 'Command Center'}
             </span>
             <span className="text-[10px] text-zinc-500 font-mono hidden sm:inline">

@@ -140,8 +140,12 @@ async function run() {
       bodyText.toLowerCase().includes('live studio') &&
       bodyText.toLowerCase().includes('broadcasting workspace');
 
-    const heroMonitor = document.querySelector('[class*="aspect-"]');
-    const heroMonitorWidth = heroMonitor ? heroMonitor.getBoundingClientRect().width : 0;
+    const heroMonitor = document.querySelector('[data-testid="hero-camera-monitor"]') ||
+                        document.querySelector('div[style*="aspect-ratio"]') ||
+                        document.querySelector('[class*="aspect-"]');
+    const heroMonitorRect = heroMonitor ? heroMonitor.getBoundingClientRect() : { width: 0, height: 0 };
+    const heroMonitorWidth = heroMonitorRect.width;
+    const heroMonitorHeight = heroMonitorRect.height;
 
     const asideElements = Array.from(document.querySelectorAll('aside'));
     const audienceRail = asideElements[asideElements.length - 1];
@@ -149,6 +153,8 @@ async function run() {
 
     const hasFakeRandomFlocks = bodyText.includes('1,420') || bodyText.includes('1420');
     const hasTruthfulStatus =
+      bodyText.includes('Live transport unavailable') ||
+      bodyText.includes('not configured') ||
       bodyText.includes('BLOCKED — LiveKit configuration required') ||
       bodyText.includes('Standby — Offline') ||
       bodyText.includes('Local Preview Mode');
@@ -161,6 +167,7 @@ async function run() {
     return {
       isDesktopLiveMounted,
       heroMonitorWidth,
+      heroMonitorHeight,
       audienceRailHeight,
       hasFakeRandomFlocks,
       hasTruthfulStatus,
@@ -169,7 +176,7 @@ async function run() {
   });
 
   test('Desktop Live Studio broadcasting workspace mounted', desktopLiveMetrics.isDesktopLiveMounted);
-  test('Hero camera preview occupies large prominent viewport (width >= 420px)', desktopLiveMetrics.heroMonitorWidth >= 400, `Actual: ${desktopLiveMetrics.heroMonitorWidth}px`);
+  test('Hero camera preview occupies large prominent viewport (height >= 550px, width >= 340px)', desktopLiveMetrics.heroMonitorHeight >= 550 && desktopLiveMetrics.heroMonitorWidth >= 340, `Actual: ${desktopLiveMetrics.heroMonitorWidth}x${desktopLiveMetrics.heroMonitorHeight}px`);
   test('Audience rail fills full available vertical workspace height (> 550px)', desktopLiveMetrics.audienceRailHeight >= 550, `Actual: ${desktopLiveMetrics.audienceRailHeight}px`);
   test('Audience rail contains all 4 real tabs (Chat, Viewers, Mod, Gifts)', desktopLiveMetrics.has4AudienceTabs);
   test('Fake 1420 audience fluctuation telemetry completely removed', !desktopLiveMetrics.hasFakeRandomFlocks);

@@ -20,6 +20,7 @@ interface LiveSessionStatusProps {
   arStatus?: ARStatus;
   faceDetected?: boolean;
   faceConfidence?: number;
+  selectedProvider?: 'livekit' | 'decart' | 'local';
 }
 
 export const LiveSessionStatus: React.FC<LiveSessionStatusProps> = ({
@@ -36,6 +37,7 @@ export const LiveSessionStatus: React.FC<LiveSessionStatusProps> = ({
   arStatus = 'ready',
   faceDetected = false,
   faceConfidence = 0,
+  selectedProvider = 'local',
 }) => {
   const effectiveTransport: TransportStatus =
     transportStatus ||
@@ -54,8 +56,14 @@ export const LiveSessionStatus: React.FC<LiveSessionStatusProps> = ({
     ? Math.max(0, Math.min(100, (remainingSeconds / maxDurationSeconds) * 100))
     : 100;
 
+  const getUnconfiguredText = () => {
+    if (selectedProvider === 'livekit') return 'LiveKit is not configured';
+    if (selectedProvider === 'decart') return 'Decart is not configured';
+    return 'Live transport unavailable';
+  };
+
   return (
-    <div className="flex flex-wrap items-center gap-2 px-3 py-1.5 rounded-2xl surface-2 border border-[var(--border)]">
+    <div className="flex flex-wrap items-center gap-2 px-3 py-1.5 rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-xs">
       {/* 1. Camera Subsystem Status */}
       <div
         className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold ${
@@ -101,7 +109,7 @@ export const LiveSessionStatus: React.FC<LiveSessionStatusProps> = ({
             ? 'bg-rose-500/15 text-rose-700 dark:text-rose-400 border border-rose-500/30'
             : effectiveTransport === 'unconfigured'
             ? 'bg-amber-500/10 text-amber-800 dark:text-amber-300 border border-amber-500/30 font-mono text-[10px]'
-            : 'bg-[var(--surface)] text-[var(--text-secondary)] border border-[var(--border)]'
+            : 'bg-[var(--surface-muted)] text-[var(--text-secondary)] border border-[var(--border)]'
         }`}
       >
         <span
@@ -125,7 +133,7 @@ export const LiveSessionStatus: React.FC<LiveSessionStatusProps> = ({
             : effectiveTransport === 'error'
             ? 'Live service unavailable'
             : effectiveTransport === 'unconfigured'
-            ? 'BLOCKED — LiveKit configuration required'
+            ? getUnconfiguredText()
             : 'Transport Ready'}
         </span>
 
@@ -143,59 +151,75 @@ export const LiveSessionStatus: React.FC<LiveSessionStatusProps> = ({
         )}
       </div>
 
-      {/* 3. AR Face Tracking Subsystem Status */}
-      <div className="hidden sm:flex items-center gap-1 px-2 py-0.5 rounded-lg text-[10px] font-mono bg-[var(--surface)] text-[var(--text-secondary)] border border-[var(--border)]">
-        {faceDetected ? (
-          <>
-            <Eye className="w-3 h-3 text-emerald-500" />
-            <span className="text-emerald-700 dark:text-emerald-400 font-semibold">
-              Face Detected ({Math.round(faceConfidence * 100)}%)
-            </span>
-          </>
-        ) : (
-          <>
-            <Sparkles className="w-3 h-3 text-[#007E93]" />
-            <span>AR Ready</span>
-          </>
-        )}
+      {/* 3. AR Face Landmark Tracking Engine Status */}
+      <div
+        className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold ${
+          faceDetected
+            ? 'bg-sky-500/10 text-[#007E93] dark:text-[#00B4D8] border border-sky-500/25'
+            : arStatus === 'ready'
+            ? 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/25'
+            : arStatus === 'initializing'
+            ? 'bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/25 animate-pulse'
+            : 'bg-[var(--surface-muted)] text-[var(--text-muted)] border border-[var(--border)]'
+        }`}
+      >
+        <Sparkles className="w-3 h-3 text-[#007E93] dark:text-[#00B4D8]" />
+        <span>
+          {faceDetected
+            ? `Face Detected (${Math.round(faceConfidence * 100)}%)`
+            : arStatus === 'ready'
+            ? 'AR Ready'
+            : arStatus === 'initializing'
+            ? 'AR Initializing'
+            : 'AR Unavailable'}
+        </span>
       </div>
 
-      {/* 4. Recording Subsystem Status */}
+      {/* 4. Active Recording Indicator */}
       {isRecording && (
-        <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-rose-500/15 text-rose-700 dark:text-rose-400 border border-rose-500/30">
-          <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
-          <span className="font-mono">REC {recordingSeconds}s</span>
+        <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-500/15 border border-rose-500/30 text-rose-700 dark:text-rose-400 text-[11px] font-mono font-bold animate-pulse">
+          <span className="w-2 h-2 rounded-full bg-rose-600 animate-ping" />
+          <span>
+            REC {Math.floor(recordingSeconds / 60)}:
+            {(recordingSeconds % 60).toString().padStart(2, '0')}
+          </span>
         </div>
       )}
 
-      {/* 5. Cost Protection Timer */}
+      {/* 5. Cost Protection Duration Timer (Active when Live) */}
       {isLive && (
-        <div className="flex items-center gap-2 pl-1">
-          <Clock className="w-3.5 h-3.5 text-zinc-400" />
-          <span
-            className={`font-mono text-xs font-semibold ${
-              remainingSeconds <= 10 ? 'text-amber-800 dark:text-amber-300' : 'text-[var(--text-primary)]'
-            }`}
+        <div className="flex items-center gap-2 pl-1 border-l border-[var(--border)]">
+          <div className="flex items-center gap-1 text-[11px] font-mono text-[var(--text-secondary)]">
+            <Clock className="w-3 h-3 text-[#007E93]" />
+            <span
+              className={
+                remainingSeconds < 300
+                  ? 'text-rose-700 dark:text-rose-400 font-bold animate-pulse'
+                  : ''
+              }
+            >
+              {Math.floor(remainingSeconds / 60)}:
+              {(remainingSeconds % 60).toString().padStart(2, '0')}
+            </span>
+          </div>
+
+          <div
+            className="w-16 h-1.5 rounded-full bg-[var(--surface-muted)] overflow-hidden"
+            title={`Cost protection: ${remainingSeconds}s remaining`}
           >
-            {remainingSeconds}s
-          </span>
-          <div className="w-12 h-1.5 rounded-full bg-zinc-200 dark:bg-zinc-700 overflow-hidden">
             <div
               className={`h-full transition-all duration-1000 ${
-                remainingSeconds <= 10 ? 'bg-amber-400' : 'bg-emerald-400'
+                progressPct < 20
+                  ? 'bg-rose-500'
+                  : progressPct < 40
+                  ? 'bg-amber-500'
+                  : 'bg-[#007E93]'
               }`}
               style={{ width: `${progressPct}%` }}
             />
           </div>
         </div>
       )}
-
-      <div
-        className="p-1 text-[var(--text-muted)] hover:text-[var(--text-primary)] cursor-help"
-        title="Cost protection active: Pauses automatically after session limit."
-      >
-        <Shield className="w-3.5 h-3.5" />
-      </div>
     </div>
   );
 };

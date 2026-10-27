@@ -280,11 +280,11 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
   return (
     <div className="max-w-7xl mx-auto space-y-6 pb-24 md:pb-12 animate-fade-in font-sans">
       {/* 1. Header Bar: Back, Title, Autosave indicator, Save Draft */}
-      <div className="p-4 rounded-2xl bg-white/90 border border-black/[0.08] shadow-sm flex items-center justify-between gap-4 backdrop-blur-xl sticky top-0 z-20">
+      <div className="p-4 rounded-2xl bg-[var(--surface)]/90 border border-[var(--border)] shadow-sm flex items-center justify-between gap-4 backdrop-blur-xl sticky top-0 z-20">
         <div className="flex items-center gap-3">
           <button
             onClick={onBack}
-            className="min-h-[44px] min-w-[44px] rounded-xl hover:bg-zinc-100 text-zinc-500 hover:text-zinc-900 flex items-center justify-center transition-colors cursor-pointer"
+            className="min-h-[44px] min-w-[44px] rounded-xl hover:bg-zinc-100 text-zinc-500 hover:text-[var(--text-primary)] flex items-center justify-center transition-colors cursor-pointer"
             title="Back to contracts"
             aria-label="Back to contracts"
           >
@@ -293,10 +293,10 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
 
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-base sm:text-lg font-bold text-zinc-900 font-display">
+              <h1 className="text-base sm:text-lg font-bold text-[var(--text-primary)] font-display">
                 Create Contract
               </h1>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-zinc-100 text-zinc-600 border border-zinc-200">
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-zinc-100 text-[var(--text-secondary)] border border-[var(--border)]">
                 {contractDraft.contractNumber}
               </span>
             </div>
@@ -312,7 +312,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
               ContractService.saveDraft(contractDraft);
               setLastSavedTime('Just now');
             }}
-            className="min-h-[44px] px-3.5 py-2 rounded-xl bg-zinc-100 hover:bg-zinc-200 text-zinc-700 border border-zinc-200 text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
+            className="min-h-[44px] px-3.5 py-2 rounded-xl bg-zinc-100 hover:bg-zinc-200 text-[var(--text-secondary)] border border-[var(--border)] text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
           >
             <Save className="w-3.5 h-3.5 text-zinc-500" />
             <span className="hidden sm:inline">Save Draft</span>
@@ -353,7 +353,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                     ? 'bg-[#007E93] text-white font-bold border border-black/[0.08] shadow-sm'
                     : isCompleted
                     ? 'bg-zinc-50/60 text-emerald-700 hover:bg-zinc-100 border border-transparent'
-                    : 'bg-zinc-50/30 text-zinc-500 hover:bg-zinc-200 hover:text-zinc-700 border border-transparent'
+                    : 'bg-zinc-50/30 text-zinc-500 hover:bg-zinc-200 hover:text-[var(--text-secondary)] border border-transparent'
                 }`}
               >
                 <span
@@ -362,7 +362,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                       ? 'bg-[#007E93] text-white'
                       : isCompleted
                       ? 'bg-emerald-50 text-emerald-800'
-                      : 'bg-zinc-100 text-zinc-600'
+                      : 'bg-zinc-100 text-[var(--text-secondary)]'
                   }`}
                 >
                   {isCompleted ? '✓' : `0${idx + 1}`}
@@ -380,7 +380,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
         <div className="lg:col-span-8 space-y-6">
           {/* Quick Template Selector Strip (Shown on early steps) */}
           {currentStep <= 1 && (
-            <div className="p-4 rounded-2xl bg-white border border-black/[0.08] shadow-xs space-y-2">
+            <div className="p-4 rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-xs space-y-2">
               <div className="flex items-center justify-between">
                 <span className="text-[11px] font-medium text-zinc-500 flex items-center gap-1.5">
                   <Sparkles className="w-3.5 h-3.5 text-[#007E93]" />
@@ -393,7 +393,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                   <button
                     key={tpl.id}
                     onClick={() => handleApplyTemplate(tpl.id)}
-                    className="p-2.5 rounded-xl bg-zinc-50 hover:bg-white border border-zinc-200 hover:border-[#00B4D8]/30 text-left transition-all cursor-pointer group"
+                    className="p-2.5 rounded-xl bg-zinc-50 hover:bg-white border border-[var(--border)] hover:border-[#00B4D8]/30 text-left transition-all cursor-pointer group"
                   >
                     <span className="text-[9px] font-mono text-[#007E93] font-semibold block uppercase">
                       {tpl.category}
@@ -409,9 +409,9 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
 
           {/* STEP 01: CREATOR SELECTION */}
           {currentStep === 0 && (
-            <div className="p-5 sm:p-6 rounded-2xl bg-white border border-black/[0.08] shadow-sm space-y-5">
+            <div className="p-5 sm:p-6 rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-sm space-y-5">
               <div>
-                <h3 className="text-base font-bold text-zinc-900 font-display">01 Select Creator</h3>
+                <h3 className="text-base font-bold text-[var(--text-primary)] font-display">01 Select Creator</h3>
                 <p className="text-xs text-zinc-500 mt-1">
                   Choose the creator for this commercial partnership. All terms will be digitally bound to their verified identity.
                 </p>
@@ -428,7 +428,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                     />
                     <div>
                       <div className="flex items-center gap-1.5">
-                        <h4 className="text-sm font-bold text-zinc-900">{contractDraft.creatorName}</h4>
+                        <h4 className="text-sm font-bold text-[var(--text-primary)]">{contractDraft.creatorName}</h4>
                         {contractDraft.creatorVerified && (
                           <ShieldCheck className="w-3.5 h-3.5 text-emerald-700" />
                         )}
@@ -444,7 +444,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
 
                   <button
                     onClick={() => setContractDraft((prev) => ({ ...prev, creatorId: '', creatorName: '' }))}
-                    className="min-h-[44px] px-3.5 py-2 rounded-xl bg-zinc-100 hover:bg-zinc-200 text-zinc-700 border border-zinc-200 text-xs font-semibold transition-colors cursor-pointer"
+                    className="min-h-[44px] px-3.5 py-2 rounded-xl bg-zinc-100 hover:bg-zinc-200 text-[var(--text-secondary)] border border-[var(--border)] text-xs font-semibold transition-colors cursor-pointer"
                   >
                     Change Creator
                   </button>
@@ -460,7 +460,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                         placeholder="Search creator by name, handle, or category..."
                         value={creatorSearch}
                         onChange={(e) => setCreatorSearch(e.target.value)}
-                        className="w-full min-h-[44px] pl-9 pr-3 rounded-xl bg-white border border-zinc-200 text-zinc-900 text-xs focus:outline-none focus:border-[#00B4D8]"
+                        className="w-full min-h-[44px] pl-9 pr-3 rounded-xl bg-[var(--input)] border border-[var(--border)] text-[var(--text-primary)] text-xs focus:outline-none focus:border-[#00B4D8]"
                       />
                     </div>
 
@@ -485,7 +485,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                     {filteredCreators.map((c) => (
                       <div
                         key={c.id}
-                        className="p-3.5 rounded-2xl bg-zinc-50 border border-zinc-200 hover:border-[#00B4D8]/50 shadow-xs flex items-center justify-between gap-3 transition-colors"
+                        className="p-3.5 rounded-2xl bg-[var(--surface-muted)] border border-[var(--border)] hover:border-[#00B4D8]/50 shadow-xs flex items-center justify-between gap-3 transition-colors"
                       >
                         <div className="flex items-center gap-3 min-w-0">
                           <img
@@ -495,7 +495,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                           />
                           <div className="min-w-0">
                             <div className="flex items-center gap-1">
-                              <h5 className="text-xs font-bold text-zinc-900 truncate">{c.name}</h5>
+                              <h5 className="text-xs font-bold text-[var(--text-primary)] truncate">{c.name}</h5>
                               {c.verified && (
                                 <ShieldCheck className="w-3 h-3 text-emerald-700 shrink-0" />
                               )}
@@ -533,9 +533,9 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
 
           {/* STEP 02: PROJECT INFORMATION */}
           {currentStep === 1 && (
-            <div className="p-5 sm:p-6 rounded-2xl bg-white border border-black/[0.08] shadow-sm space-y-4">
+            <div className="p-5 sm:p-6 rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-sm space-y-4">
               <div>
-                <h3 className="text-base font-bold text-zinc-900 font-display">02 Project Information</h3>
+                <h3 className="text-base font-bold text-[var(--text-primary)] font-display">02 Project Information</h3>
                 <p className="text-xs text-zinc-500 mt-1">
                   Define project title, campaign context, and core operational schedule.
                 </p>
@@ -543,7 +543,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
 
               <div className="space-y-3.5 text-xs">
                 <div>
-                  <label className="text-[11px] font-medium text-zinc-700 block mb-1">
+                  <label className="text-[11px] font-medium text-[var(--text-secondary)] block mb-1">
                     Project / Agreement Title *
                   </label>
                   <input
@@ -553,12 +553,12 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                     onChange={(e) =>
                       setContractDraft((prev) => ({ ...prev, projectName: e.target.value }))
                     }
-                    className="w-full min-h-[44px] px-3.5 py-2 rounded-xl bg-white border border-zinc-200 text-zinc-900 text-xs focus:outline-none focus:border-[#00B4D8]"
+                    className="w-full min-h-[44px] px-3.5 py-2 rounded-xl bg-[var(--input)] border border-[var(--border)] text-[var(--text-primary)] text-xs focus:outline-none focus:border-[#00B4D8]"
                   />
                 </div>
 
                 <div>
-                  <label className="text-[11px] font-medium text-zinc-700 block mb-1">
+                  <label className="text-[11px] font-medium text-[var(--text-secondary)] block mb-1">
                     Parent Campaign (Optional)
                   </label>
                   <select
@@ -571,7 +571,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                         campaignName: camp?.name || '',
                       }));
                     }}
-                    className="w-full min-h-[44px] px-3.5 py-2 rounded-xl bg-white border border-zinc-200 text-zinc-900 text-xs focus:outline-none focus:border-[#00B4D8]"
+                    className="w-full min-h-[44px] px-3.5 py-2 rounded-xl bg-[var(--input)] border border-[var(--border)] text-[var(--text-primary)] text-xs focus:outline-none focus:border-[#00B4D8]"
                   >
                     <option value="">Standalone Contract (No Campaign)</option>
                     {campaigns.map((camp) => (
@@ -584,7 +584,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <label className="text-[11px] font-medium text-zinc-700 block mb-1">
+                    <label className="text-[11px] font-medium text-[var(--text-secondary)] block mb-1">
                       Start Date
                     </label>
                     <input
@@ -593,12 +593,12 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                       onChange={(e) =>
                         setContractDraft((prev) => ({ ...prev, startDate: e.target.value }))
                       }
-                      className="w-full min-h-[44px] px-3.5 py-2 rounded-xl bg-white border border-zinc-200 text-zinc-900 text-xs focus:outline-none focus:border-[#00B4D8]"
+                      className="w-full min-h-[44px] px-3.5 py-2 rounded-xl bg-[var(--input)] border border-[var(--border)] text-[var(--text-primary)] text-xs focus:outline-none focus:border-[#00B4D8]"
                     />
                   </div>
 
                   <div>
-                    <label className="text-[11px] font-medium text-zinc-700 block mb-1">
+                    <label className="text-[11px] font-medium text-[var(--text-secondary)] block mb-1">
                       Final Completion Deadline *
                     </label>
                     <input
@@ -607,13 +607,13 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                       onChange={(e) =>
                         setContractDraft((prev) => ({ ...prev, deadline: e.target.value }))
                       }
-                      className="w-full min-h-[44px] px-3.5 py-2 rounded-xl bg-white border border-zinc-200 text-zinc-900 text-xs focus:outline-none focus:border-[#00B4D8]"
+                      className="w-full min-h-[44px] px-3.5 py-2 rounded-xl bg-[var(--input)] border border-[var(--border)] text-[var(--text-primary)] text-xs focus:outline-none focus:border-[#00B4D8]"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="text-[11px] font-medium text-zinc-700 block mb-1">
+                  <label className="text-[11px] font-medium text-[var(--text-secondary)] block mb-1">
                     Project Overview & Brief
                   </label>
                   <textarea
@@ -623,7 +623,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                     onChange={(e) =>
                       setContractDraft((prev) => ({ ...prev, description: e.target.value }))
                     }
-                    className="w-full p-3 rounded-xl bg-white border border-zinc-200 text-zinc-900 text-xs focus:outline-none focus:border-[#00B4D8] leading-relaxed resize-none"
+                    className="w-full p-3 rounded-xl bg-[var(--input)] border border-[var(--border)] text-[var(--text-primary)] text-xs focus:outline-none focus:border-[#00B4D8] leading-relaxed resize-none"
                   />
                 </div>
               </div>
@@ -632,10 +632,10 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
 
           {/* STEP 03: DELIVERABLES */}
           {currentStep === 2 && (
-            <div className="p-5 sm:p-6 rounded-2xl bg-white border border-black/[0.08] shadow-sm space-y-4">
+            <div className="p-5 sm:p-6 rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-sm space-y-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="text-base font-bold text-zinc-900 font-display">03 Deliverables</h3>
+                  <h3 className="text-base font-bold text-[var(--text-primary)] font-display">03 Deliverables</h3>
                   <p className="text-xs text-zinc-500 mt-1">
                     Add individual structured deliverables with formats, aspect ratios, and milestone dates.
                   </p>
@@ -666,9 +666,9 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                   ))
                 ) : (
                   <div className="p-8 rounded-2xl bg-zinc-50/50 border border-dashed border-zinc-300 text-center space-y-3">
-                    <Film className="w-8 h-8 text-zinc-600 mx-auto" />
+                    <Film className="w-8 h-8 text-[var(--text-secondary)] mx-auto" />
                     <div>
-                      <p className="text-xs font-semibold text-zinc-700">No deliverables defined</p>
+                      <p className="text-xs font-semibold text-[var(--text-secondary)]">No deliverables defined</p>
                       <p className="text-[11px] text-zinc-500 mt-0.5">
                         Add at least one reel, photo pack, or UGC video deliverable.
                       </p>
@@ -688,9 +688,9 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
 
           {/* STEP 04: PAYMENT & PROTECTION */}
           {currentStep === 3 && (
-            <div className="p-5 sm:p-6 rounded-2xl bg-white border border-black/[0.08] shadow-sm space-y-5">
+            <div className="p-5 sm:p-6 rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-sm space-y-5">
               <div>
-                <h3 className="text-base font-bold text-zinc-900 font-display">04 Protected Payment</h3>
+                <h3 className="text-base font-bold text-[var(--text-primary)] font-display">04 Protected Payment</h3>
                 <p className="text-xs text-zinc-500 mt-1">
                   CreatorOS uses compliant payment partner architecture (Stripe / PayPal) to hold funds in protected status until brand approval.
                 </p>
@@ -699,7 +699,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
               <div className="space-y-4 text-xs">
                 {/* Creator Compensation Input */}
                 <div>
-                  <label className="text-[11px] font-medium text-zinc-700 block mb-1">
+                  <label className="text-[11px] font-medium text-[var(--text-secondary)] block mb-1">
                     Creator Compensation ($ USD) *
                   </label>
                   <div className="relative">
@@ -715,7 +715,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                           contractDraft.payment?.provider || 'stripe'
                         )
                       }
-                      className="w-full min-h-[44px] pl-8 pr-3 py-2 rounded-xl bg-white border border-zinc-200 text-zinc-900 font-mono text-sm font-bold focus:outline-none focus:border-[#00B4D8]"
+                      className="w-full min-h-[44px] pl-8 pr-3 py-2 rounded-xl bg-[var(--input)] border border-[var(--border)] text-[var(--text-primary)] font-mono text-sm font-bold focus:outline-none focus:border-[#00B4D8]"
                     />
                   </div>
                 </div>
@@ -736,11 +736,11 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                       }
                       className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer ${
                         contractDraft.payment?.provider === 'stripe'
-                          ? 'bg-[#00B4D8]/10 border-[#00B4D8] text-zinc-900 shadow-xs'
-                          : 'bg-zinc-50 border-zinc-200 text-zinc-600 hover:border-zinc-300'
+                          ? 'bg-[#00B4D8]/10 border-[#00B4D8] text-[var(--text-primary)] shadow-xs'
+                          : 'bg-zinc-50 border-[var(--border)] text-[var(--text-secondary)] hover:border-zinc-300'
                       }`}
                     >
-                      <span className="text-xs font-bold block text-zinc-900">Stripe Connect Protected Hold</span>
+                      <span className="text-xs font-bold block text-[var(--text-primary)]">Stripe Connect Protected Hold</span>
                       <span className="text-[10px] text-zinc-500 mt-0.5 block">
                         Credit card, Apple Pay, SEPA, and Direct Bank Transfer.
                       </span>
@@ -756,11 +756,11 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                       }
                       className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer ${
                         contractDraft.payment?.provider === 'paypal'
-                          ? 'bg-[#00B4D8]/10 border-[#00B4D8] text-zinc-900 shadow-xs'
-                          : 'bg-zinc-50 border-zinc-200 text-zinc-600 hover:border-zinc-300'
+                          ? 'bg-[#00B4D8]/10 border-[#00B4D8] text-[var(--text-primary)] shadow-xs'
+                          : 'bg-zinc-50 border-[var(--border)] text-[var(--text-secondary)] hover:border-zinc-300'
                       }`}
                     >
-                      <span className="text-xs font-bold block text-zinc-900">PayPal Commerce Platform</span>
+                      <span className="text-xs font-bold block text-[var(--text-primary)]">PayPal Commerce Platform</span>
                       <span className="text-[10px] text-zinc-500 mt-0.5 block">
                         PayPal Balance, Pay Later, and international accounts.
                       </span>
@@ -769,7 +769,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                 </div>
 
                 {/* Calculation Breakdown Card */}
-                <div className="p-4 rounded-2xl bg-zinc-50 border border-zinc-200 space-y-2.5 font-mono text-xs">
+                <div className="p-4 rounded-2xl bg-[var(--surface-muted)] border border-[var(--border)] space-y-2.5 font-mono text-xs">
                   <div className="flex justify-between items-center text-zinc-500">
                     <span>Creator Payment</span>
                     <span className="text-zinc-800 font-bold">
@@ -797,7 +797,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
 
                   <div className="h-px bg-zinc-100 my-1" />
 
-                  <div className="flex justify-between items-center text-sm font-bold text-zinc-900">
+                  <div className="flex justify-between items-center text-sm font-bold text-[var(--text-primary)]">
                     <span>Total Deposit Required</span>
                     <span className="text-emerald-700">
                       ${contractDraft.payment?.totalAmount.toLocaleString()}
@@ -810,9 +810,9 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
 
           {/* STEP 05: COMMERCIAL RIGHTS & EXCLUSIVITY */}
           {currentStep === 4 && (
-            <div className="p-5 sm:p-6 rounded-2xl bg-white border border-black/[0.08] shadow-sm space-y-5">
+            <div className="p-5 sm:p-6 rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-sm space-y-5">
               <div>
-                <h3 className="text-base font-bold text-zinc-900 font-display">05 Usage Rights & Licensing</h3>
+                <h3 className="text-base font-bold text-[var(--text-primary)] font-display">05 Usage Rights & Licensing</h3>
                 <p className="text-xs text-zinc-500 mt-1">
                   Specify licensed media channels, territorial scope, duration, and exclusivity conditions.
                 </p>
@@ -821,7 +821,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
               <div className="space-y-4 text-xs">
                 {/* Media Channels */}
                 <div>
-                  <label className="text-[11px] font-medium text-zinc-700 block mb-1.5">
+                  <label className="text-[11px] font-medium text-[var(--text-secondary)] block mb-1.5">
                     Permitted Distribution Channels
                   </label>
                   <div className="flex flex-wrap gap-1.5">
@@ -855,7 +855,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                           className={`min-h-[40px] px-3.5 py-2 rounded-xl text-xs font-medium transition-all cursor-pointer ${
                             isSelected
                               ? 'bg-[#007E93] text-white font-semibold shadow-sm'
-                              : 'bg-white text-zinc-500 hover:text-zinc-800 border border-zinc-200'
+                              : 'bg-white text-zinc-500 hover:text-zinc-800 border border-[var(--border)]'
                           }`}
                         >
                           {type}
@@ -868,7 +868,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                 {/* Duration & Territory */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <label className="text-[11px] font-medium text-zinc-700 block mb-1.5">
+                    <label className="text-[11px] font-medium text-[var(--text-secondary)] block mb-1.5">
                       Licensing Duration
                     </label>
                     <div className="flex flex-wrap gap-1.5">
@@ -886,7 +886,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                             className={`min-h-[36px] px-3 py-1.5 rounded-xl text-xs font-medium transition-all cursor-pointer ${
                               contractDraft.usageRights?.duration === dur
                                 ? 'bg-[#007E93] text-white font-semibold'
-                                : 'bg-white text-zinc-500 hover:text-zinc-800 border border-zinc-200'
+                                : 'bg-white text-zinc-500 hover:text-zinc-800 border border-[var(--border)]'
                             }`}
                           >
                             {dur}
@@ -897,7 +897,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                   </div>
 
                   <div>
-                    <label className="text-[11px] font-medium text-zinc-700 block mb-1.5">
+                    <label className="text-[11px] font-medium text-[var(--text-secondary)] block mb-1.5">
                       Territory Scope
                     </label>
                     <div className="flex flex-wrap gap-1.5">
@@ -914,7 +914,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                           className={`min-h-[36px] px-3 py-1.5 rounded-xl text-xs font-medium transition-all cursor-pointer ${
                             contractDraft.usageRights?.territory === ter
                               ? 'bg-[#007E93] text-white font-semibold'
-                              : 'bg-white text-zinc-500 hover:text-zinc-800 border border-zinc-200'
+                              : 'bg-white text-zinc-500 hover:text-zinc-800 border border-[var(--border)]'
                           }`}
                         >
                           {ter}
@@ -927,7 +927,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                 {/* Exclusivity & Ownership */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <label className="text-[11px] font-medium text-zinc-700 block mb-1.5">
+                    <label className="text-[11px] font-medium text-[var(--text-secondary)] block mb-1.5">
                       Exclusivity Level
                     </label>
                     <select
@@ -941,7 +941,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                           },
                         }))
                       }
-                      className="w-full min-h-[44px] px-3 py-2 rounded-xl bg-white border border-zinc-200 text-zinc-900 text-xs focus:outline-none focus:border-[#00B4D8]"
+                      className="w-full min-h-[44px] px-3 py-2 rounded-xl bg-[var(--input)] border border-[var(--border)] text-[var(--text-primary)] text-xs focus:outline-none focus:border-[#00B4D8]"
                     >
                       <option value="None">None (Creator can sponsor any brand)</option>
                       <option value="Category">Category Exclusivity (e.g. Footwear only)</option>
@@ -951,7 +951,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                   </div>
 
                   <div>
-                    <label className="text-[11px] font-medium text-zinc-700 block mb-1.5">
+                    <label className="text-[11px] font-medium text-[var(--text-secondary)] block mb-1.5">
                       IP Ownership Model
                     </label>
                     <select
@@ -965,7 +965,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                           },
                         }))
                       }
-                      className="w-full min-h-[44px] px-3 py-2 rounded-xl bg-white border border-zinc-200 text-zinc-900 text-xs focus:outline-none focus:border-[#00B4D8]"
+                      className="w-full min-h-[44px] px-3 py-2 rounded-xl bg-[var(--input)] border border-[var(--border)] text-[var(--text-primary)] text-xs focus:outline-none focus:border-[#00B4D8]"
                     >
                       <option value="creator_retains">
                         Creator Retains IP (Brand gets Commercial License)
@@ -981,9 +981,9 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
 
           {/* STEP 06: TERMS & REVISIONS */}
           {currentStep === 5 && (
-            <div className="p-5 sm:p-6 rounded-2xl bg-white border border-black/[0.08] shadow-sm space-y-4">
+            <div className="p-5 sm:p-6 rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-sm space-y-4">
               <div>
-                <h3 className="text-base font-bold text-zinc-900 font-display">06 Terms & Revision Caps</h3>
+                <h3 className="text-base font-bold text-[var(--text-primary)] font-display">06 Terms & Revision Caps</h3>
                 <p className="text-xs text-zinc-500 mt-1">
                   Enforce strict revision counts, brand review windows, and cancellation rules to prevent scope creep.
                 </p>
@@ -992,7 +992,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
               <div className="space-y-4 text-xs">
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <div>
-                    <label className="text-[11px] font-medium text-zinc-700 block mb-1">
+                    <label className="text-[11px] font-medium text-[var(--text-secondary)] block mb-1">
                       Included Revisions
                     </label>
                     <input
@@ -1009,7 +1009,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                           },
                         }))
                       }
-                      className="w-full min-h-[44px] px-3 py-2 rounded-xl bg-white border border-zinc-200 text-zinc-900 text-xs focus:outline-none focus:border-[#00B4D8] font-mono"
+                      className="w-full min-h-[44px] px-3 py-2 rounded-xl bg-[var(--input)] border border-[var(--border)] text-[var(--text-primary)] text-xs focus:outline-none focus:border-[#00B4D8] font-mono"
                     />
                     <span className="text-[10px] text-zinc-500 mt-1 block">
                       Extra changes require amendment
@@ -1017,7 +1017,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                   </div>
 
                   <div>
-                    <label className="text-[11px] font-medium text-zinc-700 block mb-1">
+                    <label className="text-[11px] font-medium text-[var(--text-secondary)] block mb-1">
                       Brand Review Window
                     </label>
                     <input
@@ -1034,7 +1034,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                           },
                         }))
                       }
-                      className="w-full min-h-[44px] px-3 py-2 rounded-xl bg-white border border-zinc-200 text-zinc-900 text-xs focus:outline-none focus:border-[#00B4D8] font-mono"
+                      className="w-full min-h-[44px] px-3 py-2 rounded-xl bg-[var(--input)] border border-[var(--border)] text-[var(--text-primary)] text-xs focus:outline-none focus:border-[#00B4D8] font-mono"
                     />
                     <span className="text-[10px] text-zinc-500 mt-1 block">
                       Business days to review drafts
@@ -1042,7 +1042,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                   </div>
 
                   <div>
-                    <label className="text-[11px] font-medium text-zinc-700 block mb-1">
+                    <label className="text-[11px] font-medium text-[var(--text-secondary)] block mb-1">
                       Creator Response Window
                     </label>
                     <input
@@ -1059,7 +1059,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                           },
                         }))
                       }
-                      className="w-full min-h-[44px] px-3 py-2 rounded-xl bg-white border border-zinc-200 text-zinc-900 text-xs focus:outline-none focus:border-[#00B4D8] font-mono"
+                      className="w-full min-h-[44px] px-3 py-2 rounded-xl bg-[var(--input)] border border-[var(--border)] text-[var(--text-primary)] text-xs focus:outline-none focus:border-[#00B4D8] font-mono"
                     />
                     <span className="text-[10px] text-zinc-500 mt-1 block">
                       Days before contract expires
@@ -1068,7 +1068,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                 </div>
 
                 <div>
-                  <label className="text-[11px] font-medium text-zinc-700 block mb-1">
+                  <label className="text-[11px] font-medium text-[var(--text-secondary)] block mb-1">
                     Cancellation Terms & Pro-Rata Rules
                   </label>
                   <input
@@ -1080,11 +1080,11 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                         terms: { ...prev.terms!, cancellationTerms: e.target.value },
                       }))
                     }
-                    className="w-full min-h-[44px] px-3.5 py-2 rounded-xl bg-white border border-zinc-200 text-zinc-900 text-xs focus:outline-none focus:border-[#00B4D8]"
+                    className="w-full min-h-[44px] px-3.5 py-2 rounded-xl bg-[var(--input)] border border-[var(--border)] text-[var(--text-primary)] text-xs focus:outline-none focus:border-[#00B4D8]"
                   />
                 </div>
 
-                <div className="flex items-center justify-between p-3.5 rounded-xl bg-white border border-zinc-200">
+                <div className="flex items-center justify-between p-3.5 rounded-xl bg-white border border-[var(--border)]">
                   <div>
                     <span className="text-xs font-semibold text-zinc-800 block">
                       Strict Mutual Confidentiality
@@ -1120,13 +1120,13 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
               />
 
               {/* Digital Contract Document Preview */}
-              <div className="p-6 sm:p-8 rounded-2xl bg-white border border-black/[0.08] space-y-6 text-xs text-zinc-700 shadow-sm font-sans shadow-xl">
+              <div className="p-6 sm:p-8 rounded-2xl bg-[var(--surface)] border border-[var(--border)] space-y-6 text-xs text-[var(--text-secondary)] shadow-sm font-sans shadow-xl">
                 <div className="border-b border-black/[0.08] pb-6 flex items-start justify-between gap-4">
                   <div>
                     <span className="text-[10px] font-mono uppercase tracking-widest text-[#007E93] block font-semibold">
                       CreatorOS Verified Commercial Agreement
                     </span>
-                    <h2 className="text-xl font-bold text-zinc-900 font-display mt-1">
+                    <h2 className="text-xl font-bold text-[var(--text-primary)] font-display mt-1">
                       {contractDraft.projectName || 'Untitled Commercial Agreement'}
                     </h2>
                     <p className="text-[11px] text-zinc-500 font-mono mt-1">
@@ -1139,15 +1139,15 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                 </div>
 
                 {/* Parties */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 rounded-xl bg-zinc-50 border border-zinc-200">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 rounded-xl bg-[var(--surface-muted)] border border-[var(--border)]">
                   <div>
                     <span className="text-[10px] uppercase font-mono text-zinc-500 block">Brand (Principal)</span>
-                    <h4 className="text-sm font-bold text-zinc-900">{contractDraft.brandName}</h4>
+                    <h4 className="text-sm font-bold text-[var(--text-primary)]">{contractDraft.brandName}</h4>
                     <p className="text-[11px] text-zinc-500">Authorized Brand Representative</p>
                   </div>
                   <div>
                     <span className="text-[10px] uppercase font-mono text-zinc-500 block">Creator (Contractor)</span>
-                    <h4 className="text-sm font-bold text-zinc-900">
+                    <h4 className="text-sm font-bold text-[var(--text-primary)]">
                       {contractDraft.creatorName || 'Pending Creator'}
                     </h4>
                     <p className="text-[11px] text-zinc-500 font-mono">
@@ -1180,20 +1180,20 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                 </div>
 
                 {/* Commercial Rights Summary */}
-                <div className="space-y-1.5 border-t border-zinc-200/80 pt-4">
+                <div className="space-y-1.5 border-t border-[var(--border)]/80 pt-4">
                   <span className="text-[10px] uppercase font-mono text-zinc-500 block">Usage Rights & Territory</span>
-                  <p className="text-xs text-zinc-700 leading-relaxed">
-                    Channels: <strong className="text-zinc-900">{contractDraft.usageRights?.usageTypes.join(', ')}</strong> •
-                    Duration: <strong className="text-zinc-900">{contractDraft.usageRights?.duration}</strong> •
-                    Territory: <strong className="text-zinc-900">{contractDraft.usageRights?.territory}</strong> •
-                    Exclusivity: <strong className="text-zinc-900">{contractDraft.usageRights?.exclusivity}</strong>.
+                  <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
+                    Channels: <strong className="text-[var(--text-primary)]">{contractDraft.usageRights?.usageTypes.join(', ')}</strong> •
+                    Duration: <strong className="text-[var(--text-primary)]">{contractDraft.usageRights?.duration}</strong> •
+                    Territory: <strong className="text-[var(--text-primary)]">{contractDraft.usageRights?.territory}</strong> •
+                    Exclusivity: <strong className="text-[var(--text-primary)]">{contractDraft.usageRights?.exclusivity}</strong>.
                   </p>
                 </div>
 
                 {/* Revision & Approval Terms */}
-                <div className="space-y-1.5 border-t border-zinc-200/80 pt-4">
+                <div className="space-y-1.5 border-t border-[var(--border)]/80 pt-4">
                   <span className="text-[10px] uppercase font-mono text-zinc-500 block">Governance Terms</span>
-                  <p className="text-xs text-zinc-700 leading-relaxed">
+                  <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
                     Includes {contractDraft.terms?.includedRevisions} revision rounds. Brand has {contractDraft.terms?.reviewPeriodDays} business days to approve submitted assets.
                   </p>
                 </div>
@@ -1203,22 +1203,22 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
 
           {/* STEP 08: SEND & DISPATCH */}
           {currentStep === 7 && (
-            <div className="p-6 sm:p-8 rounded-2xl bg-white border border-black/[0.08] shadow-sm text-center space-y-5">
+            <div className="p-6 sm:p-8 rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-sm text-center space-y-5">
               <div className="w-12 h-12 rounded-2xl bg-[#00B4D8]/10 text-[#007E93] flex items-center justify-center mx-auto ring-1 ring-[#00B4D8]/30">
                 <Send className="w-6 h-6" />
               </div>
 
               <div>
-                <h3 className="text-lg font-bold text-zinc-900 font-display">Ready to Send Official Contract</h3>
+                <h3 className="text-lg font-bold text-[var(--text-primary)] font-display">Ready to Send Official Contract</h3>
                 <p className="text-xs text-zinc-500 mt-1 max-w-md mx-auto">
                   Sending will notify {contractDraft.creatorName || 'the creator'} with the digital agreement terms. They will have {contractDraft.terms?.creatorResponseDeadlineDays || 3} days to accept.
                 </p>
               </div>
 
-              <div className="max-w-md mx-auto p-4 rounded-xl bg-zinc-50 border border-zinc-200 text-left space-y-2 text-xs">
+              <div className="max-w-md mx-auto p-4 rounded-xl bg-[var(--surface-muted)] border border-[var(--border)] text-left space-y-2 text-xs">
                 <div className="flex justify-between text-zinc-500">
                   <span>Creator:</span>
-                  <span className="font-semibold text-zinc-900">{contractDraft.creatorName}</span>
+                  <span className="font-semibold text-[var(--text-primary)]">{contractDraft.creatorName}</span>
                 </div>
                 <div className="flex justify-between text-zinc-500">
                   <span>Creator Compensation:</span>
@@ -1245,7 +1245,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                     ContractService.saveDraft(contractDraft);
                     onBack();
                   }}
-                  className="w-full sm:w-auto min-h-[44px] px-6 py-2.5 rounded-xl bg-zinc-100 hover:bg-zinc-200 text-zinc-700 border border-zinc-200 text-xs font-semibold transition-colors cursor-pointer"
+                  className="w-full sm:w-auto min-h-[44px] px-6 py-2.5 rounded-xl bg-zinc-100 hover:bg-zinc-200 text-[var(--text-secondary)] border border-[var(--border)] text-xs font-semibold transition-colors cursor-pointer"
                 >
                   Save Draft
                 </button>
@@ -1265,12 +1265,12 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
 
         {/* Right Rail: Compact Live Contract Summary (4 columns on desktop) */}
         <div className="hidden lg:block lg:col-span-4 sticky top-20 space-y-4">
-          <div className="p-4 rounded-2xl bg-white border border-black/[0.08] shadow-sm space-y-4 text-xs">
+          <div className="p-4 rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-sm space-y-4 text-xs">
             <div className="flex items-center justify-between pb-3 border-b border-black/[0.06]">
               <span className="text-[10px] uppercase font-mono text-zinc-500 tracking-wider font-semibold">
                 Live Agreement Summary
               </span>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-zinc-100 text-zinc-700 border border-zinc-200">
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-zinc-100 text-[var(--text-secondary)] border border-[var(--border)]">
                 Step {currentStep + 1} of 8
               </span>
             </div>
@@ -1300,7 +1300,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
             {/* Deliverables summary */}
             <div className="space-y-1.5 pt-2 border-t border-black/[0.04]">
               <span className="text-[10px] text-zinc-500 uppercase font-mono block">Deliverables ({contractDraft.deliverables?.length || 0})</span>
-              <ul className="space-y-1 text-[11px] text-zinc-700">
+              <ul className="space-y-1 text-[11px] text-[var(--text-secondary)]">
                 {contractDraft.deliverables?.map((d, i) => (
                   <li key={i} className="flex justify-between items-center">
                     <span>
@@ -1330,7 +1330,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                   <span>Protection (20%):</span>
                   <span className="text-zinc-800">${contractDraft.payment?.protectionAmount}</span>
                 </div>
-                <div className="flex justify-between font-bold text-emerald-700 pt-1 border-t border-zinc-200">
+                <div className="flex justify-between font-bold text-emerald-700 pt-1 border-t border-[var(--border)]">
                   <span>Total Protected:</span>
                   <span>${contractDraft.payment?.totalAmount.toLocaleString()}</span>
                 </div>
@@ -1357,8 +1357,8 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
       {/* Confirmation Modal */}
       {showSendConfirmation && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/45 backdrop-blur-md animate-fade-in">
-          <div className="w-full max-w-md p-6 rounded-2xl bg-white border border-black/[0.08] shadow-2xl space-y-4 text-xs shadow-2xl">
-            <h3 className="text-base font-bold text-zinc-900 font-display">
+          <div className="w-full max-w-md p-6 rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-2xl space-y-4 text-xs shadow-2xl">
+            <h3 className="text-base font-bold text-[var(--text-primary)] font-display">
               Send contract to {contractDraft.creatorName}?
             </h3>
             <p className="text-zinc-500 leading-relaxed">
@@ -1369,7 +1369,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
               <button
                 type="button"
                 onClick={() => setShowSendConfirmation(false)}
-                className="min-h-[44px] px-4 rounded-xl bg-zinc-100 hover:bg-zinc-200 text-zinc-700 border border-zinc-200 text-xs font-semibold cursor-pointer"
+                className="min-h-[44px] px-4 rounded-xl bg-zinc-100 hover:bg-zinc-200 text-[var(--text-secondary)] border border-[var(--border)] text-xs font-semibold cursor-pointer"
               >
                 Cancel
               </button>

@@ -89,6 +89,7 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
   ]);
   const [newCommentText, setNewCommentText] = useState('');
   const [viewerCount, setViewerCount] = useState(0);
+  const [isEffectsDrawerOpen, setIsEffectsDrawerOpen] = useState(false);
   const [arTrackingState, setArTrackingState] = useState(() => faceTrackerSingleton.getState());
 
   useEffect(() => {
@@ -190,6 +191,17 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
       setCameraStatus('error');
       setConnectionState('error');
     }
+  };
+
+  const handleStopCamera = () => {
+    if (cameraStream) {
+      cameraStream.getTracks().forEach((track) => track.stop());
+      setCameraStream(null);
+      setAugmentedStream(null);
+      setCameraStatus('idle');
+      setConnectionState('idle');
+    }
+    faceTrackerSingleton.stop();
   };
 
   const handleFlipCamera = async () => {
@@ -799,9 +811,9 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
       {/* ========================================================================= */}
       {/* 2. DESKTOP RESPONSIVE BROADCASTING WORKSPACE                               */}
       {/* ========================================================================= */}
-      <div className="hidden lg:flex flex-col h-full w-full animate-fade-in p-4 xl:p-6 overflow-hidden">
-        {/* Studio Top Controls Bar (using div to avoid competing header selector) */}
-        <div className="flex items-center justify-between gap-4 pb-3 border-b border-[var(--border)] shrink-0">
+      <div className="hidden lg:grid grid-rows-[auto_1fr] h-full w-full p-4 xl:p-6 gap-3 overflow-hidden bg-[var(--background)] text-[var(--text-primary)]">
+        {/* Studio Top Bar (using div to avoid competing header selector) */}
+        <div className="flex items-center justify-between gap-4 pb-2.5 border-b border-[var(--border)] shrink-0">
           <div className="flex items-center gap-3">
             {onExit && (
               <button
@@ -824,41 +836,51 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
             </div>
           </div>
 
-          <LiveSessionStatus
-            connectionState={connectionState}
-            cameraStatus={cameraStatus}
-            transportStatus={transportStatus}
-            transportError={transportError}
-            onRetryTransport={handleRetryLive}
-            isProviderConfigured={isConfigured}
-            remainingSeconds={remainingSeconds}
-            maxDurationSeconds={config.maxSessionDurationSec || 60}
-            isRecording={isRecording}
-            recordingSeconds={recordingSeconds}
-            arStatus={arTrackingState.status}
-            faceDetected={arTrackingState.faceDetected}
-            faceConfidence={arTrackingState.confidence}
-          />
+          <div className="flex items-center gap-3">
+            <LiveSessionStatus
+              connectionState={connectionState}
+              cameraStatus={cameraStatus}
+              transportStatus={transportStatus}
+              transportError={transportError}
+              onRetryTransport={handleRetryLive}
+              isProviderConfigured={isConfigured}
+              remainingSeconds={remainingSeconds}
+              maxDurationSeconds={config.maxSessionDurationSec || 60}
+              isRecording={isRecording}
+              recordingSeconds={recordingSeconds}
+              arStatus={arTrackingState.status}
+              faceDetected={arTrackingState.faceDetected}
+              faceConfidence={arTrackingState.confidence}
+              selectedProvider={config.provider as any}
+            />
+
+            <button
+              type="button"
+              onClick={handleShareStream}
+              className="p-2 rounded-xl bg-[var(--surface-muted)] hover:bg-[var(--surface)] border border-[var(--border)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors cursor-pointer"
+              title="Share Stream"
+            >
+              <Share2 className="w-4 h-4" />
+            </button>
+          </div>
         </div>
 
-        {/* Unconfigured Alert Banner */}
-        {transportStatus === 'unconfigured' && (
-          <div className="flex items-center justify-between p-2.5 mt-2 rounded-xl bg-amber-500/10 border border-amber-500/25 text-amber-900 dark:text-amber-200 text-xs shrink-0">
-            <div className="flex items-center gap-2">
-              <AlertTriangle className="w-4 h-4 text-amber-500 shrink-0" />
-              <span>
-                <strong>LiveKit / Decart credentials required for broadcast:</strong> Local preview, 4K recording, and AR face tracking work offline.
-              </span>
-            </div>
-          </div>
-        )}
+        {/* Main Broadcasting Grid: Camera Workspace (1fr) + Audience Rail (340px) */}
+        <div className="grid grid-cols-[minmax(0,1fr)_340px] xl:grid-cols-[minmax(0,1fr)_360px] gap-4 h-full min-h-0 overflow-hidden">
+          {/* Left Hero Workspace */}
+          <div className="flex flex-col h-full min-h-0 overflow-hidden gap-2.5">
+            {/* Compact contextual warning banner if unconfigured */}
+            {transportStatus === 'unconfigured' && (
+              <div className="flex items-center justify-between px-3.5 py-1.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-900 dark:text-amber-200 text-xs shrink-0">
+                <div className="flex items-center gap-2">
+                  <AlertTriangle className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                  <span>Live transport unavailable. Local preview and recording are available.</span>
+                </div>
+              </div>
+            )}
 
-        {/* Studio Workspace: Center Hero Viewport + Right Full-Height Audience Rail */}
-        <div className="flex-1 flex gap-5 pt-3 min-h-0 overflow-hidden">
-          {/* Main Hero Column: Camera + Controls + Lower Collapsible AR Panel */}
-          <div className="flex-1 flex flex-col items-center justify-between min-h-0 overflow-y-auto pr-1">
-            {/* Center Hero Camera Viewport */}
-            <div className="flex-1 flex items-center justify-center w-full min-h-0">
+            {/* HERO CAMERA VIEWPORT: Fills available workspace, aspect-ratio preserved */}
+            <div className="flex-1 flex items-center justify-center min-h-0 relative overflow-hidden bg-[var(--live-canvas,#090C10)] rounded-3xl border border-white/10 shadow-lg p-2">
               <LiveCamera
                 displayStream={displayStream}
                 connectionState={connectionState}
@@ -869,8 +891,8 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
               />
             </div>
 
-            {/* Studio Controls Row */}
-            <div className="w-full max-w-2xl shrink-0 pt-2.5 pb-2">
+            {/* STUDIO CONTROLS ROW: Anchored directly below camera viewport */}
+            <div className="shrink-0 flex items-center justify-center">
               <LiveControls
                 connectionState={connectionState}
                 transportStatus={transportStatus}
@@ -884,40 +906,54 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
                 onSelectAspectRatio={setAspectRatio}
                 onToggleAudio={handleToggleAudio}
                 onRetryTransport={handleRetryLive}
+                onToggleDrawer={() => setIsEffectsDrawerOpen(!isEffectsDrawerOpen)}
+                isDrawerOpen={isEffectsDrawerOpen}
+                onToggleCamera={cameraStream ? handleStopCamera : () => requestCamera()}
               />
             </div>
 
-            {/* Collapsible Lower Tools Bar: AR Filters, Scene, Reference */}
-            <div className="w-full max-w-2xl shrink-0">
-              <div className="flex items-center gap-1.5 p-1 rounded-xl bg-[var(--surface-muted)] border border-[var(--border)] mb-2">
-                <button
-                  type="button"
-                  onClick={() => setStudioTab('effects')}
-                  className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-                    studioTab === 'effects' || studioTab === 'scenes'
-                      ? 'bg-[var(--surface)] text-[var(--text-primary)] shadow-xs'
-                      : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
-                  }`}
-                >
-                  <Wand2 className="w-3.5 h-3.5 text-[#007E93]" />
-                  <span>AR Filters &amp; Scenes</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setStudioTab('reference')}
-                  className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-                    studioTab === 'reference'
-                      ? 'bg-[var(--surface)] text-[var(--text-primary)] shadow-xs'
-                      : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
-                  }`}
-                >
-                  <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-                  <span>Reference &amp; Lighting</span>
-                </button>
-              </div>
+            {/* COLLAPSIBLE TOOLS DRAWER: Only visible when opened by user */}
+            {isEffectsDrawerOpen && (
+              <div className="shrink-0 max-h-56 overflow-y-auto rounded-2xl bg-[var(--surface)] border border-[var(--border)] p-3 shadow-md animate-fade-in">
+                <div className="flex items-center justify-between gap-1.5 p-1 rounded-xl bg-[var(--surface-muted)] border border-[var(--border)] mb-2.5">
+                  <div className="flex items-center gap-1.5">
+                    <button
+                      type="button"
+                      onClick={() => setStudioTab('effects')}
+                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                        studioTab === 'effects' || studioTab === 'scenes'
+                          ? 'bg-[var(--surface)] text-[var(--text-primary)] shadow-xs'
+                          : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                      }`}
+                    >
+                      <Wand2 className="w-3.5 h-3.5 text-[#007E93]" />
+                      <span>AR Effects &amp; Scenes</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setStudioTab('reference')}
+                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                        studioTab === 'reference'
+                          ? 'bg-[var(--surface)] text-[var(--text-primary)] shadow-xs'
+                          : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                      }`}
+                    >
+                      <Sliders className="w-3.5 h-3.5 text-sky-500" />
+                      <span>Reference &amp; Lighting</span>
+                    </button>
+                  </div>
 
-              {/* Active Sub-Panel */}
-              <div className="p-3 rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-xs">
+                  <button
+                    type="button"
+                    onClick={() => setIsEffectsDrawerOpen(false)}
+                    className="p-1 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-primary)] cursor-pointer"
+                    title="Close Drawer"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+
+                {/* Tab Sub-Panel Content */}
                 {studioTab === 'reference' ? (
                   <LiveReferencePanel
                     referenceImage={referenceImage}
@@ -979,11 +1015,11 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
                   </div>
                 )}
               </div>
-            </div>
+            )}
           </div>
 
-          {/* Right Rail: Full-Height Audience, Chat, Moderation, and Gifts */}
-          <aside className="w-80 xl:w-96 h-full flex flex-col shrink-0 min-h-0">
+          {/* Right Rail: 340-360px Full-Height Audience, Chat, Moderation, and Gifts */}
+          <aside className="h-full min-h-0 overflow-hidden flex flex-col rounded-3xl bg-[var(--surface)] border border-[var(--border)] shadow-sm">
             <LiveAudienceModerationPanel isHost={true} />
           </aside>
         </div>

@@ -226,7 +226,7 @@ export const BusinessLayout: React.FC = () => {
 
         {/* Sidebar Footer */}
         {!isSidebarCollapsed && (
-          <div className="p-3 border-t border-black/[0.06] text-[11px] text-zinc-600 flex items-center justify-between">
+          <div className="p-3 border-t border-[var(--border)] text-[11px] text-[var(--text-secondary)] flex items-center justify-between">
             <span>Brand Workspace</span>
             <span className="w-1.5 h-1.5 rounded-full bg-[#00B4D8] animate-pulse" />
           </div>
