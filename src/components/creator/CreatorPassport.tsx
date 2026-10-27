@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   ShieldCheck,
   CheckCircle,
@@ -12,6 +12,7 @@ import {
   X,
   ChevronDown,
   ChevronUp,
+  ArrowLeft,
 } from 'lucide-react';
 import { InstagramIcon, YouTubeIcon } from '../common/PlatformIcons';
 import { useAppState } from '../../context/StateContext';
@@ -59,10 +60,40 @@ const CREDENTIAL_INDICATORS: CredentialItem[] = [
   },
 ];
 
-export const CreatorPassport: React.FC = () => {
-  const { creators, triggerCelebration } = useAppState();
+interface CreatorPassportProps {
+  onBack?: () => void;
+}
+
+export const CreatorPassport: React.FC<CreatorPassportProps> = ({ onBack }) => {
+  const { creators, triggerCelebration, setCreatorActiveTab } = useAppState();
   const toast = useToast();
   const creator = creators[0]; // Rohan Sharma
+
+  const handleNavigateBack = () => {
+    if (onBack) {
+      onBack();
+    } else {
+      setCreatorActiveTab('profile');
+    }
+  };
+
+  // Browser back / popstate and keyboard Escape support
+  useEffect(() => {
+    const handlePopState = () => {
+      handleNavigateBack();
+    };
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        handleNavigateBack();
+      }
+    };
+    window.addEventListener('popstate', handlePopState);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [onBack]);
 
   const [activeTab, setActiveTab] = useState('overview');
   const [copied, setCopied] = useState(false);
@@ -92,24 +123,54 @@ export const CreatorPassport: React.FC = () => {
 
   return (
     <div className="space-y-5 animate-fade-in max-w-5xl mx-auto pb-12">
-      {/* Compact Page Title Bar */}
-      <div className="flex items-center justify-between gap-3">
-        <div className="flex items-center gap-2.5">
-          <h1 className="text-xl sm:text-2xl font-bold text-zinc-900 font-display tracking-tight">
-            Passport
+      {/* Responsive Navigation Header (Fixes Passport Dead-End) */}
+      <div className="flex items-center justify-between gap-3 pb-3 border-b border-black/[0.08]">
+        {/* Desktop Breadcrumb Navigation: ← Profile   Passport */}
+        <div className="hidden sm:flex items-center gap-3">
+          <button
+            type="button"
+            onClick={handleNavigateBack}
+            data-testid="passport-back-desktop-btn"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-black/[0.08] bg-white hover:bg-zinc-100 text-xs font-semibold text-zinc-700 hover:text-zinc-950 transition-all cursor-pointer shadow-sm group"
+          >
+            <ArrowLeft className="w-3.5 h-3.5 text-zinc-500 group-hover:-translate-x-0.5 transition-transform" />
+            <span>← Profile</span>
+          </button>
+          <span className="text-zinc-300 font-mono">/</span>
+          <h1 className="text-xl font-bold text-zinc-900 font-display tracking-tight flex items-center gap-2">
+            <span>Passport</span>
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-500/30 whitespace-nowrap">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+              Verified ID
+            </span>
           </h1>
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-500/30 whitespace-nowrap shrink-0">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
-            Verified ID
+        </div>
+
+        {/* Mobile Header: ← Passport */}
+        <div className="flex sm:hidden items-center gap-2">
+          <button
+            type="button"
+            onClick={handleNavigateBack}
+            data-testid="passport-back-mobile-btn"
+            className="flex items-center gap-1.5 px-2.5 py-1.5 -ml-1 rounded-xl text-zinc-800 hover:bg-black/5 active:scale-95 transition-all cursor-pointer"
+            aria-label="Back to Profile"
+          >
+            <ArrowLeft className="w-5 h-5" />
+            <span className="text-lg font-bold text-zinc-900 font-display">Passport</span>
+          </button>
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-500/30 whitespace-nowrap">
+            <span className="w-1 h-1 rounded-full bg-emerald-500" />
+            Verified
           </span>
         </div>
 
+        {/* Header Right Actions */}
         <div className="flex items-center gap-2">
           <button
             type="button"
             onClick={handleShare}
             data-testid="passport-share-btn"
-            className="depth-btn-secondary min-h-[38px] px-3.5 py-1.5 rounded-xl text-xs font-semibold text-zinc-900 flex items-center gap-1.5 cursor-pointer"
+            className="depth-btn-secondary min-h-[36px] px-3.5 py-1.5 rounded-xl text-xs font-semibold text-zinc-900 flex items-center gap-1.5 cursor-pointer shadow-sm"
           >
             {copied ? (
               <Check className="w-3.5 h-3.5 text-emerald-700" />
@@ -123,7 +184,7 @@ export const CreatorPassport: React.FC = () => {
             type="button"
             onClick={handleExport}
             data-testid="passport-export-btn"
-            className="depth-btn-primary min-h-[38px] px-3.5 py-1.5 rounded-xl text-xs font-semibold text-white flex items-center gap-1.5 cursor-pointer"
+            className="depth-btn-primary min-h-[36px] px-3.5 py-1.5 rounded-xl text-xs font-semibold text-white flex items-center gap-1.5 cursor-pointer shadow-sm"
           >
             <Download className="w-3.5 h-3.5" />
             <span>Export</span>

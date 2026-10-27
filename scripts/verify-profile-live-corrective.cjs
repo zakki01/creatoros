@@ -283,7 +283,7 @@ async function runProfileAndLiveVerification() {
         hasMicButton: Boolean(micBtn),
         hasGiftButton: Boolean(giftBtn),
         hasShareButton: Boolean(shareBtn),
-        hasTransportBlockedBadge: bodyText.includes('BLOCKED — credentials required'),
+        hasTransportBlockedBadge: bodyText.includes('BLOCKED — LiveKit configuration required') || bodyText.includes('BLOCKED — credentials required'),
         hasViewerCount: bodyText.includes('1,420') || bodyText.includes('1,4'),
         hasGoLiveButton: bodyText.includes('Go Live') || bodyText.includes('End Live'),
       };
@@ -300,7 +300,7 @@ async function runProfileAndLiveVerification() {
     console.log(`  -> Mic button present: ${liveMetrics.hasMicButton ? 'PASS' : 'FAIL'}`);
     console.log(`  -> Virtual Gifts button present: ${liveMetrics.hasGiftButton ? 'PASS' : 'FAIL'}`);
     console.log(`  -> Share Stream button present: ${liveMetrics.hasShareButton ? 'PASS' : 'FAIL'}`);
-    console.log(`  -> Transport status 'BLOCKED — credentials required': ${liveMetrics.hasTransportBlockedBadge ? 'PASS (Truthful status)' : 'FAIL'}`);
+    console.log(`  -> Transport status 'BLOCKED — LiveKit configuration required': ${liveMetrics.hasTransportBlockedBadge ? 'PASS (Truthful status)' : 'FAIL'}`);
     console.log(`  -> Go Live action button present: ${liveMetrics.hasGoLiveButton ? 'PASS' : 'FAIL'}`);
 
     const liveFullscreenShot = path.join(ARTIFACTS_DIR, 'verify_live_mobile_fullscreen_100dvh.png');

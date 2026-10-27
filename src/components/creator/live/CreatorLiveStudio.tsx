@@ -421,7 +421,7 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
               {!isConfigured ? (
                 <span className="text-amber-300 font-semibold flex items-center gap-1">
                   <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
-                  BLOCKED — credentials required
+                  BLOCKED — LiveKit configuration required
                 </span>
               ) : (
                 <span className="text-emerald-400 font-semibold flex items-center gap-1">

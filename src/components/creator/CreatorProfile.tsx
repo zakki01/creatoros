@@ -44,6 +44,9 @@ import { ConnectModal } from '../common/ConnectModal';
 import { BlogPostModal } from '../common/BlogPostModal';
 import { ShareProfileModal } from '../common/ShareProfileModal';
 import { ApproachCreatorModal } from '../business/ApproachCreatorModal';
+import { ShowcaseModal } from './ShowcaseModal';
+import { ShowcaseMediaViewerModal } from './ShowcaseMediaViewerModal';
+import { ShowcaseProject, ShowcaseStorage } from '../../services/showcaseMediaService';
 import { resolveProfileActions } from '../../services/profileActionResolver';
 import { Creator } from '../../types';
 import { SocialPost } from '../../types/socialFeed';
@@ -87,6 +90,10 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
   const [isAgeModalOpen, setIsAgeModalOpen] = useState(false);
   const [isConnectModalOpen, setIsConnectModalOpen] = useState(false);
   const [isAddShowcaseOpen, setIsAddShowcaseOpen] = useState(false);
+  const [showcaseProjects, setShowcaseProjects] = useState<ShowcaseProject[]>(() =>
+    ShowcaseStorage.getProjects(creator.id)
+  );
+  const [selectedShowcaseProject, setSelectedShowcaseProject] = useState<ShowcaseProject | null>(null);
   const [selectedBlogModal, setSelectedBlogModal] = useState<SocialPost | null>(null);
 
   const creatorShots = socialPosts.filter(
@@ -101,15 +108,11 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
       (p.authorHandle === creator.handle || (p.authorRole || p.authorType) === 'creator')
   );
 
-  // New Showcase Form State
-  const [showcaseTitle, setShowcaseTitle] = useState('');
-  const [showcaseType, setShowcaseType] = useState('Reel');
-  const [showcaseCampaign, setShowcaseCampaign] = useState('');
-  const [showcaseThumbnail, setShowcaseThumbnail] = useState(
-    'https://images.unsplash.com/photo-1552346154-21d32810aba3?w=800&auto=format&fit=crop&q=80'
-  );
-  const [showcaseViews, setShowcaseViews] = useState('180000');
-  const [showcaseEngagement, setShowcaseEngagement] = useState('12000');
+  const handleSaveShowcaseProject = (project: ShowcaseProject) => {
+    const updated = ShowcaseStorage.saveProject(creator.id, project);
+    setShowcaseProjects(updated);
+    triggerCelebration();
+  };
 
   const connectionState = connections[creator.id] || 'connect';
   const isOwnProfile = role === 'creator' && !isPublicView && creator.id === 'cr-01';
@@ -127,25 +130,6 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
     setIsShareModalOpen(true);
   };
 
-  const handleCreateShowcase = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!showcaseTitle.trim()) return;
-
-    const newItem = {
-      id: `port-${Date.now()}`,
-      title: showcaseTitle,
-      type: showcaseType,
-      campaignName: showcaseCampaign || 'Independent Production',
-      thumbnail: showcaseThumbnail,
-      views: parseInt(showcaseViews) || 120000,
-      engagement: parseInt(showcaseEngagement) || 8500,
-    };
-
-    addCreatorShowcase(creator.id, newItem);
-    setIsAddShowcaseOpen(false);
-    setShowcaseTitle('');
-    setShowcaseCampaign('');
-  };
 
   const handleMessageClick = () => {
     if (onOpenMessage) {
@@ -521,39 +505,65 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
             </button>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {creator.portfolio.map((p) => (
-              <SpatialCard
-                key={p.id}
-                surface={2}
-                interactive
-                tilt
-                glare
-                className="overflow-hidden group"
-              >
-                <div className="relative h-48 overflow-hidden bg-[#DFE3E8]">
-                  <img
-                    src={p.thumbnail}
-                    alt={p.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
-                  <div className="absolute top-3 left-3">
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-black/60 backdrop-blur-md text-[#007E93] border border-white/15">
-                      {p.type}
-                    </span>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {showcaseProjects.map((p) => {
+              const coverImg =
+                p.videos[0]?.thumbnailUrl ||
+                p.videos[0]?.url ||
+                'https://images.unsplash.com/photo-1552346154-21d32810aba3?w=800&auto=format&fit=crop&q=80';
+              const videoCount = p.videos.length;
+
+              return (
+                <SpatialCard
+                  key={p.id}
+                  surface={2}
+                  interactive
+                  tilt
+                  glare
+                  onClick={() => setSelectedShowcaseProject(p)}
+                  className="overflow-hidden group cursor-pointer"
+                >
+                  <div className="relative h-48 sm:h-52 overflow-hidden bg-black">
+                    <img
+                      src={coverImg}
+                      alt={p.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
+                    
+                    {/* Top-left: Format Badge */}
+                    <div className="absolute top-3 left-3">
+                      <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-black/70 backdrop-blur-md text-[#00F0FF] border border-white/15">
+                        {p.deliverableFormat}
+                      </span>
+                    </div>
+
+                    {/* Top-right: 1 / 4 Multi-Video Badge */}
+                    <div className="absolute top-3 right-3 flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-black/70 backdrop-blur-md text-white border border-white/15 text-[10px] font-mono">
+                      <Film className="w-3 h-3 text-cyan-400" />
+                      <span>{videoCount} {videoCount === 1 ? 'Video' : 'Videos'}</span>
+                    </div>
+
+                    {/* Bottom overlay: Client & views */}
+                    <div className="absolute bottom-3 left-3 right-3 flex justify-between text-xs text-white">
+                      <span className="font-mono font-semibold truncate max-w-[150px]">{p.client}</span>
+                      {p.views && (
+                        <span className="font-mono text-emerald-400 font-semibold shrink-0">
+                          {(p.views / 1000).toFixed(0)}K views
+                        </span>
+                      )}
+                    </div>
                   </div>
-                  <div className="absolute bottom-3 left-3 right-3 flex justify-between text-xs text-white">
-                    <span className="font-mono font-semibold">{(p.views / 1000).toFixed(0)}K views</span>
-                    <span className="font-mono text-emerald-700 font-semibold">{(p.engagement / 1000).toFixed(1)}K</span>
+
+                  <div className="p-3.5 space-y-1">
+                    <p className="text-xs font-bold text-zinc-900 line-clamp-1 group-hover:text-[#007E93] transition-colors">
+                      {p.title}
+                    </p>
+                    <p className="text-[11px] text-zinc-500 truncate">{p.creatorRole} · {p.category}</p>
                   </div>
-                </div>
-                <div className="p-3.5">
-                  <p className="text-xs font-bold text-zinc-900 line-clamp-1">{p.title}</p>
-                  <p className="text-[11px] text-zinc-500 mt-0.5 truncate">{p.campaignName}</p>
-                </div>
-              </SpatialCard>
-            ))}
+                </SpatialCard>
+              );
+            })}
           </div>
         </div>
       )}
@@ -842,130 +852,19 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
         }}
       />
 
-      {/* Add Showcase Modal */}
-      {isAddShowcaseOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/45 backdrop-blur-md animate-fade-in">
-          <div
-            className="relative w-full max-w-md rounded-2xl bg-white border border-black/[0.08] p-6 shadow-2xl text-zinc-900 space-y-4"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              onClick={() => setIsAddShowcaseOpen(false)}
-              className="absolute top-4 right-4 p-1.5 rounded-lg text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100/60 transition-all cursor-pointer"
-            >
-              <X className="w-4 h-4" />
-            </button>
+      {/* Add Showcase Modal (Real Multi-Video Upload Flow) */}
+      <ShowcaseModal
+        isOpen={isAddShowcaseOpen}
+        onClose={() => setIsAddShowcaseOpen(false)}
+        onSave={handleSaveShowcaseProject}
+      />
 
-            <div className="flex items-center gap-2">
-              <Plus className="w-4 h-4 text-[#007E93]" />
-              <h3 className="text-base font-bold text-zinc-900">Add Showcase Work</h3>
-            </div>
-            <p className="text-xs text-zinc-500">
-              Highlight your latest high-impact reel, editorial lookbook, or campaign deliverable.
-            </p>
-
-            <form onSubmit={handleCreateShowcase} className="space-y-3.5 pt-1">
-              <div>
-                <label className="text-xs text-zinc-700 font-medium block mb-1">
-                  Title
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={showcaseTitle}
-                  onChange={(e) => setShowcaseTitle(e.target.value)}
-                  placeholder="e.g. Summer Streetwear Color Grade Reel"
-                  className="w-full rounded-xl bg-white border border-zinc-300 p-2.5 text-xs text-zinc-900 shadow-xs focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] placeholder-zinc-500 focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]/60"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-2.5">
-                <div>
-                  <label className="text-xs text-zinc-700 font-medium block mb-1">
-                    Deliverable Format
-                  </label>
-                  <select
-                    value={showcaseType}
-                    onChange={(e) => setShowcaseType(e.target.value)}
-                    className="w-full rounded-xl bg-white border border-zinc-300 p-2.5 text-xs text-zinc-900 shadow-xs focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]/60"
-                  >
-                    <option value="Reel">4K Reel</option>
-                    <option value="Carousel">In-Feed Carousel</option>
-                    <option value="Lookbook">Editorial Lookbook</option>
-                    <option value="Story Series">Story Series</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="text-xs text-zinc-700 font-medium block mb-1">
-                    Brand / Client
-                  </label>
-                  <input
-                    type="text"
-                    value={showcaseCampaign}
-                    onChange={(e) => setShowcaseCampaign(e.target.value)}
-                    placeholder="e.g. Aura Streetwear Co."
-                    className="w-full rounded-xl bg-white border border-zinc-300 p-2.5 text-xs text-zinc-900 shadow-xs focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] placeholder-zinc-500 focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]/60"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="text-xs text-zinc-700 font-medium block mb-1">
-                  Thumbnail Image URL
-                </label>
-                <input
-                  type="url"
-                  value={showcaseThumbnail}
-                  onChange={(e) => setShowcaseThumbnail(e.target.value)}
-                  placeholder="https://..."
-                  className="w-full rounded-xl bg-white border border-zinc-300 p-2.5 text-xs text-zinc-900 shadow-xs focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] placeholder-zinc-500 focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]/60"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-2.5">
-                <div>
-                  <label className="text-xs text-zinc-700 font-medium block mb-1">
-                    Verified Plays / Views
-                  </label>
-                  <input
-                    type="number"
-                    value={showcaseViews}
-                    onChange={(e) => setShowcaseViews(e.target.value)}
-                    className="w-full rounded-xl bg-white border border-zinc-300 p-2.5 text-xs text-zinc-900 shadow-xs focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]/60"
-                  />
-                </div>
-                <div>
-                  <label className="text-xs text-zinc-700 font-medium block mb-1">
-                    Engagement Count
-                  </label>
-                  <input
-                    type="number"
-                    value={showcaseEngagement}
-                    onChange={(e) => setShowcaseEngagement(e.target.value)}
-                    className="w-full rounded-xl bg-white border border-zinc-300 p-2.5 text-xs text-zinc-900 shadow-xs focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]/60"
-                  />
-                </div>
-              </div>
-
-              <div className="flex items-center justify-end gap-2 pt-3 border-t border-white/[0.06]">
-                <button
-                  type="button"
-                  onClick={() => setIsAddShowcaseOpen(false)}
-                  className="px-3 py-1.5 rounded-xl text-xs text-zinc-500 hover:text-zinc-800 cursor-pointer"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-1.5 rounded-xl text-xs font-semibold text-white bg-[#007E93] hover:bg-[#006779] shadow-sm shadow-teal-900/20 cursor-pointer"
-                >
-                  Publish to Showcase
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+      {/* Showcase Media Viewer Modal */}
+      <ShowcaseMediaViewerModal
+        isOpen={!!selectedShowcaseProject}
+        project={selectedShowcaseProject}
+        onClose={() => setSelectedShowcaseProject(null)}
+      />
 
       {/* Share Profile Modal */}
       <ShareProfileModal

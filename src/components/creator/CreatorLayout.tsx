@@ -241,7 +241,9 @@ export const CreatorLayout: React.FC = () => {
 
           {(activeTab === 'admin' || activeTab === 'settings') && <CreatorAdminWorkspace />}
 
-          {activeTab === 'passport' && <CreatorPassport />}
+          {activeTab === 'passport' && (
+            <CreatorPassport onBack={() => handleNavigate('profile')} />
+          )}
 
           {activeTab === 'feed' && <SocialFeedView />}
 

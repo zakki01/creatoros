@@ -1,24 +1,36 @@
 /**
  * CreatorOS — Unified Profile Relationship & Action Resolver
  *
- * Enforces strict, role-aware profile action rules:
+ * DEFINITIVE RELATIONSHIP MATRIX (Source of Truth):
+ * - Creator viewing Creator:   [Connect] (Primary), [Share Profile], [Message]. If connected: [Connected].
  * - Creator viewing Brand:     [Pitch to Brand] (Primary), [Share Profile], [Message]. STRICTLY NO "Connect".
- * - Creator viewing Creator:   [Connect] (Primary), [Share Profile], [Message].
- * - Brand viewing Creator:     [Approach Creator] (Primary), [Invite to Campaign], [Share Profile], [Message]. STRICTLY NO "Connect".
+ * - Brand viewing Creator:     [Invite to Campaign] / [Approach Creator] (Primary), [Share Profile], [Message].
+ *                              If invited: [Invitation Sent]. If collaborating: [Active]. STRICTLY NO "Connect".
+ * - Brand viewing Brand:       [Connect] (Primary), [Share Profile], [Message]. If connected: [Connected].
  * - User viewing Own Profile:  [Edit Profile] (Primary), [Share Profile]. STRICTLY NO "Connect", "Pitch", or "Approach".
- * - Brand viewing Brand:       [Share Profile], [Message].
+ * - Admin viewing Any:         [Moderate], [Share Profile].
  */
 
-export type UserRole = 'creator' | 'business' | 'super_admin';
+export type UserRole = 'creator' | 'business' | 'brand' | 'super_admin';
 
 export type ProfileActionType =
   | 'pitch'             // Pitch to Brand
   | 'approach'          // Approach Creator
   | 'invite_campaign'   // Invite to Campaign
-  | 'connect'           // Creator-to-Creator Connect
+  | 'connect'           // Peer Connect (Creator ↔ Creator, Brand ↔ Brand)
   | 'share'             // Share Profile
   | 'message'           // Direct Message
-  | 'edit';             // Edit Profile
+  | 'edit'              // Edit Profile
+  | 'moderate';         // Admin Moderation
+
+export type RelationshipState =
+  | 'none'
+  | 'pending'
+  | 'connected'
+  | 'invited'
+  | 'active'
+  | 'pitched'
+  | 'approached';
 
 export interface ProfileActionConfig {
   id: ProfileActionType;
@@ -26,13 +38,18 @@ export interface ProfileActionConfig {
   variant: 'primary' | 'secondary' | 'outline' | 'ghost';
   icon: string;
   isPrimary?: boolean;
+  disabled?: boolean;
+  badge?: string | null;
 }
 
 export interface ResolveProfileActionsParams {
   viewerRole: UserRole;
-  profileRole: 'creator' | 'business';
+  profileRole: 'creator' | 'business' | 'brand';
   isOwnProfile: boolean;
-  relationshipState?: 'none' | 'pending' | 'connected' | 'pitched' | 'approached';
+  relationshipState?: RelationshipState;
+  context?: {
+    campaignId?: string;
+  };
 }
 
 export interface ProfileActionResult {
@@ -46,6 +63,7 @@ export interface ProfileActionResult {
   canMessage: boolean;
   canShare: boolean;
   canEdit: boolean;
+  primaryButton: ProfileActionConfig | null;
   actionConfigs: ProfileActionConfig[];
 }
 
@@ -53,10 +71,30 @@ export interface ProfileActionResult {
  * Resolves the valid, authorized action set for any given profile viewer and target profile.
  */
 export function resolveProfileActions(params: ResolveProfileActionsParams): ProfileActionResult {
-  const { viewerRole, profileRole, isOwnProfile } = params;
+  const rawViewer = params.viewerRole as string;
+  const rawProfile = params.profileRole as string;
+  const viewerRole: 'creator' | 'business' | 'super_admin' = rawViewer === 'brand' ? 'business' : (params.viewerRole as any);
+  const profileRole: 'creator' | 'business' = rawProfile === 'brand' ? 'business' : (params.profileRole as any);
+  const { isOwnProfile, relationshipState = 'none' } = params;
 
   // 1. User viewing their own profile
   if (isOwnProfile) {
+    const editBtn: ProfileActionConfig = {
+      id: 'edit',
+      label: 'Edit Profile',
+      variant: 'primary',
+      icon: 'Edit3',
+      isPrimary: true,
+      disabled: false,
+    };
+    const shareBtn: ProfileActionConfig = {
+      id: 'share',
+      label: 'Share Profile',
+      variant: 'secondary',
+      icon: 'Share2',
+      disabled: false,
+    };
+
     return {
       allowedActions: ['edit', 'share'],
       primaryAction: 'edit',
@@ -68,61 +106,137 @@ export function resolveProfileActions(params: ResolveProfileActionsParams): Prof
       canMessage: false,
       canShare: true,
       canEdit: true,
-      actionConfigs: [
-        { id: 'edit', label: 'Edit Profile', variant: 'primary', icon: 'Edit3', isPrimary: true },
-        { id: 'share', label: 'Share Profile', variant: 'secondary', icon: 'Share2' },
-      ],
+      primaryButton: editBtn,
+      actionConfigs: [editBtn, shareBtn],
     };
   }
 
   // 2. Creator viewing a Brand profile
   // CRITICAL RULE: A Creator NEVER "Connects" with a Brand. Primary action is Pitch to Brand.
   if (viewerRole === 'creator' && profileRole === 'business') {
+    const isPitched = relationshipState === 'pitched';
+    const pitchBtn: ProfileActionConfig = {
+      id: 'pitch',
+      label: isPitched ? 'Pitch Sent' : 'Pitch to Brand',
+      variant: isPitched ? 'secondary' : 'primary',
+      icon: isPitched ? 'Check' : 'Send',
+      isPrimary: true,
+      disabled: isPitched,
+      badge: isPitched ? 'Pitch Sent' : null,
+    };
+    const shareBtn: ProfileActionConfig = {
+      id: 'share',
+      label: 'Share Profile',
+      variant: 'secondary',
+      icon: 'Share2',
+    };
+    const messageBtn: ProfileActionConfig = {
+      id: 'message',
+      label: 'Message',
+      variant: 'secondary',
+      icon: 'MessageSquare',
+    };
+
     return {
       allowedActions: ['pitch', 'share', 'message'],
       primaryAction: 'pitch',
       secondaryActions: ['share', 'message'],
-      canConnect: false, // STRICTLY DISALLOWED: Creator never uses generic connection with a Brand
+      canConnect: false, // STRICTLY DISALLOWED: Creator never connects with a Brand
       canPitch: true,
       canApproach: false,
       canInviteCampaign: false,
       canMessage: true,
       canShare: true,
       canEdit: false,
-      actionConfigs: [
-        { id: 'pitch', label: 'Pitch to Brand', variant: 'primary', icon: 'Send', isPrimary: true },
-        { id: 'share', label: 'Share Profile', variant: 'secondary', icon: 'Share2' },
-        { id: 'message', label: 'Message', variant: 'secondary', icon: 'MessageSquare' },
-      ],
+      primaryButton: pitchBtn,
+      actionConfigs: [pitchBtn, shareBtn, messageBtn],
     };
   }
 
   // 3. Brand viewing a Creator profile
-  // CRITICAL RULE: A Brand NEVER uses generic creator "Connect". Primary action is Approach Creator.
+  // CRITICAL RULE: A Brand NEVER uses generic creator "Connect". Primary action is Invite to Campaign / Approach.
   if (viewerRole === 'business' && profileRole === 'creator') {
+    const isInvited = relationshipState === 'invited' || relationshipState === 'approached';
+    const isActive = relationshipState === 'active' || relationshipState === 'connected';
+
+    const inviteLabel = isActive
+      ? 'Active'
+      : isInvited
+      ? 'Invitation Sent'
+      : 'Invite';
+
+    const approachBtn: ProfileActionConfig = {
+      id: 'approach',
+      label: 'Approach Creator',
+      variant: 'primary',
+      icon: 'Send',
+      isPrimary: true,
+      disabled: isActive,
+    };
+    const inviteBtn: ProfileActionConfig = {
+      id: 'invite_campaign',
+      label: inviteLabel,
+      variant: isInvited || isActive ? 'secondary' : 'primary',
+      icon: isInvited || isActive ? 'CheckCircle' : 'Send',
+      isPrimary: true,
+      disabled: isInvited || isActive,
+      badge: isActive ? 'Active' : isInvited ? 'Invitation Sent' : null,
+    };
+    const shareBtn: ProfileActionConfig = {
+      id: 'share',
+      label: 'Share Profile',
+      variant: 'secondary',
+      icon: 'Share2',
+    };
+    const messageBtn: ProfileActionConfig = {
+      id: 'message',
+      label: 'Message',
+      variant: 'secondary',
+      icon: 'MessageSquare',
+    };
+
     return {
       allowedActions: ['approach', 'invite_campaign', 'share', 'message'],
-      primaryAction: 'approach',
-      secondaryActions: ['invite_campaign', 'share', 'message'],
-      canConnect: false, // STRICTLY DISALLOWED: Brand never uses generic creator connection
+      primaryAction: 'invite_campaign',
+      secondaryActions: ['approach', 'share', 'message'],
+      canConnect: false, // STRICTLY DISALLOWED: Brand never connects with a Creator
       canPitch: false,
       canApproach: true,
       canInviteCampaign: true,
       canMessage: true,
       canShare: true,
       canEdit: false,
-      actionConfigs: [
-        { id: 'approach', label: 'Approach Creator', variant: 'primary', icon: 'Send', isPrimary: true },
-        { id: 'invite_campaign', label: 'Invite to Campaign', variant: 'secondary', icon: 'PlusCircle' },
-        { id: 'share', label: 'Share Profile', variant: 'secondary', icon: 'Share2' },
-        { id: 'message', label: 'Message', variant: 'secondary', icon: 'MessageSquare' },
-      ],
+      primaryButton: inviteBtn,
+      actionConfigs: [inviteBtn, approachBtn, shareBtn, messageBtn],
     };
   }
 
   // 4. Creator viewing another Creator profile
-  // Valid peer-to-peer connection
+  // Peer-to-peer connection: [Connect] / [Connected]
   if (viewerRole === 'creator' && profileRole === 'creator') {
+    const isConnected = relationshipState === 'connected';
+    const connectBtn: ProfileActionConfig = {
+      id: 'connect',
+      label: isConnected ? 'Connected' : 'Connect',
+      variant: isConnected ? 'secondary' : 'primary',
+      icon: isConnected ? 'Check' : 'UserPlus',
+      isPrimary: true,
+      disabled: isConnected,
+      badge: isConnected ? 'Connected' : null,
+    };
+    const shareBtn: ProfileActionConfig = {
+      id: 'share',
+      label: 'Share Profile',
+      variant: 'secondary',
+      icon: 'Share2',
+    };
+    const messageBtn: ProfileActionConfig = {
+      id: 'message',
+      label: 'Message',
+      variant: 'secondary',
+      icon: 'MessageSquare',
+    };
+
     return {
       allowedActions: ['connect', 'share', 'message'],
       primaryAction: 'connect',
@@ -134,15 +248,68 @@ export function resolveProfileActions(params: ResolveProfileActionsParams): Prof
       canMessage: true,
       canShare: true,
       canEdit: false,
-      actionConfigs: [
-        { id: 'connect', label: 'Connect', variant: 'primary', icon: 'UserPlus', isPrimary: true },
-        { id: 'share', label: 'Share Profile', variant: 'secondary', icon: 'Share2' },
-        { id: 'message', label: 'Message', variant: 'secondary', icon: 'MessageSquare' },
-      ],
+      primaryButton: connectBtn,
+      actionConfigs: [connectBtn, shareBtn, messageBtn],
     };
   }
 
-  // 5. Brand viewing another Brand (or super_admin fallback)
+  // 5. Brand viewing another Brand profile
+  // Valid B2B connection: [Connect] / [Connected]
+  if (viewerRole === 'business' && profileRole === 'business') {
+    const isConnected = relationshipState === 'connected';
+    const connectBtn: ProfileActionConfig = {
+      id: 'connect',
+      label: isConnected ? 'Connected' : 'Connect',
+      variant: isConnected ? 'secondary' : 'primary',
+      icon: isConnected ? 'Check' : 'Building',
+      isPrimary: true,
+      disabled: isConnected,
+      badge: isConnected ? 'Connected' : null,
+    };
+    const shareBtn: ProfileActionConfig = {
+      id: 'share',
+      label: 'Share Profile',
+      variant: 'secondary',
+      icon: 'Share2',
+    };
+    const messageBtn: ProfileActionConfig = {
+      id: 'message',
+      label: 'Message',
+      variant: 'secondary',
+      icon: 'MessageSquare',
+    };
+
+    return {
+      allowedActions: ['connect', 'share', 'message'],
+      primaryAction: 'connect',
+      secondaryActions: ['share', 'message'],
+      canConnect: true,
+      canPitch: false,
+      canApproach: false,
+      canInviteCampaign: false,
+      canMessage: true,
+      canShare: true,
+      canEdit: false,
+      primaryButton: connectBtn,
+      actionConfigs: [connectBtn, shareBtn, messageBtn],
+    };
+  }
+
+  // 6. Admin / fallback
+  const shareBtn: ProfileActionConfig = {
+    id: 'share',
+    label: 'Share Profile',
+    variant: 'secondary',
+    icon: 'Share2',
+  };
+  const messageBtn: ProfileActionConfig = {
+    id: 'message',
+    label: 'Message',
+    variant: 'primary',
+    icon: 'MessageSquare',
+    isPrimary: true,
+  };
+
   return {
     allowedActions: ['share', 'message'],
     primaryAction: 'message',
@@ -154,11 +321,16 @@ export function resolveProfileActions(params: ResolveProfileActionsParams): Prof
     canMessage: true,
     canShare: true,
     canEdit: false,
-    actionConfigs: [
-      { id: 'message', label: 'Message', variant: 'primary', icon: 'MessageSquare', isPrimary: true },
-      { id: 'share', label: 'Share Profile', variant: 'secondary', icon: 'Share2' },
-    ],
+    primaryButton: messageBtn,
+    actionConfigs: [messageBtn, shareBtn],
   };
+}
+
+/**
+ * Convenience helper requested for Discover cards, recommendation lists, and action rows.
+ */
+export function getRelationshipActions(params: ResolveProfileActionsParams): ProfileActionResult {
+  return resolveProfileActions(params);
 }
 
 /**

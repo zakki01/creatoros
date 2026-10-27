@@ -1,13 +1,14 @@
 import React from 'react';
 import logoSrc from '../../assets/creatoros-logo.png';
+import { useTheme } from '../../context/ThemeContext';
 
 export type BrandLogoSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
 export interface BrandLogoProps {
   /** Size preset for icon and typography */
   size?: BrandLogoSize;
-  /** Visual variant: dark canvas (white text) vs light studio canvas (charcoal text) */
-  variant?: 'dark' | 'light';
+  /** Visual variant: auto (adapts to active theme), dark canvas (white text) vs light studio canvas (charcoal text) */
+  variant?: 'dark' | 'light' | 'auto';
   /** Force hiding or showing text */
   showText?: boolean;
   /** Convenience shortcut for icon-only display (e.g. collapsed sidebars or mobile) */
@@ -83,7 +84,7 @@ const sizeConfig: Record<
 
 export const BrandLogo: React.FC<BrandLogoProps> = ({
   size = 'md',
-  variant = 'dark',
+  variant = 'auto',
   showText = true,
   iconOnly = false,
   responsiveHideText = false,
@@ -94,9 +95,20 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
   iconClassName = '',
   onClick,
 }) => {
+  let activeTheme: 'light' | 'dark' = 'light';
+  try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const themeCtx = useTheme();
+    activeTheme = themeCtx?.resolvedTheme || themeCtx?.theme || 'light';
+  } catch {
+    if (typeof document !== 'undefined') {
+      activeTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+    }
+  }
+
   const conf = sizeConfig[size] || sizeConfig.md;
   const displayTitle = showText && !iconOnly;
-  const isLight = variant === 'light';
+  const isLight = variant === 'auto' ? activeTheme === 'light' : variant === 'light';
 
   return (
     <div
@@ -110,12 +122,12 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
         className={`relative flex items-center justify-center shrink-0 ${conf.iconSize} ${conf.containerPadding} ${conf.imgRounded} ${
           isLight
             ? 'bg-white/90 border border-black/10 shadow-[0_2px_8px_rgba(0,0,0,0.06)]'
-            : 'bg-black/40 border border-black/[0.08] shadow-sm'
+            : 'bg-zinc-900/90 border border-white/10 shadow-sm'
         }`}
         style={{
           boxShadow: isLight
             ? '0 2px 8px -2px rgba(0, 180, 216, 0.25)'
-            : '0 2px 8px -2px rgba(0, 168, 255, 0.12)',
+            : '0 2px 8px -2px rgba(0, 168, 255, 0.20)',
         }}
       >
         <img
@@ -149,7 +161,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
                 className={`font-mono font-medium rounded ${
                   isLight
                     ? 'text-zinc-600 bg-zinc-200 border border-zinc-300'
-                    : 'text-zinc-500 bg-white border border-zinc-200'
+                    : 'text-zinc-300 bg-zinc-800 border border-zinc-700'
                 } ${conf.badgeSize}`}
               >
                 {badgeText}
@@ -160,7 +172,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
           {subtitle && (
             <span
               className={`text-[10px] tracking-wider font-mono uppercase mt-0.5 ${
-                isLight ? 'text-zinc-500' : 'text-zinc-500'
+                isLight ? 'text-zinc-500' : 'text-zinc-400'
               }`}
             >
               {subtitle}

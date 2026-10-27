@@ -10,6 +10,8 @@ import {
   Bookmark,
   UserPlus,
   Check,
+  CheckCircle,
+  Building,
   Clock,
   Play,
   Volume2,
@@ -42,6 +44,8 @@ import { SocialPost, PostComment, FeedCategory, PostContentType } from '../../ty
 import { ConnectModal } from './ConnectModal';
 import { BrandProfileModal } from './BrandProfileModal';
 import { PitchToBrandModal } from './PitchToBrandModal';
+import { ApproachCreatorModal } from '../business/ApproachCreatorModal';
+import { getRelationshipActions, RelationshipState } from '../../services/profileActionResolver';
 import { CreatorProfile } from '../creator/CreatorProfile';
 import { CreatePostModal } from './CreatePostModal';
 import { BlogPostModal } from './BlogPostModal';
@@ -65,7 +69,13 @@ export const DiscoverView: React.FC = () => {
     triggerCelebration,
     setCreatorActiveTab,
     featureFlags,
+    role,
+    userProfile,
+    outreachItems,
   } = useAppState();
+
+  // Approach / Invite Creator Modal State
+  const [approachTargetCreator, setApproachTargetCreator] = useState<Creator | null>(null);
 
   // Navigation & Sub-tabs: 'For You' | 'Creators' | 'Brands' | 'Reels' | 'Shots' | 'Blogs' | 'Trending'
   const [subTab, setSubTab] = useState<
@@ -457,6 +467,23 @@ export const DiscoverView: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {creators.map((c) => {
               const cState = connections[c.id] || 'connect';
+              const isInvited = outreachItems?.some((item) => item.creatorId === c.id);
+              const isCollaborating = cState === 'active_campaign';
+              const relationshipState: RelationshipState = isCollaborating
+                ? 'active'
+                : isInvited
+                ? 'invited'
+                : cState === 'connected'
+                ? 'connected'
+                : 'none';
+
+              const creatorActions = getRelationshipActions({
+                viewerRole: role,
+                profileRole: 'creator',
+                isOwnProfile: userProfile?.id === c.id,
+                relationshipState,
+              });
+
               const latestWorkImg =
                 c.portfolio?.[0]?.thumbnail ||
                 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&auto=format&fit=crop&q=80';
@@ -517,7 +544,7 @@ export const DiscoverView: React.FC = () => {
                     </span>
                   </div>
 
-                  {/* Actions: [View] [Connect] */}
+                  {/* Actions: [View] [Action via Resolver] */}
                   <div className="flex items-center justify-between pt-1 gap-2">
                     <button
                       onClick={() => setSelectedCreatorModal(c)}
@@ -526,28 +553,49 @@ export const DiscoverView: React.FC = () => {
                       View
                     </button>
 
-                    {cState === 'connected' ? (
-                      <span className="px-3.5 py-1.5 rounded-xl bg-emerald-50 border border-emerald-500/30 text-emerald-800 text-xs font-semibold flex items-center gap-1.5">
-                        <Check className="w-3.5 h-3.5" />
-                        <span>Connected</span>
-                      </span>
-                    ) : (
-                      <button
-                        onClick={() =>
-                          setConnectTarget({
-                            id: c.id,
-                            name: c.name,
-                            handle: c.handle,
-                            avatar: c.avatar,
-                            role: 'creator',
-                            category: c.category,
-                          })
-                        }
-                        className="px-4 py-1.5 rounded-xl depth-btn-primary text-white text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer"
-                      >
-                        <UserPlus className="w-3.5 h-3.5" />
-                        <span>Connect</span>
-                      </button>
+                    {/* Brand viewing Creator: [Invite] / [Invitation Sent] / [Active] */}
+                    {creatorActions.primaryAction === 'invite_campaign' && (
+                      creatorActions.primaryButton?.disabled ? (
+                        <span className="px-3.5 py-1.5 rounded-xl bg-emerald-50 border border-emerald-500/30 text-emerald-800 text-xs font-semibold flex items-center gap-1.5">
+                          <CheckCircle className="w-3.5 h-3.5 text-emerald-600" />
+                          <span>{creatorActions.primaryButton.label}</span>
+                        </span>
+                      ) : (
+                        <button
+                          onClick={() => setApproachTargetCreator(c)}
+                          className="px-4 py-1.5 rounded-xl depth-btn-primary text-white text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer shadow-sm active:scale-95"
+                        >
+                          <Send className="w-3.5 h-3.5" />
+                          <span>Invite</span>
+                        </button>
+                      )
+                    )}
+
+                    {/* Creator viewing Creator: [Connect] / [Connected] */}
+                    {creatorActions.primaryAction === 'connect' && (
+                      cState === 'connected' ? (
+                        <span className="px-3.5 py-1.5 rounded-xl bg-emerald-50 border border-emerald-500/30 text-emerald-800 text-xs font-semibold flex items-center gap-1.5">
+                          <Check className="w-3.5 h-3.5" />
+                          <span>Connected</span>
+                        </span>
+                      ) : (
+                        <button
+                          onClick={() =>
+                            setConnectTarget({
+                              id: c.id,
+                              name: c.name,
+                              handle: c.handle,
+                              avatar: c.avatar,
+                              role: 'creator',
+                              category: c.category,
+                            })
+                          }
+                          className="px-4 py-1.5 rounded-xl depth-btn-primary text-white text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer"
+                        >
+                          <UserPlus className="w-3.5 h-3.5" />
+                          <span>Connect</span>
+                        </button>
+                      )
                     )}
                   </div>
                 </SpatialCard>
@@ -563,6 +611,12 @@ export const DiscoverView: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {brandsDirectory.map((b) => {
               const bState = connections[b.id] || 'connect';
+              const brandActions = getRelationshipActions({
+                viewerRole: role,
+                profileRole: 'business',
+                isOwnProfile: userProfile?.id === b.id,
+                relationshipState: bState === 'connected' ? 'connected' : 'none',
+              });
               return (
                 <SpatialCard
                   key={b.id}
@@ -633,13 +687,43 @@ export const DiscoverView: React.FC = () => {
                       View
                     </button>
 
-                    <button
-                      onClick={() => setPitchTargetBrand(b)}
-                      className="px-4 py-1.5 rounded-xl bg-[#007E93] hover:bg-[#006779] text-white text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer shadow-sm active:scale-95"
-                    >
-                      <Send className="w-3.5 h-3.5" />
-                      <span>Pitch to Brand</span>
-                    </button>
+                    {/* Creator viewing Brand: [Pitch to Brand] */}
+                    {brandActions.primaryAction === 'pitch' && (
+                      <button
+                        onClick={() => setPitchTargetBrand(b)}
+                        className="px-4 py-1.5 rounded-xl bg-[#007E93] hover:bg-[#006779] text-white text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer shadow-sm active:scale-95"
+                      >
+                        <Send className="w-3.5 h-3.5" />
+                        <span>Pitch to Brand</span>
+                      </button>
+                    )}
+
+                    {/* Brand viewing Brand: [Connect] / [Connected] */}
+                    {brandActions.primaryAction === 'connect' && (
+                      bState === 'connected' ? (
+                        <span className="px-3.5 py-1.5 rounded-xl bg-emerald-50 border border-emerald-500/30 text-emerald-800 text-xs font-semibold flex items-center gap-1.5">
+                          <Check className="w-3.5 h-3.5" />
+                          <span>Connected</span>
+                        </span>
+                      ) : (
+                        <button
+                          onClick={() =>
+                            setConnectTarget({
+                              id: b.id,
+                              name: b.name,
+                              handle: b.handle,
+                              avatar: b.logo,
+                              role: 'business',
+                              category: b.category,
+                            })
+                          }
+                          className="px-4 py-1.5 rounded-xl depth-btn-primary text-white text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer shadow-sm active:scale-95"
+                        >
+                          <Building className="w-3.5 h-3.5" />
+                          <span>Connect</span>
+                        </button>
+                      )
+                    )}
                   </div>
                 </SpatialCard>
               );
@@ -1012,6 +1096,19 @@ export const DiscoverView: React.FC = () => {
           }
         }
       />
+
+      {/* 10c. APPROACH / INVITE CREATOR MODAL */}
+      {approachTargetCreator && (
+        <ApproachCreatorModal
+          isOpen={!!approachTargetCreator}
+          onClose={() => setApproachTargetCreator(null)}
+          creator={approachTargetCreator}
+          onSuccess={() => {
+            setApproachTargetCreator(null);
+            triggerCelebration();
+          }}
+        />
+      )}
 
       {/* 11. CREATOR PROFILE MODAL */}
       {selectedCreatorModal && (
