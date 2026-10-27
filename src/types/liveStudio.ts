@@ -117,6 +117,7 @@ export interface ArEffect {
     textureUrl?: string;
     model3dUrl?: string;
     lutUrl?: string;
+    renderEngine?: string;
   };
   type: ArEffectType;
   version: string;
@@ -150,4 +151,3 @@ export interface LiveChatMessage {
 }
 
 export type NetworkQuality = 'excellent' | 'good' | 'poor' | 'reconnecting';
-

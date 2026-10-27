@@ -16,6 +16,7 @@ import {
   CheckCircle,
   Video,
   AlertTriangle,
+  RefreshCw,
 } from 'lucide-react';
 import {
   AspectRatio,
@@ -35,10 +36,13 @@ import { LiveCamera } from './LiveCamera';
 import { LiveScenePicker } from './LiveScenePicker';
 import { LiveReferencePanel } from './LiveReferencePanel';
 import { LiveControls } from './LiveControls';
-import { LiveSessionStatus } from './LiveSessionStatus';
+import { LiveSessionStatus, CameraStatus, TransportStatus } from './LiveSessionStatus';
 import { LiveRecordingPreviewModal } from './LiveRecordingPreviewModal';
 import { LiveAudienceModerationPanel } from './LiveAudienceModerationPanel';
 import { useAppState } from '../../../context/StateContext';
+
+export type EffectsStatus = 'ready' | 'unavailable';
+export type RecordingStatus = 'idle' | 'recording' | 'ready';
 
 interface CreatorLiveStudioProps {
   onExit?: () => void;
@@ -48,16 +52,31 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
   const { userProfile } = useAppState();
   const [studioTab, setStudioTab] = useState<'audience' | 'scenes'>('audience');
   const [config] = useState(getStoredLiveEngineConfig);
+
+  // Subsystem States (Strictly Decoupled)
+  const [cameraStatus, setCameraStatus] = useState<CameraStatus>('requesting');
+  const [effectsStatus, setEffectsStatus] = useState<EffectsStatus>('unavailable');
+  const [transportStatus, setTransportStatus] = useState<TransportStatus>(() =>
+    Boolean(config.apiKey && config.apiKey.trim().length > 0) ? 'idle' : 'unconfigured'
+  );
+  const [recordingStatus, setRecordingStatus] = useState<RecordingStatus>('idle');
+  const [transportError, setTransportError] = useState<string | null>(null);
+
+  // Media streams
   const [cameraStream, setCameraStream] = useState<MediaStream | null>(null);
   const [augmentedStream, setAugmentedStream] = useState<MediaStream | null>(null);
   const [transformedStream, setTransformedStream] = useState<MediaStream | null>(null);
+
+  // Legacy connectionState compatibility mapper
   const [connectionState, setConnectionState] = useState<LiveConnectionState>('idle');
+
   const [activeScene, setActiveScene] = useState<LiveScene>(DEFAULT_SCENE);
   const [referenceImage, setReferenceImage] = useState<LiveReferenceImage | null>(null);
   const [aspectRatio, setAspectRatio] = useState<AspectRatio>('9:16');
   const [isAudioEnabled, setIsAudioEnabled] = useState(true);
   const [facingMode, setFacingMode] = useState<'user' | 'environment'>('user');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [showUnconfiguredModal, setShowUnconfiguredModal] = useState(false);
 
   // Real AR & Face Landmark Effect states
   const [activeEffectId, setActiveEffectId] = useState<string | null>('eff-beauty-luxe');
@@ -89,6 +108,9 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
   const recordingSecondsRef = useRef(0);
   const mobileVideoRef = useRef<HTMLVideoElement | null>(null);
 
+  const isConfigured = Boolean(config.apiKey && config.apiKey.trim().length > 0);
+  const isLive = transportStatus === 'live';
+
   const formatDuration = (totalSec: number) => {
     const mins = Math.floor(totalSec / 60);
     const secs = totalSec % 60;
@@ -114,11 +136,12 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
     }
   };
 
-  // Request camera on mount
+  // 1. Request camera on mount (Camera Subsystem)
   const requestCamera = async (targetFacingMode?: 'user' | 'environment') => {
     try {
       const mode = targetFacingMode || facingMode;
       setErrorMessage(null);
+      setCameraStatus('requesting');
       setConnectionState('requesting_camera');
 
       if (cameraStream) {
@@ -136,11 +159,19 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
       });
 
       setCameraStream(stream);
-
-      // Start computer-vision face landmark tracker & AR filters
-      const trackedStream = faceTrackerSingleton.start(stream, activeEffectId || undefined);
-      setAugmentedStream(trackedStream);
+      setCameraStatus('ready');
       setConnectionState('ready');
+
+      // 2. Start computer-vision face landmark tracker & AR filters (AR Subsystem)
+      try {
+        const trackedStream = faceTrackerSingleton.start(stream, activeEffectId || undefined);
+        setAugmentedStream(trackedStream);
+        setEffectsStatus('ready');
+      } catch (arErr) {
+        console.warn('AR effect processing warning:', arErr);
+        setAugmentedStream(stream);
+        setEffectsStatus('unavailable');
+      }
     } catch (err: any) {
       console.error('Camera access error:', err);
       setErrorMessage(
@@ -148,6 +179,7 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
           ? 'Camera permission denied. Please allow camera access in your browser to start streaming.'
           : 'Unable to access camera device. Check your camera connection and try again.'
       );
+      setCameraStatus('error');
       setConnectionState('error');
     }
   };
@@ -193,68 +225,87 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
   // Handle scene change
   const handleSelectScene = (scene: LiveScene) => {
     setActiveScene(scene);
-    if (connectionState === 'live') {
+    if (transportStatus === 'live') {
       providerRef.current.updateScene(scene);
     }
   };
 
   const handleReferenceImageChange = (image: LiveReferenceImage | null) => {
     setReferenceImage(image);
-    if (connectionState === 'live') {
+    if (transportStatus === 'live') {
       providerRef.current.updateReferenceImage(image?.dataUrl || null);
     }
   };
 
-  // Start / Stop Live AI transformation
+  // 3. Live Transport Subsystem: Truthful Connection / Disconnection
   const handleToggleLive = async () => {
-    if (connectionState === 'live') {
+    if (transportStatus === 'live') {
       stopLiveSession();
-    } else if (cameraStream) {
-      try {
-        setConnectionState('connecting');
-        const liveStream = await providerRef.current.connect({
-          inputStream: augmentedStream || cameraStream,
-          scene: activeScene,
-          referenceImageDataUrl: referenceImage?.dataUrl,
-          aspectRatio,
-        });
-
-        setTransformedStream(liveStream);
-        setConnectionState('live');
-        setRecordingSeconds(0);
-        setRemainingSeconds(config.maxSessionDurationSec || 60);
-
-        clearInterval(countdownIntervalRef.current);
-        countdownIntervalRef.current = setInterval(() => {
-          setRecordingSeconds((s) => s + 1);
-          setRemainingSeconds((prev) => {
-            if (prev <= 1) {
-              stopLiveSession();
-              return 0;
-            }
-            return prev - 1;
-          });
-          // fluctuate viewers naturally
-          setViewerCount((v) => Math.max(100, v + (Math.floor(Math.random() * 9) - 4)));
-        }, 1000);
-      } catch (err: any) {
-        console.error('Live connect error:', err);
-        // Fallback to local loop streaming with AR effects active
-        setConnectionState('live');
-        setRecordingSeconds(0);
-        clearInterval(countdownIntervalRef.current);
-        countdownIntervalRef.current = setInterval(() => {
-          setRecordingSeconds((s) => s + 1);
-          setViewerCount((v) => Math.max(100, v + (Math.floor(Math.random() * 9) - 4)));
-        }, 1000);
-      }
+      return;
     }
+
+    if (!cameraStream) {
+      await requestCamera();
+      return;
+    }
+
+    // Truthful check: If unconfigured, NEVER fake LIVE!
+    if (!isConfigured) {
+      setTransportStatus('unconfigured');
+      setTransportError('BLOCKED — LiveKit configuration required');
+      setShowUnconfiguredModal(true);
+      return;
+    }
+
+    try {
+      setTransportStatus('connecting');
+      setConnectionState('connecting');
+      setTransportError(null);
+
+      const liveStream = await providerRef.current.connect({
+        inputStream: augmentedStream || cameraStream,
+        scene: activeScene,
+        referenceImageDataUrl: referenceImage?.dataUrl,
+        aspectRatio,
+      });
+
+      setTransformedStream(liveStream);
+      setTransportStatus('live');
+      setConnectionState('live');
+      setRecordingSeconds(0);
+      setRemainingSeconds(config.maxSessionDurationSec || 60);
+
+      clearInterval(countdownIntervalRef.current);
+      countdownIntervalRef.current = setInterval(() => {
+        setRecordingSeconds((s) => s + 1);
+        setRemainingSeconds((prev) => {
+          if (prev <= 1) {
+            stopLiveSession();
+            return 0;
+          }
+          return prev - 1;
+        });
+        setViewerCount((v) => Math.max(100, v + (Math.floor(Math.random() * 9) - 4)));
+      }, 1000);
+    } catch (err: any) {
+      console.error('Live connect error:', err);
+      // Strictly truthful: NEVER fake LIVE when transport fails!
+      setTransportStatus('error');
+      setConnectionState('error');
+      setTransportError(err?.message || 'Live service unavailable: Connection failed.');
+    }
+  };
+
+  const handleRetryLive = () => {
+    setTransportError(null);
+    handleToggleLive();
   };
 
   const stopLiveSession = async () => {
     clearInterval(countdownIntervalRef.current);
     await providerRef.current.disconnect();
     setTransformedStream(null);
+    setTransportStatus(isConfigured ? 'idle' : 'unconfigured');
     setConnectionState('ready');
     setRecordingSeconds(0);
   };
@@ -267,6 +318,7 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
     }
   };
 
+  // 4. Recording Subsystem: Records augmentedStream to capture AR landmark effects
   const handleToggleRecording = () => {
     if (isRecording) {
       stopRecording();
@@ -276,7 +328,8 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
   };
 
   const startRecording = () => {
-    const streamToRecord = transformedStream || augmentedStream || cameraStream;
+    // CRITICAL: Prioritize augmentedStream so face tracking landmarks & AR filters are recorded!
+    const streamToRecord = augmentedStream || transformedStream || cameraStream;
     if (!streamToRecord) return;
 
     recordedChunksRef.current = [];
@@ -307,11 +360,13 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
         };
         setRecordedClip(clip);
         setIsPreviewOpen(true);
+        setRecordingStatus('ready');
       };
 
       recorder.start(100);
       mediaRecorderRef.current = recorder;
       setIsRecording(true);
+      setRecordingStatus('recording');
       setRecordingSeconds(0);
       recordingSecondsRef.current = 0;
 
@@ -349,9 +404,7 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
     setNewCommentText('');
   };
 
-  const isConfigured = Boolean(config.apiKey && config.apiKey.trim().length > 0);
   const displayStream = transformedStream || augmentedStream || cameraStream;
-  const isLive = connectionState === 'live';
 
   return (
     <>
@@ -416,12 +469,29 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
               <span>{viewerCount.toLocaleString()}</span>
             </div>
 
-            {/* Transport State Badge */}
+            {/* Transport State Badge (Truthful LiveKit Status) */}
             <div className="flex items-center gap-1 bg-black/50 backdrop-blur-md px-2.5 py-1.5 rounded-full border border-white/15 text-[10px] font-mono shadow-md">
-              {!isConfigured ? (
+              {transportStatus === 'unconfigured' ? (
                 <span className="text-amber-300 font-semibold flex items-center gap-1">
                   <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
                   BLOCKED — LiveKit configuration required
+                </span>
+              ) : transportStatus === 'connecting' ? (
+                <span className="text-amber-300 font-semibold flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping" />
+                  Connecting LiveKit...
+                </span>
+              ) : transportStatus === 'error' ? (
+                <span className="text-rose-400 font-semibold flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
+                  Connection failed
+                  <button
+                    type="button"
+                    onClick={handleRetryLive}
+                    className="ml-1 px-1 rounded bg-rose-500/20 text-white underline cursor-pointer"
+                  >
+                    Retry
+                  </button>
                 </span>
               ) : (
                 <span className="text-emerald-400 font-semibold flex items-center gap-1">
@@ -542,23 +612,34 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
               </button>
             </form>
 
-            <button
-              type="button"
-              onClick={handleToggleLive}
-              className={`min-h-[44px] px-6 py-2.5 rounded-full text-xs font-bold transition-all shadow-xl active:scale-95 flex items-center gap-2 cursor-pointer ${
-                isLive
-                  ? 'bg-rose-600 hover:bg-rose-700 text-white shadow-rose-600/30'
-                  : 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-emerald-600/30'
-              }`}
-            >
-              <Radio className="w-4 h-4" />
-              <span>{isLive ? 'End Live' : 'Go Live'}</span>
-            </button>
+            {transportStatus === 'error' ? (
+              <button
+                type="button"
+                onClick={handleRetryLive}
+                className="min-h-[44px] px-6 py-2.5 rounded-full text-xs font-bold transition-all shadow-xl active:scale-95 flex items-center gap-2 cursor-pointer bg-rose-600 hover:bg-rose-700 text-white shadow-rose-600/30"
+              >
+                <RefreshCw className="w-4 h-4" />
+                <span>Retry Live</span>
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={handleToggleLive}
+                className={`min-h-[44px] px-6 py-2.5 rounded-full text-xs font-bold transition-all shadow-xl active:scale-95 flex items-center gap-2 cursor-pointer ${
+                  isLive
+                    ? 'bg-rose-600 hover:bg-rose-700 text-white shadow-rose-600/30'
+                    : 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-emerald-600/30'
+                }`}
+              >
+                <Radio className="w-4 h-4" />
+                <span>{isLive ? 'End Live' : 'Go Live'}</span>
+              </button>
+            )}
           </div>
         </div>
 
         {/* Camera Permission / Error Recovery Modal */}
-        {(connectionState === 'error' || errorMessage) && (
+        {(cameraStatus === 'error' || errorMessage) && (
           <div className="absolute inset-0 z-40 bg-black/85 backdrop-blur-md flex items-center justify-center p-6 text-center animate-fade-in">
             <div className="max-w-xs space-y-4">
               <div className="w-14 h-14 mx-auto rounded-2xl bg-rose-500/20 border border-rose-500/30 text-rose-400 flex items-center justify-center shadow-lg shadow-rose-500/10">
@@ -581,14 +662,40 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
           </div>
         )}
 
+        {/* Unconfigured Configuration Required Notification Modal */}
+        {showUnconfiguredModal && (
+          <div className="absolute inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-6 text-center animate-fade-in">
+            <div className="max-w-xs p-6 rounded-3xl bg-zinc-900 border border-amber-500/30 shadow-2xl space-y-4">
+              <div className="w-12 h-12 mx-auto rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center">
+                <AlertTriangle className="w-6 h-6" />
+              </div>
+              <div>
+                <h3 className="text-base font-bold text-white">LiveKit Configuration Required</h3>
+                <p className="text-xs text-zinc-300 mt-1.5 leading-relaxed">
+                  To broadcast live to remote viewers, configure your LiveKit or Decart credentials in Settings. Local camera preview and AR effects are fully functional offline.
+                </p>
+              </div>
+              <div className="space-y-2">
+                <button
+                  type="button"
+                  onClick={() => setShowUnconfiguredModal(false)}
+                  className="w-full min-h-[44px] py-2 px-4 rounded-xl bg-[#007E93] text-white text-xs font-bold active:scale-95 transition-transform cursor-pointer"
+                >
+                  Continue with Local AR Preview
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Mobile AR Effects Bottom Sheet */}
         {mobileDrawer === 'effects' && (
-          <div className="absolute inset-x-0 bottom-0 z-30 bg-zinc-900/95 backdrop-blur-xl border-t border-zinc-700 rounded-t-3xl p-4 pb-8 text-white animate-slide-up space-y-3 shadow-2xl">
+          <div className="absolute inset-x-0 bottom-0 z-50 bg-zinc-900/95 backdrop-blur-xl border-t border-zinc-700 rounded-t-3xl p-4 pb-8 text-white animate-slide-up space-y-3 shadow-2xl">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Wand2 className="w-4 h-4 text-[#00F0FF]" />
                 <span className="text-xs font-bold uppercase tracking-wider text-zinc-200 font-mono">
-                  Face Landmarks & AR Filters
+                  Face Landmarks &amp; AR Filters
                 </span>
               </div>
               <button
@@ -691,17 +798,17 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
               <button
                 type="button"
                 onClick={onExit}
-                className="p-2 rounded-xl bg-zinc-100 hover:bg-zinc-200 border border-zinc-200 text-zinc-700 transition-colors cursor-pointer"
+                className="p-2 rounded-xl bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-200 transition-colors cursor-pointer"
                 title="Exit Live Studio"
               >
                 <X className="w-4 h-4" />
               </button>
             )}
             <div className="flex items-center gap-2.5">
-              <h1 className="text-xl sm:text-2xl font-bold text-zinc-900 font-display tracking-tight">
+              <h1 className="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-white font-display tracking-tight">
                 Live Studio
               </h1>
-              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-mono uppercase bg-[#007E93]/10 text-[#006779] border border-[#007E93]/25">
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-mono uppercase bg-[#007E93]/10 text-[#006779] dark:text-[#00B4D8] border border-[#007E93]/25">
                 <Sparkles className="w-3 h-3 text-[#007E93]" />
                 Realtime AI &amp; Face Tracking
               </span>
@@ -710,6 +817,10 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
 
           <LiveSessionStatus
             connectionState={connectionState}
+            cameraStatus={cameraStatus}
+            transportStatus={transportStatus}
+            transportError={transportError}
+            onRetryTransport={handleRetryLive}
             isProviderConfigured={isConfigured}
             remainingSeconds={remainingSeconds}
             maxDurationSeconds={config.maxSessionDurationSec || 60}
@@ -717,6 +828,18 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
             recordingSeconds={recordingSeconds}
           />
         </div>
+
+        {/* Unconfigured Alert Banner on Desktop if attempting to go live without keys */}
+        {transportStatus === 'unconfigured' && (
+          <div className="flex items-center justify-between p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-900 dark:text-amber-200 text-xs">
+            <div className="flex items-center gap-2.5">
+              <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
+              <span>
+                <strong>LiveKit / Decart credentials required:</strong> Live audience broadcast requires active provider keys. Local camera preview, recording, and face tracking filters work offline.
+              </span>
+            </div>
+          </div>
+        )}
 
         {/* Main Studio Viewport & Side Configuration */}
         <div className="grid grid-cols-12 gap-4 items-start">
@@ -734,6 +857,7 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
             <div className="w-full">
               <LiveControls
                 connectionState={connectionState}
+                transportStatus={transportStatus}
                 hasCamera={Boolean(cameraStream)}
                 isRecording={isRecording}
                 recordingSeconds={recordingSeconds}
@@ -743,20 +867,21 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
                 onToggleRecording={handleToggleRecording}
                 onSelectAspectRatio={setAspectRatio}
                 onToggleAudio={handleToggleAudio}
+                onRetryTransport={handleRetryLive}
               />
             </div>
           </div>
 
           {/* Right: Tabbed Moderation vs AR Effects & Scenes */}
           <div className="col-span-5 space-y-4">
-            <div className="flex items-center gap-1.5 p-1.5 rounded-2xl bg-zinc-200/70">
+            <div className="flex items-center gap-1.5 p-1.5 rounded-2xl bg-zinc-200/70 dark:bg-zinc-800">
               <button
                 type="button"
                 onClick={() => setStudioTab('audience')}
                 className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
                   studioTab === 'audience'
-                    ? 'bg-white text-zinc-900 shadow-sm'
-                    : 'text-zinc-600 hover:text-zinc-900'
+                    ? 'bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white shadow-sm'
+                    : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900'
                 }`}
               >
                 <MessageSquare className="w-3.5 h-3.5" />
@@ -767,8 +892,8 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
                 onClick={() => setStudioTab('scenes')}
                 className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
                   studioTab === 'scenes'
-                    ? 'bg-white text-zinc-900 shadow-sm'
-                    : 'text-zinc-600 hover:text-zinc-900'
+                    ? 'bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white shadow-sm'
+                    : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900'
                 }`}
               >
                 <Wand2 className="w-3.5 h-3.5" />
@@ -781,10 +906,10 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
                 <LiveAudienceModerationPanel isHost={true} />
               </div>
             ) : (
-              <div className="space-y-5 surface-2 p-5 rounded-3xl border border-zinc-200/80">
+              <div className="space-y-5 surface-2 p-5 rounded-3xl border border-zinc-200/80 dark:border-zinc-800">
                 {/* Active AR Filter Selector */}
                 <div className="space-y-2">
-                  <span className="text-xs font-bold text-zinc-900 block font-display">
+                  <span className="text-xs font-bold text-zinc-900 dark:text-white block font-display">
                     Tracked AR Accessories &amp; Beauty
                   </span>
                   <div className="grid grid-cols-2 gap-2">
@@ -792,7 +917,9 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
                       type="button"
                       onClick={() => handleSelectEffect(null)}
                       className={`p-2 rounded-xl text-xs border text-left flex items-center gap-2 cursor-pointer transition-colors ${
-                        !activeEffectId ? 'bg-[#007E93]/10 border-[#007E93] font-semibold' : 'bg-white border-zinc-200'
+                        !activeEffectId
+                          ? 'bg-[#007E93]/10 border-[#007E93] font-semibold text-[#007E93]'
+                          : 'bg-white dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 text-zinc-800 dark:text-zinc-200'
                       }`}
                     >
                       <span>🚫 Clean Video (No AR)</span>
@@ -805,7 +932,9 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
                           type="button"
                           onClick={() => handleSelectEffect(eff.id)}
                           className={`p-2 rounded-xl text-xs border text-left flex items-center gap-2 cursor-pointer transition-colors ${
-                            isSel ? 'bg-[#007E93]/10 border-[#007E93] text-[#007E93] font-semibold' : 'bg-white border-zinc-200 text-zinc-800'
+                            isSel
+                              ? 'bg-[#007E93]/10 border-[#007E93] text-[#007E93] font-semibold'
+                              : 'bg-white dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 text-zinc-800 dark:text-zinc-200'
                           }`}
                         >
                           <img src={eff.thumbnail} alt={eff.name} className="w-6 h-6 rounded-md object-cover" />
@@ -816,7 +945,7 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
                   </div>
                 </div>
 
-                <div className="h-px bg-zinc-200" />
+                <div className="h-px bg-zinc-200 dark:bg-zinc-700" />
 
                 <LiveScenePicker
                   selectedScene={activeScene}
@@ -824,7 +953,7 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
                   disabled={isRecording}
                 />
 
-                <div className="h-px bg-zinc-200" />
+                <div className="h-px bg-zinc-200 dark:bg-zinc-700" />
 
                 <LiveReferencePanel
                   referenceImage={referenceImage}

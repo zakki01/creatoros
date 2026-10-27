@@ -43,12 +43,16 @@ export class DecartProvider implements ILiveAIProvider {
   }
 
   async connect(options: LiveConnectOptions): Promise<MediaStream> {
+    if (!this.isConfigured()) {
+      throw new Error(
+        'Decart API key is not configured. Live AI provider unavailable. Configure your API key in Live Settings.'
+      );
+    }
+
     this.currentScene = options.scene;
     this.loadReferenceImage(options.referenceImageDataUrl);
 
-    // If an external Decart endpoint and key are configured, we prepare the session.
-    // In both production key and self-hosted preview modes, we provide a deterministic,
-    // high-performance realtime output stream with zero lag.
+    // Initialise realtime transformation stream using configured provider credentials
     return this.initializeTransformationStream(options);
   }
 
