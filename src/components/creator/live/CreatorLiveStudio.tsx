@@ -17,6 +17,7 @@ import {
   Video,
   AlertTriangle,
   RefreshCw,
+  SlidersHorizontal,
 } from 'lucide-react';
 import {
   AspectRatio,
@@ -24,25 +25,31 @@ import {
   LiveRecordedClip,
   LiveReferenceImage,
   LiveScene,
+  CameraState,
+  ARState,
+  RecordingState,
+  TransportState,
+  HonestNetworkStatus,
+  EffectDefinition,
+  FaceLandmarks,
 } from '../../../types';
 import { DEFAULT_SCENE } from '../../../services/live/scenesConfig';
 import {
-  createLiveAIProvider,
-  getStoredLiveEngineConfig,
-} from '../../../services/live/liveAIProvider';
-import { AR_EFFECTS_CATALOG } from '../../../services/live/arEffectCatalog';
-import { faceTrackerSingleton } from '../../../services/live/faceTracker';
+  ARCompositor,
+  CREATOROS_EFFECTS_CATALOG,
+} from '../../../services/live/arCompositor';
+import { mediaPipeLandmarkerSingleton } from '../../../services/live/mediaPipeLandmarker';
+import { liveRecordingSingleton } from '../../../services/live/recordingService';
+import { liveKitSingleton } from '../../../services/live/liveKitService';
+import { LiveStreamingService } from '../../../services/live/liveStreamingService';
 import { LiveCamera } from './LiveCamera';
 import { LiveScenePicker } from './LiveScenePicker';
 import { LiveReferencePanel } from './LiveReferencePanel';
 import { LiveControls } from './LiveControls';
-import { LiveSessionStatus, CameraStatus, TransportStatus } from './LiveSessionStatus';
+import { LiveSessionStatus } from './LiveSessionStatus';
 import { LiveRecordingPreviewModal } from './LiveRecordingPreviewModal';
 import { LiveAudienceModerationPanel } from './LiveAudienceModerationPanel';
 import { useAppState } from '../../../context/StateContext';
-
-export type EffectsStatus = 'ready' | 'unavailable';
-export type RecordingStatus = 'idle' | 'recording' | 'ready';
 
 interface CreatorLiveStudioProps {
   onExit?: () => void;
@@ -50,114 +57,120 @@ interface CreatorLiveStudioProps {
 
 export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) => {
   const { userProfile } = useAppState();
-  const [studioTab, setStudioTab] = useState<'audience' | 'scenes' | 'effects' | 'reference'>('effects');
-  const [config] = useState(getStoredLiveEngineConfig);
 
-  // Subsystem States (Strictly Decoupled)
-  const [cameraStatus, setCameraStatus] = useState<CameraStatus>('requesting');
-  const [effectsStatus, setEffectsStatus] = useState<EffectsStatus>('unavailable');
-  const [transportStatus, setTransportStatus] = useState<TransportStatus>(() =>
-    Boolean(config.apiKey && config.apiKey.trim().length > 0) ? 'idle' : 'unconfigured'
-  );
-  const [recordingStatus, setRecordingStatus] = useState<RecordingStatus>('idle');
-  const [transportError, setTransportError] = useState<string | null>(null);
+  // Decoupled Subsystem States
+  const [cameraState, setCameraState] = useState<CameraState>('camera_requesting');
+  const [arState, setArState] = useState<ARState>('ar_initializing');
+  const [recordingState, setRecordingState] = useState<RecordingState>('recording_idle');
+  const [transportState, setTransportState] = useState<TransportState>('transport_unconfigured');
+  const [networkStatus, setNetworkStatus] = useState<HonestNetworkStatus>('Disconnected');
+  const [viewerCount, setViewerCount] = useState(0);
 
-  // Media streams
-  const [cameraStream, setCameraStream] = useState<MediaStream | null>(null);
-  const [augmentedStream, setAugmentedStream] = useState<MediaStream | null>(null);
-  const [transformedStream, setTransformedStream] = useState<MediaStream | null>(null);
+  // Landmark tracking telemetry
+  const [faceDetected, setFaceDetected] = useState(false);
+  const [faceConfidence, setFaceConfidence] = useState(0);
 
-  // Legacy connectionState compatibility mapper
-  const [connectionState, setConnectionState] = useState<LiveConnectionState>('idle');
+  // Stream pipeline (Single Source of Truth)
+  const [rawCameraStream, setRawCameraStream] = useState<MediaStream | null>(null);
+  const [processedStream, setProcessedStream] = useState<MediaStream | null>(null);
 
+  // Studio Settings & Customization
   const [activeScene, setActiveScene] = useState<LiveScene>(DEFAULT_SCENE);
+  const [activeEffect, setActiveEffect] = useState<EffectDefinition>(CREATOROS_EFFECTS_CATALOG[0]);
+  const [beautyLevel, setBeautyLevel] = useState<number>(60);
   const [referenceImage, setReferenceImage] = useState<LiveReferenceImage | null>(null);
   const [aspectRatio, setAspectRatio] = useState<AspectRatio>('9:16');
   const [isAudioEnabled, setIsAudioEnabled] = useState(true);
   const [facingMode, setFacingMode] = useState<'user' | 'environment'>('user');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [showUnconfiguredModal, setShowUnconfiguredModal] = useState(false);
+  const [transportError, setTransportError] = useState<string | null>(null);
 
-  // Real AR & Face Landmark Effect states
-  const [activeEffectId, setActiveEffectId] = useState<string | null>('eff-beauty-luxe');
-  const [beautyLevel, setBeautyLevel] = useState<number>(60);
-  const [mobileDrawer, setMobileDrawer] = useState<'none' | 'effects' | 'gifts' | 'chat'>('none');
-  const [mobileComments, setMobileComments] = useState<Array<{ id: string; user: string; text: string }>>([
-    { id: 'c1', user: 'sneakerhead_mumbai', text: 'Bro those kicks in the background are 🔥🔥🔥' },
-    { id: 'c2', user: 'aanya_style', text: 'Lighting is crisp! Loved the transition drop' },
-    { id: 'c3', user: 'rahul_visuals', text: 'What camera setup are you streaming from?' },
-  ]);
-  const [newCommentText, setNewCommentText] = useState('');
-  const [viewerCount, setViewerCount] = useState(0);
+  // Studio UI Navigation
+  const [studioTab, setStudioTab] = useState<'effects' | 'scenes' | 'reference'>('effects');
   const [isEffectsDrawerOpen, setIsEffectsDrawerOpen] = useState(false);
-  const [arTrackingState, setArTrackingState] = useState(() => faceTrackerSingleton.getState());
+  const [mobileDrawer, setMobileDrawer] = useState<'none' | 'effects' | 'gifts' | 'chat'>('none');
+  const [newCommentText, setNewCommentText] = useState('');
 
-  useEffect(() => {
-    const unsub = faceTrackerSingleton.subscribeState((st) => {
-      setArTrackingState(st);
-    });
-    return () => unsub();
-  }, []);
-
-  // Cost protection & countdown state
-  const [remainingSeconds, setRemainingSeconds] = useState(config.maxSessionDurationSec || 60);
-
-  // Recording state
-  const [isRecording, setIsRecording] = useState(false);
+  // Cost Protection & Timers
+  const maxSessionDurationSec = 3600; // 1 hour max session
+  const [remainingSeconds, setRemainingSeconds] = useState(maxSessionDurationSec);
   const [recordingSeconds, setRecordingSeconds] = useState(0);
+
+  // Recording preview modal
   const [recordedClip, setRecordedClip] = useState<LiveRecordedClip | null>(null);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
-  // Refs
-  const providerRef = useRef(createLiveAIProvider(config));
-  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
-  const recordedChunksRef = useRef<Blob[]>([]);
-  const countdownIntervalRef = useRef<any>(null);
-  const recordingIntervalRef = useRef<any>(null);
-  const recordingSecondsRef = useRef(0);
+  // Pipeline Refs
+  const compositorRef = useRef<ARCompositor>(new ARCompositor());
   const mobileVideoRef = useRef<HTMLVideoElement | null>(null);
+  const countdownIntervalRef = useRef<any>(null);
 
-  const isConfigured = Boolean(config.apiKey && config.apiKey.trim().length > 0);
-  const isLive = transportStatus === 'live';
+  // ---------------------------------------------------------------------------
+  // 1. LIFECYCLE & SUBSCRIPTION HOOKS
+  // ---------------------------------------------------------------------------
+  useEffect(() => {
+    // Subscribe to MediaPipe Face Landmarker state
+    const unsubLandmarker = mediaPipeLandmarkerSingleton.subscribe((state, landmarks) => {
+      setArState(state);
+      setFaceDetected(Boolean(landmarks && landmarks.detected));
+      setFaceConfidence(landmarks ? landmarks.confidence : 0);
+    });
 
-  const formatDuration = (totalSec: number) => {
-    const mins = Math.floor(totalSec / 60);
-    const secs = totalSec % 60;
-    return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-  };
+    // Subscribe to LiveKit Transport
+    const unsubTransport = liveKitSingleton.subscribeState((st) => {
+      setTransportState(st);
+      LiveStreamingService.setConnectionState(st === 'transport_live' ? 'live' : 'idle');
+    });
 
-  const handleShareStream = async () => {
-    const liveUrl = `https://creatoros.ai/live/${userProfile?.name?.toLowerCase().replace(/\s+/g, '.') || 'rohan.kicks'}`;
-    if (typeof navigator !== 'undefined' && (navigator as any).share) {
-      try {
-        await (navigator as any).share({
-          title: `${userProfile?.name || 'Creator'} is LIVE on CreatorOS`,
-          text: `Join my live stream and chat in real-time!`,
-          url: liveUrl,
-        });
-      } catch {}
-    } else if (typeof navigator !== 'undefined' && navigator.clipboard) {
-      navigator.clipboard.writeText(liveUrl);
-      setMobileComments((prev) => [
-        ...prev,
-        { id: `sys-${Date.now()}`, user: 'System', text: 'Live stream link copied to clipboard! 📋' },
-      ]);
+    const unsubNetwork = liveKitSingleton.subscribeNetwork((net) => {
+      setNetworkStatus(net);
+    });
+
+    const unsubViewers = liveKitSingleton.subscribeViewerCount((count) => {
+      setViewerCount(count);
+    });
+
+    // Subscribe to Recording
+    const unsubRecording = liveRecordingSingleton.subscribe((recSt, sec) => {
+      setRecordingState(recSt);
+      setRecordingSeconds(sec);
+    });
+
+    // Initial Camera Request
+    requestCamera();
+
+    return () => {
+      unsubLandmarker();
+      unsubTransport();
+      unsubNetwork();
+      unsubViewers();
+      unsubRecording();
+      stopAllMedia();
+    };
+  }, []);
+
+  // Sync processedStream with mobile video element
+  useEffect(() => {
+    if (mobileVideoRef.current && processedStream) {
+      mobileVideoRef.current.srcObject = processedStream;
     }
-  };
+  }, [processedStream]);
 
-  // 1. Request camera on mount (Camera Subsystem)
+  // ---------------------------------------------------------------------------
+  // 2. CAMERA & PROCESSED STREAM PIPELINE
+  // ---------------------------------------------------------------------------
   const requestCamera = async (targetFacingMode?: 'user' | 'environment') => {
     try {
-      const mode = targetFacingMode || facingMode;
       setErrorMessage(null);
-      setCameraStatus('requesting');
-      setConnectionState('requesting_camera');
+      setCameraState('camera_requesting');
 
-      if (cameraStream) {
-        cameraStream.getTracks().forEach((track) => track.stop());
+      // Stop previous streams
+      if (rawCameraStream) {
+        rawCameraStream.getTracks().forEach((t) => t.stop());
       }
-      faceTrackerSingleton.stop();
+      compositorRef.current.stop();
 
+      const mode = targetFacingMode || facingMode;
       const stream = await navigator.mediaDevices.getUserMedia({
         video: {
           width: { ideal: 1280 },
@@ -167,41 +180,35 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
         audio: isAudioEnabled,
       });
 
-      setCameraStream(stream);
-      setCameraStatus('ready');
-      setConnectionState('ready');
+      setRawCameraStream(stream);
+      setCameraState('camera_ready');
 
-      // 2. Start computer-vision face landmark tracker & AR filters (AR Subsystem)
-      try {
-        const trackedStream = faceTrackerSingleton.start(stream, activeEffectId || undefined);
-        setAugmentedStream(trackedStream);
-        setEffectsStatus('ready');
-      } catch (arErr) {
-        console.warn('AR effect processing warning:', arErr);
-        setAugmentedStream(stream);
-        setEffectsStatus('unavailable');
-      }
+      // Connect camera to ARCompositor (Single Source of Truth)
+      const output = compositorRef.current.start(stream, activeEffect, (landmarks) => {
+        setFaceDetected(Boolean(landmarks && landmarks.detected));
+        setFaceConfidence(landmarks ? landmarks.confidence : 0);
+      });
+
+      setProcessedStream(output);
     } catch (err: any) {
-      console.error('Camera access error:', err);
+      console.error('[CreatorLiveStudio] Camera access error:', err);
       setErrorMessage(
         err.name === 'NotAllowedError'
           ? 'Camera permission denied. Please allow camera access in your browser to start streaming.'
           : 'Unable to access camera device. Check your camera connection and try again.'
       );
-      setCameraStatus('error');
-      setConnectionState('error');
+      setCameraState('camera_error');
     }
   };
 
   const handleStopCamera = () => {
-    if (cameraStream) {
-      cameraStream.getTracks().forEach((track) => track.stop());
-      setCameraStream(null);
-      setAugmentedStream(null);
-      setCameraStatus('idle');
-      setConnectionState('idle');
+    if (rawCameraStream) {
+      rawCameraStream.getTracks().forEach((t) => t.stop());
+      setRawCameraStream(null);
     }
-    faceTrackerSingleton.stop();
+    compositorRef.current.stop();
+    setProcessedStream(null);
+    setCameraState('camera_idle');
   };
 
   const handleFlipCamera = async () => {
@@ -210,95 +217,105 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
     await requestCamera(nextMode);
   };
 
-  useEffect(() => {
-    requestCamera();
-    return () => {
-      if (cameraStream) {
-        cameraStream.getTracks().forEach((track) => track.stop());
-      }
-      faceTrackerSingleton.stop();
-      providerRef.current.disconnect();
-      clearInterval(countdownIntervalRef.current);
-      clearInterval(recordingIntervalRef.current);
-    };
-  }, []);
+  const stopAllMedia = () => {
+    if (rawCameraStream) {
+      rawCameraStream.getTracks().forEach((t) => t.stop());
+    }
+    compositorRef.current.stop();
+    liveRecordingSingleton.reset();
+    liveKitSingleton.disconnect().catch(() => {});
+    clearInterval(countdownIntervalRef.current);
+  };
 
-  // Update Face Tracker effect in real-time
-  const handleSelectEffect = (effectId: string | null) => {
-    setActiveEffectId(effectId);
-    faceTrackerSingleton.setEffect(effectId);
+  // ---------------------------------------------------------------------------
+  // 3. EFFECT & BEAUTY CONTROLS
+  // ---------------------------------------------------------------------------
+  const handleSelectEffect = (effect: EffectDefinition) => {
+    setActiveEffect(effect);
+    compositorRef.current.setEffect(effect);
+  };
+
+  const handleSelectEffectById = (effectId: string) => {
+    const found = CREATOROS_EFFECTS_CATALOG.find((e) => e.id === effectId) || CREATOROS_EFFECTS_CATALOG[0];
+    handleSelectEffect(found);
   };
 
   const handleUpdateBeauty = (level: number) => {
     setBeautyLevel(level);
-    faceTrackerSingleton.setBeautyLevel(level);
+    compositorRef.current.setBeautyLevel(level);
   };
 
-  // Sync mobile video element
-  useEffect(() => {
-    const stream = transformedStream || augmentedStream || cameraStream;
-    if (mobileVideoRef.current && stream) {
-      mobileVideoRef.current.srcObject = stream;
+  const handleToggleAudio = () => {
+    const nextState = !isAudioEnabled;
+    setIsAudioEnabled(nextState);
+    if (rawCameraStream) {
+      rawCameraStream.getAudioTracks().forEach((t) => (t.enabled = nextState));
     }
-  }, [transformedStream, augmentedStream, cameraStream]);
+    if (processedStream) {
+      processedStream.getAudioTracks().forEach((t) => (t.enabled = nextState));
+    }
+    liveKitSingleton.toggleMicrophone(nextState).catch(() => {});
+  };
 
-  // Handle scene change
-  const handleSelectScene = (scene: LiveScene) => {
-    setActiveScene(scene);
-    if (transportStatus === 'live') {
-      providerRef.current.updateScene(scene);
+  // ---------------------------------------------------------------------------
+  // 4. RECORDING PIPELINE (Independent of LiveKit)
+  // ---------------------------------------------------------------------------
+  const handleToggleRecording = async () => {
+    if (recordingState === 'recording') {
+      const clip = await liveRecordingSingleton.stop({
+        aspectRatio,
+        sceneId: activeScene.id,
+        sceneName: activeScene.name,
+      });
+      if (clip) {
+        setRecordedClip(clip);
+        setIsPreviewOpen(true);
+      }
+    } else {
+      const streamToRecord = processedStream || rawCameraStream;
+      if (streamToRecord) {
+        liveRecordingSingleton.start(streamToRecord);
+      }
     }
   };
 
-  const handleReferenceImageChange = (image: LiveReferenceImage | null) => {
-    setReferenceImage(image);
-    if (transportStatus === 'live') {
-      providerRef.current.updateReferenceImage(image?.dataUrl || null);
-    }
-  };
-
-  // 3. Live Transport Subsystem: Truthful Connection / Disconnection
+  // ---------------------------------------------------------------------------
+  // 5. LIVEKIT WEBRTC BROADCAST PIPELINE
+  // ---------------------------------------------------------------------------
   const handleToggleLive = async () => {
-    if (transportStatus === 'live') {
-      stopLiveSession();
+    if (transportState === 'transport_live') {
+      await stopLiveSession();
       return;
     }
 
-    if (!cameraStream) {
+    if (!processedStream && !rawCameraStream) {
       await requestCamera();
       return;
     }
 
-    // Truthful check: If unconfigured, NEVER fake LIVE!
-    if (!isConfigured) {
-      setTransportStatus('unconfigured');
-      setTransportError('BLOCKED — LiveKit configuration required');
-      setShowUnconfiguredModal(true);
-      return;
-    }
-
     try {
-      setTransportStatus('connecting');
-      setConnectionState('connecting');
       setTransportError(null);
+      setTransportState('transport_connecting');
 
-      const liveStream = await providerRef.current.connect({
-        inputStream: augmentedStream || cameraStream,
-        scene: activeScene,
-        referenceImageDataUrl: referenceImage?.dataUrl,
-        aspectRatio,
+      const creatorId = userProfile?.id || 'cr-01';
+      const creatorName = userProfile?.name || 'Rohan Sharma';
+
+      // 1. Fetch authentic signed JWT session token from server endpoint
+      const sessionDetails = await liveKitSingleton.requestSessionToken({
+        creatorId,
+        creatorName,
+        roomName: `creatoros-live-${creatorId}`,
+        role: 'host',
       });
 
-      setTransformedStream(liveStream);
-      setTransportStatus('live');
-      setConnectionState('live');
-      setRecordingSeconds(0);
-    setViewerCount(0);
-      setRemainingSeconds(config.maxSessionDurationSec || 60);
+      // 2. Connect to LiveKit Room and publish processed media stream
+      const streamToPublish = processedStream || rawCameraStream!;
+      await liveKitSingleton.connectAndPublish(sessionDetails, streamToPublish, isAudioEnabled);
 
+      // Start duration countdown
+      setRemainingSeconds(maxSessionDurationSec);
       clearInterval(countdownIntervalRef.current);
       countdownIntervalRef.current = setInterval(() => {
-        setRecordingSeconds((s) => s + 1);
         setRemainingSeconds((prev) => {
           if (prev <= 1) {
             stopLiveSession();
@@ -306,134 +323,59 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
           }
           return prev - 1;
         });
-        setViewerCount((v) => (v === 0 ? 1 : v));
       }, 1000);
     } catch (err: any) {
-      console.error('Live connect error:', err);
-      // Strictly truthful: NEVER fake LIVE when transport fails!
-      setTransportStatus('error');
-      setConnectionState('error');
-      setTransportError(err?.message || 'Live service unavailable: Connection failed.');
+      console.error('[CreatorLiveStudio] Go Live failed:', err);
+      setTransportState('transport_error');
+      setTransportError(err?.message || 'Live transport unavailable: Connection failed.');
     }
-  };
-
-  const handleRetryLive = () => {
-    setTransportError(null);
-    handleToggleLive();
   };
 
   const stopLiveSession = async () => {
     clearInterval(countdownIntervalRef.current);
-    await providerRef.current.disconnect();
-    setTransformedStream(null);
-    setTransportStatus(isConfigured ? 'idle' : 'unconfigured');
-    setConnectionState('ready');
-    setRecordingSeconds(0);
-  };
-
-  const handleToggleAudio = () => {
-    if (cameraStream) {
-      const audioTracks = cameraStream.getAudioTracks();
-      audioTracks.forEach((t) => (t.enabled = !isAudioEnabled));
-      setIsAudioEnabled(!isAudioEnabled);
-    }
-  };
-
-  // 4. Recording Subsystem: Records augmentedStream to capture AR landmark effects
-  const handleToggleRecording = () => {
-    if (isRecording) {
-      stopRecording();
-    } else {
-      startRecording();
-    }
-  };
-
-  const startRecording = () => {
-    // CRITICAL: Prioritize augmentedStream so face tracking landmarks & AR filters are recorded!
-    const streamToRecord = augmentedStream || transformedStream || cameraStream;
-    if (!streamToRecord) return;
-
-    recordedChunksRef.current = [];
-    const mimeType = MediaRecorder.isTypeSupported('video/webm;codecs=vp9')
-      ? 'video/webm;codecs=vp9'
-      : 'video/webm';
-
-    try {
-      const recorder = new MediaRecorder(streamToRecord, { mimeType });
-      recorder.ondataavailable = (e) => {
-        if (e.data.size > 0) {
-          recordedChunksRef.current.push(e.data);
-        }
-      };
-
-      recorder.onstop = () => {
-        const blob = new Blob(recordedChunksRef.current, { type: mimeType });
-        const url = URL.createObjectURL(blob);
-        const clip: LiveRecordedClip = {
-          id: `clip-${Date.now()}`,
-          blob,
-          url,
-          durationSec: recordingSecondsRef.current,
-          aspectRatio,
-          sceneId: activeScene.id,
-          sceneName: activeScene.name,
-          createdAt: new Date().toLocaleTimeString(),
-        };
-        setRecordedClip(clip);
-        setIsPreviewOpen(true);
-        setRecordingStatus('ready');
-      };
-
-      recorder.start(100);
-      mediaRecorderRef.current = recorder;
-      setIsRecording(true);
-      setRecordingStatus('recording');
-      setRecordingSeconds(0);
-      recordingSecondsRef.current = 0;
-
-      clearInterval(recordingIntervalRef.current);
-      recordingIntervalRef.current = setInterval(() => {
-        setRecordingSeconds((prev) => {
-          recordingSecondsRef.current = prev + 1;
-          return prev + 1;
-        });
-      }, 1000);
-    } catch (err) {
-      console.error('Recording initialization error:', err);
-    }
-  };
-
-  const stopRecording = () => {
-    clearInterval(recordingIntervalRef.current);
-    if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
-      mediaRecorderRef.current.stop();
-    }
-    setIsRecording(false);
+    await liveKitSingleton.disconnect();
+    setRemainingSeconds(maxSessionDurationSec);
   };
 
   const handleSendMobileComment = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newCommentText.trim()) return;
-    setMobileComments((prev) => [
-      ...prev.slice(-8),
-      {
-        id: `c-${Date.now()}`,
-        user: userProfile?.name || 'You',
-        text: newCommentText.trim(),
-      },
-    ]);
+
+    LiveStreamingService.sendMessage(
+      userProfile?.id || 'cr-01',
+      userProfile?.name || 'You',
+      newCommentText.trim(),
+      'chat'
+    );
     setNewCommentText('');
   };
 
-  const displayStream = transformedStream || augmentedStream || cameraStream;
+  const handleShareStream = async () => {
+    const liveUrl = `https://creatoros.ai/live/${userProfile?.name?.toLowerCase().replace(/\s+/g, '.') || 'rohan.kicks'}`;
+    if (typeof navigator !== 'undefined' && (navigator as any).share) {
+      try {
+        await (navigator as any).share({
+          title: `${userProfile?.name || 'Creator'} is LIVE on CreatorOS`,
+          text: `Join my live broadcast with real-time AR & chat!`,
+          url: liveUrl,
+        });
+      } catch {}
+    } else if (typeof navigator !== 'undefined' && navigator.clipboard) {
+      navigator.clipboard.writeText(liveUrl);
+      LiveStreamingService.sendMessage('sys', 'System', 'Live stream URL copied to clipboard! 📋', 'system');
+    }
+  };
+
+  const isLive = transportState === 'transport_live';
+  const displayStream = processedStream || rawCameraStream;
 
   return (
     <>
       {/* ========================================================================= */}
-      {/* 1. MOBILE CAMERA-FIRST 9:16 LAYOUT (TikTok LIVE / Instagram Reels Model)   */}
+      {/* 1. MOBILE CAMERA-FIRST 100DVH SOCIAL CAMERA (Instagram / TikTok Model)     */}
       {/* ========================================================================= */}
       <div className="block lg:hidden fixed inset-0 z-50 w-full h-[100dvh] bg-black overflow-hidden select-none flex flex-col justify-between text-white">
-        {/* Main Full-Height 100dvh Camera Stream */}
+        {/* Full-bleed Processed Camera Stream */}
         <video
           ref={mobileVideoRef}
           autoPlay
@@ -444,11 +386,11 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
           }`}
         />
 
-        {/* Ambient Top & Bottom Vignettes for HUD Readability */}
+        {/* Ambient Top & Bottom Gradients for HUD Readability */}
         <div className="absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-black/85 via-black/40 to-transparent pointer-events-none z-10" />
         <div className="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-black/95 via-black/60 to-transparent pointer-events-none z-10" />
 
-        {/* Floating Top Bar Overlay */}
+        {/* Floating Top Bar (Translucent Liquid Glass) */}
         <div className="relative z-20 p-4 pt-safe flex items-center justify-between text-white">
           <div className="flex items-center gap-2">
             {/* Exit Studio Button */}
@@ -461,7 +403,7 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
               <X className="w-5 h-5" />
             </button>
 
-            {/* Host Pill */}
+            {/* Host Profile Pill */}
             <div className="flex items-center gap-2 bg-black/50 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/15 shadow-md">
               <img
                 src={
@@ -478,341 +420,219 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
                 }`}
               >
                 <Radio className="w-2.5 h-2.5" />
-                {isLive ? `LIVE ${formatDuration(recordingSeconds)}` : 'STANDBY'}
+                {isLive ? 'LIVE' : 'PREVIEW'}
               </span>
             </div>
           </div>
 
           <div className="flex items-center gap-2">
-            {/* Viewer Count Pill */}
-            <div className="flex items-center gap-1.5 bg-black/50 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/15 text-xs font-mono shadow-md">
-              <Eye className="w-3.5 h-3.5 text-rose-400" />
-              <span>{viewerCount.toLocaleString()}</span>
-            </div>
+            {/* Real Viewer Count */}
+            {isLive && (
+              <div className="flex items-center gap-1.5 bg-black/50 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/15 text-xs font-mono shadow-md">
+                <Eye className="w-3.5 h-3.5 text-rose-400" />
+                <span>{viewerCount}</span>
+              </div>
+            )}
 
-            {/* Transport State Badge (Truthful LiveKit Status) */}
+            {/* Honest Status Badge */}
             <div className="flex items-center gap-1 bg-black/50 backdrop-blur-md px-2.5 py-1.5 rounded-full border border-white/15 text-[10px] font-mono shadow-md">
-              {transportStatus === 'unconfigured' ? (
-                <span className="text-amber-300 font-semibold flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
-                  BLOCKED — LiveKit configuration required
+              {transportState === 'transport_live' ? (
+                <span className="text-emerald-400 font-semibold flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  LIVE
                 </span>
-              ) : transportStatus === 'connecting' ? (
-                <span className="text-amber-300 font-semibold flex items-center gap-1">
+              ) : transportState === 'transport_connecting' ? (
+                <span className="text-amber-400 font-semibold flex items-center gap-1">
                   <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping" />
-                  Connecting LiveKit...
-                </span>
-              ) : transportStatus === 'error' ? (
-                <span className="text-rose-400 font-semibold flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
-                  Connection failed
-                  <button
-                    type="button"
-                    onClick={handleRetryLive}
-                    className="ml-1 px-1 rounded bg-rose-500/20 text-white underline cursor-pointer"
-                  >
-                    Retry
-                  </button>
+                  CONNECTING
                 </span>
               ) : (
-                <span className="text-emerald-400 font-semibold flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  LiveKit Active
-                </span>
+                <span className="text-zinc-300 font-medium">PREVIEW</span>
               )}
             </div>
           </div>
         </div>
 
-        {/* Floating Right Control Column (Fitts's Law 44px Touch Targets) */}
-        <div className="absolute right-3.5 top-24 z-20 flex flex-col items-center gap-3 text-white">
-          {/* 1. Flip Camera (Facing mode toggle) */}
+        {/* Floating Right Action Rail */}
+        <div className="absolute right-4 top-24 z-20 flex flex-col gap-3">
           <button
             type="button"
             onClick={handleFlipCamera}
             aria-label="Flip Camera"
-            className="w-11 h-11 rounded-full bg-black/50 backdrop-blur-md border border-white/20 flex flex-col items-center justify-center text-xs active:scale-90 transition-transform shadow-lg cursor-pointer"
+            className="w-11 h-11 rounded-full bg-black/50 backdrop-blur-md border border-white/15 flex items-center justify-center text-white active:scale-90 transition-transform shadow-md cursor-pointer"
           >
-            <RotateCw className="w-5 h-5 text-zinc-200" />
+            <RotateCw className="w-5 h-5" />
           </button>
 
-          {/* 2. AR Effects Drawer */}
           <button
             type="button"
             onClick={() => setMobileDrawer(mobileDrawer === 'effects' ? 'none' : 'effects')}
             aria-label="AR Effects"
-            className={`w-11 h-11 rounded-full backdrop-blur-md border flex flex-col items-center justify-center text-xs active:scale-90 transition-all shadow-lg cursor-pointer ${
-              activeEffectId
-                ? 'bg-[#007E93] text-white border-white/40 shadow-teal-500/30'
-                : 'bg-black/50 border-white/20 text-white'
+            className={`w-11 h-11 rounded-full backdrop-blur-md border flex items-center justify-center active:scale-90 transition-transform shadow-md cursor-pointer ${
+              mobileDrawer === 'effects' || activeEffect.id !== 'eff-none'
+                ? 'bg-[#007E93] border-[#00B4D8] text-white'
+                : 'bg-black/50 border-white/15 text-white'
             }`}
           >
             <Wand2 className="w-5 h-5" />
           </button>
 
-          {/* 3. Beauty Smoothing */}
-          <button
-            type="button"
-            onClick={() => handleUpdateBeauty(beautyLevel === 0 ? 60 : 0)}
-            aria-label="Beauty Filter"
-            className={`w-11 h-11 rounded-full backdrop-blur-md border flex flex-col items-center justify-center text-xs active:scale-90 transition-all shadow-lg cursor-pointer ${
-              beautyLevel > 0
-                ? 'bg-pink-600 text-white border-white/40 shadow-pink-500/30'
-                : 'bg-black/50 border-white/20 text-white'
-            }`}
-          >
-            <Sparkles className="w-5 h-5" />
-          </button>
-
-          {/* 4. Mic / Mute */}
           <button
             type="button"
             onClick={handleToggleAudio}
             aria-label="Toggle Microphone"
-            className="w-11 h-11 rounded-full bg-black/50 backdrop-blur-md border border-white/20 flex flex-col items-center justify-center text-xs active:scale-90 transition-transform shadow-lg cursor-pointer"
+            className={`w-11 h-11 rounded-full backdrop-blur-md border flex items-center justify-center active:scale-90 transition-transform shadow-md cursor-pointer ${
+              isAudioEnabled ? 'bg-black/50 border-white/15 text-white' : 'bg-rose-500/80 border-rose-400 text-white'
+            }`}
           >
-            {isAudioEnabled ? (
-              <Mic className="w-5 h-5 text-emerald-400" />
-            ) : (
-              <MicOff className="w-5 h-5 text-rose-400" />
-            )}
+            {isAudioEnabled ? <Mic className="w-5 h-5" /> : <MicOff className="w-5 h-5" />}
           </button>
 
-          {/* 5. Virtual Gifts Tray */}
           <button
             type="button"
             onClick={() => setMobileDrawer(mobileDrawer === 'gifts' ? 'none' : 'gifts')}
             aria-label="Virtual Gifts"
-            className="w-11 h-11 rounded-full bg-amber-500/90 backdrop-blur-md border border-white/30 flex flex-col items-center justify-center text-xs active:scale-90 transition-transform shadow-lg shadow-amber-500/20 cursor-pointer"
+            className="w-11 h-11 rounded-full bg-black/50 backdrop-blur-md border border-white/15 flex items-center justify-center text-amber-300 active:scale-90 transition-transform shadow-md cursor-pointer"
           >
-            <Gift className="w-5 h-5 text-white" />
+            <Gift className="w-5 h-5" />
           </button>
 
-          {/* 6. Share Stream */}
           <button
             type="button"
             onClick={handleShareStream}
             aria-label="Share Stream"
-            className="w-11 h-11 rounded-full bg-black/50 backdrop-blur-md border border-white/20 flex flex-col items-center justify-center text-xs active:scale-90 transition-transform shadow-lg cursor-pointer"
+            className="w-11 h-11 rounded-full bg-black/50 backdrop-blur-md border border-white/15 flex items-center justify-center text-white active:scale-90 transition-transform shadow-md cursor-pointer"
           >
-            <Share2 className="w-5 h-5 text-zinc-200" />
+            <Share2 className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Floating Bottom Chat Overlay & Controls */}
-        <div className="relative z-20 p-4 pb-safe space-y-3">
-          {/* Live Chat Stream (Translucent cards floating over camera) */}
-          <div className="max-h-44 overflow-y-auto space-y-2 pr-1 text-xs text-white no-scrollbar">
-            {mobileComments.slice(-4).map((cm) => (
+        {/* Bottom Social HUD */}
+        <div className="relative z-20 p-4 pb-safe flex flex-col gap-3">
+          {/* Recent Live Chat Messages */}
+          <div className="max-h-36 overflow-y-auto flex flex-col gap-1.5 pointer-events-auto pr-12 scrollbar-none">
+            {LiveStreamingService.getState().messages.slice(-4).map((msg) => (
               <div
-                key={cm.id}
-                className="bg-black/55 backdrop-blur-md rounded-2xl px-3 py-2 border border-white/10 w-fit max-w-[85%] shadow-md flex items-baseline gap-2"
+                key={msg.id}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/55 backdrop-blur-md border border-white/10 text-xs w-fit max-w-[85%]"
               >
-                <span className="font-bold text-[#00B4D8] shrink-0">{cm.user}:</span>
-                <span className="text-zinc-100 break-words">{cm.text}</span>
+                <span className="font-semibold text-sky-400">{msg.senderName}:</span>
+                <span className="text-white/90">{msg.content}</span>
               </div>
             ))}
           </div>
 
-          {/* Bottom Actions Row */}
-          <div className="flex items-center gap-2 pt-1">
-            <form onSubmit={handleSendMobileComment} className="flex-1 flex items-center relative">
+          {/* Comment Composer & Live Controls Row */}
+          <div className="flex items-center gap-2">
+            <form onSubmit={handleSendMobileComment} className="flex-1 flex items-center gap-2">
               <input
                 type="text"
                 value={newCommentText}
                 onChange={(e) => setNewCommentText(e.target.value)}
                 placeholder="Say something nice..."
-                className="w-full pl-4 pr-10 py-3 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-xs text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-[#007E93]"
+                className="flex-1 px-4 py-2.5 rounded-full bg-black/50 backdrop-blur-md border border-white/20 text-white placeholder-white/50 text-xs focus:outline-none focus:border-[#00B4D8]"
               />
               <button
                 type="submit"
-                aria-label="Send Comment"
-                className="absolute right-2 p-1.5 rounded-full text-zinc-300 hover:text-white active:scale-95 transition-transform"
+                aria-label="Send message"
+                className="w-10 h-10 rounded-full bg-[#007E93] border border-[#00B4D8] flex items-center justify-center text-white active:scale-90 transition-transform shrink-0 cursor-pointer"
               >
                 <Send className="w-4 h-4" />
               </button>
             </form>
 
-            {transportStatus === 'error' ? (
-              <button
-                type="button"
-                onClick={handleRetryLive}
-                className="min-h-[44px] px-6 py-2.5 rounded-full text-xs font-bold transition-all shadow-xl active:scale-95 flex items-center gap-2 cursor-pointer bg-rose-600 hover:bg-rose-700 text-white shadow-rose-600/30"
-              >
-                <RefreshCw className="w-4 h-4" />
-                <span>Retry Live</span>
-              </button>
-            ) : (
-              <button
-                type="button"
-                onClick={handleToggleLive}
-                className={`min-h-[44px] px-6 py-2.5 rounded-full text-xs font-bold transition-all shadow-xl active:scale-95 flex items-center gap-2 cursor-pointer ${
-                  isLive
-                    ? 'bg-rose-600 hover:bg-rose-700 text-white shadow-rose-600/30'
-                    : 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-emerald-600/30'
-                }`}
-              >
-                <Radio className="w-4 h-4" />
-                <span>{isLive ? 'End Live' : 'Go Live'}</span>
-              </button>
-            )}
+            {/* Go Live / Leave Live Button */}
+            <button
+              type="button"
+              onClick={handleToggleLive}
+              aria-label="Go Live CTA"
+              className={`px-4 py-2.5 rounded-full font-bold text-xs flex items-center gap-1.5 shadow-lg active:scale-95 transition-transform cursor-pointer shrink-0 ${
+                isLive
+                  ? 'bg-rose-600 hover:bg-rose-700 text-white'
+                  : 'bg-emerald-600 hover:bg-emerald-700 text-white'
+              }`}
+            >
+              <Radio className="w-3.5 h-3.5" />
+              <span>{isLive ? 'End Live' : 'Go Live'}</span>
+            </button>
           </div>
         </div>
 
-        {/* Camera Permission / Error Recovery Modal */}
-        {(cameraStatus === 'error' || errorMessage) && (
-          <div className="absolute inset-0 z-40 bg-black/85 backdrop-blur-md flex items-center justify-center p-6 text-center animate-fade-in">
-            <div className="max-w-xs space-y-4">
-              <div className="w-14 h-14 mx-auto rounded-2xl bg-rose-500/20 border border-rose-500/30 text-rose-400 flex items-center justify-center shadow-lg shadow-rose-500/10">
-                <Video className="w-7 h-7" />
-              </div>
-              <div>
-                <h3 className="text-base font-bold text-white">Camera Access Required</h3>
-                <p className="text-xs text-zinc-400 mt-1.5 leading-relaxed">
-                  {errorMessage || 'CreatorOS requires camera permissions to broadcast your vertical stream.'}
-                </p>
-              </div>
-              <button
-                type="button"
-                onClick={() => requestCamera()}
-                className="w-full min-h-[44px] py-2.5 px-4 rounded-xl bg-[#007E93] hover:bg-[#006779] text-white text-xs font-bold shadow-lg shadow-teal-900/30 active:scale-95 transition-transform cursor-pointer"
-              >
-                Allow Camera &amp; Try Again
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* Unconfigured Configuration Required Notification Modal */}
-        {showUnconfiguredModal && (
-          <div className="absolute inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-6 text-center animate-fade-in">
-            <div className="max-w-xs p-6 rounded-3xl bg-zinc-900 border border-amber-500/30 shadow-2xl space-y-4">
-              <div className="w-12 h-12 mx-auto rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center">
-                <AlertTriangle className="w-6 h-6" />
-              </div>
-              <div>
-                <h3 className="text-base font-bold text-white">LiveKit Configuration Required</h3>
-                <p className="text-xs text-zinc-300 mt-1.5 leading-relaxed">
-                  To broadcast live to remote viewers, configure your LiveKit or Decart credentials in Settings. Local camera preview and AR effects are fully functional offline.
-                </p>
-              </div>
-              <div className="space-y-2">
-                <button
-                  type="button"
-                  onClick={() => setShowUnconfiguredModal(false)}
-                  className="w-full min-h-[44px] py-2 px-4 rounded-xl bg-[#007E93] text-white text-xs font-bold active:scale-95 transition-transform cursor-pointer"
-                >
-                  Continue with Local AR Preview
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
         {/* Mobile AR Effects Bottom Sheet */}
         {mobileDrawer === 'effects' && (
-          <div className="absolute inset-x-0 bottom-0 z-50 bg-zinc-900/95 backdrop-blur-xl border-t border-zinc-700 rounded-t-3xl p-4 pb-8 text-white animate-slide-up space-y-3 shadow-2xl">
-            <div className="flex items-center justify-between">
+          <div className="absolute inset-x-0 bottom-0 z-30 bg-zinc-950/95 backdrop-blur-xl border-t border-white/15 rounded-t-3xl p-4 flex flex-col gap-3 animate-slide-up max-h-[50vh] overflow-y-auto">
+            <div className="flex items-center justify-between pb-2 border-b border-white/10">
               <div className="flex items-center gap-2">
-                <Wand2 className="w-4 h-4 text-[#00F0FF]" />
-                <span className="text-xs font-bold uppercase tracking-wider text-zinc-200 font-mono">
-                  Face Landmarks &amp; AR Filters
-                </span>
+                <Wand2 className="w-4 h-4 text-[#00B4D8]" />
+                <span className="text-sm font-bold">MediaPipe AR Effects</span>
               </div>
               <button
                 type="button"
                 onClick={() => setMobileDrawer('none')}
-                className="p-1 rounded-lg text-zinc-400 hover:text-white"
+                className="p-1 rounded-full hover:bg-white/10 text-white"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            <div className="grid grid-cols-4 gap-2.5 max-h-56 overflow-y-auto no-scrollbar">
-              <button
-                type="button"
-                onClick={() => handleSelectEffect(null)}
-                className={`p-2.5 rounded-2xl flex flex-col items-center gap-1.5 border text-center transition-all cursor-pointer ${
-                  !activeEffectId ? 'border-white bg-white/20 shadow-md' : 'border-zinc-800 bg-zinc-800/80 hover:bg-zinc-800'
-                }`}
-              >
-                <span className="text-xl">🚫</span>
-                <span className="text-[10px] text-zinc-300 font-medium">None</span>
-              </button>
-
-              {AR_EFFECTS_CATALOG.map((eff) => {
-                const isSelected = activeEffectId === eff.id;
+            <div className="grid grid-cols-3 gap-2">
+              {CREATOROS_EFFECTS_CATALOG.map((eff) => {
+                const isSelected = activeEffect.id === eff.id;
                 return (
                   <button
                     key={eff.id}
                     type="button"
-                    onClick={() => handleSelectEffect(eff.id)}
-                    className={`p-2.5 rounded-2xl flex flex-col items-center gap-1.5 border text-center transition-all cursor-pointer ${
-                      isSelected ? 'border-[#00F0FF] bg-[#00F0FF]/25 shadow-lg shadow-cyan-500/20' : 'border-zinc-800 bg-zinc-800/80 hover:bg-zinc-800'
+                    onClick={() => handleSelectEffect(eff)}
+                    className={`p-2.5 rounded-2xl flex flex-col items-center gap-1.5 text-center border transition-all cursor-pointer ${
+                      isSelected
+                        ? 'bg-[#007E93]/30 border-[#00B4D8] text-white shadow-sm'
+                        : 'bg-white/5 border-white/10 text-zinc-300 hover:bg-white/10'
                     }`}
                   >
-                    <img src={eff.thumbnail} alt={eff.name} className="w-9 h-9 rounded-xl object-cover ring-1 ring-white/10" />
-                    <span className="text-[10px] text-zinc-200 truncate w-full font-medium">{eff.name}</span>
+                    <span className="text-lg">
+                      {eff.id === 'eff-none'
+                        ? '🚫'
+                        : eff.id === 'eff-beauty'
+                        ? '✨'
+                        : eff.id === 'eff-crown'
+                        ? '👑'
+                        : eff.id === 'eff-visor'
+                        ? '🥽'
+                        : eff.id === 'eff-decoration'
+                        ? '🌸'
+                        : '⚡'}
+                    </span>
+                    <span className="text-[11px] font-semibold truncate w-full">{eff.name}</span>
                   </button>
                 );
               })}
             </div>
-          </div>
-        )}
 
-        {/* Mobile Gifts Bottom Sheet */}
-        {mobileDrawer === 'gifts' && (
-          <div className="absolute inset-x-0 bottom-0 z-30 bg-zinc-900/95 backdrop-blur-xl border-t border-zinc-700 rounded-t-3xl p-4 pb-8 text-white animate-slide-up space-y-3 shadow-2xl">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Gift className="w-4 h-4 text-amber-400" />
-                <span className="text-xs font-bold uppercase tracking-wider text-amber-400 font-mono">
-                  Virtual Live Gifts
-                </span>
+            {activeEffect.id === 'eff-beauty' && (
+              <div className="flex flex-col gap-1.5 pt-2 border-t border-white/10">
+                <div className="flex justify-between text-xs text-zinc-300 font-semibold">
+                  <span>Smoothing Intensity</span>
+                  <span>{beautyLevel}%</span>
+                </div>
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  value={beautyLevel}
+                  onChange={(e) => handleUpdateBeauty(Number(e.target.value))}
+                  className="w-full accent-[#00B4D8]"
+                />
               </div>
-              <button
-                type="button"
-                onClick={() => setMobileDrawer('none')}
-                className="p-1 rounded-lg text-zinc-400 hover:text-white"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-
-            <div className="grid grid-cols-4 gap-2.5 text-center">
-              {[
-                { name: 'Rose', coins: 10, icon: '🌹' },
-                { name: 'Kicks', coins: 50, icon: '👟' },
-                { name: 'Crown', coins: 250, icon: '👑' },
-                { name: 'Rocket', coins: 1000, icon: '🚀' },
-              ].map((g) => (
-                <button
-                  key={g.name}
-                  type="button"
-                  onClick={() => {
-                    setMobileComments((prev) => [
-                      ...prev,
-                      { id: `g-${Date.now()}`, user: userProfile?.name || 'Supporter', text: `Sent a ${g.name}! ${g.icon}` },
-                    ]);
-                    setMobileDrawer('none');
-                  }}
-                  className="p-3 rounded-2xl bg-zinc-800/90 border border-zinc-700/80 hover:border-amber-400 flex flex-col items-center gap-1.5 transition-all active:scale-95 cursor-pointer shadow-md"
-                >
-                  <span className="text-2xl">{g.icon}</span>
-                  <span className="text-xs font-semibold">{g.name}</span>
-                  <span className="text-[10px] text-amber-400 font-mono">{g.coins} Coins</span>
-                </button>
-              ))}
-            </div>
+            )}
           </div>
         )}
       </div>
 
       {/* ========================================================================= */}
-      {/* 2. DESKTOP RESPONSIVE BROADCASTING WORKSPACE                               */}
+      {/* 2. DESKTOP RESPONSIVE BROADCASTING WORKSPACE (CSS Grid at >= 1024px)       */}
       {/* ========================================================================= */}
       <div className="hidden lg:grid grid-rows-[auto_1fr] h-full w-full p-4 xl:p-6 gap-3 overflow-hidden bg-[var(--background)] text-[var(--text-primary)]">
-        {/* Studio Top Bar (using div to avoid competing header selector) */}
+        {/* Studio Top Bar */}
         <div className="flex items-center justify-between gap-4 pb-2.5 border-b border-[var(--border)] shrink-0">
           <div className="flex items-center gap-3">
             {onExit && (
@@ -838,20 +658,23 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
 
           <div className="flex items-center gap-3">
             <LiveSessionStatus
-              connectionState={connectionState}
-              cameraStatus={cameraStatus}
-              transportStatus={transportStatus}
-              transportError={transportError}
-              onRetryTransport={handleRetryLive}
-              isProviderConfigured={isConfigured}
+              cameraState={cameraState}
+              arState={arState}
+              recordingState={recordingState}
+              transportState={transportState}
+              networkStatus={networkStatus}
+              viewerCount={viewerCount}
+              faceDetected={faceDetected}
+              faceConfidence={faceConfidence}
               remainingSeconds={remainingSeconds}
-              maxDurationSeconds={config.maxSessionDurationSec || 60}
-              isRecording={isRecording}
+              maxDurationSeconds={maxSessionDurationSec}
               recordingSeconds={recordingSeconds}
-              arStatus={arTrackingState.status}
-              faceDetected={arTrackingState.faceDetected}
-              faceConfidence={arTrackingState.confidence}
-              selectedProvider={config.provider as any}
+              transportError={transportError}
+              onRetryTransport={handleToggleLive}
+              // Backward compatibility
+              cameraStatus={cameraState === 'camera_ready' ? 'ready' : cameraState === 'camera_requesting' ? 'requesting' : 'idle'}
+              transportStatus={transportState === 'transport_live' ? 'live' : transportState === 'transport_connecting' ? 'connecting' : 'unconfigured'}
+              isRecording={recordingState === 'recording'}
             />
 
             <button
@@ -865,25 +688,15 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
           </div>
         </div>
 
-        {/* Main Broadcasting Grid: Camera Workspace (1fr) + Audience Rail (340px) */}
+        {/* Main Grid: Left Hero Viewport (1fr) + Right Audience Rail (340px) */}
         <div className="grid grid-cols-[minmax(0,1fr)_340px] xl:grid-cols-[minmax(0,1fr)_360px] gap-4 h-full min-h-0 overflow-hidden">
           {/* Left Hero Workspace */}
           <div className="flex flex-col h-full min-h-0 overflow-hidden gap-2.5">
-            {/* Compact contextual warning banner if unconfigured */}
-            {transportStatus === 'unconfigured' && (
-              <div className="flex items-center justify-between px-3.5 py-1.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-900 dark:text-amber-200 text-xs shrink-0">
-                <div className="flex items-center gap-2">
-                  <AlertTriangle className="w-3.5 h-3.5 text-amber-500 shrink-0" />
-                  <span>Live transport unavailable. Local preview and recording are available.</span>
-                </div>
-              </div>
-            )}
-
             {/* HERO CAMERA VIEWPORT: Fills available workspace, aspect-ratio preserved */}
             <div className="flex-1 flex items-center justify-center min-h-0 relative overflow-hidden bg-[var(--live-canvas,#090C10)] rounded-3xl border border-white/10 shadow-lg p-2">
               <LiveCamera
                 displayStream={displayStream}
-                connectionState={connectionState}
+                connectionState={isLive ? 'live' : 'idle'}
                 activeScene={activeScene}
                 aspectRatio={aspectRatio}
                 errorMessage={errorMessage}
@@ -894,10 +707,10 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
             {/* STUDIO CONTROLS ROW: Anchored directly below camera viewport */}
             <div className="shrink-0 flex items-center justify-center">
               <LiveControls
-                connectionState={connectionState}
-                transportStatus={transportStatus}
-                hasCamera={Boolean(cameraStream)}
-                isRecording={isRecording}
+                connectionState={isLive ? 'live' : 'idle'}
+                transportStatus={isLive ? 'live' : transportState === 'transport_connecting' ? 'connecting' : 'unconfigured'}
+                hasCamera={Boolean(rawCameraStream)}
+                isRecording={recordingState === 'recording'}
                 recordingSeconds={recordingSeconds}
                 aspectRatio={aspectRatio}
                 isAudioEnabled={isAudioEnabled}
@@ -905,10 +718,10 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
                 onToggleRecording={handleToggleRecording}
                 onSelectAspectRatio={setAspectRatio}
                 onToggleAudio={handleToggleAudio}
-                onRetryTransport={handleRetryLive}
+                onRetryTransport={handleToggleLive}
                 onToggleDrawer={() => setIsEffectsDrawerOpen(!isEffectsDrawerOpen)}
                 isDrawerOpen={isEffectsDrawerOpen}
-                onToggleCamera={cameraStream ? handleStopCamera : () => requestCamera()}
+                onToggleCamera={rawCameraStream ? handleStopCamera : () => requestCamera()}
               />
             </div>
 
@@ -921,13 +734,25 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
                       type="button"
                       onClick={() => setStudioTab('effects')}
                       className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-                        studioTab === 'effects' || studioTab === 'scenes'
+                        studioTab === 'effects'
                           ? 'bg-[var(--surface)] text-[var(--text-primary)] shadow-xs'
                           : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
                       }`}
                     >
                       <Wand2 className="w-3.5 h-3.5 text-[#007E93]" />
-                      <span>AR Effects &amp; Scenes</span>
+                      <span>AR Effects &amp; Beauty</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setStudioTab('scenes')}
+                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                        studioTab === 'scenes'
+                          ? 'bg-[var(--surface)] text-[var(--text-primary)] shadow-xs'
+                          : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                      }`}
+                    >
+                      <Sparkles className="w-3.5 h-3.5 text-[#007E93]" />
+                      <span>Scene Lighting</span>
                     </button>
                     <button
                       type="button"
@@ -938,99 +763,114 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
                           : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
                       }`}
                     >
-                      <Sliders className="w-3.5 h-3.5 text-sky-500" />
-                      <span>Reference &amp; Lighting</span>
+                      <Sliders className="w-3.5 h-3.5 text-[#007E93]" />
+                      <span>Reference</span>
                     </button>
                   </div>
-
-                  <button
-                    type="button"
-                    onClick={() => setIsEffectsDrawerOpen(false)}
-                    className="p-1 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-primary)] cursor-pointer"
-                    title="Close Drawer"
-                  >
-                    <X className="w-3.5 h-3.5" />
-                  </button>
                 </div>
 
-                {/* Tab Sub-Panel Content */}
-                {studioTab === 'reference' ? (
-                  <LiveReferencePanel
-                    referenceImage={referenceImage}
-                    onReferenceImageChange={handleReferenceImageChange}
-                    disabled={isRecording}
-                  />
-                ) : (
+                {/* Tab 1: AR Effects & Beauty */}
+                {studioTab === 'effects' && (
                   <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-[var(--text-primary)] font-display">
-                        Tracked AR Accessories &amp; Beauty
-                      </span>
-                      {activeEffectId && (
-                        <span className="text-[10px] text-[#007E93] font-mono">
-                          Anchored to Landmarks
-                        </span>
-                      )}
-                    </div>
                     <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
-                      <button
-                        type="button"
-                        onClick={() => handleSelectEffect(null)}
-                        className={`p-2 rounded-xl text-xs border text-left flex flex-col items-center justify-center gap-1 cursor-pointer transition-colors ${
-                          !activeEffectId
-                            ? 'bg-[#007E93]/10 border-[#007E93] font-semibold text-[#007E93]'
-                            : 'bg-[var(--surface-muted)] border-[var(--border)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
-                        }`}
-                      >
-                        <span className="text-base">🚫</span>
-                        <span className="text-[10px] text-center font-medium">Clean Feed</span>
-                      </button>
-                      {AR_EFFECTS_CATALOG.map((eff) => {
-                        const isSel = activeEffectId === eff.id;
+                      {CREATOROS_EFFECTS_CATALOG.map((eff) => {
+                        const isSelected = activeEffect.id === eff.id;
                         return (
                           <button
                             key={eff.id}
                             type="button"
-                            onClick={() => handleSelectEffect(eff.id)}
-                            className={`p-2 rounded-xl text-xs border text-left flex flex-col items-center justify-center gap-1 cursor-pointer transition-colors ${
-                              isSel
-                                ? 'bg-[#007E93]/10 border-[#007E93] text-[#007E93] font-semibold shadow-xs'
-                                : 'bg-[var(--surface-muted)] border-[var(--border)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                            onClick={() => handleSelectEffect(eff)}
+                            className={`p-2 rounded-xl flex flex-col items-center gap-1 text-center border transition-all cursor-pointer ${
+                              isSelected
+                                ? 'bg-[#007E93]/15 border-[#007E93] text-[var(--text-primary)] shadow-xs font-semibold'
+                                : 'bg-[var(--surface-muted)] border-[var(--border)] text-[var(--text-secondary)] hover:bg-[var(--surface)]'
                             }`}
                           >
-                            <img src={eff.thumbnail} alt={eff.name} className="w-7 h-7 rounded-lg object-cover" />
-                            <span className="text-[10px] truncate max-w-full text-center">{eff.name}</span>
+                            <span className="text-base">
+                              {eff.id === 'eff-none'
+                                ? '🚫'
+                                : eff.id === 'eff-beauty'
+                                ? '✨'
+                                : eff.id === 'eff-crown'
+                                ? '👑'
+                                : eff.id === 'eff-visor'
+                                ? '🥽'
+                                : eff.id === 'eff-decoration'
+                                ? '🌸'
+                                : '⚡'}
+                            </span>
+                            <span className="text-[10px] truncate w-full">{eff.name}</span>
                           </button>
                         );
                       })}
                     </div>
 
-                    <div className="pt-2 border-t border-[var(--border)]">
-                      <LiveScenePicker
-                        selectedScene={activeScene}
-                        onSelectScene={handleSelectScene}
-                        disabled={isRecording}
-                      />
-                    </div>
+                    {activeEffect.id === 'eff-beauty' && (
+                      <div className="flex items-center gap-3 p-2.5 rounded-xl bg-[var(--surface-muted)] border border-[var(--border)]">
+                        <span className="text-xs font-semibold text-[var(--text-secondary)]">Beauty Smoothing:</span>
+                        <input
+                          type="range"
+                          min="0"
+                          max="100"
+                          value={beautyLevel}
+                          onChange={(e) => handleUpdateBeauty(Number(e.target.value))}
+                          className="flex-1 accent-[#007E93]"
+                        />
+                        <span className="text-xs font-mono font-bold text-[var(--text-primary)] w-8 text-right">
+                          {beautyLevel}%
+                        </span>
+                      </div>
+                    )}
                   </div>
+                )}
+
+                {/* Tab 2: Scene Lighting */}
+                {studioTab === 'scenes' && (
+                  <LiveScenePicker
+                    selectedScene={activeScene}
+                    onSelectScene={setActiveScene}
+                    disabled={recordingState === 'recording'}
+                  />
+                )}
+
+                {/* Tab 3: Reference Image */}
+                {studioTab === 'reference' && (
+                  <LiveReferencePanel
+                    referenceImage={referenceImage}
+                    onReferenceImageChange={setReferenceImage}
+                    disabled={recordingState === 'recording'}
+                  />
                 )}
               </div>
             )}
           </div>
 
-          {/* Right Rail: 340-360px Full-Height Audience, Chat, Moderation, and Gifts */}
-          <aside className="h-full min-h-0 overflow-hidden flex flex-col rounded-3xl bg-[var(--surface)] border border-[var(--border)] shadow-sm">
-            <LiveAudienceModerationPanel isHost={true} />
+          {/* Right Rail: Full-Height Audience & Moderation Panel */}
+          <aside className="h-full min-h-0 overflow-hidden" aria-label="Audience and Moderation Panel">
+            <LiveAudienceModerationPanel
+              isHost={true}
+              currentUserId={userProfile?.id || 'cr-01'}
+              currentUserName={userProfile?.name || 'Rohan Sharma'}
+            />
           </aside>
         </div>
       </div>
 
-      {/* Recorded Clip Preview & Submit Modal */}
-      <LiveRecordingPreviewModal
-        clip={recordedClip}
-        isOpen={isPreviewOpen}
-        onClose={() => setIsPreviewOpen(false)}
-      />
+      {/* Recording Preview Modal */}
+      {recordedClip && (
+        <LiveRecordingPreviewModal
+          clip={recordedClip}
+          isOpen={isPreviewOpen}
+          onClose={() => {
+            setIsPreviewOpen(false);
+            setRecordedClip(null);
+          }}
+          onSubmittedSuccess={() => {
+            setIsPreviewOpen(false);
+            setRecordedClip(null);
+          }}
+        />
+      )}
     </>
   );
 };

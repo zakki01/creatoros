@@ -1,5 +1,78 @@
 export type AspectRatio = '9:16' | '16:9' | '1:1';
 
+// Subsystem Explicit State Enums (Strictly Decoupled)
+export type CameraState =
+  | 'camera_idle'
+  | 'camera_requesting'
+  | 'camera_ready'
+  | 'camera_error';
+
+export type ARState =
+  | 'ar_initializing'
+  | 'ar_ready'
+  | 'ar_unavailable'
+  | 'face_detected'
+  | 'face_not_detected';
+
+export type RecordingState =
+  | 'recording_idle'
+  | 'recording'
+  | 'recording_ready'
+  | 'recording_error';
+
+export type TransportState =
+  | 'transport_unconfigured'
+  | 'transport_connecting'
+  | 'transport_live'
+  | 'transport_error'
+  | 'transport_disconnected';
+
+export type ARTrackerStatus = 'unavailable' | 'initializing' | 'ready' | 'error';
+
+export interface ARTrackingState {
+  status: ARTrackerStatus;
+  faceDetected: boolean;
+  confidence: number;
+  landmarks: FaceLandmarks | null;
+}
+
+export type HonestNetworkStatus =
+  | 'Connecting'
+  | 'Live'
+  | 'Reconnecting'
+  | 'Poor connection'
+  | 'Disconnected';
+
+export interface FaceLandmarks {
+  detected: boolean;
+  confidence: number;
+  faceBox: { x: number; y: number; width: number; height: number };
+  forehead: { x: number; y: number; z?: number };
+  leftEye: { x: number; y: number; z?: number };
+  rightEye: { x: number; y: number; z?: number };
+  eyeCenter: { x: number; y: number };
+  nose: { x: number; y: number; z?: number };
+  leftCheek: { x: number; y: number; z?: number };
+  rightCheek: { x: number; y: number; z?: number };
+  mouth: { x: number; y: number; z?: number };
+  chin: { x: number; y: number; z?: number };
+  roll: number; // Head tilt in radians
+  pitch: number;
+  yaw: number;
+  eyeDistance: number;
+  rawPoints?: Array<{ x: number; y: number; z: number }>;
+}
+
+export interface EffectDefinition {
+  id: string;
+  name: string;
+  tagline: string;
+  category: 'clean' | 'beauty' | 'accessory' | 'animated';
+  thumbnailUrl?: string;
+  isAvailable: boolean;
+  unavailableReason?: string;
+}
+
 export type LiveSceneId =
   | 'cinematic'
   | 'cyberpunk'

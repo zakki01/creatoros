@@ -1,144 +1,164 @@
 import React from 'react';
-import { Sparkles, Shield, Clock, RefreshCw, Eye, EyeOff } from 'lucide-react';
-import { LiveConnectionState } from '../../../types';
+import { Sparkles, Clock, RefreshCw, Wifi, WifiOff } from 'lucide-react';
+import {
+  CameraState,
+  ARState,
+  RecordingState,
+  TransportState,
+  HonestNetworkStatus,
+} from '../../../types';
 
 export type CameraStatus = 'idle' | 'requesting' | 'ready' | 'error';
 export type TransportStatus = 'unconfigured' | 'connecting' | 'live' | 'error' | 'idle';
 export type ARStatus = 'unavailable' | 'initializing' | 'ready' | 'error';
 
 interface LiveSessionStatusProps {
-  connectionState: LiveConnectionState;
-  cameraStatus?: CameraStatus;
-  transportStatus?: TransportStatus;
-  transportError?: string | null;
-  onRetryTransport?: () => void;
-  isProviderConfigured: boolean;
+  cameraState: CameraState;
+  arState: ARState;
+  recordingState: RecordingState;
+  transportState: TransportState;
+  networkStatus: HonestNetworkStatus;
+  viewerCount: number;
+  faceDetected: boolean;
+  faceConfidence: number;
   remainingSeconds: number;
   maxDurationSeconds: number;
-  isRecording: boolean;
   recordingSeconds: number;
-  arStatus?: ARStatus;
-  faceDetected?: boolean;
-  faceConfidence?: number;
-  selectedProvider?: 'livekit' | 'decart' | 'local';
+  transportError?: string | null;
+  onRetryTransport?: () => void;
+  // Backward compatibility props
+  cameraStatus?: any;
+  transportStatus?: any;
+  arStatus?: any;
+  connectionState?: any;
+  isProviderConfigured?: boolean;
+  isRecording?: boolean;
 }
 
 export const LiveSessionStatus: React.FC<LiveSessionStatusProps> = ({
-  connectionState,
-  cameraStatus = 'ready',
-  transportStatus,
-  transportError,
-  onRetryTransport,
-  isProviderConfigured,
-  remainingSeconds,
-  maxDurationSeconds,
-  isRecording,
-  recordingSeconds,
-  arStatus = 'ready',
+  cameraState,
+  arState,
+  recordingState,
+  transportState,
+  networkStatus,
+  viewerCount = 0,
   faceDetected = false,
   faceConfidence = 0,
-  selectedProvider = 'local',
+  remainingSeconds,
+  maxDurationSeconds,
+  recordingSeconds,
+  transportError,
+  onRetryTransport,
+  // Backward compatibility fallbacks
+  cameraStatus,
+  transportStatus,
+  arStatus,
+  isRecording,
 }) => {
-  const effectiveTransport: TransportStatus =
-    transportStatus ||
-    (connectionState === 'live'
-      ? 'live'
-      : connectionState === 'connecting'
-      ? 'connecting'
-      : connectionState === 'error'
-      ? 'error'
-      : !isProviderConfigured
-      ? 'unconfigured'
-      : 'idle');
+  // Normalize states
+  const effectiveCamera: CameraState =
+    cameraState ||
+    (cameraStatus === 'ready'
+      ? 'camera_ready'
+      : cameraStatus === 'requesting'
+      ? 'camera_requesting'
+      : cameraStatus === 'idle'
+      ? 'camera_idle'
+      : 'camera_error');
 
-  const isLive = effectiveTransport === 'live';
+  const effectiveTransport: TransportState =
+    transportState ||
+    (transportStatus === 'live'
+      ? 'transport_live'
+      : transportStatus === 'connecting'
+      ? 'transport_connecting'
+      : transportStatus === 'error'
+      ? 'transport_error'
+      : 'transport_unconfigured');
+
+  const isLive = effectiveTransport === 'transport_live';
+  const effectiveRecording = isRecording || recordingState === 'recording';
+
   const progressPct = isLive
     ? Math.max(0, Math.min(100, (remainingSeconds / maxDurationSeconds) * 100))
     : 100;
 
-  const getUnconfiguredText = () => {
-    if (selectedProvider === 'livekit') return 'LiveKit is not configured';
-    if (selectedProvider === 'decart') return 'Decart is not configured';
-    return 'Live transport unavailable';
-  };
-
   return (
     <div className="flex flex-wrap items-center gap-2 px-3 py-1.5 rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-xs">
-      {/* 1. Camera Subsystem Status */}
+      {/* 1. Camera Status */}
       <div
         className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold ${
-          cameraStatus === 'ready'
+          effectiveCamera === 'camera_ready'
             ? 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/25'
-            : cameraStatus === 'requesting'
+            : effectiveCamera === 'camera_requesting'
             ? 'bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/30 animate-pulse'
-            : cameraStatus === 'idle'
+            : effectiveCamera === 'camera_idle'
             ? 'bg-[var(--surface-muted)] text-[var(--text-secondary)] border border-[var(--border)]'
             : 'bg-rose-500/10 text-rose-700 dark:text-rose-400 border border-rose-500/25'
         }`}
       >
         <span
           className={`w-1.5 h-1.5 rounded-full ${
-            cameraStatus === 'ready'
+            effectiveCamera === 'camera_ready'
               ? 'bg-emerald-500'
-              : cameraStatus === 'requesting'
+              : effectiveCamera === 'camera_requesting'
               ? 'bg-amber-400 animate-ping'
-              : cameraStatus === 'idle'
+              : effectiveCamera === 'camera_idle'
               ? 'bg-zinc-400'
               : 'bg-rose-500'
           }`}
         />
         <span>
-          {cameraStatus === 'ready'
+          {effectiveCamera === 'camera_ready'
             ? 'Camera Ready'
-            : cameraStatus === 'requesting'
-            ? 'Requesting Cam'
-            : cameraStatus === 'idle'
-            ? 'Camera Standby'
+            : effectiveCamera === 'camera_requesting'
+            ? 'Requesting Cam...'
+            : effectiveCamera === 'camera_idle'
+            ? 'Standby — Offline'
             : 'Camera Error'}
         </span>
       </div>
 
-      {/* 2. Live Transport Subsystem Status (Truthful LiveKit / Decart / Local Preview) */}
+      {/* 2. Media Transport Status (PREVIEW -> CONNECTING -> LIVE / LIVE TRANSPORT UNAVAILABLE) */}
       <div
         className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold ${
-          effectiveTransport === 'live'
+          isLive
             ? 'bg-rose-500/15 text-rose-700 dark:text-rose-400 border border-rose-500/30 animate-pulse'
-            : effectiveTransport === 'connecting'
+            : effectiveTransport === 'transport_connecting'
             ? 'bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-500/35'
-            : effectiveTransport === 'error'
+            : effectiveTransport === 'transport_error'
             ? 'bg-rose-500/15 text-rose-700 dark:text-rose-400 border border-rose-500/30'
-            : effectiveTransport === 'unconfigured'
-            ? 'bg-amber-500/10 text-amber-800 dark:text-amber-300 border border-amber-500/30 font-mono text-[10px]'
-            : 'bg-[var(--surface-muted)] text-[var(--text-secondary)] border border-[var(--border)]'
+            : effectiveCamera === 'camera_ready'
+            ? 'bg-sky-500/10 text-[#007E93] dark:text-[#00B4D8] border border-sky-500/25'
+            : 'bg-amber-500/10 text-amber-800 dark:text-amber-300 border border-amber-500/30'
         }`}
       >
         <span
           className={`w-1.5 h-1.5 rounded-full ${
-            effectiveTransport === 'live'
+            isLive
               ? 'bg-rose-500'
-              : effectiveTransport === 'connecting'
+              : effectiveTransport === 'transport_connecting'
               ? 'bg-amber-400 animate-ping'
-              : effectiveTransport === 'error'
+              : effectiveTransport === 'transport_error'
               ? 'bg-rose-600'
-              : effectiveTransport === 'unconfigured'
-              ? 'bg-amber-500'
-              : 'bg-emerald-400'
+              : effectiveCamera === 'camera_ready'
+              ? 'bg-[#007E93]'
+              : 'bg-amber-500'
           }`}
         />
         <span>
-          {effectiveTransport === 'live'
+          {isLive
             ? 'LIVE'
-            : effectiveTransport === 'connecting'
-            ? 'Connecting...'
-            : effectiveTransport === 'error'
-            ? 'Live service unavailable'
-            : effectiveTransport === 'unconfigured'
-            ? getUnconfiguredText()
-            : 'Transport Ready'}
+            : effectiveTransport === 'transport_connecting'
+            ? 'CONNECTING'
+            : effectiveTransport === 'transport_error'
+            ? 'LIVE TRANSPORT UNAVAILABLE'
+            : effectiveCamera === 'camera_ready'
+            ? 'PREVIEW'
+            : 'LIVE TRANSPORT UNAVAILABLE'}
         </span>
 
-        {/* Retry Button on Transport Failure */}
-        {effectiveTransport === 'error' && onRetryTransport && (
+        {effectiveTransport === 'transport_error' && onRetryTransport && (
           <button
             type="button"
             onClick={onRetryTransport}
@@ -151,14 +171,14 @@ export const LiveSessionStatus: React.FC<LiveSessionStatusProps> = ({
         )}
       </div>
 
-      {/* 3. AR Face Landmark Tracking Engine Status */}
+      {/* 3. MediaPipe Face Landmark Tracking Engine Status */}
       <div
         className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold ${
           faceDetected
             ? 'bg-sky-500/10 text-[#007E93] dark:text-[#00B4D8] border border-sky-500/25'
-            : arStatus === 'ready'
+            : arState === 'ar_ready'
             ? 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/25'
-            : arStatus === 'initializing'
+            : arState === 'ar_initializing'
             ? 'bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/25 animate-pulse'
             : 'bg-[var(--surface-muted)] text-[var(--text-muted)] border border-[var(--border)]'
         }`}
@@ -167,16 +187,43 @@ export const LiveSessionStatus: React.FC<LiveSessionStatusProps> = ({
         <span>
           {faceDetected
             ? `Face Detected (${Math.round(faceConfidence * 100)}%)`
-            : arStatus === 'ready'
+            : arState === 'ar_ready' || arStatus === 'ready'
             ? 'AR Ready'
-            : arStatus === 'initializing'
-            ? 'AR Initializing'
+            : arState === 'ar_initializing'
+            ? 'AR Initializing...'
             : 'AR Unavailable'}
         </span>
       </div>
 
-      {/* 4. Active Recording Indicator */}
-      {isRecording && (
+      {/* 4. Real Participant Count (0 when not live, real participants when live) */}
+      {isLive && (
+        <div className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-700 dark:text-emerald-400 text-[11px] font-semibold">
+          <span>{viewerCount} Viewers</span>
+        </div>
+      )}
+
+      {/* 5. Honest Network Status */}
+      {isLive && (
+        <div
+          className={`flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold ${
+            networkStatus === 'Live'
+              ? 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/25'
+              : networkStatus === 'Poor connection'
+              ? 'bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/25'
+              : 'bg-rose-500/10 text-rose-700 dark:text-rose-400 border border-rose-500/25'
+          }`}
+        >
+          {networkStatus === 'Disconnected' ? (
+            <WifiOff className="w-3 h-3" />
+          ) : (
+            <Wifi className="w-3 h-3" />
+          )}
+          <span>{networkStatus}</span>
+        </div>
+      )}
+
+      {/* 6. Active Recording Indicator */}
+      {effectiveRecording && (
         <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-500/15 border border-rose-500/30 text-rose-700 dark:text-rose-400 text-[11px] font-mono font-bold animate-pulse">
           <span className="w-2 h-2 rounded-full bg-rose-600 animate-ping" />
           <span>
@@ -186,7 +233,7 @@ export const LiveSessionStatus: React.FC<LiveSessionStatusProps> = ({
         </div>
       )}
 
-      {/* 5. Cost Protection Duration Timer (Active when Live) */}
+      {/* 7. Cost Protection Duration Timer (Active when Live) */}
       {isLive && (
         <div className="flex items-center gap-2 pl-1 border-l border-[var(--border)]">
           <div className="flex items-center gap-1 text-[11px] font-mono text-[var(--text-secondary)]">
