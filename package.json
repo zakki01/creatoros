@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
-    "test": "node scripts/verify-full-restoration.cjs && node scripts/verify-corrective-pass.cjs && node scripts/verify-profile-live-corrective.cjs && node scripts/verify-smart-implementation.cjs && node scripts/verify-forensic-pass.cjs && node scripts/verify-studio-theme-root-cause.cjs && node scripts/verify-live-2.0.cjs && node scripts/verify-theme-and-face-tracking.cjs",
+    "test": "node scripts/verify-full-restoration.cjs && node scripts/verify-corrective-pass.cjs && node scripts/verify-profile-live-corrective.cjs && node scripts/verify-smart-implementation.cjs && node scripts/verify-forensic-pass.cjs && node scripts/verify-studio-theme-root-cause.cjs && node scripts/verify-live-2.0.cjs && node scripts/verify-theme-and-face-tracking.cjs && node scripts/verify-dark-modals-and-messages.cjs",
     "preview": "vite preview"
   },
   "dependencies": {

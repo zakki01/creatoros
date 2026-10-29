@@ -63,13 +63,13 @@ export const ConnectModal: React.FC<ConnectModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/45 backdrop-blur-md animate-fade-in">
       <div
-        className="relative w-full max-w-md rounded-2xl bg-white text-zinc-900 border border-black/[0.08] p-6 shadow-2xl text-zinc-900 space-y-5"
+        className="relative w-full max-w-md rounded-2xl bg-[var(--surface-elevated)] text-[var(--text-primary)] border border-[var(--border)] p-6 shadow-2xl space-y-5"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-1.5 rounded-lg text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100/60 transition-all cursor-pointer"
+          className="absolute top-4 right-4 p-1.5 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-muted)]/60 transition-all cursor-pointer"
         >
           <X className="w-4 h-4" />
         </button>
@@ -79,15 +79,15 @@ export const ConnectModal: React.FC<ConnectModalProps> = ({
             <div className="w-12 h-12 rounded-full bg-emerald-50 border border-emerald-500/30 text-emerald-700 flex items-center justify-center mx-auto">
               <Check className="w-6 h-6" />
             </div>
-            <h3 className="text-base font-semibold text-zinc-900">Connection Request Sent!</h3>
-            <p className="text-xs text-zinc-500 max-w-xs mx-auto">
+            <h3 className="text-base font-semibold text-[var(--text-primary)]">Connection Request Sent!</h3>
+            <p className="text-xs text-[var(--text-muted)] max-w-xs mx-auto">
               {target.name} has been notified and a direct messaging channel was initialized in your Inbox.
             </p>
           </div>
         ) : (
           <>
             {/* Header / Target Card */}
-            <div className="flex items-center gap-3.5 pb-4 border-b border-black/[0.06]">
+            <div className="flex items-center gap-3.5 pb-4 border-b border-[var(--border)]">
               <img
                 src={target.avatar}
                 alt={target.name}
@@ -95,16 +95,16 @@ export const ConnectModal: React.FC<ConnectModalProps> = ({
               />
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-1.5">
-                  <h3 className="text-sm font-bold text-zinc-900 truncate">{target.name}</h3>
+                  <h3 className="text-sm font-bold text-[var(--text-primary)] truncate">{target.name}</h3>
                   <ShieldCheck className="w-3.5 h-3.5 text-[#007E93] shrink-0" />
                 </div>
-                <p className="text-xs text-zinc-500 font-mono truncate">{target.handle}</p>
+                <p className="text-xs text-[var(--text-muted)] font-mono truncate">{target.handle}</p>
                 <div className="flex items-center gap-2 mt-1">
                   <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#00B4D8]/10 text-[#007E93] border border-[#00B4D8]/20">
                     {target.role === 'business' ? 'Brand / Business' : 'Verified Creator'}
                   </span>
                   {target.category && (
-                    <span className="text-[10px] text-zinc-500 truncate">
+                    <span className="text-[10px] text-[var(--text-muted)] truncate">
                       • {target.category}
                     </span>
                   )}
@@ -115,11 +115,11 @@ export const ConnectModal: React.FC<ConnectModalProps> = ({
             {/* Note Area */}
             <div className="space-y-2">
               <div className="flex items-center justify-between text-xs">
-                <label className="font-medium text-zinc-700 flex items-center gap-1.5">
+                <label className="font-medium text-[var(--text-secondary)] flex items-center gap-1.5">
                   <Sparkles className="w-3 h-3 text-[#007E93]" />
                   <span>Personalized Note (Optional)</span>
                 </label>
-                <span className="text-[10px] font-mono text-zinc-500">
+                <span className="text-[10px] font-mono text-[var(--text-muted)]">
                   {note.length}/250
                 </span>
               </div>
@@ -128,13 +128,13 @@ export const ConnectModal: React.FC<ConnectModalProps> = ({
                 onChange={(e) => setNote(e.target.value.slice(0, 250))}
                 rows={3}
                 placeholder={`Introduce ${userProfile.name} or share brief campaign details...`}
-                className="w-full rounded-xl bg-white shadow-sm border border-black/[0.08] p-3 text-xs text-zinc-900 placeholder-zinc-500 focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]/60 focus:ring-1 focus:ring-[#007E93]/25 resize-none transition-all"
+                className="w-full rounded-xl bg-[var(--surface)] shadow-sm border border-[var(--border)] p-3 text-xs text-[var(--text-primary)] placeholder-zinc-500 focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]/60 focus:ring-1 focus:ring-[#007E93]/25 resize-none transition-all"
               />
             </div>
 
             {/* Quick Pitch Chips */}
             <div className="space-y-1.5">
-              <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider">
+              <span className="text-[10px] font-mono text-[var(--text-muted)] uppercase tracking-wider">
                 Quick Prompts
               </span>
               <div className="space-y-1">
@@ -143,7 +143,7 @@ export const ConnectModal: React.FC<ConnectModalProps> = ({
                     key={idx}
                     type="button"
                     onClick={() => setNote(pitch)}
-                    className="w-full text-left text-[11px] text-zinc-500 hover:text-zinc-800 bg-zinc-50 hover:bg-zinc-100/50 border border-black/[0.04] rounded-lg px-2.5 py-1.5 transition-all truncate"
+                    className="w-full text-left text-[11px] text-[var(--text-muted)] hover:text-[var(--text-primary)] bg-[var(--surface-muted)] hover:bg-[var(--surface-recessed)]/50 border border-[var(--border)] rounded-lg px-2.5 py-1.5 transition-all truncate"
                   >
                     "{pitch}"
                   </button>
@@ -152,11 +152,11 @@ export const ConnectModal: React.FC<ConnectModalProps> = ({
             </div>
 
             {/* Action Buttons */}
-            <div className="flex items-center justify-end gap-2.5 pt-2 border-t border-black/[0.06]">
+            <div className="flex items-center justify-end gap-2.5 pt-2 border-t border-[var(--border)]">
               <button
                 type="button"
                 onClick={onClose}
-                className="px-3.5 py-2 rounded-xl text-xs font-medium text-zinc-500 hover:text-zinc-800 hover:bg-zinc-100/40 transition-all cursor-pointer"
+                className="px-3.5 py-2 rounded-xl text-xs font-medium text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-muted)]/40 transition-all cursor-pointer"
               >
                 Cancel
               </button>

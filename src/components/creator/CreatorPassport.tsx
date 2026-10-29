@@ -124,20 +124,20 @@ export const CreatorPassport: React.FC<CreatorPassportProps> = ({ onBack }) => {
   return (
     <div className="space-y-5 animate-fade-in max-w-5xl mx-auto pb-12">
       {/* Responsive Navigation Header (Fixes Passport Dead-End) */}
-      <div className="flex items-center justify-between gap-3 pb-3 border-b border-black/[0.08]">
+      <div className="flex items-center justify-between gap-3 pb-3 border-b border-[var(--border)]">
         {/* Desktop Breadcrumb Navigation: ← Profile   Passport */}
         <div className="hidden sm:flex items-center gap-3">
           <button
             type="button"
             onClick={handleNavigateBack}
             data-testid="passport-back-desktop-btn"
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-black/[0.08] bg-white hover:bg-zinc-100 text-xs font-semibold text-zinc-700 hover:text-zinc-950 transition-all cursor-pointer shadow-sm group"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-[var(--border)] bg-[var(--surface)] hover:bg-[var(--surface-muted)] text-xs font-semibold text-[var(--text-primary)] transition-all cursor-pointer shadow-sm group border border-[var(--border)]"
           >
-            <ArrowLeft className="w-3.5 h-3.5 text-zinc-500 group-hover:-translate-x-0.5 transition-transform" />
+            <ArrowLeft className="w-3.5 h-3.5 text-[var(--text-muted)] group-hover:-translate-x-0.5 transition-transform" />
             <span>← Profile</span>
           </button>
           <span className="text-zinc-300 font-mono">/</span>
-          <h1 className="text-xl font-bold text-zinc-900 font-display tracking-tight flex items-center gap-2">
+          <h1 className="text-xl font-bold text-[var(--text-primary)] font-display tracking-tight flex items-center gap-2">
             <span>Passport</span>
             <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-500/30 whitespace-nowrap">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
@@ -152,11 +152,11 @@ export const CreatorPassport: React.FC<CreatorPassportProps> = ({ onBack }) => {
             type="button"
             onClick={handleNavigateBack}
             data-testid="passport-back-mobile-btn"
-            className="flex items-center gap-1.5 px-2.5 py-1.5 -ml-1 rounded-xl text-zinc-800 hover:bg-black/5 active:scale-95 transition-all cursor-pointer"
+            className="flex items-center gap-1.5 px-2.5 py-1.5 -ml-1 rounded-xl text-[var(--text-primary)] hover:bg-black/5 active:scale-95 transition-all cursor-pointer"
             aria-label="Back to Profile"
           >
             <ArrowLeft className="w-5 h-5" />
-            <span className="text-lg font-bold text-zinc-900 font-display">Passport</span>
+            <span className="text-lg font-bold text-[var(--text-primary)] font-display">Passport</span>
           </button>
           <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-500/30 whitespace-nowrap">
             <span className="w-1 h-1 rounded-full bg-emerald-500" />
@@ -170,7 +170,7 @@ export const CreatorPassport: React.FC<CreatorPassportProps> = ({ onBack }) => {
             type="button"
             onClick={handleShare}
             data-testid="passport-share-btn"
-            className="depth-btn-secondary min-h-[36px] px-3.5 py-1.5 rounded-xl text-xs font-semibold text-zinc-900 flex items-center gap-1.5 cursor-pointer shadow-sm"
+            className="depth-btn-secondary min-h-[36px] px-3.5 py-1.5 rounded-xl text-xs font-semibold text-[var(--text-primary)] flex items-center gap-1.5 cursor-pointer shadow-sm"
           >
             {copied ? (
               <Check className="w-3.5 h-3.5 text-emerald-700" />
@@ -195,7 +195,7 @@ export const CreatorPassport: React.FC<CreatorPassportProps> = ({ onBack }) => {
       {/* 3D Spatial Identity Card Hero (Desktop & Mobile Intentional Layout) */}
       <div
         data-testid="passport-identity-card"
-        className="relative rounded-3xl p-5 sm:p-7 overflow-hidden border border-[#D4DEE7] bg-gradient-to-br from-white via-[#F7FAFC] to-[#EAF5F6] shadow-[0_12px_32px_-18px_rgba(23,37,54,0.24),inset_0_1px_0_rgba(255,255,255,0.98)] backdrop-blur-2xl"
+        className="relative rounded-3xl p-5 sm:p-7 overflow-hidden border border-[var(--border)] bg-[var(--surface-elevated)] shadow-2xl backdrop-blur-2xl text-[var(--text-primary)]"
       >
         {/* Subtle Emerald Verification Glow + Soft Purple Ambient Light */}
         <div
@@ -237,7 +237,7 @@ export const CreatorPassport: React.FC<CreatorPassportProps> = ({ onBack }) => {
               {/* Name, Handle, Category & Status */}
               <div className="min-w-0 space-y-0.5">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <h2 className="text-xl sm:text-2xl font-bold text-zinc-900 font-display tracking-tight truncate">
+                  <h2 className="text-xl sm:text-2xl font-bold text-[var(--text-primary)] font-display tracking-tight truncate">
                     {creator.name}
                   </h2>
                   <span
@@ -248,59 +248,59 @@ export const CreatorPassport: React.FC<CreatorPassportProps> = ({ onBack }) => {
                   </span>
                 </div>
 
-                <p className="text-xs font-mono text-zinc-500">
+                <p className="text-xs font-mono text-[var(--text-muted)]">
                   @{creator.handle.replace('@', '')}
                 </p>
 
-                <p className="text-xs sm:text-sm font-medium text-zinc-700">
+                <p className="text-xs sm:text-sm font-medium text-[var(--text-secondary)]">
                   Streetwear &amp; Sneaker Culture
                 </p>
 
                 {/* Status Line */}
-                <div className="flex items-center gap-2 pt-1 text-xs text-zinc-600 flex-wrap">
+                <div className="flex items-center gap-2 pt-1 text-xs text-[var(--text-secondary)] flex-wrap">
                   <span className="inline-flex items-center gap-1.5 text-emerald-700 font-semibold">
                     <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.9)]" />
                     Verified
                   </span>
-                  <span className="text-zinc-600">·</span>
-                  <span className="font-medium text-zinc-700">96 Reputation</span>
-                  <span className="text-zinc-600">·</span>
+                  <span className="text-[var(--text-secondary)]">·</span>
+                  <span className="font-medium text-[var(--text-secondary)]">96 Reputation</span>
+                  <span className="text-[var(--text-secondary)]">·</span>
                   <span className="text-emerald-800 font-medium">{creator.availability}</span>
                 </div>
               </div>
             </div>
 
             {/* Compact 4-Metric Spatial Row */}
-            <div className="grid grid-cols-4 gap-2 sm:gap-3 bg-white/80 border border-zinc-200 rounded-2xl p-3 sm:px-4 sm:py-3 backdrop-blur-xl shrink-0">
+            <div className="grid grid-cols-4 gap-2 sm:gap-3 bg-[var(--surface)]/90 border border-[var(--border)] rounded-2xl p-3 sm:px-4 sm:py-3 backdrop-blur-xl shrink-0 text-[var(--text-primary)]">
               <div className="text-center px-1 sm:px-2">
                 <p className="text-base sm:text-lg font-bold text-emerald-700 font-mono leading-tight">
                   96
                 </p>
-                <span className="text-[10px] text-zinc-500 font-medium">Reputation</span>
+                <span className="text-[10px] text-[var(--text-muted)] font-medium">Reputation</span>
               </div>
-              <div className="text-center px-1 sm:px-2 border-l border-zinc-200">
-                <p className="text-base sm:text-lg font-bold text-zinc-900 font-mono leading-tight">
+              <div className="text-center px-1 sm:px-2 border-l border-[var(--border)]">
+                <p className="text-base sm:text-lg font-bold text-[var(--text-primary)] font-mono leading-tight">
                   {reachFormatted}
                 </p>
-                <span className="text-[10px] text-zinc-500 font-medium">Reach</span>
+                <span className="text-[10px] text-[var(--text-muted)] font-medium">Reach</span>
               </div>
-              <div className="text-center px-1 sm:px-2 border-l border-zinc-200">
-                <p className="text-base sm:text-lg font-bold text-zinc-900 font-mono leading-tight">
+              <div className="text-center px-1 sm:px-2 border-l border-[var(--border)]">
+                <p className="text-base sm:text-lg font-bold text-[var(--text-primary)] font-mono leading-tight">
                   {creator.avgEngagement}%
                 </p>
-                <span className="text-[10px] text-zinc-500 font-medium">Engagement</span>
+                <span className="text-[10px] text-[var(--text-muted)] font-medium">Engagement</span>
               </div>
-              <div className="text-center px-1 sm:px-2 border-l border-zinc-200">
-                <p className="text-base sm:text-lg font-bold text-zinc-900 font-mono leading-tight">
+              <div className="text-center px-1 sm:px-2 border-l border-[var(--border)]">
+                <p className="text-base sm:text-lg font-bold text-[var(--text-primary)] font-mono leading-tight">
                   {creator.pastCampaignsCount}
                 </p>
-                <span className="text-[10px] text-zinc-500 font-medium">Projects</span>
+                <span className="text-[10px] text-[var(--text-muted)] font-medium">Projects</span>
               </div>
             </div>
           </div>
 
           {/* Compact Credential Indicators Row: ✓ Identity · ✓ Experience · ✓ Channels · ✓ Reputation */}
-          <div className="pt-3 border-t border-zinc-200 flex flex-col gap-2.5">
+          <div className="pt-3 border-t border-[var(--border)] flex flex-col gap-2.5">
             <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
               {CREDENTIAL_INDICATORS.map((cred) => {
                 const isSelected = activeCredential?.id === cred.id;
@@ -315,7 +315,7 @@ export const CreatorPassport: React.FC<CreatorPassportProps> = ({ onBack }) => {
                     className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition-all cursor-pointer border ${
                       isSelected
                         ? 'bg-emerald-50 text-emerald-800 border-emerald-200 shadow-sm'
-                        : 'bg-white hover:bg-zinc-50 text-zinc-700 border-zinc-200'
+                        : 'bg-white hover:bg-[var(--surface-muted)] text-[var(--text-secondary)] border-[var(--border)]'
                     }`}
                   >
                     <span className="text-emerald-700 font-bold">✓</span>
@@ -324,15 +324,15 @@ export const CreatorPassport: React.FC<CreatorPassportProps> = ({ onBack }) => {
                 );
               })}
 
-              <span className="ml-auto hidden md:inline-flex items-center gap-1.5 text-[11px] text-zinc-500">
-                <MapPin className="w-3.5 h-3.5 text-zinc-500" />
+              <span className="ml-auto hidden md:inline-flex items-center gap-1.5 text-[11px] text-[var(--text-muted)]">
+                <MapPin className="w-3.5 h-3.5 text-[var(--text-muted)]" />
                 {creator.location}
               </span>
             </div>
 
             {/* Expandable Credential Detail Strip */}
             {activeCredential && (
-              <div className="p-3 rounded-2xl bg-white/90 border border-emerald-200 flex items-center justify-between gap-3 animate-fade-in">
+              <div className="p-3 rounded-2xl bg-[var(--surface)] border border-emerald-500/40 flex items-center justify-between gap-3 animate-fade-in">
                 <div className="space-y-0.5 min-w-0">
                   <div className="flex items-center gap-2">
                     <span className="text-xs font-semibold text-emerald-800">
@@ -342,12 +342,12 @@ export const CreatorPassport: React.FC<CreatorPassportProps> = ({ onBack }) => {
                       {activeCredential.meta}
                     </span>
                   </div>
-                  <p className="text-xs text-zinc-700">{activeCredential.summary}</p>
+                  <p className="text-xs text-[var(--text-secondary)]">{activeCredential.summary}</p>
                 </div>
                 <button
                   type="button"
                   onClick={() => setActiveCredential(null)}
-                  className="p-1 rounded-lg text-zinc-500 hover:text-zinc-900 shrink-0"
+                  className="p-1 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-primary)] shrink-0"
                   aria-label="Close credential details"
                 >
                   <X className="w-3.5 h-3.5" />
@@ -367,15 +367,15 @@ export const CreatorPassport: React.FC<CreatorPassportProps> = ({ onBack }) => {
           {/* Bio Section (2-3 lines with More toggle) */}
           <SpatialCard surface={2} className="md:col-span-2 p-5 space-y-3">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-semibold text-zinc-900 font-display">Bio</h3>
-              <span className="text-[11px] text-zinc-500">
+              <h3 className="text-sm font-semibold text-[var(--text-primary)] font-display">Bio</h3>
+              <span className="text-[11px] text-[var(--text-muted)]">
                 {creator.languages.join(' · ')}
               </span>
             </div>
 
             <div>
               <p
-                className={`text-xs sm:text-sm text-zinc-700 leading-relaxed ${
+                className={`text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed ${
                   bioExpanded ? '' : 'line-clamp-2'
                 }`}
               >
@@ -411,15 +411,15 @@ export const CreatorPassport: React.FC<CreatorPassportProps> = ({ onBack }) => {
 
           {/* Compact Rates Card */}
           <SpatialCard surface={2} className="p-5 space-y-3">
-            <h3 className="text-sm font-semibold text-zinc-900 font-display">Rates</h3>
+            <h3 className="text-sm font-semibold text-[var(--text-primary)] font-display">Rates</h3>
             <div className="grid grid-cols-2 gap-2.5">
               {Object.entries(creator.rateCard).map(([format, fee]) => (
                 <div
                   key={format}
-                  className="p-2.5 rounded-xl bg-white border border-zinc-200"
+                  className="p-2.5 rounded-xl bg-[var(--surface)] border border-[var(--border)]"
                 >
-                  <p className="text-[11px] text-zinc-500 truncate">{format}</p>
-                  <p className="text-sm font-bold font-mono text-zinc-900 mt-0.5">
+                  <p className="text-[11px] text-[var(--text-muted)] truncate">{format}</p>
+                  <p className="text-sm font-bold font-mono text-[var(--text-primary)] mt-0.5">
                     ₹{fee?.toLocaleString()}
                   </p>
                 </div>
@@ -436,7 +436,7 @@ export const CreatorPassport: React.FC<CreatorPassportProps> = ({ onBack }) => {
             <SpatialCard key={idx} surface={2} className="p-5 space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-zinc-50 border border-zinc-200 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-xl bg-[var(--surface-muted)] border border-[var(--border)] flex items-center justify-center">
                     {p.platform === 'Instagram' ? (
                       <InstagramIcon className="w-5 h-5 text-pink-400" />
                     ) : (
@@ -445,10 +445,10 @@ export const CreatorPassport: React.FC<CreatorPassportProps> = ({ onBack }) => {
                   </div>
                   <div>
                     <div className="flex items-center gap-1.5">
-                      <h4 className="text-sm font-bold text-zinc-900">{p.platform}</h4>
+                      <h4 className="text-sm font-bold text-[var(--text-primary)]">{p.platform}</h4>
                       {p.verified && <CheckCircle className="w-3.5 h-3.5 text-emerald-700" />}
                     </div>
-                    <span className="text-xs text-zinc-500 font-mono">{p.handle}</span>
+                    <span className="text-xs text-[var(--text-muted)] font-mono">{p.handle}</span>
                   </div>
                 </div>
                 <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-500/30">
@@ -457,14 +457,14 @@ export const CreatorPassport: React.FC<CreatorPassportProps> = ({ onBack }) => {
               </div>
 
               <div className="grid grid-cols-2 gap-2.5">
-                <div className="p-3 rounded-xl bg-white border border-zinc-200">
-                  <span className="text-[10px] text-zinc-500">Followers</span>
-                  <p className="text-base font-bold font-mono text-zinc-900 mt-0.5">
+                <div className="p-3 rounded-xl bg-[var(--surface)] border border-[var(--border)]">
+                  <span className="text-[10px] text-[var(--text-muted)]">Followers</span>
+                  <p className="text-base font-bold font-mono text-[var(--text-primary)] mt-0.5">
                     {(p.followers / 1000).toFixed(0)}K
                   </p>
                 </div>
-                <div className="p-3 rounded-xl bg-white border border-zinc-200">
-                  <span className="text-[10px] text-zinc-500">Engagement</span>
+                <div className="p-3 rounded-xl bg-[var(--surface)] border border-[var(--border)]">
+                  <span className="text-[10px] text-[var(--text-muted)]">Engagement</span>
                   <p className="text-base font-bold font-mono text-emerald-700 mt-0.5">
                     {p.engagementRate}%
                   </p>
@@ -500,8 +500,8 @@ export const CreatorPassport: React.FC<CreatorPassportProps> = ({ onBack }) => {
                   </div>
                 </div>
                 <div className="p-3.5">
-                  <p className="text-xs font-semibold text-zinc-900 line-clamp-1">{p.title}</p>
-                  <p className="text-[11px] text-zinc-500 mt-0.5">
+                  <p className="text-xs font-semibold text-[var(--text-primary)] line-clamp-1">{p.title}</p>
+                  <p className="text-[11px] text-[var(--text-muted)] mt-0.5">
                     {p.type} · {p.campaignName}
                   </p>
                 </div>
@@ -511,13 +511,13 @@ export const CreatorPassport: React.FC<CreatorPassportProps> = ({ onBack }) => {
 
           <SpatialCard surface={2} className="p-5 grid grid-cols-1 sm:grid-cols-2 gap-5">
             <div className="space-y-2.5">
-              <h4 className="text-xs font-semibold text-zinc-800">Top Cities</h4>
+              <h4 className="text-xs font-semibold text-[var(--text-primary)]">Top Cities</h4>
               <div className="space-y-2">
                 {creator.audienceBreakdown.topLocations.map((loc, idx) => (
                   <div key={idx} className="space-y-1">
                     <div className="flex justify-between text-xs">
-                      <span className="text-zinc-700">{loc.city}</span>
-                      <span className="font-mono text-zinc-600">{loc.pct}%</span>
+                      <span className="text-[var(--text-secondary)]">{loc.city}</span>
+                      <span className="font-mono text-[var(--text-secondary)]">{loc.pct}%</span>
                     </div>
                     <div className="w-full bg-zinc-200 h-1.5 rounded-full overflow-hidden">
                       <div
@@ -531,13 +531,13 @@ export const CreatorPassport: React.FC<CreatorPassportProps> = ({ onBack }) => {
             </div>
 
             <div className="space-y-2.5">
-              <h4 className="text-xs font-semibold text-zinc-800">Age Split</h4>
+              <h4 className="text-xs font-semibold text-[var(--text-primary)]">Age Split</h4>
               <div className="space-y-2">
                 {creator.audienceBreakdown.ageSplit.map((a, idx) => (
                   <div key={idx} className="space-y-1">
                     <div className="flex justify-between text-xs">
-                      <span className="text-zinc-700">{a.range}</span>
-                      <span className="font-mono text-zinc-600">{a.pct}%</span>
+                      <span className="text-[var(--text-secondary)]">{a.range}</span>
+                      <span className="font-mono text-[var(--text-secondary)]">{a.pct}%</span>
                     </div>
                     <div className="w-full bg-zinc-200 h-1.5 rounded-full overflow-hidden">
                       <div
@@ -560,8 +560,8 @@ export const CreatorPassport: React.FC<CreatorPassportProps> = ({ onBack }) => {
             <SpatialCard key={t.id} surface={2} className="p-5 space-y-2.5">
               <div className="flex items-center justify-between">
                 <div>
-                  <h4 className="text-xs font-bold text-zinc-900">{t.brandName}</h4>
-                  <p className="text-[11px] text-zinc-500">
+                  <h4 className="text-xs font-bold text-[var(--text-primary)]">{t.brandName}</h4>
+                  <p className="text-[11px] text-[var(--text-muted)]">
                     {t.authorName} · {t.authorRole}
                   </p>
                 </div>
@@ -570,8 +570,8 @@ export const CreatorPassport: React.FC<CreatorPassportProps> = ({ onBack }) => {
                   <span className="text-xs font-bold font-mono">{t.rating}.0</span>
                 </div>
               </div>
-              <p className="text-xs text-zinc-700 leading-relaxed">"{t.comment}"</p>
-              <div className="flex justify-between text-[10px] text-zinc-500 pt-1">
+              <p className="text-xs text-[var(--text-secondary)] leading-relaxed">"{t.comment}"</p>
+              <div className="flex justify-between text-[10px] text-[var(--text-muted)] pt-1">
                 <span>{t.verifiedCampaign}</span>
                 <span>{t.date}</span>
               </div>

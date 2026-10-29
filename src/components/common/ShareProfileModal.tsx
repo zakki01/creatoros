@@ -103,19 +103,19 @@ export const ShareProfileModal: React.FC<ShareProfileModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/60 backdrop-blur-md animate-fade-in overflow-y-auto">
       <div
-        className="relative w-full max-w-lg rounded-3xl bg-white text-zinc-900 border border-black/[0.08] shadow-2xl overflow-hidden my-auto"
+        className="relative w-full max-w-lg rounded-3xl bg-[var(--surface-elevated)] text-[var(--text-primary)] border border-[var(--border)] shadow-2xl overflow-hidden my-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="px-6 py-4 border-b border-black/[0.08] flex items-center justify-between bg-zinc-50/70">
+        <div className="px-6 py-4 border-b border-[var(--border)] flex items-center justify-between bg-[var(--surface-muted)]">
           <div className="flex items-center gap-2">
             <Share2 className="w-4 h-4 text-[#007E93]" />
-            <h3 className="text-base font-bold text-zinc-900 font-display">Share Profile</h3>
+            <h3 className="text-base font-bold text-[var(--text-primary)] font-display">Share Profile</h3>
           </div>
           <button
             onClick={onClose}
             aria-label="Close modal"
-            className="w-8 h-8 flex items-center justify-center rounded-full bg-zinc-200/80 hover:bg-zinc-300 text-zinc-700 transition-colors cursor-pointer"
+            className="w-8 h-8 flex items-center justify-center rounded-full bg-black/5 dark:bg-[var(--surface)]/10 hover:bg-black/10 dark:hover:bg-[var(--surface)]/15 text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
@@ -123,7 +123,7 @@ export const ShareProfileModal: React.FC<ShareProfileModalProps> = ({
 
         {/* Profile Card Preview */}
         <div className="p-6 space-y-5">
-          <div className="p-4 rounded-2xl bg-zinc-50 border border-black/[0.08] flex items-center gap-3.5 shadow-xs">
+          <div className="p-4 rounded-2xl bg-[var(--surface-muted)] border border-[var(--border)] flex items-center gap-3.5 shadow-xs">
             <img
               src={profileData.avatar}
               alt={profileData.name}
@@ -131,11 +131,11 @@ export const ShareProfileModal: React.FC<ShareProfileModalProps> = ({
             />
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-1.5">
-                <h4 className="text-sm font-bold text-zinc-900 truncate">{profileData.name}</h4>
+                <h4 className="text-sm font-bold text-[var(--text-primary)] truncate">{profileData.name}</h4>
                 {profileData.verified && <ShieldCheck className="w-4 h-4 text-[#007E93] shrink-0" />}
               </div>
-              <p className="text-xs text-zinc-500 font-mono">{profileData.handle}</p>
-              <div className="flex items-center gap-2 mt-1 text-[11px] text-zinc-600">
+              <p className="text-xs text-[var(--text-muted)] font-mono">{profileData.handle}</p>
+              <div className="flex items-center gap-2 mt-1 text-[11px] text-[var(--text-secondary)]">
                 {profileData.category && <span>{profileData.category}</span>}
                 {profileData.availabilityStatus && (
                   <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
@@ -148,9 +148,9 @@ export const ShareProfileModal: React.FC<ShareProfileModalProps> = ({
 
           {/* 1. Copy Public Link & Native Share */}
           <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-zinc-800 block">Public Profile URL</label>
+            <label className="text-xs font-semibold text-[var(--text-primary)] block">Public Profile URL</label>
             <div className="flex items-center gap-2">
-              <div className="flex-1 px-3.5 py-2 text-xs font-mono text-zinc-700 bg-zinc-100 rounded-xl border border-zinc-200 truncate select-all">
+              <div className="flex-1 px-3.5 py-2 text-xs font-mono text-[var(--text-secondary)] bg-[var(--surface-muted)] rounded-xl border border-[var(--border)] truncate select-all">
                 {publicUrl}
               </div>
               <button
@@ -164,10 +164,10 @@ export const ShareProfileModal: React.FC<ShareProfileModalProps> = ({
               <button
                 type="button"
                 onClick={handleNativeShare}
-                className="px-3 py-2 text-xs font-semibold rounded-xl bg-zinc-100 hover:bg-zinc-200 text-zinc-800 border border-zinc-200 flex items-center gap-1.5 shrink-0 transition-all cursor-pointer active:scale-95 shadow-xs"
+                className="px-3 py-2 text-xs font-semibold rounded-xl bg-[var(--surface-muted)] hover:bg-black/5 dark:hover:bg-white/10 text-[var(--text-primary)] border border-[var(--border)] flex items-center gap-1.5 shrink-0 transition-all cursor-pointer active:scale-95 shadow-xs"
                 title="Share via device system dialog"
               >
-                <Share2 className="w-3.5 h-3.5 text-zinc-600" />
+                <Share2 className="w-3.5 h-3.5 text-[var(--text-secondary)]" />
                 <span>Share...</span>
               </button>
             </div>
@@ -184,7 +184,7 @@ export const ShareProfileModal: React.FC<ShareProfileModalProps> = ({
                 <select
                   value={selectedCampaignId}
                   onChange={(e) => setSelectedCampaignId(e.target.value)}
-                  className="flex-1 px-3 py-2 text-xs bg-white rounded-xl border border-teal-200 text-zinc-800 focus:outline-none focus:ring-1 focus:ring-[#007E93]"
+                  className="flex-1 px-3 py-2 text-xs bg-[var(--surface)] rounded-xl border border-teal-200 text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[#007E93]"
                 >
                   {campaigns.map((c) => (
                     <option key={c.id} value={c.id}>
@@ -207,21 +207,21 @@ export const ShareProfileModal: React.FC<ShareProfileModalProps> = ({
 
           {/* 2. Send Direct to Active Conversations */}
           <div className="space-y-2">
-            <label className="text-xs font-semibold text-zinc-800 flex items-center justify-between">
+            <label className="text-xs font-semibold text-[var(--text-primary)] flex items-center justify-between">
               <span>Send Directly to CreatorOS Chat</span>
-              <span className="text-[10px] text-zinc-500">1-Click Rich Profile Card</span>
+              <span className="text-[10px] text-[var(--text-muted)]">1-Click Rich Profile Card</span>
             </label>
 
             <div className="max-h-44 overflow-y-auto space-y-1.5 pr-1">
               {conversations.length === 0 ? (
-                <p className="text-xs text-zinc-500 italic p-3 text-center">No active chats found.</p>
+                <p className="text-xs text-[var(--text-muted)] italic p-3 text-center">No active chats found.</p>
               ) : (
                 conversations.map((conv) => {
                   const isSent = sentChatId === conv.id;
                   return (
                     <div
                       key={conv.id}
-                      className="p-2.5 rounded-xl border border-zinc-200 hover:border-[#007E93]/40 bg-zinc-50/70 hover:bg-zinc-50 flex items-center justify-between transition-colors"
+                      className="p-2.5 rounded-xl border border-[var(--border)] hover:border-[#007E93]/40 bg-[var(--surface-muted)] hover:bg-[var(--surface-muted)] flex items-center justify-between transition-colors"
                     >
                       <div className="flex items-center gap-2.5 min-w-0">
                         <img
@@ -230,10 +230,10 @@ export const ShareProfileModal: React.FC<ShareProfileModalProps> = ({
                           className="w-8 h-8 rounded-full object-cover shrink-0"
                         />
                         <div className="min-w-0">
-                          <p className="text-xs font-semibold text-zinc-900 truncate">
+                          <p className="text-xs font-semibold text-[var(--text-primary)] truncate">
                             {conv.participantName}
                           </p>
-                          <p className="text-[10px] text-zinc-500 font-mono truncate">
+                          <p className="text-[10px] text-[var(--text-muted)] font-mono truncate">
                             {conv.participantHandle}
                           </p>
                         </div>
@@ -246,7 +246,7 @@ export const ShareProfileModal: React.FC<ShareProfileModalProps> = ({
                         className={`px-3 py-1.5 text-xs font-semibold rounded-lg flex items-center gap-1.5 transition-all cursor-pointer ${
                           isSent
                             ? 'bg-emerald-600 text-white'
-                            : 'bg-zinc-200 hover:bg-[#007E93] hover:text-white text-zinc-800'
+                            : 'bg-zinc-200 hover:bg-[#007E93] hover:text-white text-[var(--text-primary)]'
                         }`}
                       >
                         {isSent ? <Check className="w-3.5 h-3.5" /> : <Send className="w-3 h-3" />}
@@ -261,13 +261,13 @@ export const ShareProfileModal: React.FC<ShareProfileModalProps> = ({
 
           {/* 3. External Sharing Channels */}
           <div className="space-y-2 pt-1 border-t border-zinc-100">
-            <span className="text-xs font-semibold text-zinc-800 block">External Share Channels</span>
+            <span className="text-xs font-semibold text-[var(--text-primary)] block">External Share Channels</span>
             <div className="grid grid-cols-3 gap-2">
               <a
                 href={`https://api.whatsapp.com/send?text=${shareText}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-2.5 rounded-xl border border-zinc-200 hover:bg-emerald-50 hover:border-emerald-300 text-zinc-800 hover:text-emerald-800 text-xs font-medium flex items-center justify-center gap-1.5 transition-colors"
+                className="p-2.5 rounded-xl border border-[var(--border)] hover:bg-emerald-50 hover:border-emerald-300 text-[var(--text-primary)] hover:text-emerald-800 text-xs font-medium flex items-center justify-center gap-1.5 transition-colors"
               >
                 <span>WhatsApp</span>
                 <ExternalLink className="w-3 h-3 opacity-60" />
@@ -277,7 +277,7 @@ export const ShareProfileModal: React.FC<ShareProfileModalProps> = ({
                 href={`https://twitter.com/intent/tweet?text=${shareText}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-2.5 rounded-xl border border-zinc-200 hover:bg-sky-50 hover:border-sky-300 text-zinc-800 hover:text-sky-800 text-xs font-medium flex items-center justify-center gap-1.5 transition-colors"
+                className="p-2.5 rounded-xl border border-[var(--border)] hover:bg-sky-50 hover:border-sky-300 text-[var(--text-primary)] hover:text-sky-800 text-xs font-medium flex items-center justify-center gap-1.5 transition-colors"
               >
                 <span>X / Twitter</span>
                 <ExternalLink className="w-3 h-3 opacity-60" />
@@ -289,7 +289,7 @@ export const ShareProfileModal: React.FC<ShareProfileModalProps> = ({
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-2.5 rounded-xl border border-zinc-200 hover:bg-blue-50 hover:border-blue-300 text-zinc-800 hover:text-blue-800 text-xs font-medium flex items-center justify-center gap-1.5 transition-colors"
+                className="p-2.5 rounded-xl border border-[var(--border)] hover:bg-blue-50 hover:border-blue-300 text-[var(--text-primary)] hover:text-blue-800 text-xs font-medium flex items-center justify-center gap-1.5 transition-colors"
               >
                 <span>LinkedIn</span>
                 <ExternalLink className="w-3 h-3 opacity-60" />

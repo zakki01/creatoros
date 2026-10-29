@@ -104,22 +104,22 @@ export const CreatorProfileModal: React.FC<CreatorProfileModalProps> = ({
           />
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-base font-bold text-zinc-900 font-display">
+              <h2 className="text-base font-bold text-[var(--text-primary)] font-display">
                 {creator.name}
               </h2>
               {creator.verified && (
                 <ShieldCheck className="w-4 h-4 text-[#007E93]" />
               )}
-              <span className="text-xs text-zinc-500 font-mono">@{creator.handle}</span>
+              <span className="text-xs text-[var(--text-muted)] font-mono">@{creator.handle}</span>
             </div>
-            <p className="text-xs text-zinc-500">{creator.category} • {creator.location}</p>
+            <p className="text-xs text-[var(--text-muted)]">{creator.category} • {creator.location}</p>
           </div>
         </div>
       }
       footer={
         <div className="flex flex-col sm:flex-row items-center justify-between w-full gap-3">
-          <div className="text-xs text-zinc-500 truncate self-start sm:self-auto">
-            Targeting for: <strong className="text-zinc-800">{activeCampaign?.name}</strong>
+          <div className="text-xs text-[var(--text-muted)] truncate self-start sm:self-auto">
+            Targeting for: <strong className="text-[var(--text-primary)]">{activeCampaign?.name}</strong>
           </div>
           <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto justify-end">
             <Button variant="ghost" size="sm" onClick={onClose}>
@@ -178,25 +178,25 @@ export const CreatorProfileModal: React.FC<CreatorProfileModalProps> = ({
         {activeTab === 'overview' && (
           <div className="space-y-6 animate-fade-in">
             {/* Live Availability Status */}
-            <div className="p-3.5 rounded-2xl bg-zinc-50 border border-zinc-200/80 flex items-center justify-between text-xs">
+            <div className="p-3.5 rounded-2xl bg-[var(--surface-muted)] border border-[var(--border)] flex items-center justify-between text-xs">
               <div className="flex items-center gap-2.5">
                 <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
-                <span className="font-semibold text-zinc-900">
+                <span className="font-semibold text-[var(--text-primary)]">
                   Status: {creator.availabilityStatus || 'Available Now'}
                 </span>
                 {creator.availableDates && (
-                  <span className="text-zinc-500 font-mono text-[11px] hidden sm:inline">
+                  <span className="text-[var(--text-muted)] font-mono text-[11px] hidden sm:inline">
                     • {creator.availableDates}
                   </span>
                 )}
               </div>
-              <div className="text-zinc-600 font-mono text-[11px]">
-                Min. Rate: <strong className="text-zinc-900 font-semibold">₹{(creator.minimumRate || creator.estimatedRate).toLocaleString()}</strong>
+              <div className="text-[var(--text-secondary)] font-mono text-[11px]">
+                Min. Rate: <strong className="text-[var(--text-primary)] font-semibold">₹{(creator.minimumRate || creator.estimatedRate).toLocaleString()}</strong>
               </div>
             </div>
             {/* Bio & Top Badges */}
             <div className="space-y-2.5">
-              <p className="text-xs text-zinc-700 leading-relaxed">{creator.bio}</p>
+              <p className="text-xs text-[var(--text-secondary)] leading-relaxed">{creator.bio}</p>
               <div className="flex flex-wrap gap-1.5">
                 {creator.verifiedBadges.map((badge, idx) => (
                   <Badge key={idx} variant="brand" size="sm">
@@ -225,21 +225,21 @@ export const CreatorProfileModal: React.FC<CreatorProfileModalProps> = ({
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
-                  <div className="p-2.5 rounded-xl bg-zinc-50 border border-zinc-200">
-                    <span className="font-semibold text-zinc-700 block">Audience Match:</span>
-                    <span className="text-zinc-500 text-[11px]">{creator.aiMatchFactors.audienceMatch}</span>
+                  <div className="p-2.5 rounded-xl bg-[var(--surface-muted)] border border-[var(--border)]">
+                    <span className="font-semibold text-[var(--text-secondary)] block">Audience Match:</span>
+                    <span className="text-[var(--text-muted)] text-[11px]">{creator.aiMatchFactors.audienceMatch}</span>
                   </div>
-                  <div className="p-2.5 rounded-xl bg-zinc-50 border border-zinc-200">
-                    <span className="font-semibold text-zinc-700 block">Content Aesthetic:</span>
-                    <span className="text-zinc-500 text-[11px]">{creator.aiMatchFactors.contentRelevance}</span>
+                  <div className="p-2.5 rounded-xl bg-[var(--surface-muted)] border border-[var(--border)]">
+                    <span className="font-semibold text-[var(--text-secondary)] block">Content Aesthetic:</span>
+                    <span className="text-[var(--text-muted)] text-[11px]">{creator.aiMatchFactors.contentRelevance}</span>
                   </div>
-                  <div className="p-2.5 rounded-xl bg-zinc-50 border border-zinc-200">
-                    <span className="font-semibold text-zinc-700 block">Historical Performance:</span>
-                    <span className="text-zinc-500 text-[11px]">{creator.aiMatchFactors.historicalPerformance}</span>
+                  <div className="p-2.5 rounded-xl bg-[var(--surface-muted)] border border-[var(--border)]">
+                    <span className="font-semibold text-[var(--text-secondary)] block">Historical Performance:</span>
+                    <span className="text-[var(--text-muted)] text-[11px]">{creator.aiMatchFactors.historicalPerformance}</span>
                   </div>
-                  <div className="p-2.5 rounded-xl bg-zinc-50 border border-zinc-200">
-                    <span className="font-semibold text-zinc-700 block">Location Logistics:</span>
-                    <span className="text-zinc-500 text-[11px]">{creator.aiMatchFactors.location}</span>
+                  <div className="p-2.5 rounded-xl bg-[var(--surface-muted)] border border-[var(--border)]">
+                    <span className="font-semibold text-[var(--text-secondary)] block">Location Logistics:</span>
+                    <span className="text-[var(--text-muted)] text-[11px]">{creator.aiMatchFactors.location}</span>
                   </div>
                 </div>
               </div>
@@ -247,27 +247,27 @@ export const CreatorProfileModal: React.FC<CreatorProfileModalProps> = ({
 
             {/* Key Metrics Strip */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              <div className="p-3.5 rounded-2xl bg-white shadow-xs border border-zinc-200 text-center">
-                <p className="text-[10px] text-zinc-500 uppercase font-medium">Total Followers</p>
-                <p className="text-lg font-bold text-zinc-900 font-mono mt-0.5">
+              <div className="p-3.5 rounded-2xl bg-[var(--surface)] border border-[var(--border)] text-center">
+                <p className="text-[10px] text-[var(--text-muted)] uppercase font-medium">Total Followers</p>
+                <p className="text-lg font-bold text-[var(--text-primary)] font-mono mt-0.5">
                   {(creator.totalFollowers / 1000).toFixed(0)}K
                 </p>
               </div>
-              <div className="p-3.5 rounded-2xl bg-white shadow-xs border border-zinc-200 text-center">
-                <p className="text-[10px] text-zinc-500 uppercase font-medium">Avg Engagement</p>
+              <div className="p-3.5 rounded-2xl bg-[var(--surface)] border border-[var(--border)] text-center">
+                <p className="text-[10px] text-[var(--text-muted)] uppercase font-medium">Avg Engagement</p>
                 <p className="text-lg font-bold text-[#007E93] font-mono mt-0.5">
                   {creator.avgEngagement}%
                 </p>
               </div>
-              <div className="p-3.5 rounded-2xl bg-white shadow-xs border border-zinc-200 text-center">
-                <p className="text-[10px] text-zinc-500 uppercase font-medium">On-Time Delivery</p>
+              <div className="p-3.5 rounded-2xl bg-[var(--surface)] border border-[var(--border)] text-center">
+                <p className="text-[10px] text-[var(--text-muted)] uppercase font-medium">On-Time Delivery</p>
                 <p className="text-lg font-bold text-emerald-700 font-mono mt-0.5">
                   {creator.reliabilityMetrics.onTimeDelivery}%
                 </p>
               </div>
-              <div className="p-3.5 rounded-2xl bg-white shadow-xs border border-zinc-200 text-center">
-                <p className="text-[10px] text-zinc-500 uppercase font-medium">Estimated Rate</p>
-                <p className="text-lg font-bold text-zinc-900 font-mono mt-0.5">
+              <div className="p-3.5 rounded-2xl bg-[var(--surface)] border border-[var(--border)] text-center">
+                <p className="text-[10px] text-[var(--text-muted)] uppercase font-medium">Estimated Rate</p>
+                <p className="text-lg font-bold text-[var(--text-primary)] font-mono mt-0.5">
                   ₹{(creator.estimatedRate / 1000).toFixed(0)}k
                 </p>
               </div>
@@ -280,16 +280,16 @@ export const CreatorProfileModal: React.FC<CreatorProfileModalProps> = ({
           <div className="space-y-6 animate-fade-in">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* Top Cities */}
-              <div className="p-4 rounded-2xl bg-white shadow-xs border border-zinc-200 space-y-3">
-                <h4 className="text-xs font-semibold text-zinc-800">Top Audience Cities</h4>
+              <div className="p-4 rounded-2xl bg-[var(--surface)] border border-[var(--border)] space-y-3">
+                <h4 className="text-xs font-semibold text-[var(--text-primary)]">Top Audience Cities</h4>
                 <div className="space-y-2">
                   {creator.audienceBreakdown.topLocations.map((loc, idx) => (
                     <div key={idx} className="space-y-1">
                       <div className="flex justify-between text-xs">
-                        <span className="text-zinc-700">{loc.city}</span>
-                        <span className="font-mono text-zinc-500">{loc.pct}%</span>
+                        <span className="text-[var(--text-secondary)]">{loc.city}</span>
+                        <span className="font-mono text-[var(--text-muted)]">{loc.pct}%</span>
                       </div>
-                      <div className="w-full bg-zinc-100 h-1.5 rounded-full overflow-hidden">
+                      <div className="w-full bg-[var(--surface-muted)] h-1.5 rounded-full overflow-hidden">
                         <div
                           className="bg-indigo-500 h-full rounded-full"
                           style={{ width: `${loc.pct}%` }}
@@ -301,16 +301,16 @@ export const CreatorProfileModal: React.FC<CreatorProfileModalProps> = ({
               </div>
 
               {/* Age Split */}
-              <div className="p-4 rounded-2xl bg-white shadow-xs border border-zinc-200 space-y-3">
-                <h4 className="text-xs font-semibold text-zinc-800">Age Distribution</h4>
+              <div className="p-4 rounded-2xl bg-[var(--surface)] border border-[var(--border)] space-y-3">
+                <h4 className="text-xs font-semibold text-[var(--text-primary)]">Age Distribution</h4>
                 <div className="space-y-2">
                   {creator.audienceBreakdown.ageSplit.map((age, idx) => (
                     <div key={idx} className="space-y-1">
                       <div className="flex justify-between text-xs">
-                        <span className="text-zinc-700">{age.range} years</span>
-                        <span className="font-mono text-zinc-500">{age.pct}%</span>
+                        <span className="text-[var(--text-secondary)]">{age.range} years</span>
+                        <span className="font-mono text-[var(--text-muted)]">{age.pct}%</span>
                       </div>
-                      <div className="w-full bg-zinc-100 h-1.5 rounded-full overflow-hidden">
+                      <div className="w-full bg-[var(--surface-muted)] h-1.5 rounded-full overflow-hidden">
                         <div
                           className="bg-purple-500 h-full rounded-full"
                           style={{ width: `${age.pct}%` }}
@@ -323,17 +323,17 @@ export const CreatorProfileModal: React.FC<CreatorProfileModalProps> = ({
             </div>
 
             {/* Gender Split */}
-            <div className="p-4 rounded-2xl bg-white shadow-xs border border-zinc-200 space-y-2">
-              <h4 className="text-xs font-semibold text-zinc-800">Gender Ratio</h4>
+            <div className="p-4 rounded-2xl bg-[var(--surface)] border border-[var(--border)] space-y-2">
+              <h4 className="text-xs font-semibold text-[var(--text-primary)]">Gender Ratio</h4>
               <div className="flex items-center gap-4 text-xs">
-                <span className="text-zinc-500">
-                  Male: <strong className="text-zinc-800 font-mono">{creator.audienceBreakdown.genderSplit.male}%</strong>
+                <span className="text-[var(--text-muted)]">
+                  Male: <strong className="text-[var(--text-primary)] font-mono">{creator.audienceBreakdown.genderSplit.male}%</strong>
                 </span>
-                <span className="text-zinc-500">
-                  Female: <strong className="text-zinc-800 font-mono">{creator.audienceBreakdown.genderSplit.female}%</strong>
+                <span className="text-[var(--text-muted)]">
+                  Female: <strong className="text-[var(--text-primary)] font-mono">{creator.audienceBreakdown.genderSplit.female}%</strong>
                 </span>
-                <span className="text-zinc-500">
-                  Other: <strong className="text-zinc-800 font-mono">{creator.audienceBreakdown.genderSplit.other}%</strong>
+                <span className="text-[var(--text-muted)]">
+                  Other: <strong className="text-[var(--text-primary)] font-mono">{creator.audienceBreakdown.genderSplit.other}%</strong>
                 </span>
               </div>
             </div>
@@ -346,7 +346,7 @@ export const CreatorProfileModal: React.FC<CreatorProfileModalProps> = ({
             {creator.portfolio.map((item) => (
               <div
                 key={item.id}
-                className="group rounded-2xl bg-white shadow-xs border border-zinc-200 overflow-hidden hover:border-zinc-300 transition-all"
+                className="group rounded-2xl bg-[var(--surface)] border border-[var(--border)] overflow-hidden hover:border-[var(--border)] transition-all"
               >
                 <div className="relative h-44 overflow-hidden">
                   <img
@@ -362,7 +362,7 @@ export const CreatorProfileModal: React.FC<CreatorProfileModalProps> = ({
                   </div>
                   <div className="absolute bottom-2.5 left-2.5 right-2.5 flex items-center justify-between text-xs text-white">
                     <span className="flex items-center gap-1 font-mono">
-                      <Eye className="w-3.5 h-3.5 text-zinc-700" />
+                      <Eye className="w-3.5 h-3.5 text-[var(--text-secondary)]" />
                       {(item.views / 1000).toFixed(0)}K views
                     </span>
                     <span className="flex items-center gap-1 font-mono text-pink-300">
@@ -372,9 +372,9 @@ export const CreatorProfileModal: React.FC<CreatorProfileModalProps> = ({
                   </div>
                 </div>
                 <div className="p-3">
-                  <p className="text-xs font-semibold text-zinc-800 line-clamp-1">{item.title}</p>
+                  <p className="text-xs font-semibold text-[var(--text-primary)] line-clamp-1">{item.title}</p>
                   {item.campaignName && (
-                    <p className="text-[10px] text-zinc-500 mt-0.5">Campaign: {item.campaignName}</p>
+                    <p className="text-[10px] text-[var(--text-muted)] mt-0.5">Campaign: {item.campaignName}</p>
                   )}
                 </div>
               </div>
@@ -385,11 +385,11 @@ export const CreatorProfileModal: React.FC<CreatorProfileModalProps> = ({
         {/* TAB 4: REPUTATION & RELIABILITY RADAR */}
         {activeTab === 'reputation' && (
           <div className="space-y-4 animate-fade-in">
-            <div className="p-4 rounded-2xl bg-white shadow-xs border border-zinc-200">
-              <h4 className="text-xs font-semibold text-zinc-800 mb-1">
+            <div className="p-4 rounded-2xl bg-[var(--surface)] border border-[var(--border)]">
+              <h4 className="text-xs font-semibold text-[var(--text-primary)] mb-1">
                 Internal Platform Reliability Scores
               </h4>
-              <p className="text-[11px] text-zinc-500 mb-4">
+              <p className="text-[11px] text-[var(--text-muted)] mb-4">
                 These scores are verified by CreatorOS based on historical prompt compliance, milestone delivery timelines, and response latencies.
               </p>
 
@@ -404,12 +404,12 @@ export const CreatorProfileModal: React.FC<CreatorProfileModalProps> = ({
                   <div key={idx} className="space-y-1">
                     <div className="flex justify-between items-center text-xs">
                       <div>
-                        <span className="font-semibold text-zinc-700">{item.label}</span>
-                        <span className="text-[10px] text-zinc-500 ml-2 hidden sm:inline">{item.desc}</span>
+                        <span className="font-semibold text-[var(--text-secondary)]">{item.label}</span>
+                        <span className="text-[10px] text-[var(--text-muted)] ml-2 hidden sm:inline">{item.desc}</span>
                       </div>
                       <span className="font-mono font-bold text-[#007E93]">{item.score}%</span>
                     </div>
-                    <div className="w-full bg-zinc-100 h-2 rounded-full overflow-hidden">
+                    <div className="w-full bg-[var(--surface-muted)] h-2 rounded-full overflow-hidden">
                       <div
                         className="bg-gradient-to-r from-indigo-500 to-emerald-400 h-full rounded-full"
                         style={{ width: `${item.score}%` }}
@@ -428,16 +428,16 @@ export const CreatorProfileModal: React.FC<CreatorProfileModalProps> = ({
             {creator.testimonials.map((t) => (
               <div
                 key={t.id}
-                className="p-4 rounded-2xl bg-white shadow-xs border border-zinc-200 space-y-2"
+                className="p-4 rounded-2xl bg-[var(--surface)] border border-[var(--border)] space-y-2"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <div className="w-6 h-6 rounded-lg bg-zinc-100 flex items-center justify-center text-xs font-bold text-zinc-700">
+                    <div className="w-6 h-6 rounded-lg bg-[var(--surface-muted)] flex items-center justify-center text-xs font-bold text-[var(--text-secondary)]">
                       {t.brandName.slice(0, 1)}
                     </div>
                     <div>
-                      <span className="text-xs font-semibold text-zinc-800">{t.brandName}</span>
-                      <span className="text-[10px] text-zinc-500 ml-2">
+                      <span className="text-xs font-semibold text-[var(--text-primary)]">{t.brandName}</span>
+                      <span className="text-[10px] text-[var(--text-muted)] ml-2">
                         {t.authorName} ({t.authorRole})
                       </span>
                     </div>
@@ -447,8 +447,8 @@ export const CreatorProfileModal: React.FC<CreatorProfileModalProps> = ({
                     <span className="text-xs font-bold font-mono">{t.rating}.0</span>
                   </div>
                 </div>
-                <p className="text-xs text-zinc-700 italic leading-relaxed">"{t.comment}"</p>
-                <div className="flex items-center justify-between text-[10px] text-zinc-500 pt-1">
+                <p className="text-xs text-[var(--text-secondary)] italic leading-relaxed">"{t.comment}"</p>
+                <div className="flex items-center justify-between text-[10px] text-[var(--text-muted)] pt-1">
                   <span>Verified Campaign: {t.verifiedCampaign}</span>
                   <span>{t.date}</span>
                 </div>
@@ -460,16 +460,16 @@ export const CreatorProfileModal: React.FC<CreatorProfileModalProps> = ({
         {/* TAB 6: RATE CARD */}
         {activeTab === 'rates' && (
           <div className="space-y-3 animate-fade-in">
-            <div className="p-4 rounded-2xl bg-white shadow-xs border border-zinc-200 space-y-3">
-              <h4 className="text-xs font-semibold text-zinc-800">Standard Rate Card</h4>
+            <div className="p-4 rounded-2xl bg-[var(--surface)] border border-[var(--border)] space-y-3">
+              <h4 className="text-xs font-semibold text-[var(--text-primary)]">Standard Rate Card</h4>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {Object.entries(creator.rateCard).map(([format, price]) => (
                   <div
                     key={format}
-                    className="p-3 rounded-xl bg-zinc-50 border border-zinc-200 flex items-center justify-between text-xs"
+                    className="p-3 rounded-xl bg-[var(--surface-muted)] border border-[var(--border)] flex items-center justify-between text-xs"
                   >
-                    <span className="text-zinc-700 font-medium">{format}</span>
-                    <span className="font-mono font-bold text-zinc-900">
+                    <span className="text-[var(--text-secondary)] font-medium">{format}</span>
+                    <span className="font-mono font-bold text-[var(--text-primary)]">
                       ₹{price?.toLocaleString()}
                     </span>
                   </div>
