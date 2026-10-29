@@ -14,6 +14,7 @@ import { Card } from '../ui/Card';
 import { Button } from '../ui/Button';
 import { Badge } from '../ui/Badge';
 import { Progress } from '../ui/Progress';
+import { SpatialEmptyState } from '../ui/SpatialEmptyState';
 
 interface BusinessOverviewProps {
   onNavigate: (tab: string) => void;
@@ -193,6 +194,15 @@ export const BusinessOverview: React.FC<BusinessOverviewProps> = ({
           </button>
         </div>
 
+        {campaigns.length === 0 ? (
+          <SpatialEmptyState
+            objectType="brief"
+            title="No campaigns yet"
+            subtitle="Launch your first campaign brief to collaborate with creators and receive deliverables."
+            actionLabel="Create Campaign"
+            onAction={onOpenCreateCampaign}
+          />
+        ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {campaigns.map((camp) => (
             <div
@@ -249,6 +259,7 @@ export const BusinessOverview: React.FC<BusinessOverviewProps> = ({
             </div>
           ))}
         </div>
+        )}
       </div>
 
       {/* 5. "AI INSIGHTS" (Only Useful Contextual Recommendations) */}

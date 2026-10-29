@@ -7,9 +7,11 @@ export interface SpatialEmptyStateProps {
   objectType?: SpatialObjectType;
   title: string;
   subtitle?: string;
+  description?: string;
   actionLabel?: string;
   onAction?: () => void;
   className?: string;
+  icon?: any;
 }
 
 const render3DObject = (type: SpatialObjectType) => {
@@ -150,10 +152,12 @@ export const SpatialEmptyState: React.FC<SpatialEmptyStateProps> = ({
   objectType = 'gallery',
   title,
   subtitle,
+  description,
   actionLabel,
   onAction,
   className,
 }) => {
+  const descText = subtitle || description;
   return (
     <div
       className={clsx(
@@ -175,9 +179,9 @@ export const SpatialEmptyState: React.FC<SpatialEmptyStateProps> = ({
         {title}
       </h3>
 
-      {subtitle && (
+      {descText && (
         <p className="relative z-10 text-xs sm:text-sm text-zinc-500 mt-1 max-w-xs">
-          {subtitle}
+          {descText}
         </p>
       )}
 

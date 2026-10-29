@@ -8,7 +8,9 @@ export interface AuthUser {
   avatarUrl: string;
   handle?: string;
   isDemo?: boolean;
-  provider: 'email' | 'google' | 'apple' | 'facebook' | 'demo';
+  is_demo?: boolean;
+  account_type?: 'demo' | 'standard' | 'enterprise';
+  provider: 'email' | 'google' | 'apple' | 'facebook' | 'demo' | 'auth0';
 }
 
 export type AuthMode = 'welcome' | 'auth' | 'app';

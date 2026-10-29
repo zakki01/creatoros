@@ -489,12 +489,32 @@ export async function processMediaUpload(
 export async function uploadDirectToStorage(
   file: File,
   bucket = 'creatoros-media',
-  onProgress?: (progress: UploadProgress) => void
+  onProgress?: (progress: UploadProgress) => void,
+  userId?: string
 ): Promise<string> {
   const supabaseUrl = (import.meta as any).env?.VITE_SUPABASE_URL;
   const supabaseAnonKey = (import.meta as any).env?.VITE_SUPABASE_ANON_KEY;
   const sanitized = sanitizeFileName(file.name);
-  const storagePath = `${Date.now()}-${sanitized}`;
+
+  // Resolve authenticated user ID
+  let resolvedUserId = userId;
+  if (!resolvedUserId) {
+    try {
+      const stored = localStorage.getItem('creatoros_auth_session_v1');
+      if (stored) {
+        const u = JSON.parse(stored);
+        resolvedUserId = u?.id;
+      }
+    } catch {}
+  }
+
+  // Enforce authentication: anonymous writes are strictly rejected
+  if (!resolvedUserId) {
+    throw new Error('Authentication required: anonymous storage uploads are strictly prohibited');
+  }
+
+  // Enforce path-based user ownership matching hardened Supabase Storage RLS: {userId}/{fileName}
+  const storagePath = `${resolvedUserId}/${Date.now()}-${sanitized}`;
 
   if (supabaseUrl && supabaseAnonKey) {
     try {

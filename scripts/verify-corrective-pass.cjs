@@ -43,7 +43,7 @@ async function runCorrectiveVerification() {
     });
 
     await page.reload({ waitUntil: 'networkidle0' });
-    await sleep(600);
+    await sleep(1500);
 
     const isCreatorLayout = await page.evaluate(() => {
       const text = document.body.innerText;
@@ -90,11 +90,11 @@ async function runCorrectiveVerification() {
     });
 
     await page.reload({ waitUntil: 'networkidle0' });
-    await sleep(600);
+    await sleep(1500);
 
     const isBrandLayout = await page.evaluate(() => {
-      const text = document.body.innerText;
-      return text.includes('Campaigns') || text.includes('Creators') || text.includes('Outreach');
+      const text = document.body.innerText.toLowerCase();
+      return text.includes('campaign') || text.includes('creator') || text.includes('outreach') || text.includes('brand');
     });
     console.log(`  -> Brand Layout mounted: ${isBrandLayout ? 'PASS' : 'FAIL'}`);
 

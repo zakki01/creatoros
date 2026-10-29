@@ -11,12 +11,13 @@ import {
   AlertCircle,
 } from 'lucide-react';
 import { useAppState } from '../../context/StateContext';
+import { getSafeCurrentCreator } from '../../data/demoFixtures';
 import { Card } from '../ui/Card';
 import { Badge } from '../ui/Badge';
 
 export const CreatorReputation: React.FC = () => {
-  const { creators } = useAppState();
-  const creator = creators[0];
+  const { creators, userProfile, authUser } = useAppState();
+  const creator = getSafeCurrentCreator(creators, userProfile, authUser);
 
   const metrics = [
     {

@@ -8,14 +8,15 @@ import {
   Download,
 } from 'lucide-react';
 import { useAppState } from '../../context/StateContext';
+import { getSafeCurrentCreator } from '../../data/demoFixtures';
 import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
 import { SpatialCard } from '../ui/SpatialCard';
 import { ReportCenterModal } from '../common/ReportCenterModal';
 
 export const CreatorAnalytics: React.FC = () => {
-  const { creators } = useAppState();
-  const creator = creators[0];
+  const { creators, userProfile, authUser } = useAppState();
+  const creator = getSafeCurrentCreator(creators, userProfile, authUser);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
 
   const personalMetrics = [

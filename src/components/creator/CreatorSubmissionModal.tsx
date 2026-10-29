@@ -17,6 +17,7 @@ import { Input } from '../ui/Input';
 import { Badge } from '../ui/Badge';
 import { DeliverableType, AiPreCheckResult } from '../../types';
 import { AiCampaignEngine } from '../../services/aiService';
+import { getSafeCurrentCreator, DEMO_CAMPAIGN } from '../../data/demoFixtures';
 
 interface CreatorSubmissionModalProps {
   isOpen: boolean;
@@ -27,18 +28,18 @@ export const CreatorSubmissionModal: React.FC<CreatorSubmissionModalProps> = ({
   isOpen,
   onClose,
 }) => {
-  const { submitContent, campaigns, creators, triggerCelebration } = useAppState();
+  const { submitContent, campaigns, creators, triggerCelebration, userProfile, authUser } = useAppState();
+  const isDemo = Boolean(authUser?.is_demo || authUser?.isDemo);
+  const currentCreator = getSafeCurrentCreator(creators, userProfile, authUser);
+  const activeCampaign = campaigns[0] || (isDemo ? DEMO_CAMPAIGN : null);
 
-  const currentCreator = creators[0];
-  const activeCampaign = campaigns[0];
-
-  const [title, setTitle] = useState('Aura High-Top 01 Street Styling & Grip Test in Colaba');
+  const [title, setTitle] = useState(isDemo ? 'Aura High-Top 01 Street Styling & Grip Test' : '');
   const [deliverableType, setDeliverableType] = useState<DeliverableType>('Reel');
   const [caption, setCaption] = useState(
-    'Taking the new @aurastreetwear High-Tops through Mumbai streets. Notice the 3M piping when flash hits! Code ROHANKICKS for 15% off link in bio 👟🔥'
+    isDemo ? 'Official CreatorOS Showcase Reel submission. 4K lookbook with certified escrow.' : ''
   );
-  const [cta, setCta] = useState('Tap link in bio and use code ROHANKICKS for 15% off');
-  const [hashtags, setHashtags] = useState('#AuraStreetwear, #SneakerAddict, #MumbaiKicks');
+  const [cta, setCta] = useState(isDemo ? 'Tap link in bio to shop the drop' : '');
+  const [hashtags, setHashtags] = useState(isDemo ? '#CreatorOS, #Streetwear, #Lookbook' : '');
   const [mediaUrl, setMediaUrl] = useState(
     'https://images.unsplash.com/photo-1552346154-21d32810aba3?w=800&auto=format&fit=crop&q=80'
   );
@@ -63,17 +64,17 @@ export const CreatorSubmissionModal: React.FC<CreatorSubmissionModalProps> = ({
 
   const handleSubmit = () => {
     submitContent({
-      campaignId: activeCampaign.id,
-      campaignName: activeCampaign.name,
+      campaignId: activeCampaign?.id || 'direct-submission',
+      campaignName: activeCampaign?.name || 'Direct Showcase Submission',
       creatorId: currentCreator.id,
       creatorName: currentCreator.name,
       creatorHandle: currentCreator.handle,
       creatorAvatar: currentCreator.avatar,
       deliverableType,
-      title,
+      title: title || 'Creator Deliverable Cut',
       mediaUrl,
       caption,
-      hashtags: hashtags.split(',').map((h) => h.trim()),
+      hashtags: hashtags ? hashtags.split(',').map((h) => h.trim()) : [],
       cta,
     });
     triggerCelebration();
@@ -95,7 +96,7 @@ export const CreatorSubmissionModal: React.FC<CreatorSubmissionModalProps> = ({
               Submit Work
             </h2>
             <p className="text-xs text-zinc-500">
-              Upload creative asset for <strong className="text-zinc-800">"{activeCampaign.name}"</strong>
+              Upload creative asset for <strong className="text-zinc-800">"{activeCampaign?.name || 'Showcase Portfolio'}"</strong>
             </p>
           </div>
         </div>

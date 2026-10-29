@@ -15,6 +15,7 @@ import {
   Film,
 } from 'lucide-react';
 import { useAppState } from '../../context/StateContext';
+import { getSafeCurrentCreator } from '../../data/demoFixtures';
 import { NotificationItem, OutreachItem } from '../../types';
 
 interface PitchToBrandModalProps {
@@ -38,10 +39,10 @@ export const PitchToBrandModal: React.FC<PitchToBrandModalProps> = ({
   initialCampaignTitle,
   onPitchSuccess,
 }) => {
-  const { userProfile, creators, addOutreachItem, addNotification, triggerCelebration } =
+  const { userProfile, authUser, creators, addOutreachItem, addNotification, triggerCelebration } =
     useAppState();
 
-  const currentCreator = creators.find((c) => c.id === userProfile.id) || creators[0];
+  const currentCreator = getSafeCurrentCreator(creators, userProfile, authUser);
 
   const [campaignTitle, setCampaignTitle] = useState(
     initialCampaignTitle || 'Summer Drop 2026 Ambassador & Editorial Reels'

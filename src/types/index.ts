@@ -20,6 +20,7 @@ export interface UserProfile {
   workspaceId: string;
   avatarUrl: string;
   title?: string;
+  handle?: string;
 }
 
 export type CampaignObjective =

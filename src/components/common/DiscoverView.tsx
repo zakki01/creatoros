@@ -56,8 +56,10 @@ import { CommentsView } from './CommentsView';
 import { ShareModal } from './ShareModal';
 import { PostDetailModal } from './PostDetailModal';
 import { SpatialCard } from '../ui/SpatialCard';
+import { SpatialEmptyState } from '../ui/SpatialEmptyState';
 import { Avatar } from '../ui/Avatar';
 import { Creator } from '../../types';
+import { DEMO_BRAND_PROFILE } from '../../data/demoFixtures';
 
 export const DiscoverView: React.FC = () => {
   const {
@@ -72,6 +74,7 @@ export const DiscoverView: React.FC = () => {
     role,
     userProfile,
     outreachItems,
+    authUser,
   } = useAppState();
 
   // Approach / Invite Creator Modal State
@@ -139,54 +142,11 @@ export const DiscoverView: React.FC = () => {
   const categoryOptions = ['All', 'Streetwear & Sneakers', 'High Fashion', 'Tech & Lifestyle', 'Fitness', 'Art & UGC'];
   const locationOptions = ['All', 'Mumbai', 'Bengaluru', 'Delhi NCR', 'Goa'];
 
-  // Brands Directory Data
-  const brandsDirectory = [
-    {
-      id: 'brand-aura',
-      name: 'Aura Streetwear Co.',
-      handle: '@aurastreetwear',
-      logo: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=150&auto=format&fit=crop&q=80',
-      coverUrl: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=1200&auto=format&fit=crop&q=80',
-      category: 'Streetwear',
-      location: 'Mumbai',
-      bio: 'Contemporary streetwear and urban aesthetics crafted for modern subcultures.',
-      activeCampaignsCount: 3,
-      creatorsPartnered: 52,
-      avgBudget: '₹35K – ₹75K',
-      openBrief: 'Summer Drop 2026 — 4K Lookbooks',
-      badge: 'Hiring',
-    },
-    {
-      id: 'brand-urbankicks',
-      name: 'UrbanKicks India',
-      handle: '@urbankicks.in',
-      logo: 'https://images.unsplash.com/photo-1552346154-21d32810aba3?w=150&auto=format&fit=crop&q=80',
-      coverUrl: 'https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?w=1200&auto=format&fit=crop&q=80',
-      category: 'Sneakers',
-      location: 'Mumbai',
-      bio: 'Curated premium sneaker marketplace and community for collectors.',
-      activeCampaignsCount: 2,
-      creatorsPartnered: 38,
-      avgBudget: '₹30K – ₹50K',
-      openBrief: 'Jordan Retro High Unboxing',
-      badge: 'New Brief',
-    },
-    {
-      id: 'brand-neonaudio',
-      name: 'Neon Audio Labs',
-      handle: '@neonaudio',
-      logo: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=150&auto=format&fit=crop&q=80',
-      coverUrl: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=1200&auto=format&fit=crop&q=80',
-      category: 'Audio Tech',
-      location: 'Bengaluru',
-      bio: 'High-fidelity spatial audio and aesthetic headphone gear for creative producers.',
-      activeCampaignsCount: 1,
-      creatorsPartnered: 24,
-      avgBudget: '₹45K – ₹80K',
-      openBrief: 'Studio Acoustics & EDC Beats',
-      badge: 'Top Match',
-    },
-  ];
+  // Brands Directory Data (Zero prefilled data for real users; controlled demo fixture for demo accounts)
+  const isDemoSession = Boolean(authUser?.is_demo || authUser?.isDemo);
+  const brandsDirectory = useMemo(() => {
+    return isDemoSession ? [DEMO_BRAND_PROFILE] : [];
+  }, [isDemoSession]);
 
   // Filtered Posts Calculation
   const filteredPosts = useMemo(() => {
@@ -464,8 +424,15 @@ export const DiscoverView: React.FC = () => {
       {/* A. CREATORS TAB VIEW (Section 10 Spatial Creator Cards) */}
       {subTab === 'creators' && (
         <div className="space-y-4 animate-fade-in">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {creators.map((c) => {
+          {creators.length === 0 ? (
+            <SpatialEmptyState
+              objectType="gallery"
+              title="No creators yet"
+              subtitle="Verified creators will appear here as they publish showcases and join CreatorOS."
+            />
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {creators.map((c) => {
               const cState = connections[c.id] || 'connect';
               const isInvited = outreachItems?.some((item) => item.creatorId === c.id);
               const isCollaborating = cState === 'active_campaign';
@@ -602,14 +569,22 @@ export const DiscoverView: React.FC = () => {
               );
             })}
           </div>
+          )}
         </div>
       )}
 
       {/* B. BRANDS TAB VIEW (Spatial Brand Cards) */}
       {subTab === 'brands' && (
         <div className="space-y-4 animate-fade-in">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {brandsDirectory.map((b) => {
+          {brandsDirectory.length === 0 ? (
+            <SpatialEmptyState
+              objectType="brief"
+              title="No brands yet"
+              subtitle="Partner brands and open briefs will be listed here once verified."
+            />
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {brandsDirectory.map((b) => {
               const bState = connections[b.id] || 'connect';
               const brandActions = getRelationshipActions({
                 viewerRole: role,
@@ -729,16 +704,26 @@ export const DiscoverView: React.FC = () => {
               );
             })}
           </div>
+          )}
         </div>
       )}
 
       {/* C. REELS TAB VIEW */}
       {subTab === 'reels' && (
         <div className="space-y-4 animate-fade-in">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-            {filteredPosts
-              .filter((p) => p.isReel || p.contentType === 'reel')
-              .map((reel) => {
+          {filteredPosts.filter((p) => p.isReel || p.contentType === 'reel').length === 0 ? (
+            <SpatialEmptyState
+              objectType="camera"
+              title="No reels yet"
+              subtitle="Upload 9:16 vertical reels and cinematic edits to inspire the community."
+              actionLabel="Create Reel"
+              onAction={() => setIsCreatePostOpen(true)}
+            />
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+              {filteredPosts
+                .filter((p) => p.isReel || p.contentType === 'reel')
+                .map((reel) => {
                 const isPlaying = playingVideoId === reel.id;
                 const authorConnected = connections[reel.authorId] || 'connect';
 
@@ -951,40 +936,51 @@ export const DiscoverView: React.FC = () => {
                 );
               })}
           </div>
+          )}
         </div>
       )}
 
       {/* D. DEFAULT FEED: For You / Shots / Blogs / Trending */}
       {(subTab === 'for_you' || subTab === 'shots' || subTab === 'blogs' || subTab === 'trending') && (
         <div className="space-y-6 max-w-xl mx-auto">
-          {filteredPosts.map((post) => (
-            <PostCard
-              key={post.id}
-              post={post}
-              onOpenComments={(p) => setActiveCommentPost(p)}
-              onOpenShare={(p) => setActiveSharePost(p)}
-              onOpenDetail={(p) => setSelectedDetailPost(p)}
-              onOpenConnect={(target) => setConnectTarget(target)}
-              onOpenAuthorProfile={(authorId) => {
-                const creator = creators.find((c) => c.id === authorId);
-                if (creator) {
-                  setSelectedCreatorModal(creator);
-                } else {
-                  const brand = brandsDirectory.find((b) => b.id === authorId);
-                  if (brand) setSelectedBrandModalData(brand);
-                }
-              }}
-              onReportPost={(p) =>
-                setReportTarget({
-                  id: p.id,
-                  type: p.isReel ? 'reel' : p.contentType === 'blog' ? 'blog' : 'shot',
-                  title: p.content,
-                  ownerId: p.authorId,
-                  ownerName: p.authorName,
-                })
-              }
+          {filteredPosts.length === 0 ? (
+            <SpatialEmptyState
+              objectType="camera"
+              title="Feed is quiet"
+              subtitle="Be the first to share a Reel, Shot, or Blog with the CreatorOS community."
+              actionLabel="Create Post"
+              onAction={() => setIsCreatePostOpen(true)}
             />
-          ))}
+          ) : (
+            filteredPosts.map((post) => (
+              <PostCard
+                key={post.id}
+                post={post}
+                onOpenComments={(p) => setActiveCommentPost(p)}
+                onOpenShare={(p) => setActiveSharePost(p)}
+                onOpenDetail={(p) => setSelectedDetailPost(p)}
+                onOpenConnect={(target) => setConnectTarget(target)}
+                onOpenAuthorProfile={(authorId) => {
+                  const creator = creators.find((c) => c.id === authorId);
+                  if (creator) {
+                    setSelectedCreatorModal(creator);
+                  } else {
+                    const brand = brandsDirectory.find((b) => b.id === authorId);
+                    if (brand) setSelectedBrandModalData(brand);
+                  }
+                }}
+                onReportPost={(p) =>
+                  setReportTarget({
+                    id: p.id,
+                    type: p.isReel ? 'reel' : p.contentType === 'blog' ? 'blog' : 'shot',
+                    title: p.content,
+                    ownerId: p.authorId,
+                    ownerName: p.authorName,
+                  })
+                }
+              />
+            ))
+          )}
         </div>
       )}
 

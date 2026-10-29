@@ -17,6 +17,7 @@ import {
   DisputeResolution,
 } from '../types/contract';
 import { PaymentProviderRegistry } from './paymentProvider';
+import { DEMO_CONTRACT } from '../data/demoFixtures';
 
 const STORAGE_CONTRACTS_KEY = 'creatoros_contracts_v2';
 const STORAGE_DRAFTS_KEY = 'creatoros_contract_drafts_v2';
@@ -803,8 +804,15 @@ export class ContractService {
         console.error('Failed to parse contracts from localStorage, using initial mock data', e);
       }
     }
-    this.contracts = [...INITIAL_MOCK_CONTRACTS];
-    localStorage.setItem(STORAGE_CONTRACTS_KEY, JSON.stringify(this.contracts));
+    const sessionRaw = typeof window !== 'undefined' ? localStorage.getItem('creatoros_auth_session_v1') : null;
+    const session = sessionRaw ? JSON.parse(sessionRaw) : null;
+    const isDemo = Boolean(session?.is_demo || session?.isDemo);
+    if (isDemo) {
+      this.contracts = [DEMO_CONTRACT];
+      localStorage.setItem(STORAGE_CONTRACTS_KEY, JSON.stringify(this.contracts));
+      return this.contracts;
+    }
+    this.contracts = [];
     return this.contracts;
   }
 

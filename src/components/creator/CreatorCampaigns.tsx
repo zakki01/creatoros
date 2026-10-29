@@ -13,11 +13,13 @@ import {
   Video,
 } from 'lucide-react';
 import { useAppState } from '../../context/StateContext';
+import { getSafeCurrentCreator } from '../../data/demoFixtures';
 import { Card } from '../ui/Card';
 import { Button } from '../ui/Button';
 import { Badge } from '../ui/Badge';
 import { Progress } from '../ui/Progress';
 import { Modal } from '../ui/Modal';
+import { SpatialEmptyState } from '../ui/SpatialEmptyState';
 
 export const CreatorCampaigns: React.FC<{
   onOpenSubmissionModal: () => void;
@@ -26,11 +28,11 @@ export const CreatorCampaigns: React.FC<{
   onOpenSubmissionModal,
   onNavigate,
 }) => {
-  const { outreachItems, creators, submissions } = useAppState();
-  const currentCreator = creators[0];
+  const { outreachItems, creators, submissions, userProfile, authUser } = useAppState();
+  const currentCreator = getSafeCurrentCreator(creators, userProfile, authUser);
 
   const confirmedCampaigns = outreachItems.filter(
-    (i) => i.creatorId === currentCreator.id && i.stage === 'Confirmed'
+    (i) => (i.creatorId === currentCreator.id || i.creatorId === 'demo-creator-01') && i.stage === 'Confirmed'
   );
 
   const [selectedCampaign, setSelectedCampaign] = useState<typeof confirmedCampaigns[0] | null>(null);
@@ -76,9 +78,13 @@ export const CreatorCampaigns: React.FC<{
       {/* Campaigns Grid */}
       <div className="space-y-4">
         {confirmedCampaigns.length === 0 ? (
-          <Card className="p-10 text-center text-zinc-500 text-xs">
-            No active campaigns.
-          </Card>
+          <SpatialEmptyState
+            title="No Active Brand Campaigns"
+            description="You do not have any confirmed brand campaigns yet. Discover brands or accept inbound briefs to begin."
+            icon={Layers}
+            actionLabel="Discover Brands"
+            onAction={() => onNavigate?.('discover')}
+          />
         ) : (
           confirmedCampaigns.map((camp) => (
             <Card key={camp.id} className="p-5 space-y-4">

@@ -20,6 +20,7 @@ import { Avatar } from '../ui/Avatar';
 import { SpatialCard } from '../ui/SpatialCard';
 import { Tabs } from '../ui/Tabs';
 import { useToast } from '../ui/Toast';
+import { getSafeCurrentCreator } from '../../data/demoFixtures';
 
 interface CredentialItem {
   id: 'identity' | 'experience' | 'channels' | 'reputation';
@@ -65,9 +66,9 @@ interface CreatorPassportProps {
 }
 
 export const CreatorPassport: React.FC<CreatorPassportProps> = ({ onBack }) => {
-  const { creators, triggerCelebration, setCreatorActiveTab } = useAppState();
+  const { creators, triggerCelebration, setCreatorActiveTab, userProfile, authUser } = useAppState();
   const toast = useToast();
-  const creator = creators[0]; // Rohan Sharma
+  const creator = getSafeCurrentCreator(creators, userProfile, authUser);
 
   const handleNavigateBack = () => {
     if (onBack) {

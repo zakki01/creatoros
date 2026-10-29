@@ -18,6 +18,7 @@ import { Button } from '../ui/Button';
 import { Badge } from '../ui/Badge';
 import { Avatar } from '../ui/Avatar';
 import { SpatialCard } from '../ui/SpatialCard';
+import { Creator } from '../../types';
 
 interface CreatorHomeProps {
   onNavigate: (tab: string) => void;
@@ -33,12 +34,45 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
     payments,
     submissions,
     creators,
+    authUser,
+    userProfile,
   } = useAppState();
 
-  const currentCreator = creators[0]; // Rohan Sharma by default
+  const currentCreator: Creator =
+    creators.find((c) => c.id === userProfile.id || c.id === authUser?.id) ||
+    creators[0] || {
+      id: authUser?.id || 'demo-creator-01',
+      name: authUser?.name || 'Creator',
+      handle: authUser?.handle || '@creator',
+      avatar:
+        authUser?.avatarUrl ||
+        'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80',
+      bio: '',
+      category: 'Fashion & Lifestyle',
+      location: 'Mumbai',
+      niche: 'Creator',
+      totalFollowers: 0,
+      followers: '0',
+      engagementRate: '0%',
+      tier: 'Verified Pro',
+      verified: true,
+      minimumRate: 0,
+      estimatedRate: 0,
+      availabilityStatus: 'Available',
+      availableDates: 'Available Now',
+      rates: { reel: 0, story: 0, post: 0, live: 0 },
+      platforms: ['Instagram', 'YouTube'],
+      metrics: {
+        averageViews: '0',
+        completionRate: '0%',
+        audienceDemographics: { topCountry: 'IN', topAge: '18-24' },
+      },
+    };
 
   const incomingOpportunities = outreachItems.filter(
-    (i) => i.creatorId === currentCreator.id && (i.stage === 'Contacted' || i.stage === 'Interested')
+    (i) =>
+      i.creatorId === currentCreator.id &&
+      (i.stage === 'Contacted' || i.stage === 'Interested')
   );
 
   const activeCampaignItems = outreachItems.filter(
@@ -56,9 +90,9 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
   const creatorSubmissions = submissions.filter((s) => s.creatorId === currentCreator.id);
   const draftsCount = creatorSubmissions.filter(
     (s) => s.status === 'draft' || s.status === 'changes_requested'
-  ).length || 1;
-  const pendingApprovalCount = creatorSubmissions.filter((s) => s.status === 'submitted').length || 1;
-  const approvedCount = creatorSubmissions.filter((s) => s.status === 'approved').length || 2;
+  ).length;
+  const pendingApprovalCount = creatorSubmissions.filter((s) => s.status === 'submitted').length;
+  const approvedCount = creatorSubmissions.filter((s) => s.status === 'approved').length;
 
   return (
     <div className="space-y-6 animate-fade-in pb-12">
@@ -79,11 +113,11 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
               </h1>
               <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200 shadow-xs">
                 <ShieldCheck className="w-3 h-3 text-emerald-600" />
-                96 Reputation
+                Verified
               </span>
             </div>
             <p className="text-xs text-zinc-500 mt-0.5">
-              {currentCreator.niche} · {currentCreator.location}
+              {currentCreator.category || currentCreator.niche} · {currentCreator.location}
             </p>
           </div>
         </div>
@@ -98,6 +132,7 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
           >
             Passport
           </Button>
+
           <Button
             variant="primary"
             size="md"
@@ -111,7 +146,7 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
 
       {/* Hero Row: 3D Live Studio Feature Card + Actionable Contract Card */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-        {/* Hero Feature Card: Live Studio (3D visual object + action) */}
+        {/* Hero Feature Card: Live Studio */}
         <SpatialCard
           surface={1}
           tilt
@@ -120,7 +155,6 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
           onClick={() => onNavigate('live')}
           className="lg:col-span-7 p-6 sm:p-7 group shadow-sm"
         >
-          {/* Ambient radial 3D studio light */}
           <div
             aria-hidden="true"
             className="pointer-events-none absolute -right-10 -top-10 w-64 h-64 rounded-full bg-[#00B4D8]/10 blur-3xl group-hover:bg-[#00B4D8]/18 transition-all duration-300"
@@ -193,7 +227,7 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
           </div>
         </SpatialCard>
 
-        {/* Contract Activity Card (Spatial Surface 1) */}
+        {/* Contract Activity Card */}
         <SpatialCard
           surface={1}
           tilt
@@ -202,37 +236,71 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
           onClick={() => onNavigate('contracts')}
           className="lg:col-span-5 p-6 flex flex-col justify-between gap-4 border border-amber-500/30 shadow-sm"
         >
-          <div className="flex items-start justify-between gap-3">
-            <div className="flex items-center gap-3">
-              <div className="w-11 h-11 rounded-2xl bg-amber-500/10 border border-amber-500/25 text-amber-700 flex items-center justify-center shadow-xs shrink-0">
-                <FileText className="w-5 h-5" />
-              </div>
-              <div>
-                <span className="inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-wider text-amber-800 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200">
-                  <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
-                  Awaiting Signature
+          {activeCampaignItems.length > 0 ? (
+            <>
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-11 h-11 rounded-2xl bg-amber-500/10 border border-amber-500/25 text-amber-700 flex items-center justify-center shadow-xs shrink-0">
+                    <FileText className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <span className="inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-wider text-amber-800 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200">
+                      <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+                      Active Agreement
+                    </span>
+                    <h3 className="text-base font-bold text-[var(--text-primary)] mt-1">
+                      {activeCampaignItems[0].campaignName}
+                    </h3>
+                  </div>
+                </div>
+                <span className="text-lg font-bold font-mono text-emerald-700">
+                  ₹{activeCampaignItems[0].proposedFee.toLocaleString()}
                 </span>
-                <h3 className="text-base font-bold text-[var(--text-primary)] mt-1">
-                  Aura Streetwear Co.
-                </h3>
+              </div>
+
+              <div className="flex items-center justify-between pt-2 border-t border-[var(--border)]">
+                <span className="text-xs text-zinc-500 font-mono">Deliverables in Progress</span>
+                <Button
+                  variant="primary"
+                  size="sm"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onNavigate('contracts');
+                  }}
+                >
+                  View Contract
+                </Button>
+              </div>
+            </>
+          ) : (
+            <div className="h-full flex flex-col justify-between py-1">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-zinc-100 border border-zinc-200 text-zinc-500 flex items-center justify-center shrink-0">
+                  <FileText className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-semibold text-[var(--text-primary)]">
+                    No active contracts
+                  </h3>
+                  <p className="text-xs text-zinc-500 mt-0.5">
+                    Formal brand agreements and escrow releases appear here.
+                  </p>
+                </div>
+              </div>
+              <div className="pt-3 border-t border-[var(--border)] flex justify-end">
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onNavigate('contracts');
+                  }}
+                >
+                  Contracts Hub
+                </Button>
               </div>
             </div>
-            <span className="text-lg font-bold font-mono text-emerald-700">$1,500</span>
-          </div>
-
-          <div className="flex items-center justify-between pt-2 border-t border-[var(--border)]">
-            <span className="text-xs text-zinc-500 font-mono">Summer Capsule · 2 Deliverables</span>
-            <Button
-              variant="primary"
-              size="sm"
-              onClick={(e) => {
-                e.stopPropagation();
-                onNavigate('contracts');
-              }}
-            >
-              Review
-            </Button>
-          </div>
+          )}
         </SpatialCard>
       </div>
 
@@ -251,18 +319,22 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
             <span className="text-[11px] font-mono uppercase tracking-wider text-[#007E93] font-semibold">
               Opportunity
             </span>
-            <span className="w-2 h-2 rounded-full bg-[#00B4D8] animate-pulse" />
+            {incomingOpportunities.length > 0 && (
+              <span className="w-2 h-2 rounded-full bg-[#00B4D8] animate-pulse" />
+            )}
           </div>
           <div>
             <h3 className="text-2xl font-bold text-[var(--text-primary)] font-display">
-              {Math.max(1, incomingOpportunities.length)} New
+              {incomingOpportunities.length} New
             </h3>
             <p className="text-xs text-zinc-500 mt-0.5 truncate">
-              Nike Summer Launch · ₹45,000
+              {incomingOpportunities.length > 0
+                ? `${incomingOpportunities[0].campaignName} · ₹${incomingOpportunities[0].proposedFee.toLocaleString()}`
+                : 'No pending brand invitations'}
             </p>
           </div>
           <div className="flex items-center text-xs text-[#007E93] font-medium gap-1 pt-1">
-            <span>View offer →</span>
+            <span>View opportunities →</span>
           </div>
         </SpatialCard>
 
@@ -282,15 +354,21 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
           </div>
           <div className="grid grid-cols-3 gap-2 pt-0.5 text-center">
             <div className="p-2 rounded-xl bg-[var(--surface-muted)] border border-[var(--border)]">
-              <span className="text-base font-bold font-mono text-[var(--text-primary)]">{draftsCount}</span>
+              <span className="text-base font-bold font-mono text-[var(--text-primary)]">
+                {draftsCount}
+              </span>
               <p className="text-[10px] text-zinc-500">Drafts</p>
             </div>
             <div className="p-2 rounded-xl bg-amber-500/10 border border-amber-500/25">
-              <span className="text-base font-bold font-mono text-amber-700 dark:text-amber-400">{pendingApprovalCount}</span>
+              <span className="text-base font-bold font-mono text-amber-700 dark:text-amber-400">
+                {pendingApprovalCount}
+              </span>
               <p className="text-[10px] text-amber-700">Pending</p>
             </div>
             <div className="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/25">
-              <span className="text-base font-bold font-mono text-emerald-700 dark:text-emerald-400">{approvedCount}</span>
+              <span className="text-base font-bold font-mono text-emerald-700 dark:text-emerald-400">
+                {approvedCount}
+              </span>
               <p className="text-[10px] text-emerald-700">Approved</p>
             </div>
           </div>
@@ -316,10 +394,10 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
           </div>
           <div>
             <h3 className="text-2xl font-bold text-[var(--text-primary)] font-mono">
-              ₹{(pendingEarnings || 82000).toLocaleString()}
+              ₹{pendingEarnings.toLocaleString()}
             </h3>
             <p className="text-xs text-zinc-500 mt-0.5">
-              Available: <span className="text-emerald-700 font-mono font-medium">₹{(paidEarnings || 127500).toLocaleString()}</span>
+              Available: <span className="text-emerald-700 font-mono font-medium">₹{paidEarnings.toLocaleString()}</span>
             </p>
           </div>
           <div className="flex items-center text-xs text-emerald-700 font-medium gap-1 pt-1">
@@ -344,10 +422,10 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
           </div>
           <div>
             <h3 className="text-2xl font-bold text-[var(--text-primary)] font-mono">
-              1.37M
+              {currentCreator.followers || '0'}
             </h3>
             <p className="text-xs text-emerald-700 font-mono mt-0.5">
-              +24% reach · 5.4% eng
+              {currentCreator.engagementRate || '0%'} engagement
             </p>
           </div>
           <div className="flex items-center text-xs text-zinc-600 font-medium gap-1 pt-1">
@@ -374,67 +452,71 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {activeCampaignItems.map((item) => (
-            <SpatialCard
-              key={item.id}
-              surface={1}
-              glare
-              className="p-5 space-y-4 shadow-sm"
-            >
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <h3 className="text-sm font-bold text-[var(--text-primary)]">{item.campaignName}</h3>
-                  <p className="text-xs text-zinc-500 mt-0.5">
-                    Aura Streetwear Co.
-                  </p>
+        {activeCampaignItems.length === 0 ? (
+          <div className="p-8 rounded-2xl bg-white shadow-xs border border-black/[0.08] text-center text-xs text-zinc-500">
+            No active campaigns. Verified brand campaigns and deliverables appear here once confirmed.
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {activeCampaignItems.map((item) => (
+              <SpatialCard
+                key={item.id}
+                surface={1}
+                glare
+                className="p-5 space-y-4 shadow-sm"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <h3 className="text-sm font-bold text-[var(--text-primary)]">{item.campaignName}</h3>
+                    <p className="text-xs text-zinc-500 mt-0.5">
+                      Brand Campaign
+                    </p>
+                  </div>
+                  <Badge variant="success" size="sm" dot>
+                    Active
+                  </Badge>
                 </div>
-                <Badge variant="success" size="sm" dot>
-                  Active
-                </Badge>
-              </div>
 
-              {/* Dimensional Milestone Bar */}
-              <div className="p-3 rounded-xl bg-[var(--surface-muted)] border border-[var(--border)] space-y-2 text-xs">
-                <div className="flex justify-between items-center">
-                  <span className="text-zinc-500 text-[11px]">Milestone</span>
-                  <span className="font-semibold text-emerald-700 text-[11px]">Draft Review</span>
+                <div className="p-3 rounded-xl bg-[var(--surface-muted)] border border-[var(--border)] space-y-2 text-xs">
+                  <div className="flex justify-between items-center">
+                    <span className="text-zinc-500 text-[11px]">Milestone</span>
+                    <span className="font-semibold text-emerald-700 text-[11px]">Deliverable Cut</span>
+                  </div>
+                  <div className="w-full bg-[var(--surface-recessed)] h-1.5 rounded-full overflow-hidden">
+                    <div className="bg-gradient-to-r from-[#00B4D8] to-emerald-500 h-full rounded-full w-2/3" />
+                  </div>
+                  <div className="flex justify-between text-[10px] text-zinc-500 font-mono">
+                    <span className="flex items-center gap-1 text-emerald-700">
+                      <CheckCircle2 className="w-3 h-3" /> Signed
+                    </span>
+                    <span className="text-amber-800 font-medium">Review</span>
+                    <span>Payout</span>
+                  </div>
                 </div>
-                <div className="w-full bg-[var(--surface-recessed)] h-1.5 rounded-full overflow-hidden">
-                  <div className="bg-gradient-to-r from-[#00B4D8] to-emerald-500 h-full rounded-full w-2/3" />
-                </div>
-                <div className="flex justify-between text-[10px] text-zinc-500 font-mono">
-                  <span className="flex items-center gap-1 text-emerald-700">
-                    <CheckCircle2 className="w-3 h-3" /> Signed
-                  </span>
-                  <span className="text-amber-800 font-medium">Review</span>
-                  <span>Payout</span>
-                </div>
-              </div>
 
-              <div className="flex items-center justify-between text-xs pt-1 border-t border-[var(--border)]">
-                <div className="flex items-center gap-1.5 text-zinc-500">
-                  <Clock className="w-3.5 h-3.5 text-zinc-400" />
-                  <span className="font-mono text-[11px]">48h left</span>
+                <div className="flex items-center justify-between text-xs pt-1 border-t border-[var(--border)]">
+                  <div className="flex items-center gap-1.5 text-zinc-500">
+                    <Clock className="w-3.5 h-3.5 text-zinc-400" />
+                    <span className="font-mono text-[11px]">In progress</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="text-[var(--text-primary)] font-mono font-semibold">
+                      ₹{item.proposedFee.toLocaleString()}
+                    </span>
+                    <Button
+                      variant="primary"
+                      size="sm"
+                      onClick={onOpenSubmissionModal}
+                    >
+                      Submit
+                    </Button>
+                  </div>
                 </div>
-                <div className="flex items-center gap-3">
-                  <span className="text-[var(--text-primary)] font-mono font-semibold">
-                    ₹{item.proposedFee.toLocaleString()}
-                  </span>
-                  <Button
-                    variant="primary"
-                    size="sm"
-                    onClick={onOpenSubmissionModal}
-                  >
-                    Submit
-                  </Button>
-                </div>
-              </div>
-            </SpatialCard>
-          ))}
-        </div>
+              </SpatialCard>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
 };
-

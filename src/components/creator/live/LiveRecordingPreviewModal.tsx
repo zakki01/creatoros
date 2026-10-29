@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { LiveRecordedClip } from '../../../types';
 import { useAppState } from '../../../context/StateContext';
+import { getSafeCurrentCreator } from '../../../data/demoFixtures';
 
 interface LiveRecordingPreviewModalProps {
   clip: LiveRecordedClip | null;
@@ -25,7 +26,7 @@ export const LiveRecordingPreviewModal: React.FC<LiveRecordingPreviewModalProps>
   onClose,
   onSubmittedSuccess,
 }) => {
-  const { campaigns, submitContent, triggerCelebration, creators } = useAppState();
+  const { campaigns, submitContent, triggerCelebration, creators, userProfile, authUser } = useAppState();
 
   const [selectedCampaignId, setSelectedCampaignId] = useState<string>(
     campaigns[0]?.id || ''
@@ -43,7 +44,7 @@ export const LiveRecordingPreviewModal: React.FC<LiveRecordingPreviewModalProps>
 
   if (!isOpen || !clip) return null;
 
-  const currentCreator = creators[0];
+  const currentCreator = getSafeCurrentCreator(creators, userProfile, authUser);
   const selectedCampaign = campaigns.find((c) => c.id === selectedCampaignId) || campaigns[0];
 
   const handleDownload = () => {

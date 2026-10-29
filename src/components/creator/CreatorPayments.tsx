@@ -6,14 +6,16 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 import { useAppState } from '../../context/StateContext';
+import { getSafeCurrentCreator } from '../../data/demoFixtures';
 import { Badge } from '../ui/Badge';
 import { SpatialCard } from '../ui/SpatialCard';
+import { SpatialEmptyState } from '../ui/SpatialEmptyState';
 
 export const CreatorPayments: React.FC = () => {
-  const { payments, creators } = useAppState();
-  const currentCreator = creators[0];
+  const { payments, creators, userProfile, authUser } = useAppState();
+  const currentCreator = getSafeCurrentCreator(creators, userProfile, authUser);
 
-  const creatorPayments = payments.filter((p) => p.creatorId === currentCreator.id);
+  const creatorPayments = payments.filter((p) => p.creatorId === currentCreator.id || (authUser?.is_demo && p.creatorId === 'demo-creator-01'));
 
   const totalPaid = creatorPayments
     .filter((p) => p.status === 'paid')
@@ -141,7 +143,13 @@ export const CreatorPayments: React.FC = () => {
         </div>
 
         <div className="space-y-2.5">
-          {creatorPayments.map((p) => (
+          {creatorPayments.length === 0 ? (
+            <SpatialEmptyState
+              title="No Payout History"
+              description="You have no recorded payouts or milestones yet. Payouts are automatically generated when brand contracts are executed."
+            />
+          ) : (
+            creatorPayments.map((p) => (
             <SpatialCard
               key={p.id}
               surface={2}
@@ -197,7 +205,7 @@ export const CreatorPayments: React.FC = () => {
                 </button>
               </div>
             </SpatialCard>
-          ))}
+          )))}
         </div>
       </div>
     </div>

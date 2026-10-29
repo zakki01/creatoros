@@ -17,15 +17,15 @@ export const DemoAccessCard: React.FC<DemoAccessCardProps> = ({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-1.5 text-xs font-semibold text-zinc-700 uppercase tracking-wider">
           <Sparkles className="w-3.5 h-3.5 text-[#007E93]" />
-          <span>Explore CreatorOS</span>
+          <span>Explore Controlled Demos</span>
         </div>
         <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-white text-zinc-700 border border-zinc-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]">
-          Instant preview
+          Demo Sandbox
         </span>
       </div>
 
       <p className="text-[11px] text-zinc-600">
-        Instantly explore with active campaigns, contracts, and deliverables.
+        Explore controlled demo workflows with isolated contracts, deliverables, and briefs.
       </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
@@ -40,10 +40,10 @@ export const DemoAccessCard: React.FC<DemoAccessCardProps> = ({
             <BrandLogo size="xs" iconOnly />
             <div className="truncate">
               <span className="text-xs font-semibold text-zinc-900 block truncate group-hover:text-[#007E93]">
-                Creator Experience
+                Demo Creator
               </span>
-              <span className="text-[10px] text-zinc-600 block truncate">
-                Rohan Sharma (Fashion)
+              <span className="text-[10px] text-zinc-600 block truncate font-mono">
+                demo.creator@creatoros.ai
               </span>
             </div>
           </div>
@@ -63,10 +63,10 @@ export const DemoAccessCard: React.FC<DemoAccessCardProps> = ({
             </div>
             <div className="truncate">
               <span className="text-xs font-semibold text-zinc-900 block truncate group-hover:text-[#006779]">
-                Brand Workspace
+                Demo Brand
               </span>
-              <span className="text-[10px] text-zinc-600 block truncate">
-                Aura Streetwear Co.
+              <span className="text-[10px] text-zinc-600 block truncate font-mono">
+                demo.brand@creatoros.ai
               </span>
             </div>
           </div>
@@ -75,7 +75,7 @@ export const DemoAccessCard: React.FC<DemoAccessCardProps> = ({
       </div>
 
       <p className="text-[10px] text-zinc-500 text-center font-mono">
-        Active interactive sandbox.
+        Zero prefilled data for new users • 2 controlled demo accounts
       </p>
     </div>
   );

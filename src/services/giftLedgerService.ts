@@ -85,7 +85,7 @@ class GiftLedgerServiceSingleton {
         const initialLedger: CoinLedgerEntry[] = [
           {
             id: 'led-seed-01',
-            userId: 'cr-101',
+            userId: 'demo-creator-01',
             type: 'purchase',
             amount: 750,
             balanceAfter: 750,
@@ -133,7 +133,10 @@ class GiftLedgerServiceSingleton {
 
   getUserCoinBalance(userId: string): number {
     const entries = this.getLedger(userId);
-    if (entries.length === 0) return 250; // Default demo sandbox allowance
+    if (entries.length === 0) {
+      const isDemo = userId === 'demo-creator-01' || userId === 'demo-brand-01';
+      return isDemo ? 500 : 0;
+    }
     return entries[0].balanceAfter;
   }
 

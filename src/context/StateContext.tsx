@@ -27,6 +27,15 @@ import {
   INITIAL_SIMULATION_SCENARIOS,
   INITIAL_NOTIFICATIONS,
 } from '../data/mockData';
+import {
+  DEMO_CAMPAIGN,
+  DEMO_CREATOR_PROFILE,
+  DEMO_OUTREACH,
+  DEMO_PAYMENT,
+  DEMO_CONVERSATION,
+  DEMO_MESSAGES,
+  DEMO_SOCIAL_POST,
+} from '../data/demoFixtures';
 import { AiCampaignEngine } from '../services/aiService';
 import { AuthUser, AuthMode, AuthTab } from '../features/auth/types';
 import { AuthService } from '../features/auth/services/authService';
@@ -269,89 +278,125 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   });
   const [automationLevel, setAutomationLevel] = useState<AiAutomationLevel>('assisted');
 
+  const initialSession = AuthService.getStoredSession();
+  const isInitialDemo = Boolean(initialSession?.is_demo || initialSession?.isDemo);
+
   const [campaigns, setCampaigns] = useState<Campaign[]>(() => {
+    if (!initialSession) return [];
+    if (isInitialDemo) {
+      const saved = localStorage.getItem(`${STORAGE_KEY}_campaigns`);
+      return saved ? JSON.parse(saved) : [DEMO_CAMPAIGN];
+    }
     const saved = localStorage.getItem(`${STORAGE_KEY}_campaigns`);
-    return saved ? JSON.parse(saved) : INITIAL_CAMPAIGNS;
+    return saved ? JSON.parse(saved) : [];
   });
 
   const [creators, setCreators] = useState<Creator[]>(() => {
+    if (!initialSession) return [];
+    if (isInitialDemo) {
+      const saved = localStorage.getItem(`${STORAGE_KEY}_creators`);
+      return saved ? JSON.parse(saved) : [DEMO_CREATOR_PROFILE];
+    }
     const saved = localStorage.getItem(`${STORAGE_KEY}_creators`);
-    return saved ? JSON.parse(saved) : INITIAL_CREATORS;
+    return saved ? JSON.parse(saved) : [];
   });
 
   const [attentionItems, setAttentionItems] = useState<AiAttentionItem[]>(() => {
-    const saved = localStorage.getItem(`${STORAGE_KEY}_attention`);
-    return saved ? JSON.parse(saved) : INITIAL_ATTENTION_ITEMS;
+    return [];
   });
 
   const [submissions, setSubmissions] = useState<ContentSubmission[]>(() => {
-    const saved = localStorage.getItem(`${STORAGE_KEY}_submissions`);
-    return saved ? JSON.parse(saved) : INITIAL_CONTENT_SUBMISSIONS;
+    return [];
   });
 
   const [outreachItems, setOutreachItems] = useState<OutreachItem[]>(() => {
+    if (!initialSession) return [];
+    if (isInitialDemo) {
+      const saved = localStorage.getItem(`${STORAGE_KEY}_outreach`);
+      return saved ? JSON.parse(saved) : [DEMO_OUTREACH];
+    }
     const saved = localStorage.getItem(`${STORAGE_KEY}_outreach`);
-    return saved ? JSON.parse(saved) : INITIAL_OUTREACH;
+    return saved ? JSON.parse(saved) : [];
   });
 
   const [payments, setPayments] = useState<PaymentMilestone[]>(() => {
+    if (!initialSession) return [];
+    if (isInitialDemo) {
+      const saved = localStorage.getItem(`${STORAGE_KEY}_payments`);
+      return saved ? JSON.parse(saved) : [DEMO_PAYMENT];
+    }
     const saved = localStorage.getItem(`${STORAGE_KEY}_payments`);
-    return saved ? JSON.parse(saved) : INITIAL_PAYMENTS;
+    return saved ? JSON.parse(saved) : [];
   });
 
   const [notifications, setNotifications] = useState<NotificationItem[]>(() => {
-    const saved = localStorage.getItem(`${STORAGE_KEY}_notifications`);
-    return saved ? JSON.parse(saved) : INITIAL_NOTIFICATIONS;
+    return [];
   });
 
   const [simulationScenarios, setSimulationScenarios] = useState<CampaignSimulationScenario[]>(
-    INITIAL_SIMULATION_SCENARIOS
+    []
   );
 
-  const [activeCampaignId, setActiveCampaignId] = useState<string>(INITIAL_CAMPAIGNS[0].id);
+  const [activeCampaignId, setActiveCampaignId] = useState<string>(() => {
+    if (isInitialDemo) return DEMO_CAMPAIGN.id;
+    return '';
+  });
 
   // RBAC & Roles
   const [businessRole, setBusinessRole] = useState<BusinessRole>('business_owner');
   const [creatorRole, setCreatorRole] = useState<CreatorRole>('creator');
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>(() => {
     const saved = localStorage.getItem(`${STORAGE_KEY}_team`);
-    return saved ? JSON.parse(saved) : INITIAL_TEAM_MEMBERS;
+    return saved ? JSON.parse(saved) : [];
   });
   const [auditLogs, setAuditLogs] = useState<AuditLogEntry[]>(() => {
     const saved = localStorage.getItem(`${STORAGE_KEY}_audit`);
-    return saved ? JSON.parse(saved) : INITIAL_AUDIT_LOGS;
+    return saved ? JSON.parse(saved) : [];
   });
 
   // Messaging
   const [conversations, setConversations] = useState<Conversation[]>(() => {
+    if (!initialSession) return [];
+    if (isInitialDemo) {
+      const saved = localStorage.getItem(`${STORAGE_KEY}_conversations`);
+      return saved ? JSON.parse(saved) : [DEMO_CONVERSATION];
+    }
     const saved = localStorage.getItem(`${STORAGE_KEY}_conversations`);
-    return saved ? JSON.parse(saved) : INITIAL_CONVERSATIONS;
+    return saved ? JSON.parse(saved) : [];
   });
   const [messages, setMessages] = useState<Record<string, DirectMessage[]>>(() => {
+    if (!initialSession) return {};
+    if (isInitialDemo) {
+      const saved = localStorage.getItem(`${STORAGE_KEY}_messages`);
+      return saved ? JSON.parse(saved) : { [DEMO_CONVERSATION.id]: DEMO_MESSAGES };
+    }
     const saved = localStorage.getItem(`${STORAGE_KEY}_messages`);
-    return saved ? JSON.parse(saved) : INITIAL_MESSAGES;
+    return saved ? JSON.parse(saved) : {};
   });
-  const [activeConversationId, setActiveConversationId] = useState<string | null>(INITIAL_CONVERSATIONS[0]?.id || null);
+  const [activeConversationId, setActiveConversationId] = useState<string | null>(() => {
+    if (isInitialDemo) return DEMO_CONVERSATION.id;
+    return null;
+  });
 
   // Social Feed
   const [socialPosts, setSocialPosts] = useState<SocialPost[]>(() => {
+    if (!initialSession) return [];
+    if (isInitialDemo) {
+      const saved = localStorage.getItem(`${STORAGE_KEY}_posts`);
+      return saved ? JSON.parse(saved) : [DEMO_SOCIAL_POST];
+    }
     const saved = localStorage.getItem(`${STORAGE_KEY}_posts`);
-    return saved ? JSON.parse(saved) : INITIAL_SOCIAL_POSTS;
+    return saved ? JSON.parse(saved) : [];
   });
 
   // Connect System
   const [connections, setConnections] = useState<Record<string, ConnectionState>>(() => {
-    const saved = localStorage.getItem(`${STORAGE_KEY}_connections`);
-    return saved
-      ? JSON.parse(saved)
-      : {
-          'cr-01': 'connected',
-          'brand-aura': 'active_campaign',
-          'cr-02': 'connect',
-          'cr-03': 'connect',
-          'cr-05': 'connected',
-          'brand-cult': 'connect',
-        };
+    const emptyConn: Record<string, ConnectionState> = {};
+    if (!initialSession) return emptyConn;
+    if (isInitialDemo) {
+      return { 'demo-brand-01': 'active_campaign', 'demo-creator-01': 'connected' };
+    }
+    return emptyConn;
   });
 
   // Pro Tier Trial
@@ -494,17 +539,35 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           handle: 'creatoros.admin',
         }
       : role === 'business'
-      ? INITIAL_WORKSPACES[0]
-      : INITIAL_WORKSPACES[1];
+      ? {
+          id: authUser?.id || 'ws-brand',
+          name: authUser?.name || 'Brand Workspace',
+          type: 'business',
+          avatarUrl: authUser?.avatarUrl || 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=150&auto=format&fit=crop&q=80',
+          currency: '₹',
+          handle: authUser?.handle || '@brand',
+        }
+      : {
+          id: authUser?.id || 'ws-creator',
+          name: authUser?.name || 'Creator Studio',
+          type: 'creator',
+          avatarUrl: authUser?.avatarUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80',
+          currency: '₹',
+          handle: authUser?.handle || '@creator',
+        };
 
   const userProfile = authUser
     ? {
         ...INITIAL_USER_PROFILES[role],
         id: authUser.id,
-        name: authUser.name,
-        email: authUser.email,
-        role: authUser.role,
-        avatarUrl: authUser.avatarUrl,
+        name: authUser.name || 'User',
+        email: authUser.email || '',
+        role: authUser.role || role,
+        handle:
+          authUser.handle ||
+          (authUser.name ? `@${authUser.name.toLowerCase().replace(/\s+/g, '')}` : '@user'),
+        avatarUrl: authUser.avatarUrl || '',
+        notificationsCount: notifications.filter((n) => !n.read).length,
       }
     : INITIAL_USER_PROFILES[role];
 
@@ -517,6 +580,45 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       setCreatorActiveTab(initialCreatorTab);
     }
     AuthService.saveSession(user);
+
+    const isDemo = Boolean(user.is_demo || user.isDemo);
+    if (isDemo) {
+      setCampaigns([DEMO_CAMPAIGN]);
+      setCreators([DEMO_CREATOR_PROFILE]);
+      setOutreachItems([DEMO_OUTREACH]);
+      setPayments([DEMO_PAYMENT]);
+      setConversations([DEMO_CONVERSATION]);
+      setMessages({ [DEMO_CONVERSATION.id]: DEMO_MESSAGES });
+      setSocialPosts([DEMO_SOCIAL_POST]);
+      setConnections({ 'demo-brand-01': 'active_campaign', 'demo-creator-01': 'connected' });
+      setActiveCampaignId(DEMO_CAMPAIGN.id);
+      setNotifications([]);
+      setAttentionItems([]);
+      setSubmissions([]);
+    } else {
+      setCampaigns([]);
+      setCreators([]);
+      setOutreachItems([]);
+      setPayments([]);
+      setConversations([]);
+      setMessages({});
+      setSocialPosts([]);
+      setConnections({});
+      setActiveCampaignId('');
+      setNotifications([]);
+      setAttentionItems([]);
+      setSubmissions([]);
+      setTeamMembers([]);
+      setAuditLogs([]);
+      localStorage.removeItem(`${STORAGE_KEY}_campaigns`);
+      localStorage.removeItem(`${STORAGE_KEY}_creators`);
+      localStorage.removeItem(`${STORAGE_KEY}_posts`);
+      localStorage.removeItem(`${STORAGE_KEY}_conversations`);
+      localStorage.removeItem(`${STORAGE_KEY}_messages`);
+      localStorage.removeItem(`${STORAGE_KEY}_outreach`);
+      localStorage.removeItem(`${STORAGE_KEY}_payments`);
+      localStorage.removeItem(`${STORAGE_KEY}_connections`);
+    }
   };
 
   const logout = () => {
@@ -524,6 +626,18 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setIsAuthenticated(false);
     setViewMode('welcome');
     AuthService.clearSession();
+    setCampaigns([]);
+    setCreators([]);
+    setOutreachItems([]);
+    setPayments([]);
+    setConversations([]);
+    setMessages({});
+    setSocialPosts([]);
+    setConnections({});
+    setActiveCampaignId('');
+    setNotifications([]);
+    setAttentionItems([]);
+    setSubmissions([]);
   };
 
   const loginAsDemo = async (targetRole: UserRole = 'creator', initialCreatorTab?: string) => {
@@ -815,17 +929,17 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       cta: newSubData.cta || '',
       hashtags: newSubData.hashtags || [],
       videoDurationSec: 36,
-      requiredBrandTag: '@aurastreetwear',
+      requiredBrandTag: '@creatoros',
     });
 
     const newSubmission: ContentSubmission = {
       id: `sub-${Date.now()}`,
-      campaignId: newSubData.campaignId || campaigns[0].id,
-      campaignName: newSubData.campaignName || campaigns[0].name,
-      creatorId: newSubData.creatorId || creators[0].id,
-      creatorName: newSubData.creatorName || creators[0].name,
-      creatorHandle: newSubData.creatorHandle || creators[0].handle,
-      creatorAvatar: newSubData.creatorAvatar || creators[0].avatar,
+      campaignId: newSubData.campaignId || campaigns[0]?.id || 'camp-default',
+      campaignName: newSubData.campaignName || campaigns[0]?.name || 'Collaboration Brief',
+      creatorId: newSubData.creatorId || userProfile.id || authUser?.id || 'cr-default',
+      creatorName: newSubData.creatorName || userProfile.name || authUser?.name || 'Creator',
+      creatorHandle: newSubData.creatorHandle || userProfile.handle || authUser?.handle || '@creator',
+      creatorAvatar: newSubData.creatorAvatar || userProfile.avatarUrl || authUser?.avatarUrl || '',
       deliverableType: newSubData.deliverableType || 'Reel',
       title: newSubData.title || 'Untitled Draft Submission',
       mediaUrl:
@@ -1265,7 +1379,7 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       postId,
       parentId: parentCommentId,
       authorName: userProfile.name,
-      authorHandle: role === 'business' ? '@aurastreetwear' : role === 'super_admin' ? '@alex.admin' : '@rohan.kicks',
+      authorHandle: authUser?.handle || userProfile.handle || (role === 'business' ? '@demobrand' : role === 'super_admin' ? '@admin' : '@democreator'),
       authorAvatar: userProfile.avatarUrl,
       authorType: role,
       authorVerified: true,
@@ -1313,7 +1427,7 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       id: `c-${Date.now()}`,
       postId,
       authorName: userProfile.name,
-      authorHandle: role === 'business' ? '@aurastreetwear' : role === 'super_admin' ? '@alex.admin' : '@rohan.kicks',
+      authorHandle: authUser?.handle || userProfile.handle || (role === 'business' ? '@demobrand' : role === 'super_admin' ? '@admin' : '@democreator'),
       authorAvatar: userProfile.avatarUrl,
       authorType: role,
       authorVerified: true,
@@ -1344,9 +1458,9 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     const contentType = postData.contentType || 'shot';
     const newPost: SocialPost = {
       id: `post-${Date.now()}`,
-      authorId: userProfile.id || (role === 'business' ? 'brand-aura' : role === 'super_admin' ? 'admin-001' : 'cr-01'),
+      authorId: userProfile.id || authUser?.id || (role === 'business' ? 'demo-brand-01' : role === 'super_admin' ? 'admin-001' : 'demo-creator-01'),
       authorName: userProfile.name,
-      authorHandle: role === 'business' ? '@aurastreetwear' : role === 'super_admin' ? '@alex.admin' : '@rohan.kicks',
+      authorHandle: authUser?.handle || userProfile.handle || (role === 'business' ? '@demobrand' : role === 'super_admin' ? '@admin' : '@democreator'),
       authorAvatar: userProfile.avatarUrl,
       authorType: role,
       authorVerified: true,

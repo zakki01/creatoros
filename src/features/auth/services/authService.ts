@@ -5,12 +5,16 @@ import {
   SignUpCredentials,
 } from '../types';
 import { UserRole } from '../../../types';
+import {
+  DEMO_CREATOR_ACCOUNT,
+  DEMO_BRAND_ACCOUNT,
+} from '../../../data/demoFixtures';
 
 const AUTH_STORAGE_KEY = 'creatoros_auth_session_v1';
 const REGISTERED_ACCOUNTS_KEY = 'creatoros_registered_accounts_v1';
 
-export const CANONICAL_CREATOR_ID = 'cr-01';
-export const CANONICAL_BRAND_ID = 'brand-aura';
+export const CANONICAL_CREATOR_ID = 'demo-creator-01';
+export const CANONICAL_BRAND_ID = 'demo-brand-01';
 export const CANONICAL_ADMIN_ID = 'admin-001';
 
 export interface IAuthProvider {
@@ -28,7 +32,7 @@ export class EmailAuthProvider implements IAuthProvider {
     return true;
   }
 
-    async login(credentials: LoginCredentials): Promise<AuthUser> {
+  async login(credentials: LoginCredentials): Promise<AuthUser> {
     if (!credentials.email || !credentials.password) {
       throw new Error('Please provide both email and password.');
     }
@@ -36,12 +40,22 @@ export class EmailAuthProvider implements IAuthProvider {
       throw new Error('Password must be at least 6 characters.');
     }
 
+    const emailLower = credentials.email.trim().toLowerCase();
+
+    // Check exact controlled demo identities
+    if (emailLower === 'demo.creator@creatoros.ai') {
+      return { ...DEMO_CREATOR_ACCOUNT };
+    }
+    if (emailLower === 'demo.brand@creatoros.ai') {
+      return { ...DEMO_BRAND_ACCOUNT };
+    }
+
     try {
       const stored = localStorage.getItem(REGISTERED_ACCOUNTS_KEY);
       if (stored) {
         const accounts: Array<AuthUser & { password?: string }> = JSON.parse(stored);
         const match = accounts.find(
-          (a) => a.email.toLowerCase() === credentials.email.trim().toLowerCase()
+          (a) => a.email.toLowerCase() === emailLower
         );
         if (match) {
           if (match.password && match.password !== credentials.password) {
@@ -57,9 +71,9 @@ export class EmailAuthProvider implements IAuthProvider {
       }
     }
 
-    const emailLower = credentials.email.trim().toLowerCase();
     const name = credentials.email.split('@')[0];
     const formattedName = name.charAt(0).toUpperCase() + name.slice(1);
+    const uniqueUserId = `usr_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
 
     if (emailLower.includes('admin')) {
       return {
@@ -72,16 +86,17 @@ export class EmailAuthProvider implements IAuthProvider {
         handle: `@${name.toLowerCase()}`,
         provider: 'email',
         isDemo: false,
+        is_demo: false,
+        account_type: 'standard',
       };
     }
 
     if (
       emailLower.includes('brand') ||
-      emailLower.includes('business') ||
-      emailLower.includes('aura')
+      emailLower.includes('business')
     ) {
       return {
-        id: CANONICAL_BRAND_ID,
+        id: uniqueUserId,
         name: `${formattedName} Co.`,
         email: credentials.email,
         role: 'business',
@@ -90,11 +105,13 @@ export class EmailAuthProvider implements IAuthProvider {
         handle: `@${name.toLowerCase()}`,
         provider: 'email',
         isDemo: false,
+        is_demo: false,
+        account_type: 'standard',
       };
     }
 
     return {
-      id: CANONICAL_CREATOR_ID,
+      id: uniqueUserId,
       name: formattedName,
       email: credentials.email,
       role: 'creator',
@@ -103,6 +120,8 @@ export class EmailAuthProvider implements IAuthProvider {
       handle: `@${name.toLowerCase()}`,
       provider: 'email',
       isDemo: false,
+      is_demo: false,
+      account_type: 'standard',
     };
   }
 
@@ -114,15 +133,10 @@ export class EmailAuthProvider implements IAuthProvider {
       throw new Error('Password must be at least 6 characters.');
     }
 
-    const assignedId =
-      credentials.role === 'creator'
-        ? CANONICAL_CREATOR_ID
-        : credentials.role === 'business'
-        ? CANONICAL_BRAND_ID
-        : CANONICAL_ADMIN_ID;
+    const uniqueUserId = `usr_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
 
     const newUser: AuthUser & { password?: string } = {
-      id: assignedId,
+      id: uniqueUserId,
       name: credentials.name.trim(),
       email: credentials.email.trim(),
       role: credentials.role,
@@ -133,6 +147,8 @@ export class EmailAuthProvider implements IAuthProvider {
       handle: credentials.handle || `@${credentials.name.toLowerCase().replace(/\s+/g, '')}`,
       provider: 'email',
       isDemo: false,
+      is_demo: false,
+      account_type: 'standard',
       password: credentials.password,
     };
 
@@ -158,7 +174,6 @@ export class GoogleAuthProvider implements IAuthProvider {
   readonly name = 'Google OAuth';
 
   isConfigured(): boolean {
-    // Check if client configured Google Client ID in self-hosted env
     const clientId = (import.meta as any).env?.VITE_GOOGLE_CLIENT_ID;
     return Boolean(clientId && clientId.trim().length > 0);
   }
@@ -169,7 +184,6 @@ export class GoogleAuthProvider implements IAuthProvider {
         'Google OAuth is not configured. Please supply VITE_GOOGLE_CLIENT_ID in your environment, or continue using Demo Creator mode.'
       );
     }
-    // Production OAuth redirect or popup handler
     throw new Error('Redirecting to Google OAuth endpoint...');
   }
 }
@@ -212,6 +226,34 @@ export class FacebookAuthProvider implements IAuthProvider {
   }
 }
 
+export class Auth0Provider implements IAuthProvider {
+  readonly id = 'auth0';
+  readonly name = 'Auth0 Universal Login';
+
+  isConfigured(): boolean {
+    const domain = (import.meta as any).env?.VITE_AUTH0_DOMAIN || (import.meta as any).env?.AUTH0_DOMAIN;
+    const clientId = (import.meta as any).env?.VITE_AUTH0_CLIENT_ID || (import.meta as any).env?.AUTH0_CLIENT_ID;
+    return Boolean(domain && clientId && domain.trim().length > 0 && clientId.trim().length > 0);
+  }
+
+  async login(): Promise<AuthUser> {
+    const domain = (import.meta as any).env?.VITE_AUTH0_DOMAIN || (import.meta as any).env?.AUTH0_DOMAIN;
+    const clientId = (import.meta as any).env?.VITE_AUTH0_CLIENT_ID || (import.meta as any).env?.AUTH0_CLIENT_ID;
+
+    if (!domain || !clientId) {
+      throw new Error(
+        'Auth0 is not configured. Please configure VITE_AUTH0_DOMAIN and VITE_AUTH0_CLIENT_ID in environment variables.'
+      );
+    }
+
+    const redirectUri = encodeURIComponent(window.location.origin);
+    const audience = (import.meta as any).env?.VITE_AUTH0_AUDIENCE || '';
+    const audienceParam = audience ? `&audience=${encodeURIComponent(audience)}` : '';
+    window.location.href = `https://${domain}/authorize?client_id=${clientId}&response_type=code&redirect_uri=${redirectUri}&scope=openid%20profile%20email${audienceParam}`;
+    throw new Error('Redirecting to Auth0 Universal Login...');
+  }
+}
+
 export class DemoAuthProvider implements IAuthProvider {
   readonly id = 'demo';
   readonly name = 'Demo Sandbox';
@@ -223,7 +265,7 @@ export class DemoAuthProvider implements IAuthProvider {
   async login(role: UserRole = 'creator'): Promise<AuthUser> {
     if (role === 'super_admin') {
       return {
-        id: 'admin-001',
+        id: CANONICAL_ADMIN_ID,
         name: 'Alex Vance (Super Admin)',
         email: 'alex.admin@creatoros.ai',
         role: 'super_admin',
@@ -232,34 +274,16 @@ export class DemoAuthProvider implements IAuthProvider {
         handle: '@alex.vance',
         provider: 'demo',
         isDemo: true,
+        is_demo: true,
+        account_type: 'demo',
       };
     }
 
     if (role === 'creator') {
-      return {
-        id: CANONICAL_CREATOR_ID,
-        name: 'Rohan Sharma',
-        email: 'rohan.sharma@creatoros.ai',
-        role: 'creator',
-        avatarUrl:
-          'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80',
-        handle: '@rohan.kicks',
-        provider: 'demo',
-        isDemo: true,
-      };
+      return { ...DEMO_CREATOR_ACCOUNT };
     }
 
-    return {
-      id: CANONICAL_BRAND_ID,
-      name: 'Aura Streetwear Co.',
-      email: 'partnerships@aurastreetwear.com',
-      role: 'business',
-      avatarUrl:
-        'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=200&auto=format&fit=crop&q=80',
-      handle: '@aurastreetwear',
-      provider: 'demo',
-      isDemo: true,
-    };
+    return { ...DEMO_BRAND_ACCOUNT };
   }
 }
 
@@ -268,12 +292,42 @@ class AuthServiceSingleton {
   private googleProvider = new GoogleAuthProvider();
   private appleProvider = new AppleAuthProvider();
   private facebookProvider = new FacebookAuthProvider();
+  private auth0Provider = new Auth0Provider();
   private demoProvider = new DemoAuthProvider();
 
   getStoredSession(): AuthUser | null {
     try {
       const raw = localStorage.getItem(AUTH_STORAGE_KEY);
-      return raw ? JSON.parse(raw) : null;
+      if (!raw) return null;
+      const parsed = JSON.parse(raw);
+      if (!parsed) return null;
+      // Handle nested session object format { user: { ... }, token, role }
+      if (parsed.user && typeof parsed.user === 'object') {
+        const u = parsed.user;
+        const role = (parsed.role || u.role || 'creator') as any;
+        const isDemo = Boolean(
+          parsed.is_demo ||
+            parsed.isDemo ||
+            u.is_demo ||
+            u.isDemo ||
+            u.id === 'demo-creator-01' ||
+            u.id === 'demo-brand-01' ||
+            u.email?.includes('demo')
+        );
+        return {
+          id: u.id || (role === 'business' ? 'demo-brand-01' : 'demo-creator-01'),
+          name: u.name || (role === 'business' ? 'CreatorOS Demo Brand' : 'CreatorOS Demo Creator'),
+          email: u.email || (role === 'business' ? 'demo.brand@creatoros.ai' : 'demo.creator@creatoros.ai'),
+          role,
+          avatarUrl: u.avatarUrl || u.avatar || '',
+          handle: u.handle || `@${(u.name || 'user').toLowerCase().replace(/\s+/g, '')}`,
+          isDemo,
+          is_demo: isDemo,
+          account_type: isDemo ? 'demo' : 'standard',
+          provider: parsed.provider || u.provider || (isDemo ? 'demo' : 'email'),
+        };
+      }
+      return parsed;
     } catch {
       return null;
     }
@@ -312,6 +366,10 @@ class AuthServiceSingleton {
     ];
   }
 
+  isAuth0Configured(): boolean {
+    return this.auth0Provider.isConfigured();
+  }
+
   async loginWithEmail(credentials: LoginCredentials): Promise<AuthUser> {
     const user = await this.emailProvider.login(credentials);
     this.saveSession(user);
@@ -328,6 +386,10 @@ class AuthServiceSingleton {
     const user = await this.demoProvider.login(role);
     this.saveSession(user);
     return user;
+  }
+
+  async loginWithAuth0(): Promise<AuthUser> {
+    return this.auth0Provider.login();
   }
 
   async loginWithSocial(provider: 'google' | 'apple' | 'facebook'): Promise<AuthUser> {
@@ -372,7 +434,6 @@ class AdminAuthServiceSingleton {
       const raw = localStorage.getItem(ADMIN_AUTH_STORAGE_KEY);
       if (!raw) return null;
       const session: AdminAuthSession = JSON.parse(raw);
-      // Check session expiry (e.g., 24 hours)
       if (session.expiresAt && Date.now() > session.expiresAt) {
         this.clearSession();
         return null;
@@ -400,7 +461,6 @@ class AdminAuthServiceSingleton {
   }
 
   async login(credentials: AdminLoginCredentials): Promise<AdminAuthSession> {
-    // Check brute-force lockout
     if (Date.now() < this.lockoutUntil) {
       const secondsRemaining = Math.ceil((this.lockoutUntil - Date.now()) / 1000);
       throw new Error(`Too many failed login attempts. Enclave locked for ${secondsRemaining}s.`);
@@ -409,14 +469,12 @@ class AdminAuthServiceSingleton {
     const email = credentials.email.trim().toLowerCase();
     const password = credentials.password;
 
-    // Simulate server-side admin authentication and security check
     await new Promise((r) => setTimeout(r, 450));
 
-    // Validation: Admin email requirement
     if (!email || !password) {
       this.failedAttempts++;
       if (this.failedAttempts >= 5) {
-        this.lockoutUntil = Date.now() + 60000; // 1-minute lockout
+        this.lockoutUntil = Date.now() + 60000;
       }
       throw new Error('Please enter both admin email and password.');
     }
@@ -429,14 +487,12 @@ class AdminAuthServiceSingleton {
       throw new Error('Invalid credentials. Password too short.');
     }
 
-    // Two factor verification validation (RFC 6238 TOTP format)
     const twoFactorCode = credentials.twoFactorCode?.trim();
     if (twoFactorCode && !/^\d{6}$/.test(twoFactorCode)) {
       this.failedAttempts++;
       throw new Error('2FA verification code must be a 6-digit numeric TOTP token.');
     }
 
-    // Reset failed attempts on success
     this.failedAttempts = 0;
     this.lockoutUntil = 0;
 
@@ -449,7 +505,7 @@ class AdminAuthServiceSingleton {
         'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200&auto=format&fit=crop&q=80',
       token: `admin_jwt_${Math.random().toString(36).substring(2)}_${Date.now()}`,
       loginTimestamp: Date.now(),
-      expiresAt: Date.now() + 24 * 60 * 60 * 1000, // 24 hours validity
+      expiresAt: Date.now() + 24 * 60 * 60 * 1000,
       twoFactorVerified: Boolean(twoFactorCode) || true,
     };
 
@@ -468,4 +524,3 @@ class AdminAuthServiceSingleton {
 }
 
 export const AdminAuthService = new AdminAuthServiceSingleton();
-

@@ -32,6 +32,7 @@ import {
   Send,
 } from 'lucide-react';
 import { useAppState } from '../../context/StateContext';
+import { getSafeCurrentCreator } from '../../data/demoFixtures';
 import { Card } from '../ui/Card';
 import { Button } from '../ui/Button';
 import { Badge } from '../ui/Badge';
@@ -73,9 +74,11 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
     connections,
     addCreatorShowcase,
     setCreatorActiveTab,
+    userProfile,
+    authUser,
   } = useAppState();
 
-  const creator = creatorData || creators[0]; // Default Rohan Sharma
+  const creator = creatorData || getSafeCurrentCreator(creators, userProfile, authUser);
 
   // Tabs: Showcase, Reels, Shots, Blogs, Campaigns, About, Analytics
   const [activeTab, setActiveTab] = useState<'showcase' | 'reels' | 'shots' | 'blogs' | 'campaigns' | 'about' | 'analytics'>('showcase');
@@ -115,7 +118,14 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
   };
 
   const connectionState = connections[creator.id] || 'connect';
-  const isOwnProfile = role === 'creator' && !isPublicView && creator.id === 'cr-01';
+  const isOwnProfile =
+    role === 'creator' &&
+    !isPublicView &&
+    (creator.id === userProfile?.id ||
+      creator.id === authUser?.id ||
+      creator.id === 'demo-creator-01' ||
+      creator.id === 'cr-01' ||
+      creator.id === 'creator-me');
   const [isApproachModalOpen, setIsApproachModalOpen] = useState(false);
 
   const profileActions = resolveProfileActions({

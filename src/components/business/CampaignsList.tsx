@@ -11,6 +11,7 @@ import { Card } from '../ui/Card';
 import { Button } from '../ui/Button';
 import { Badge } from '../ui/Badge';
 import { Progress } from '../ui/Progress';
+import { SpatialEmptyState } from '../ui/SpatialEmptyState';
 
 interface CampaignsListProps {
   onOpenCampaign: (campaignId: string) => void;
@@ -48,8 +49,17 @@ export const CampaignsList: React.FC<CampaignsListProps> = ({
       </div>
 
       {/* Campaigns Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {campaigns.map((camp) => (
+      {campaigns.length === 0 ? (
+        <SpatialEmptyState
+          objectType="brief"
+          title="No campaigns yet"
+          subtitle="Create your first marketing program to start collaborating with verified creators."
+          actionLabel="Create Campaign"
+          onAction={onOpenCreateModal}
+        />
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {campaigns.map((camp) => (
           <div
             key={camp.id}
             onClick={() => onOpenCampaign(camp.id)}
@@ -112,6 +122,7 @@ export const CampaignsList: React.FC<CampaignsListProps> = ({
           </div>
         ))}
       </div>
+      )}
     </div>
   );
 };

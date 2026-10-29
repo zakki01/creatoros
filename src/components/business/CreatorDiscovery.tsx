@@ -21,10 +21,13 @@ import { Creator, Platform } from '../../types';
 import { Card } from '../ui/Card';
 import { Button } from '../ui/Button';
 import { Badge } from '../ui/Badge';
+import { SpatialEmptyState } from '../ui/SpatialEmptyState';
+import { DEMO_CAMPAIGN } from '../../data/demoFixtures';
 import { CreatorProfileModal } from './CreatorProfileModal';
 
 export const CreatorDiscovery: React.FC = () => {
-  const { creators, campaigns, activeCampaignId, inviteCreator, outreachItems } = useAppState();
+  const { creators, campaigns, activeCampaignId, inviteCreator, outreachItems, authUser } = useAppState();
+  const isDemo = Boolean(authUser?.is_demo || authUser?.isDemo);
 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -35,7 +38,7 @@ export const CreatorDiscovery: React.FC = () => {
   const [activeModalCreator, setActiveModalCreator] = useState<Creator | null>(null);
   const [expandedWhyId, setExpandedWhyId] = useState<string | null>(null);
 
-  const activeCampaign = campaigns.find((c) => c.id === activeCampaignId) || campaigns[0];
+  const activeCampaign = campaigns.find((c) => c.id === activeCampaignId) || campaigns[0] || (isDemo ? DEMO_CAMPAIGN : null);
 
   const categories = [
     'All',
@@ -81,6 +84,7 @@ export const CreatorDiscovery: React.FC = () => {
   });
 
   const isCreatorInvited = (creatorId: string) => {
+    if (!activeCampaign) return false;
     return outreachItems.some(
       (item) => item.creatorId === creatorId && item.campaignId === activeCampaign.id
     );
@@ -100,13 +104,19 @@ export const CreatorDiscovery: React.FC = () => {
             </Badge>
           </div>
           <p className="text-sm text-zinc-500 mt-1">
-            Evaluating creators against active campaign <strong className="text-zinc-800">"{activeCampaign.name}"</strong>
+            {activeCampaign ? (
+              <>Evaluating creators against active campaign <strong className="text-zinc-800">"{activeCampaign.name}"</strong></>
+            ) : (
+              <>Browse and evaluate creators across verified categories</>
+            )}
           </p>
         </div>
 
-        <div className="text-xs text-zinc-500 bg-zinc-100 border border-zinc-200 px-3.5 py-2 text-zinc-700 rounded-xl">
-          Active target: <span className="font-semibold text-zinc-800">{activeCampaign.targetAudience.location.join(', ')}</span>
-        </div>
+        {activeCampaign?.targetAudience?.location && (
+          <div className="text-xs text-zinc-500 bg-zinc-100 border border-zinc-200 px-3.5 py-2 text-zinc-700 rounded-xl">
+            Active target: <span className="font-semibold text-zinc-800">{activeCampaign.targetAudience.location.join(', ')}</span>
+          </div>
+        )}
       </div>
 
       {/* Filters Bar */}
@@ -188,7 +198,13 @@ export const CreatorDiscovery: React.FC = () => {
       </div>
 
       {/* Creator Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {filteredCreators.length === 0 ? (
+        <SpatialEmptyState
+          title="No Creators Discovered"
+          description="No creators match your current filter criteria. Try clearing search filters or invite creators directly."
+        />
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredCreators.map((creator) => {
           const isInvited = isCreatorInvited(creator.id);
           const isWhyExpanded = expandedWhyId === creator.id;
@@ -331,8 +347,12 @@ export const CreatorDiscovery: React.FC = () => {
                 <Button
                   variant={isInvited ? 'secondary' : 'primary'}
                   size="sm"
-                  disabled={isInvited}
-                  onClick={() => inviteCreator(creator.id, activeCampaign.id, creator.estimatedRate)}
+                  disabled={isInvited || !activeCampaign}
+                  onClick={() => {
+                    if (activeCampaign) {
+                      inviteCreator(creator.id, activeCampaign.id, creator.estimatedRate);
+                    }
+                  }}
                   leftIcon={isInvited ? <CheckCircle className="w-3.5 h-3.5 text-emerald-700" /> : <Send className="w-3.5 h-3.5" />}
                   className="flex-1 text-xs"
                 >
@@ -343,6 +363,7 @@ export const CreatorDiscovery: React.FC = () => {
           );
         })}
       </div>
+      )}
 
       {/* Profile Modal */}
       <CreatorProfileModal

@@ -13,10 +13,12 @@ import {
   AlertCircle,
 } from 'lucide-react';
 import { useAppState } from '../../context/StateContext';
+import { getSafeCurrentCreator } from '../../data/demoFixtures';
 import { Card } from '../ui/Card';
 import { Button } from '../ui/Button';
 import { Badge } from '../ui/Badge';
 import { Modal } from '../ui/Modal';
+import { SpatialEmptyState } from '../ui/SpatialEmptyState';
 import { OutreachItem } from '../../types';
 
 export const CreatorOpportunities: React.FC = () => {
@@ -25,14 +27,16 @@ export const CreatorOpportunities: React.FC = () => {
     acceptOpportunity,
     declineOpportunity,
     creators,
+    userProfile,
+    authUser,
   } = useAppState();
 
-  const currentCreator = creators[0];
+  const currentCreator = getSafeCurrentCreator(creators, userProfile, authUser);
   const [selectedBrief, setSelectedBrief] = useState<OutreachItem | null>(null);
 
   // Incoming opportunities: Contacted or Interested or Selected
   const opportunities = outreachItems.filter(
-    (i) => i.creatorId === currentCreator.id
+    (i) => i.creatorId === currentCreator.id || (authUser?.is_demo && i.creatorId === 'demo-creator-01')
   );
 
   return (
@@ -52,10 +56,10 @@ export const CreatorOpportunities: React.FC = () => {
       {/* Opportunities List */}
       <div className="space-y-4">
         {opportunities.length === 0 ? (
-          <div className="p-10 text-center rounded-3xl bg-white border border-black/[0.08] shadow-xs space-y-1.5">
-            <p className="text-sm font-medium text-zinc-800">No pending opportunities</p>
-            <p className="text-xs text-zinc-500">New brand invitations appear here.</p>
-          </div>
+          <SpatialEmptyState
+            title="No Pending Opportunities"
+            description="You have no inbound campaign briefs or opportunities yet. Pitch to brands or grow your reach to receive invitations."
+          />
         ) : (
           opportunities.map((opp) => {
             const isConfirmed = opp.stage === 'Confirmed';

@@ -14,14 +14,45 @@ import {
 import { Card } from '../ui/Card';
 import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
+import { SpatialEmptyState } from '../ui/SpatialEmptyState';
 import { useAppState } from '../../context/StateContext';
 import { ReportCenterModal } from '../common/ReportCenterModal';
+import { DEMO_CAMPAIGN } from '../../data/demoFixtures';
 
 export const BusinessAnalytics: React.FC = () => {
-  const { campaigns, activeCampaignId } = useAppState();
+  const { campaigns, activeCampaignId, authUser } = useAppState();
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+  const isDemo = Boolean(authUser?.is_demo || authUser?.isDemo);
 
-  const activeCampaign = campaigns.find((c) => c.id === activeCampaignId) || campaigns[0];
+  const activeCampaign = campaigns.find((c) => c.id === activeCampaignId) || campaigns[0] || (isDemo ? DEMO_CAMPAIGN : null);
+
+  if (!activeCampaign && campaigns.length === 0) {
+    return (
+      <div className="space-y-8 animate-fade-in pb-12">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <div className="flex items-center gap-2">
+              <h1 className="text-2xl sm:text-3xl font-bold text-zinc-900 font-display">
+                Campaign Analytics & Attribution
+              </h1>
+              <Badge variant="brand" size="sm">
+                Real-Time Tracking
+              </Badge>
+            </div>
+            <p className="text-sm text-zinc-500 mt-1">
+              End-to-end performance and creator-level ROI
+            </p>
+          </div>
+        </div>
+
+        <SpatialEmptyState
+          title="No Campaign Analytics Available"
+          description="Launch a brand campaign or invite creators to start receiving live attribution, ROAS tracking, and engagement metrics."
+          icon={BarChart3}
+        />
+      </div>
+    );
+  }
 
   const primaryMetrics = [
     { label: 'Total Reach', value: '2.42M', delta: '+18.4%', trend: 'up', icon: Eye },
@@ -36,64 +67,24 @@ export const BusinessAnalytics: React.FC = () => {
     { label: 'Blended ROAS', value: '3.82x', delta: '+0.6x', trend: 'good', icon: Sparkles },
   ];
 
-  const creatorPerformances = [
+  const demoPerformances = [
     {
-      name: 'Rohan Sharma',
-      handle: '@rohan.kicks',
+      name: 'CreatorOS Demo Creator',
+      handle: '@democreator',
       avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80',
-      category: 'Sneaker Culture',
+      category: 'Fashion & Streetwear',
       deliverables: '1 Reel + 2 Stories',
-      spend: 35000,
-      views: 640000,
-      clicks: 14800,
-      conversions: 620,
-      revenue: 295000,
-      roas: 8.4,
+      spend: 45000,
+      views: 125000,
+      clicks: 8400,
+      conversions: 320,
+      revenue: 120000,
+      roas: 2.67,
       status: 'Top Performer',
     },
-    {
-      name: 'Dev Mehta',
-      handle: '@devmehtavlogs',
-      avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=120&auto=format&fit=crop&q=80',
-      category: 'Youth Humour',
-      deliverables: '1 Skit Reel',
-      spend: 40000,
-      views: 1450000,
-      clicks: 18200,
-      conversions: 510,
-      revenue: 242000,
-      roas: 6.05,
-      status: 'High Viral Lift',
-    },
-    {
-      name: 'Aanya Deshmukh',
-      handle: '@aanya_style',
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80',
-      category: 'High Fashion',
-      deliverables: '1 Reel + 1 Story',
-      spend: 30000,
-      views: 520000,
-      clicks: 8600,
-      conversions: 380,
-      revenue: 182000,
-      roas: 6.06,
-      status: 'High AOV',
-    },
-    {
-      name: 'Maya Patel',
-      handle: '@mayapatel.fit',
-      avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=120&auto=format&fit=crop&q=80',
-      category: 'Fitness',
-      deliverables: '1 Wear-Test Reel',
-      spend: 45000,
-      views: 780000,
-      clicks: 9400,
-      conversions: 330,
-      revenue: 151000,
-      roas: 3.35,
-      status: 'Steady Performer',
-    },
   ];
+
+  const creatorPerformances = isDemo ? demoPerformances : [];
 
   return (
     <div className="space-y-8 animate-fade-in pb-12">
@@ -183,50 +174,58 @@ export const BusinessAnalytics: React.FC = () => {
                 <th className="py-3 px-4 text-right">Status</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-zinc-800/80">
-              {creatorPerformances.map((c, idx) => (
-                <tr key={idx} className="hover:bg-zinc-100 transition-colors">
-                  <td className="py-3.5 px-4">
-                    <div className="flex items-center gap-2.5">
-                      <img
-                        src={c.avatar}
-                        alt={c.name}
-                        className="w-8 h-8 rounded-xl object-cover ring-1 ring-zinc-700"
-                      />
-                      <div>
-                        <p className="font-semibold text-zinc-800">{c.name}</p>
-                        <p className="text-[10px] text-zinc-500 font-mono">{c.handle}</p>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="py-3.5 px-4 text-zinc-500 font-mono">{c.deliverables}</td>
-                  <td className="py-3.5 px-4 font-mono font-semibold text-zinc-800">
-                    ₹{(c.spend / 1000).toFixed(0)}K
-                  </td>
-                  <td className="py-3.5 px-4 font-mono text-zinc-700">
-                    {(c.views / 1000).toFixed(0)}K
-                  </td>
-                  <td className="py-3.5 px-4 font-mono text-zinc-700">
-                    {c.clicks.toLocaleString()}
-                  </td>
-                  <td className="py-3.5 px-4 font-mono font-semibold text-zinc-800">
-                    {c.conversions}
-                  </td>
-                  <td className="py-3.5 px-4 font-mono font-bold text-emerald-700">
-                    ₹{(c.revenue / 100000).toFixed(1)}L
-                  </td>
-                  <td className="py-3.5 px-4">
-                    <span className="font-mono font-bold text-[#007E93] text-sm">
-                      {c.roas.toFixed(1)}x
-                    </span>
-                  </td>
-                  <td className="py-3.5 px-4 text-right">
-                    <Badge variant="brand" size="sm">
-                      {c.status}
-                    </Badge>
+            <tbody className="divide-y divide-zinc-200">
+              {creatorPerformances.length === 0 ? (
+                <tr>
+                  <td colSpan={9} className="py-8 text-center text-zinc-500 font-normal">
+                    No creator-level performance data recorded yet.
                   </td>
                 </tr>
-              ))}
+              ) : (
+                creatorPerformances.map((c, idx) => (
+                  <tr key={idx} className="hover:bg-zinc-100 transition-colors">
+                    <td className="py-3.5 px-4">
+                      <div className="flex items-center gap-2.5">
+                        <img
+                          src={c.avatar}
+                          alt={c.name}
+                          className="w-8 h-8 rounded-xl object-cover ring-1 ring-zinc-700"
+                        />
+                        <div>
+                          <p className="font-semibold text-zinc-800">{c.name}</p>
+                          <p className="text-[10px] text-zinc-500 font-mono">{c.handle}</p>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="py-3.5 px-4 text-zinc-500 font-mono">{c.deliverables}</td>
+                    <td className="py-3.5 px-4 font-mono font-semibold text-zinc-800">
+                      ₹{(c.spend / 1000).toFixed(0)}K
+                    </td>
+                    <td className="py-3.5 px-4 font-mono text-zinc-700">
+                      {(c.views / 1000).toFixed(0)}K
+                    </td>
+                    <td className="py-3.5 px-4 font-mono text-zinc-700">
+                      {c.clicks.toLocaleString()}
+                    </td>
+                    <td className="py-3.5 px-4 font-mono font-semibold text-zinc-800">
+                      {c.conversions}
+                    </td>
+                    <td className="py-3.5 px-4 font-mono font-bold text-emerald-700">
+                      ₹{(c.revenue / 100000).toFixed(1)}L
+                    </td>
+                    <td className="py-3.5 px-4">
+                      <span className="font-mono font-bold text-[#007E93] text-sm">
+                        {c.roas.toFixed(1)}x
+                      </span>
+                    </td>
+                    <td className="py-3.5 px-4 text-right">
+                      <Badge variant="brand" size="sm">
+                        {c.status}
+                      </Badge>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

@@ -1,3 +1,5 @@
+import { DEMO_SHOWCASE_PROJECT } from '../data/demoFixtures';
+
 /**
  * CreatorOS Showcase Media Validation & Storage Engine
  * Enforces real media file signature inspection, strict 4-video caps,
@@ -270,7 +272,10 @@ export const ShowcaseStorage = {
     } catch (err) {
       console.warn('Failed to load showcase projects:', err);
     }
-    return DEFAULT_INITIAL_PROJECTS;
+    if (creatorId === 'demo-creator-01' || creatorId === 'cr-01') {
+      return DEFAULT_INITIAL_PROJECTS;
+    }
+    return [];
   },
 
   saveProject(creatorId: string, project: ShowcaseProject): ShowcaseProject[] {
