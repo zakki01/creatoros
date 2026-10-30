@@ -393,12 +393,12 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                   <button
                     key={tpl.id}
                     onClick={() => handleApplyTemplate(tpl.id)}
-                    className="p-2.5 rounded-xl bg-zinc-50 hover:bg-white border border-[var(--border)] hover:border-[#00B4D8]/30 text-left transition-all cursor-pointer group"
+                    className="p-2.5 rounded-xl bg-[var(--surface-subtle)] hover:bg-[var(--surface-elevated)] border border-[var(--border)] hover:border-[#00B4D8]/30 text-left transition-all cursor-pointer group"
                   >
-                    <span className="text-[9px] font-mono text-[#007E93] font-semibold block uppercase">
+                    <span className="text-[9px] font-mono text-[#00B4D8] font-semibold block uppercase">
                       {tpl.category}
                     </span>
-                    <span className="text-xs font-semibold text-zinc-800 group-hover:text-zinc-950 line-clamp-1">
+                    <span className="text-xs font-semibold text-[var(--text-primary)] line-clamp-1">
                       {tpl.title}
                     </span>
                   </button>
@@ -471,8 +471,8 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                           onClick={() => setCategoryFilter(cat)}
                           className={`min-h-[40px] px-3 rounded-xl text-xs font-medium transition-colors shrink-0 cursor-pointer ${
                             categoryFilter === cat
-                              ? 'bg-[#007E93] text-white font-semibold'
-                              : 'bg-white text-zinc-500 hover:text-zinc-800'
+                              ? 'bg-[#00B4D8] text-white font-semibold'
+                              : 'bg-[var(--surface-subtle)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] border border-[var(--border)]'
                           }`}
                         >
                           {cat}
@@ -854,8 +854,8 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                           }}
                           className={`min-h-[40px] px-3.5 py-2 rounded-xl text-xs font-medium transition-all cursor-pointer ${
                             isSelected
-                              ? 'bg-[#007E93] text-white font-semibold shadow-sm'
-                              : 'bg-white text-zinc-500 hover:text-zinc-800 border border-[var(--border)]'
+                              ? 'bg-[#00B4D8] text-white font-semibold shadow-sm'
+                              : 'bg-[var(--surface-subtle)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] border border-[var(--border)]'
                           }`}
                         >
                           {type}
@@ -885,8 +885,8 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                             }
                             className={`min-h-[36px] px-3 py-1.5 rounded-xl text-xs font-medium transition-all cursor-pointer ${
                               contractDraft.usageRights?.duration === dur
-                                ? 'bg-[#007E93] text-white font-semibold'
-                                : 'bg-white text-zinc-500 hover:text-zinc-800 border border-[var(--border)]'
+                                ? 'bg-[#00B4D8] text-white font-semibold'
+                                : 'bg-[var(--surface-subtle)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] border border-[var(--border)]'
                             }`}
                           >
                             {dur}
@@ -913,8 +913,8 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                           }
                           className={`min-h-[36px] px-3 py-1.5 rounded-xl text-xs font-medium transition-all cursor-pointer ${
                             contractDraft.usageRights?.territory === ter
-                              ? 'bg-[#007E93] text-white font-semibold'
-                              : 'bg-white text-zinc-500 hover:text-zinc-800 border border-[var(--border)]'
+                              ? 'bg-[#00B4D8] text-white font-semibold'
+                              : 'bg-[var(--surface-subtle)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] border border-[var(--border)]'
                           }`}
                         >
                           {ter}
@@ -1084,12 +1084,12 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
                   />
                 </div>
 
-                <div className="flex items-center justify-between p-3.5 rounded-xl bg-white border border-[var(--border)]">
+                <div className="flex items-center justify-between p-3.5 rounded-xl bg-[var(--surface-subtle)] border border-[var(--border)]">
                   <div>
-                    <span className="text-xs font-semibold text-zinc-800 block">
+                    <span className="text-xs font-semibold text-[var(--text-primary)] block">
                       Strict Mutual Confidentiality
                     </span>
-                    <span className="text-[11px] text-zinc-500">
+                    <span className="text-[11px] text-[var(--text-secondary)]">
                       Unpublished products, pricing, and campaign assets cannot be shared publicly.
                     </span>
                   </div>

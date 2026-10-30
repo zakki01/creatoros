@@ -80,14 +80,14 @@ export const ContentApprovalWorkspace: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl sm:text-3xl font-bold text-zinc-900 font-display">
+            <h1 className="text-2xl sm:text-3xl font-bold text-[var(--text-primary)] font-display">
               Content Approvals
             </h1>
             <Badge variant="purple" size="sm">
               AI Verification Engine
             </Badge>
           </div>
-          <p className="text-sm text-zinc-500 mt-1">
+          <p className="text-sm text-[var(--text-secondary)] mt-1">
             Automated brand compliance checks, revision histories, and sign-offs.
           </p>
         </div>
@@ -103,7 +103,7 @@ export const ContentApprovalWorkspace: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Column: Submissions Queue List (4 cols) */}
         <div className="lg:col-span-4 space-y-3">
-          <h3 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider px-1">
+          <h3 className="text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-wider px-1">
             Submission Queue ({submissions.length})
           </h3>
 
@@ -116,8 +116,8 @@ export const ContentApprovalWorkspace: React.FC = () => {
                   onClick={() => setSelectedSubmissionId(sub.id)}
                   className={`p-4 rounded-2xl border transition-all cursor-pointer space-y-2 ${
                     isSelected
-                      ? 'bg-white border-[#00B4D8] shadow-lg shadow-xs ring-1 ring-[#007E93]'
-                      : 'bg-white shadow-xs border-zinc-200 hover:border-zinc-300 hover:bg-zinc-100/90'
+                      ? 'bg-[var(--surface-elevated)] border-[#00B4D8] shadow-lg ring-1 ring-[#007E93]'
+                      : 'bg-[var(--surface)] shadow-xs border-[var(--border)] hover:border-[var(--border-strong)] hover:bg-[var(--surface-subtle)]'
                   }`}
                 >
                   <div className="flex items-start justify-between gap-2">
@@ -125,21 +125,21 @@ export const ContentApprovalWorkspace: React.FC = () => {
                       <img
                         src={sub.creatorAvatar}
                         alt={sub.creatorName}
-                        className="w-8 h-8 rounded-xl object-cover ring-1 ring-zinc-700"
+                        className="w-8 h-8 rounded-xl object-cover ring-1 ring-[var(--border)]"
                       />
                       <div>
-                        <p className="text-xs font-semibold text-zinc-900">{sub.creatorName}</p>
-                        <p className="text-[10px] text-zinc-500 font-mono">{sub.creatorHandle}</p>
+                        <p className="text-xs font-semibold text-[var(--text-primary)]">{sub.creatorName}</p>
+                        <p className="text-[10px] text-[var(--text-muted)] font-mono">{sub.creatorHandle}</p>
                       </div>
                     </div>
                     {getStatusBadge(sub.status)}
                   </div>
 
-                  <p className="text-xs text-zinc-700 font-medium line-clamp-1">
+                  <p className="text-xs text-[var(--text-secondary)] font-medium line-clamp-1">
                     {sub.title}
                   </p>
 
-                  <div className="flex items-center justify-between text-[11px] text-zinc-500 pt-1 border-t border-zinc-200/60">
+                  <div className="flex items-center justify-between text-[11px] text-[var(--text-muted)] pt-1 border-t border-[var(--border)]">
                     <span className="font-mono">{sub.deliverableType}</span>
                     <span>{sub.submittedAt.split(' ')[0]}</span>
                   </div>
@@ -155,17 +155,17 @@ export const ContentApprovalWorkspace: React.FC = () => {
             {/* Creative Preview Container */}
             <Card className="p-6 space-y-6">
               {/* Submission Header */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-zinc-200">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[var(--border)]">
                 <div>
                   <div className="flex items-center gap-2">
-                    <h2 className="text-lg font-bold text-zinc-900 font-display">
+                    <h2 className="text-lg font-bold text-[var(--text-primary)] font-display">
                       {selectedSub.title}
                     </h2>
                     {getStatusBadge(selectedSub.status)}
                   </div>
-                  <p className="text-xs text-zinc-500 mt-0.5">
-                    Submitted by <strong className="text-zinc-800">{selectedSub.creatorName}</strong> for{' '}
-                    <strong className="text-zinc-800">"{selectedSub.campaignName}"</strong>
+                  <p className="text-xs text-[var(--text-secondary)] mt-0.5">
+                    Submitted by <strong className="text-[var(--text-primary)]">{selectedSub.creatorName}</strong> for{' '}
+                    <strong className="text-[var(--text-primary)]">"{selectedSub.campaignName}"</strong>
                   </p>
                 </div>
 
@@ -183,7 +183,7 @@ export const ContentApprovalWorkspace: React.FC = () => {
               {/* Visual Media Viewer (Simulated 9:16 / 16:9 Showcase) */}
               <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
                 {/* Media Preview Box */}
-                <div className="md:col-span-5 rounded-2xl overflow-hidden bg-black border border-zinc-200 relative group aspect-[9/16] max-h-[460px] mx-auto shadow-2xl">
+                <div className="md:col-span-5 rounded-2xl overflow-hidden bg-black border border-[var(--border)] relative group aspect-[9/16] max-h-[460px] mx-auto shadow-2xl">
                   <img
                     src={selectedSub.mediaUrl}
                     alt={selectedSub.title}
@@ -204,7 +204,7 @@ export const ContentApprovalWorkspace: React.FC = () => {
                   {/* Bottom Bar on Media */}
                   <div className="absolute bottom-3 left-3 right-3 space-y-1 text-white">
                     <p className="text-xs font-semibold">{selectedSub.creatorName}</p>
-                    <p className="text-[11px] text-zinc-700 line-clamp-2">{selectedSub.caption}</p>
+                    <p className="text-[11px] text-zinc-300 line-clamp-2">{selectedSub.caption}</p>
                   </div>
                 </div>
 
@@ -215,8 +215,8 @@ export const ContentApprovalWorkspace: React.FC = () => {
                     <div className="p-4 rounded-2xl bg-[#00B4D8]/10 border border-[#00B4D8]/30 space-y-3">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                          <Sparkles className="w-4 h-4 text-[#007E93]" />
-                          <h4 className="text-xs font-semibold text-[#007E93] uppercase tracking-wider">
+                          <Sparkles className="w-4 h-4 text-[#00B4D8]" />
+                          <h4 className="text-xs font-semibold text-[#00B4D8] uppercase tracking-wider">
                             AI Pre-Check Verification
                           </h4>
                         </div>
@@ -236,60 +236,60 @@ export const ContentApprovalWorkspace: React.FC = () => {
 
                       <div className="space-y-2 text-xs">
                         {/* Product Visible */}
-                        <div className="flex items-start gap-2.5 p-2 rounded-xl bg-zinc-50 border border-zinc-200">
+                        <div className="flex items-start gap-2.5 p-2 rounded-xl bg-[var(--surface-subtle)] border border-[var(--border)]">
                           {selectedSub.aiPreCheck.productVisible ? (
-                            <CheckCircle2 className="w-4 h-4 text-emerald-700 shrink-0 mt-0.5" />
+                            <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
                           ) : (
                             <XCircle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
                           )}
                           <div>
-                            <span className="font-semibold text-zinc-800">Product Visibility:</span>
-                            <span className="text-zinc-500 text-[11px] ml-1">
+                            <span className="font-semibold text-[var(--text-primary)]">Product Visibility:</span>
+                            <span className="text-[var(--text-secondary)] text-[11px] ml-1">
                               {selectedSub.aiPreCheck.productNotes}
                             </span>
                           </div>
                         </div>
 
                         {/* Brand Mention */}
-                        <div className="flex items-start gap-2.5 p-2 rounded-xl bg-zinc-50 border border-zinc-200">
+                        <div className="flex items-start gap-2.5 p-2 rounded-xl bg-[var(--surface-subtle)] border border-[var(--border)]">
                           {selectedSub.aiPreCheck.brandMention ? (
-                            <CheckCircle2 className="w-4 h-4 text-emerald-700 shrink-0 mt-0.5" />
+                            <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
                           ) : (
                             <XCircle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
                           )}
                           <div>
-                            <span className="font-semibold text-zinc-800">Brand Tagging:</span>
-                            <span className="text-zinc-500 text-[11px] ml-1">
+                            <span className="font-semibold text-[var(--text-primary)]">Brand Tagging:</span>
+                            <span className="text-[var(--text-secondary)] text-[11px] ml-1">
                               {selectedSub.aiPreCheck.brandNotes}
                             </span>
                           </div>
                         </div>
 
                         {/* Required CTA */}
-                        <div className="flex items-start gap-2.5 p-2 rounded-xl bg-zinc-50 border border-zinc-200">
+                        <div className="flex items-start gap-2.5 p-2 rounded-xl bg-[var(--surface-subtle)] border border-[var(--border)]">
                           {selectedSub.aiPreCheck.requiredCta ? (
-                            <CheckCircle2 className="w-4 h-4 text-emerald-700 shrink-0 mt-0.5" />
+                            <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
                           ) : (
-                            <AlertTriangle className="w-4 h-4 text-amber-800 shrink-0 mt-0.5" />
+                            <AlertTriangle className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
                           )}
                           <div>
-                            <span className="font-semibold text-zinc-800">Required CTA:</span>
-                            <span className="text-zinc-500 text-[11px] ml-1">
+                            <span className="font-semibold text-[var(--text-primary)]">Required CTA:</span>
+                            <span className="text-[var(--text-secondary)] text-[11px] ml-1">
                               {selectedSub.aiPreCheck.ctaNotes}
                             </span>
                           </div>
                         </div>
 
                         {/* Duration */}
-                        <div className="flex items-start gap-2.5 p-2 rounded-xl bg-zinc-50 border border-zinc-200">
+                        <div className="flex items-start gap-2.5 p-2 rounded-xl bg-[var(--surface-subtle)] border border-[var(--border)]">
                           {selectedSub.aiPreCheck.durationCompliant ? (
-                            <CheckCircle2 className="w-4 h-4 text-emerald-700 shrink-0 mt-0.5" />
+                            <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
                           ) : (
                             <XCircle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
                           )}
                           <div>
-                            <span className="font-semibold text-zinc-800">Duration Compliance:</span>
-                            <span className="text-zinc-500 text-[11px] ml-1">
+                            <span className="font-semibold text-[var(--text-primary)]">Duration Compliance:</span>
+                            <span className="text-[var(--text-secondary)] text-[11px] ml-1">
                               {selectedSub.aiPreCheck.durationNotes}
                             </span>
                           </div>
@@ -298,14 +298,14 @@ export const ContentApprovalWorkspace: React.FC = () => {
                     </div>
 
                     {/* Caption & Hashtags */}
-                    <div className="p-3.5 rounded-2xl bg-white shadow-xs border border-zinc-200 space-y-2 text-xs">
-                      <span className="font-semibold text-zinc-700 block">Creator Caption & CTA:</span>
-                      <p className="text-zinc-700 leading-relaxed">{selectedSub.caption}</p>
+                    <div className="p-3.5 rounded-2xl bg-[var(--surface-subtle)] shadow-xs border border-[var(--border)] space-y-2 text-xs">
+                      <span className="font-semibold text-[var(--text-primary)] block">Creator Caption & CTA:</span>
+                      <p className="text-[var(--text-secondary)] leading-relaxed">{selectedSub.caption}</p>
                       <div className="flex flex-wrap gap-1 pt-1">
                         {selectedSub.hashtags.map((tag, idx) => (
                           <span
                             key={idx}
-                            className="text-[10px] text-[#006C80] bg-[#E9FAFC] border border-[#007E93]/15 px-2 py-0.5 rounded-md"
+                            className="text-[10px] text-[#00B4D8] bg-[#00B4D8]/10 border border-[#00B4D8]/20 px-2 py-0.5 rounded-md"
                           >
                             {tag}
                           </span>
@@ -315,13 +315,13 @@ export const ContentApprovalWorkspace: React.FC = () => {
                   </div>
 
                   {/* Decision Actions Bar */}
-                  <div className="p-4 rounded-2xl bg-white shadow-xs border border-zinc-200 space-y-3">
+                  <div className="p-4 rounded-2xl bg-[var(--surface)] shadow-xs border border-[var(--border)] space-y-3">
                     <input
                       type="text"
                       value={feedbackNote}
                       onChange={(e) => setFeedbackNote(e.target.value)}
                       placeholder="Add feedback or revision notes for creator..."
-                      className="w-full bg-white text-zinc-900 text-xs px-3.5 py-2.5 rounded-xl border border-zinc-300 focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] focus:outline-none"
+                      className="w-full bg-[var(--input)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)] text-xs px-3.5 py-2.5 rounded-xl border border-[var(--border)] focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] focus:outline-none"
                     />
 
                     <div className="flex items-center gap-2">
@@ -373,14 +373,14 @@ export const ContentApprovalWorkspace: React.FC = () => {
             {selectedSub.revisionHistory.map((rev) => (
               <div
                 key={rev.version}
-                className="p-4 rounded-2xl bg-white border border-zinc-200 space-y-2 text-xs"
+                className="p-4 rounded-2xl bg-[var(--surface)] border border-[var(--border)] space-y-2 text-xs"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Badge variant="brand" size="sm">
                       Version {rev.version}
                     </Badge>
-                    <span className="text-zinc-500">{rev.submittedAt}</span>
+                    <span className="text-[var(--text-muted)]">{rev.submittedAt}</span>
                   </div>
                   {rev.feedbackStatus && (
                     <Badge
@@ -397,10 +397,10 @@ export const ContentApprovalWorkspace: React.FC = () => {
                     </Badge>
                   )}
                 </div>
-                <p className="text-zinc-700">{rev.notes}</p>
+                <p className="text-[var(--text-secondary)]">{rev.notes}</p>
                 {rev.feedbackFromBrand && (
-                  <div className="p-2.5 rounded-xl bg-white shadow-xs border border-zinc-200 text-[11px] text-zinc-500">
-                    <strong className="text-zinc-700">Brand Feedback: </strong>
+                  <div className="p-2.5 rounded-xl bg-[var(--surface-subtle)] border border-[var(--border)] text-[11px] text-[var(--text-muted)]">
+                    <strong className="text-[var(--text-primary)]">Brand Feedback: </strong>
                     {rev.feedbackFromBrand}
                   </div>
                 )}

@@ -3,18 +3,23 @@ import {
   Sparkles,
   ArrowRight,
   Plus,
-  Clock,
+  Compass,
   CheckCircle2,
-  AlertTriangle,
+  Circle,
+  Clock,
+  Layers,
+  Users,
+  Film,
   ChevronRight,
+  ShieldCheck,
   TrendingUp,
+  FileText,
 } from 'lucide-react';
 import { useAppState } from '../../context/StateContext';
-import { Card } from '../ui/Card';
 import { Button } from '../ui/Button';
 import { Badge } from '../ui/Badge';
 import { Progress } from '../ui/Progress';
-import { SpatialEmptyState } from '../ui/SpatialEmptyState';
+import { Avatar } from '../ui/Avatar';
 
 interface BusinessOverviewProps {
   onNavigate: (tab: string) => void;
@@ -33,131 +38,303 @@ export const BusinessOverview: React.FC<BusinessOverviewProps> = ({
     creators,
     attentionItems,
     submissions,
+    outreachItems,
     resolveAttentionItem,
   } = useAppState();
 
   const activeAttention = attentionItems.filter((i) => !i.resolved);
   const pendingApprovals = submissions.filter((s) => s.status === 'submitted');
+  const activeCampaigns = campaigns.filter((c) => c.status === 'Active');
 
-  const totalSpent = campaigns.reduce((sum, c) => sum + c.budgetSpent, 0);
-  const totalBudget = campaigns.reduce((sum, c) => sum + c.budgetTotal, 0);
+  const totalSpent = campaigns.reduce((sum, c) => sum + (c.budgetSpent || 0), 0);
+  const totalBudget = campaigns.reduce((sum, c) => sum + (c.budgetTotal || 0), 0);
+
+  // An account is first-time if there are no campaigns and no active outreach
+  const isFirstTimeBrand = campaigns.length === 0 && outreachItems.length === 0;
 
   const handleAttentionAction = (item: typeof attentionItems[0]) => {
-    if (item.actionType === 'review') {
-      onOpenCampaign(item.campaignId);
-    } else if (item.actionType === 'send_reminder') {
-      onOpenCampaign(item.campaignId);
-    } else if (item.actionType === 'view_campaign') {
+    if (item.actionType === 'review' || item.actionType === 'send_reminder' || item.actionType === 'view_campaign') {
       onOpenCampaign(item.campaignId);
     } else {
       resolveAttentionItem(item.id);
     }
   };
 
+  // Determine dynamic greeting
+  const hour = new Date().getHours();
+  const greeting = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
+
   return (
-    <div className="space-y-10 animate-fade-in max-w-5xl mx-auto pb-16">
-      {/* 1. Header (Command Center Style) */}
+    <div className="space-y-8 animate-fade-in max-w-5xl mx-auto pb-16 text-[var(--text-primary)]">
+      {/* ─────────────────────────────────────────────────────────────
+          1. HEADER SECTION
+         ───────────────────────────────────────────────────────────── */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-zinc-900 font-display tracking-tight">
-            Good morning, {workspace.name}
+          <h1 className="text-2xl sm:text-3xl font-bold text-[var(--text-primary)] font-display tracking-tight">
+            {greeting}, {workspace.name}
           </h1>
-          <p className="text-xs text-zinc-500 mt-1">
-            Here's what needs your attention today across active campaigns.
+          <p className="text-xs text-[var(--text-secondary)] mt-1">
+            {isFirstTimeBrand
+              ? "Find creators, launch a campaign & manage everything from one workspace."
+              : "Here is what needs your attention today across active campaigns and creators."}
           </p>
         </div>
 
-        <Button
-          variant="primary"
-          size="md"
-          onClick={onOpenCreateCampaign}
-          leftIcon={<Plus className="w-4 h-4" />}
-          className="text-xs"
-        >
-          New Campaign
-        </Button>
-      </div>
+        <div className="flex items-center gap-2.5">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => onNavigate('discover')}
+            leftIcon={<Compass className="w-3.5 h-3.5" />}
+            className="text-xs"
+          >
+            Discover Creators
+          </Button>
 
-      {/* 2. Top Summary KPI Strip (Active campaigns, Creators, Pending approvals, Budget/spend) */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div className="p-4 sm:p-5 rounded-2xl bg-white shadow-xs border border-black/[0.08] backdrop-blur-xl hover:border-black/15 transition-all duration-200">
-          <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider block">
-            Active Campaigns
-          </span>
-          <span className="text-2xl font-bold font-mono text-zinc-900 mt-1 block">
-            {campaigns.filter((c) => c.status === 'Active').length}
-          </span>
-        </div>
-
-        <div className="p-4 sm:p-5 rounded-2xl bg-white shadow-xs border border-black/[0.08] backdrop-blur-xl hover:border-black/15 transition-all duration-200">
-          <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider block">
-            Creators in Roster
-          </span>
-          <span className="text-2xl font-bold font-mono text-zinc-900 mt-1 block">
-            {creators.length}
-          </span>
-        </div>
-
-        <div className="p-4 sm:p-5 rounded-2xl bg-white shadow-xs border border-black/[0.08] backdrop-blur-xl hover:border-black/15 transition-all duration-200">
-          <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider block">
-            Pending Approvals
-          </span>
-          <span className="text-2xl font-bold font-mono text-[#007E93] mt-1 block">
-            {pendingApprovals.length}
-          </span>
-        </div>
-
-        <div className="p-4 sm:p-5 rounded-2xl bg-white shadow-xs border border-black/[0.08] backdrop-blur-xl hover:border-black/15 transition-all duration-200">
-          <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider block">
-            Budget / Spend
-          </span>
-          <span className="text-2xl font-bold font-mono text-zinc-900 mt-1 block">
-            ₹{(totalSpent / 100000).toFixed(1)}L <span className="text-xs text-zinc-500 font-normal">/ ₹{(totalBudget / 100000).toFixed(1)}L</span>
-          </span>
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={onOpenCreateCampaign}
+            leftIcon={<Plus className="w-3.5 h-3.5" />}
+            className="text-xs"
+          >
+            Create Campaign
+          </Button>
         </div>
       </div>
 
-      {/* 3. "NEEDS YOUR ATTENTION" (3-5 Actionable Items) */}
-      <div className="space-y-3">
-        <div className="flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-zinc-800 uppercase tracking-wider">
-            Needs your attention
-          </h2>
-          <span className="text-xs text-zinc-500 font-mono">
-            {activeAttention.length} active
-          </span>
-        </div>
+      {/* ─────────────────────────────────────────────────────────────
+          2. FIRST-TIME BRAND ONBOARDING WORKSPACE
+         ───────────────────────────────────────────────────────────── */}
+      {isFirstTimeBrand && (
+        <div className="space-y-6">
+          {/* Welcome Hero / Primary Task Callout */}
+          <div className="p-6 sm:p-8 rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-xs space-y-4">
+            <div className="max-w-xl space-y-2">
+              <span className="text-[11px] font-mono uppercase tracking-wider text-[var(--accent)] font-semibold flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-[var(--accent)]" />
+                <span>Welcome to CreatorOS</span>
+              </span>
+              <h2 className="text-xl sm:text-2xl font-bold text-[var(--text-primary)] font-display">
+                Let's get your first campaign started.
+              </h2>
+              <p className="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed">
+                Connect with verified creators, define deliverables, track submissions, and handle milestone contracts with complete transparency.
+              </p>
+            </div>
 
-        {activeAttention.length === 0 ? (
-          <div className="p-5 rounded-xl bg-zinc-50 border border-zinc-200 text-center text-xs text-zinc-500">
-            No blockers or delays detected right now. Everything is moving on schedule.
+            <div className="flex flex-wrap items-center gap-3 pt-2">
+              <Button
+                variant="primary"
+                size="md"
+                onClick={onOpenCreateCampaign}
+                leftIcon={<Plus className="w-4 h-4" />}
+                className="text-xs font-semibold"
+              >
+                Create Campaign
+              </Button>
+              <Button
+                variant="outline"
+                size="md"
+                onClick={() => onNavigate('discover')}
+                leftIcon={<Compass className="w-4 h-4" />}
+                className="text-xs"
+              >
+                Discover Creators
+              </Button>
+            </div>
           </div>
-        ) : (
-          <div className="space-y-2.5">
-            {activeAttention.slice(0, 4).map((item, idx) => (
+
+          {/* Calm, Linear Onboarding Progress Checklist */}
+          <div className="p-5 sm:p-6 rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-xs space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-xs font-bold uppercase tracking-wider text-[var(--text-primary)]">
+                  Getting Started
+                </h3>
+                <p className="text-xs text-[var(--text-muted)] mt-0.5">
+                  Follow these 5 steps to launch your first creator collaboration.
+                </p>
+              </div>
+              <span className="text-xs font-mono text-[var(--text-muted)]">
+                1 of 5 completed
+              </span>
+            </div>
+
+            <div className="w-full bg-[var(--surface-muted)] h-1.5 rounded-full overflow-hidden">
+              <div className="bg-[var(--accent)] h-full w-1/5 rounded-full transition-all duration-300" />
+            </div>
+
+            <div className="space-y-2 pt-1">
+              {/* Step 1 */}
+              <div className="flex items-center justify-between p-3 rounded-xl bg-[var(--surface-muted)]/50 border border-[var(--border)]/60 text-xs">
+                <div className="flex items-center gap-3">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                  <span className="font-medium text-[var(--text-primary)]">Create your brand profile</span>
+                </div>
+                <span className="text-[11px] font-mono text-emerald-500 font-semibold">Done</span>
+              </div>
+
+              {/* Step 2 */}
+              <div
+                onClick={() => onNavigate('discover')}
+                className="flex items-center justify-between p-3 rounded-xl bg-[var(--surface)] hover:bg-[var(--surface-elevated)] border border-[var(--border)] text-xs cursor-pointer transition-colors group"
+              >
+                <div className="flex items-center gap-3">
+                  <Circle className="w-4 h-4 text-[var(--text-muted)] group-hover:text-[var(--accent)] transition-colors shrink-0" />
+                  <span className="text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors">
+                    Discover creators
+                  </span>
+                </div>
+                <div className="flex items-center gap-1 text-[11px] text-[var(--text-muted)] group-hover:text-[var(--accent)] transition-colors font-mono">
+                  <span>Explore talent</span>
+                  <ChevronRight className="w-3.5 h-3.5" />
+                </div>
+              </div>
+
+              {/* Step 3 */}
+              <div
+                onClick={onOpenCreateCampaign}
+                className="flex items-center justify-between p-3 rounded-xl bg-[var(--surface)] hover:bg-[var(--surface-elevated)] border border-[var(--border)] text-xs cursor-pointer transition-colors group"
+              >
+                <div className="flex items-center gap-3">
+                  <Circle className="w-4 h-4 text-[var(--text-muted)] group-hover:text-[var(--accent)] transition-colors shrink-0" />
+                  <span className="text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors">
+                    Create your first campaign
+                  </span>
+                </div>
+                <div className="flex items-center gap-1 text-[11px] text-[var(--text-muted)] group-hover:text-[var(--accent)] transition-colors font-mono">
+                  <span>Build brief</span>
+                  <ChevronRight className="w-3.5 h-3.5" />
+                </div>
+              </div>
+
+              {/* Step 4 */}
+              <div
+                onClick={() => onNavigate('discover')}
+                className="flex items-center justify-between p-3 rounded-xl bg-[var(--surface)] hover:bg-[var(--surface-elevated)] border border-[var(--border)] text-xs cursor-pointer transition-colors group"
+              >
+                <div className="flex items-center gap-3">
+                  <Circle className="w-4 h-4 text-[var(--text-muted)] group-hover:text-[var(--accent)] transition-colors shrink-0" />
+                  <span className="text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors">
+                    Invite a creator
+                  </span>
+                </div>
+                <div className="flex items-center gap-1 text-[11px] text-[var(--text-muted)] group-hover:text-[var(--accent)] transition-colors font-mono">
+                  <span>Send invite</span>
+                  <ChevronRight className="w-3.5 h-3.5" />
+                </div>
+              </div>
+
+              {/* Step 5 */}
+              <div className="flex items-center justify-between p-3 rounded-xl bg-[var(--surface)] border border-[var(--border)]/60 text-xs opacity-75">
+                <div className="flex items-center gap-3">
+                  <Circle className="w-4 h-4 text-[var(--text-muted)] shrink-0" />
+                  <span className="text-[var(--text-secondary)]">Start your first collaboration</span>
+                </div>
+                <span className="text-[11px] font-mono text-[var(--text-muted)]">Automatic</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ─────────────────────────────────────────────────────────────
+          3. ACTIVE ACCOUNT: COMPACT METRICS STRIP (REPLACES 4 GIANT CARDS)
+         ───────────────────────────────────────────────────────────── */}
+      {!isFirstTimeBrand && (
+        <div className="p-4 sm:p-5 rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-xs">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 divide-y sm:divide-y-0 sm:divide-x divide-[var(--border)]">
+            <div className="pt-2 sm:pt-0 sm:px-4 first:pl-0">
+              <span className="text-[11px] font-medium text-[var(--text-muted)] uppercase tracking-wider block">
+                Active Campaigns
+              </span>
+              <span className="text-xl sm:text-2xl font-bold font-mono text-[var(--text-primary)] mt-1 block">
+                {activeCampaigns.length}
+              </span>
+            </div>
+
+            <div className="pt-2 sm:pt-0 sm:px-4">
+              <span className="text-[11px] font-medium text-[var(--text-muted)] uppercase tracking-wider block">
+                Creators in Roster
+              </span>
+              <span className="text-xl sm:text-2xl font-bold font-mono text-[var(--text-primary)] mt-1 block">
+                {creators.length}
+              </span>
+            </div>
+
+            <div className="pt-2 sm:pt-0 sm:px-4">
+              <span className="text-[11px] font-medium text-[var(--text-muted)] uppercase tracking-wider block">
+                Pending Approvals
+              </span>
+              <span className="text-xl sm:text-2xl font-bold font-mono text-[var(--accent)] mt-1 block">
+                {pendingApprovals.length}
+              </span>
+            </div>
+
+            <div className="pt-2 sm:pt-0 sm:px-4 last:pr-0">
+              <span className="text-[11px] font-medium text-[var(--text-muted)] uppercase tracking-wider block">
+                Budget / Spend
+              </span>
+              <span className="text-xl sm:text-2xl font-bold font-mono text-[var(--text-primary)] mt-1 block">
+                ₹{(totalSpent / 100000).toFixed(1)}L{' '}
+                <span className="text-xs text-[var(--text-muted)] font-normal">
+                  / ₹{(totalBudget / 100000).toFixed(1)}L
+                </span>
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ─────────────────────────────────────────────────────────────
+          4. "NEEDS YOUR ATTENTION" (ONLY WHEN ITEMS EXIST)
+         ───────────────────────────────────────────────────────────── */}
+      {!isFirstTimeBrand && activeAttention.length > 0 && (
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xs font-bold uppercase tracking-wider text-[var(--text-primary)]">
+              Needs your attention
+            </h2>
+            <span className="text-xs text-[var(--text-muted)] font-mono">
+              {activeAttention.length} active
+            </span>
+          </div>
+
+          <div className="space-y-2">
+            {activeAttention.slice(0, 3).map((item, idx) => (
               <div
                 key={item.id}
-                className="p-4 rounded-2xl bg-white shadow-xs border border-black/[0.08] hover:border-black/15 backdrop-blur-xl transition-all duration-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+                className="p-3.5 sm:p-4 rounded-xl bg-[var(--surface)] hover:bg-[var(--surface-elevated)] border border-[var(--border)] shadow-xs transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-3"
               >
-                <div className="flex items-start gap-3">
-                  <span className="w-5 h-5 rounded-full bg-zinc-100 border border-zinc-200 text-zinc-700 text-[11px] font-mono font-semibold flex items-center justify-center shrink-0 mt-0.5">
+                <div className="flex items-start gap-3 min-w-0">
+                  <span className="w-5 h-5 rounded-md bg-[var(--surface-muted)] text-[var(--text-secondary)] text-[11px] font-mono font-bold flex items-center justify-center shrink-0 mt-0.5 border border-[var(--border)]">
                     {idx + 1}
                   </span>
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <h3 className="text-xs font-semibold text-zinc-800">{item.title}</h3>
-                      <span className="text-[11px] text-zinc-500 font-mono">[{item.campaignName}]</span>
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <h3 className="text-xs font-semibold text-[var(--text-primary)] truncate">
+                        {item.title}
+                      </h3>
+                      {item.campaignName && (
+                        <span className="text-[10px] text-[var(--text-muted)] font-mono bg-[var(--surface-muted)] px-1.5 py-0.5 rounded border border-[var(--border)]">
+                          {item.campaignName}
+                        </span>
+                      )}
                     </div>
-                    <p className="text-xs text-zinc-500 mt-0.5">{item.description}</p>
+                    <p className="text-xs text-[var(--text-secondary)] mt-0.5 line-clamp-1">
+                      {item.description}
+                    </p>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-2 shrink-0 self-end sm:self-center">
                   <Button
-                    variant="outline"
+                    variant="ghost"
                     size="sm"
                     onClick={() => resolveAttentionItem(item.id)}
-                    className="text-xs cursor-pointer"
+                    className="text-xs text-[var(--text-muted)] hover:text-[var(--text-primary)] cursor-pointer"
                   >
                     Resolve
                   </Button>
@@ -177,116 +354,146 @@ export const BusinessOverview: React.FC<BusinessOverviewProps> = ({
               </div>
             ))}
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
-      {/* 4. "YOUR CAMPAIGNS" (Cards with Status, Progress, Creators, Content, Budget) */}
-      <div className="space-y-3">
+      {/* ─────────────────────────────────────────────────────────────
+          5. CAMPAIGNS SECTION
+         ───────────────────────────────────────────────────────────── */}
+      {!isFirstTimeBrand && (
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xs font-bold uppercase tracking-wider text-[var(--text-primary)]">
+              Your campaigns
+            </h2>
+            <button
+              onClick={() => onNavigate('campaigns')}
+              className="text-xs text-[var(--accent)] hover:underline transition-colors cursor-pointer font-medium"
+            >
+              View all
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {campaigns.map((camp) => (
+              <div
+                key={camp.id}
+                onClick={() => onOpenCampaign(camp.id)}
+                className="p-5 rounded-2xl bg-[var(--surface)] hover:bg-[var(--surface-elevated)] border border-[var(--border)] shadow-xs cursor-pointer transition-all duration-200 space-y-4 group"
+              >
+                <div className="flex items-start justify-between gap-2">
+                  <div>
+                    <h3 className="text-sm sm:text-base font-bold text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors">
+                      {camp.name}
+                    </h3>
+                    <p className="text-xs text-[var(--text-secondary)] mt-0.5 line-clamp-1">{camp.objective}</p>
+                  </div>
+                  <Badge
+                    variant={camp.health === 'Healthy' ? 'success' : 'warning'}
+                    size="sm"
+                    dot
+                  >
+                    {camp.health === 'Healthy' ? 'On track' : 'Attention'}
+                  </Badge>
+                </div>
+
+                {/* Progress bar */}
+                <div className="space-y-1">
+                  <div className="flex justify-between text-xs text-[var(--text-muted)]">
+                    <span>Progress</span>
+                    <span className="font-mono text-[var(--text-primary)]">{camp.progress}%</span>
+                  </div>
+                  <Progress value={camp.progress} size="sm" color="brand" />
+                </div>
+
+                {/* Summary Stats */}
+                <div className="grid grid-cols-3 gap-2 text-xs pt-2 border-t border-[var(--border)] text-[var(--text-muted)]">
+                  <div>
+                    <span className="text-[10px] text-[var(--text-muted)] uppercase block">Creators</span>
+                    <span className="font-mono text-[var(--text-primary)] font-semibold">
+                      {camp.creators.confirmed} / {camp.creators.target}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-[var(--text-muted)] uppercase block">Content</span>
+                    <span className="font-mono text-[var(--text-primary)] font-semibold">
+                      {camp.content.submitted} / {camp.content.target}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-[var(--text-muted)] uppercase block">Budget Spent</span>
+                    <span className="font-mono text-[var(--text-primary)] font-semibold">
+                      ₹{(camp.budgetSpent / 100000).toFixed(1)}L
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ─────────────────────────────────────────────────────────────
+          6. DISCOVERY PREVIEW: REAL PLATFORM CREATORS
+         ───────────────────────────────────────────────────────────── */}
+      <div className="space-y-3 pt-2">
         <div className="flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-zinc-800 uppercase tracking-wider">
-            Your campaigns
-          </h2>
+          <div>
+            <h2 className="text-xs font-bold uppercase tracking-wider text-[var(--text-primary)] flex items-center gap-1.5">
+              <Compass className="w-3.5 h-3.5 text-[var(--accent)]" />
+              <span>Verified Creator Network</span>
+            </h2>
+            <p className="text-xs text-[var(--text-muted)] mt-0.5">
+              Browse top talent available for instant collaboration and campaign deliverables.
+            </p>
+          </div>
           <button
-            onClick={() => onNavigate('campaigns')}
-            className="text-xs text-zinc-500 hover:text-zinc-800 transition-colors cursor-pointer"
+            onClick={() => onNavigate('discover')}
+            className="text-xs text-[var(--accent)] hover:underline transition-colors cursor-pointer font-medium"
           >
-            View all
+            Explore all
           </button>
         </div>
 
-        {campaigns.length === 0 ? (
-          <SpatialEmptyState
-            objectType="brief"
-            title="No campaigns yet"
-            subtitle="Launch your first campaign brief to collaborate with creators and receive deliverables."
-            actionLabel="Create Campaign"
-            onAction={onOpenCreateCampaign}
-          />
-        ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {campaigns.map((camp) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+          {creators.slice(0, 3).map((creator) => (
             <div
-              key={camp.id}
-              onClick={() => onOpenCampaign(camp.id)}
-              className="p-5 rounded-2xl bg-white shadow-xs border border-black/[0.08] hover:border-black/15 backdrop-blur-xl cursor-pointer transition-all duration-200 space-y-4 group"
+              key={creator.id}
+              onClick={() => onNavigate('discover')}
+              className="p-4 rounded-xl bg-[var(--surface)] hover:bg-[var(--surface-elevated)] border border-[var(--border)] shadow-xs transition-all duration-150 flex items-center justify-between gap-3 cursor-pointer group"
             >
-              <div className="flex items-start justify-between gap-2">
-                <div>
-                  <h3 className="text-base font-bold text-zinc-900 group-hover:text-[#007E93] transition-colors">
-                    {camp.name}
-                  </h3>
-                  <p className="text-xs text-zinc-500 mt-0.5">{camp.objective}</p>
+              <div className="flex items-center gap-3 min-w-0">
+                <img
+                  src={creator.avatar}
+                  alt={creator.name}
+                  className="w-10 h-10 rounded-xl object-cover ring-1 ring-[var(--border)] shrink-0"
+                />
+                <div className="min-w-0">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-xs font-bold text-[var(--text-primary)] truncate group-hover:text-[var(--accent)] transition-colors">
+                      {creator.name}
+                    </span>
+                    {creator.verified && (
+                      <ShieldCheck className="w-3.5 h-3.5 text-[var(--accent)] shrink-0" />
+                    )}
+                  </div>
+                  <p className="text-[11px] text-[var(--text-muted)] truncate font-mono">
+                    @{creator.handle}
+                  </p>
+                  <p className="text-[11px] text-[var(--text-secondary)] truncate">
+                    {creator.category}
+                  </p>
                 </div>
-                <Badge
-                  variant={camp.health === 'Healthy' ? 'success' : 'warning'}
-                  size="sm"
-                  dot
-                >
-                  {camp.health === 'Healthy' ? 'On track' : 'Attention'}
-                </Badge>
               </div>
 
-              {/* Progress bar */}
-              <div className="space-y-1">
-                <div className="flex justify-between text-xs text-zinc-500">
-                  <span>Progress</span>
-                  <span className="font-mono">{camp.progress}%</span>
-                </div>
-                <Progress value={camp.progress} size="sm" color="brand" />
-              </div>
-
-              {/* Summary Stats */}
-              <div className="grid grid-cols-3 gap-2 text-xs pt-1 border-t border-zinc-200/60 text-zinc-500">
-                <div>
-                  <span className="text-[10px] text-zinc-500 uppercase block">Creators</span>
-                  <span className="font-mono text-zinc-800">
-                    {camp.creators.confirmed} / {camp.creators.target}
-                  </span>
-                </div>
-                <div>
-                  <span className="text-[10px] text-zinc-500 uppercase block">Content</span>
-                  <span className="font-mono text-zinc-800">
-                    {camp.content.submitted} / {camp.content.target}
-                  </span>
-                </div>
-                <div>
-                  <span className="text-[10px] text-zinc-500 uppercase block">Budget Spent</span>
-                  <span className="font-mono text-zinc-800">
-                    ₹{(camp.budgetSpent / 100000).toFixed(1)}L
-                  </span>
-                </div>
+              <div className="text-right shrink-0">
+                <span className="text-xs font-bold font-mono text-[var(--text-primary)] block">
+                  {creator.engagementRate || '4.2%'}
+                </span>
+                <span className="text-[10px] text-[var(--text-muted)] uppercase block">Eng</span>
               </div>
             </div>
           ))}
-        </div>
-        )}
-      </div>
-
-      {/* 5. "AI INSIGHTS" (Only Useful Contextual Recommendations) */}
-      <div className="space-y-3">
-        <h2 className="text-sm font-semibold text-zinc-800 uppercase tracking-wider flex items-center gap-2">
-          <Sparkles className="w-3.5 h-3.5 text-[#007E93]" />
-          <span>AI insights</span>
-        </h2>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
-          <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-sky-50 to-white border border-[#00B4D8]/20 hover:border-[#00B4D8]/40 backdrop-blur-xl transition-all duration-200 space-y-1.5 text-xs">
-            <span className="font-semibold text-zinc-800 block">
-              Optimal Publishing Window: Mumbai Cohort
-            </span>
-            <p className="text-zinc-500 leading-relaxed font-light">
-              Historical drop data indicates engagement lifts by 22% when sneaker reels are scheduled between 6:30 PM - 8:30 PM IST on Thursdays.
-            </p>
-          </div>
-
-          <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-sky-50 to-white border border-[#00B4D8]/20 hover:border-[#00B4D8]/40 backdrop-blur-xl transition-all duration-200 space-y-1.5 text-xs">
-            <span className="font-semibold text-zinc-800 block">
-              Deliverable Velocity Recommendation
-            </span>
-            <p className="text-zinc-500 leading-relaxed font-light">
-              2 creators in Summer Collection have drafts ready. Approving by Friday locks in weekend algorithmic surge for the product link.
-            </p>
-          </div>
         </div>
       </div>
     </div>

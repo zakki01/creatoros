@@ -1033,7 +1033,7 @@ export const DirectMessagesView: React.FC = () => {
                   <button
                     type="button"
                     onClick={handleRemovePendingGif}
-                    className="min-h-[44px] min-w-[44px] sm:min-w-0 sm:px-3 sm:py-1.5 rounded-xl border border-[var(--border)] bg-white hover:bg-[var(--surface-muted)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] text-xs flex items-center justify-center gap-1 transition-colors cursor-pointer"
+                    className="min-h-[44px] min-w-[44px] sm:min-w-0 sm:px-3 sm:py-1.5 rounded-xl border border-[var(--border)] bg-[var(--surface-elevated)] hover:bg-[var(--surface-subtle)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] text-xs flex items-center justify-center gap-1 transition-colors cursor-pointer"
                     aria-label="Remove GIF"
                     title="Remove GIF"
                   >
@@ -1174,7 +1174,7 @@ export const DirectMessagesView: React.FC = () => {
                   <button
                     key={conv.id}
                     onClick={() => handleForwardTo(conv.id)}
-                    className="w-full p-2.5 rounded-xl bg-white hover:bg-[var(--surface-muted)] shadow-xs border border-[var(--border)] flex items-center justify-between text-left transition-colors cursor-pointer"
+                    className="w-full p-2.5 rounded-xl bg-[var(--surface-elevated)] hover:bg-[var(--surface-subtle)] shadow-xs border border-[var(--border)] flex items-center justify-between text-left transition-colors cursor-pointer"
                   >
                     <div className="flex items-center gap-2.5">
                       <Avatar src={conv.participantAvatar} name={conv.participantName} size="xs" />
@@ -1297,7 +1297,7 @@ export const DirectMessagesView: React.FC = () => {
               <a
                 href={viewingMedia.url}
                 download={viewingMedia.fileName || 'media.gif'}
-                className="min-h-[44px] min-w-[44px] rounded-xl bg-white hover:bg-[var(--surface-muted)] border border-[var(--border)] text-[var(--text-secondary)] flex items-center justify-center transition-colors cursor-pointer"
+                className="min-h-[44px] min-w-[44px] rounded-xl bg-[var(--surface-elevated)] hover:bg-[var(--surface-subtle)] border border-[var(--border)] text-[var(--text-secondary)] flex items-center justify-center transition-colors cursor-pointer"
                 aria-label="Download media"
                 title="Download"
                 onClick={(e) => e.stopPropagation()}
@@ -1307,7 +1307,7 @@ export const DirectMessagesView: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setViewingMedia(null)}
-                className="min-h-[44px] min-w-[44px] rounded-xl bg-white hover:bg-[var(--surface-muted)] border border-[var(--border)] text-[var(--text-secondary)] flex items-center justify-center transition-colors cursor-pointer"
+                className="min-h-[44px] min-w-[44px] rounded-xl bg-[var(--surface-elevated)] hover:bg-[var(--surface-subtle)] border border-[var(--border)] text-[var(--text-secondary)] flex items-center justify-center transition-colors cursor-pointer"
                 aria-label="Close viewer"
                 title="Close"
               >

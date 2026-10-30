@@ -55,12 +55,12 @@ export const TopBar: React.FC<TopBarProps> = ({
             size="sm"
             className="shrink-0"
           />
-          <div className="flex items-center gap-1.5 text-xs min-w-0">
-            <span className="font-semibold text-[var(--text-primary)] truncate max-w-[130px] sm:max-w-[200px] tracking-tight">
+          <div className="flex flex-col min-w-0">
+            <span className="font-semibold text-xs sm:text-sm text-[var(--text-primary)] truncate max-w-[130px] sm:max-w-[200px] tracking-tight leading-tight">
               {workspace.name}
             </span>
-            <span className="hidden sm:inline-block text-[10px] text-[var(--text-muted)] uppercase tracking-wider font-mono shrink-0">
-              / {role === 'super_admin' ? 'Admin' : role === 'business' ? 'Brand' : 'Studio'}
+            <span className="text-[10px] text-[var(--text-muted)] font-normal leading-tight">
+              {role === 'super_admin' ? 'Administrator' : role === 'business' ? 'Brand' : 'Creator Studio'}
             </span>
           </div>
         </div>

@@ -13,6 +13,8 @@ import {
   ShieldCheck,
   Compass,
   FileText,
+  LifeBuoy,
+  User,
 } from 'lucide-react';
 import { BrandLogo } from '../common/BrandLogo';
 import { useAppState } from '../../context/StateContext';
@@ -24,6 +26,8 @@ import { SocialFeedView } from '../common/SocialFeedView';
 import { DiscoverView } from '../common/DiscoverView';
 import { MobileBottomNav } from '../common/MobileBottomNav';
 import { ProUpgradeModal } from '../common/ProUpgradeModal';
+import { BrandProfileModal } from '../common/BrandProfileModal';
+import { SupportPortal } from '../support/SupportPortal';
 import { BusinessOverview } from './BusinessOverview';
 import { CampaignsList } from './CampaignsList';
 import { CampaignDetail } from './CampaignDetail';
@@ -78,25 +82,30 @@ export const BusinessLayout: React.FC = () => {
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [isCreateCampaignOpen, setIsCreateCampaignOpen] = useState(false);
+  const [isBrandProfileOpen, setIsBrandProfileOpen] = useState(false);
 
   const pendingApprovalsCount = submissions.filter((s) => s.status === 'submitted').length;
   const activeAttentionCount = attentionItems.filter((i) => !i.resolved).length;
 
-  // Clean Brand Information Architecture (Rule #2)
+  // Primary Brand Navigation Architecture (Sections 9 & 10)
   const primaryNavigationItems = [
     { id: 'home', label: 'Home', icon: LayoutDashboard, badge: activeAttentionCount > 0 ? activeAttentionCount : undefined },
+    { id: 'discover', label: 'Discover', icon: Compass },
     { id: 'campaigns', label: 'Campaigns', icon: Layers },
     { id: 'contracts', label: 'Contracts', icon: FileText },
-    { id: 'creators', label: 'Creators', icon: Users },
-    { id: 'discover', label: 'Discover', icon: Compass },
-    { id: 'content', label: 'Content', icon: Film, badge: pendingApprovalsCount > 0 ? pendingApprovalsCount : undefined },
-    { id: 'analytics', label: 'Analytics', icon: BarChart3 },
-    { id: 'payments', label: 'Payments', icon: CreditCard },
     { id: 'messages', label: 'Messages', icon: MessageSquare, badge: totalUnreadMessages > 0 ? totalUnreadMessages : undefined },
   ];
 
+  // Secondary Operations Navigation (Section 10)
   const secondaryNavigationItems = [
+    { id: 'analytics', label: 'Analytics', icon: BarChart3 },
+    { id: 'payments', label: 'Billing', icon: CreditCard },
+  ];
+
+  // System & Workspace Settings (Section 10)
+  const systemNavigationItems = [
     { id: 'settings', label: 'Settings', icon: Settings },
+    { id: 'help', label: 'Help', icon: ShieldCheck },
   ];
 
   const handleNavigate = (
@@ -108,6 +117,10 @@ export const BusinessLayout: React.FC = () => {
       mode?: 'list' | 'new' | 'detail';
     }
   ) => {
+    if (tab === 'profile') {
+      setIsBrandProfileOpen(true);
+      return;
+    }
     setActiveTab(tab);
     setActiveCampaignId(null);
     if (tab === 'contracts') {
@@ -191,12 +204,17 @@ export const BusinessLayout: React.FC = () => {
             );
           })}
 
-          {/* Divider for Secondary Navigation */}
-          <div className="pt-2 pb-1">
+          {/* Divider for Operations Navigation */}
+          <div className="pt-3 pb-1">
+            {!isSidebarCollapsed && (
+              <span className="px-3 text-[10px] font-mono uppercase tracking-wider text-[var(--text-muted)] block mb-1.5 font-semibold">
+                Operations
+              </span>
+            )}
             <div className="h-px bg-[var(--border)] mx-2" />
           </div>
 
-          {/* Secondary Navigation */}
+          {/* Secondary Navigation (Analytics, Billing) */}
           {secondaryNavigationItems.map((item) => {
             const Icon = item.icon;
             const isActive = activeTab === item.id;
@@ -213,7 +231,44 @@ export const BusinessLayout: React.FC = () => {
               >
                 <Icon
                   className={`w-4 h-4 shrink-0 transition-colors ${
-                    isActive ? 'text-[#007E93]' : 'text-zinc-500'
+                    isActive ? 'text-[var(--accent)]' : 'text-[var(--text-muted)]'
+                  }`}
+                />
+                {!isSidebarCollapsed && (
+                  <span className="truncate flex-1 text-left">{item.label}</span>
+                )}
+              </button>
+            );
+          })}
+
+          {/* Divider for System & Workspace Navigation */}
+          <div className="pt-3 pb-1">
+            {!isSidebarCollapsed && (
+              <span className="px-3 text-[10px] font-mono uppercase tracking-wider text-[var(--text-muted)] block mb-1.5 font-semibold">
+                Workspace
+              </span>
+            )}
+            <div className="h-px bg-[var(--border)] mx-2" />
+          </div>
+
+          {/* System Navigation (Settings, Help) */}
+          {systemNavigationItems.map((item) => {
+            const Icon = item.icon;
+            const isActive = activeTab === item.id;
+            return (
+              <button
+                key={item.id}
+                onClick={() => handleNavigate(item.id)}
+                title={isSidebarCollapsed ? item.label : undefined}
+                className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-xl text-xs font-medium transition-all duration-200 cursor-pointer ${
+                  isActive
+                    ? 'bg-[var(--surface)] text-[var(--text-primary)] font-semibold shadow-xs border border-[var(--border)]'
+                    : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-muted)] hover:translate-x-0.5 border border-transparent'
+                }`}
+              >
+                <Icon
+                  className={`w-4 h-4 shrink-0 transition-colors ${
+                    isActive ? 'text-[var(--accent)]' : 'text-[var(--text-muted)]'
                   }`}
                 />
                 {!isSidebarCollapsed && (
@@ -227,8 +282,8 @@ export const BusinessLayout: React.FC = () => {
         {/* Sidebar Footer */}
         {!isSidebarCollapsed && (
           <div className="p-3 border-t border-[var(--border)] text-[11px] text-[var(--text-secondary)] flex items-center justify-between">
-            <span>Brand Workspace</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-[#00B4D8] animate-pulse" />
+            <span className="font-medium text-[var(--text-muted)]">Brand Workspace</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] animate-pulse" />
           </div>
         )}
       </aside>
@@ -294,6 +349,8 @@ export const BusinessLayout: React.FC = () => {
           {activeTab === 'admin' && <BrandAdminWorkspace />}
 
           {activeTab === 'settings' && <SettingsWorkspace />}
+
+          {activeTab === 'help' && <SupportPortal onBack={() => handleNavigate('home')} />}
         </main>
       </div>
 
@@ -324,22 +381,32 @@ export const BusinessLayout: React.FC = () => {
         onCampaignCreated={(newCamp) => handleOpenCampaign(newCamp.id)}
       />
 
+      {/* Brand Profile Modal */}
+      <BrandProfileModal
+        isOpen={isBrandProfileOpen}
+        onClose={() => setIsBrandProfileOpen(false)}
+        onOpenMessage={() => {
+          setIsBrandProfileOpen(false);
+          handleNavigate('messages');
+        }}
+      />
+
       {/* Pro Tier & 7-Day Trial Modal */}
       <ProUpgradeModal />
 
-      {/* Mobile Bottom Navigation Bar (Fitts's Law 44px + Safe Area Insets) */}
+      {/* Mobile Bottom Navigation Bar (Section 11: Home, Discover, Campaigns, Messages, Profile) */}
       <MobileBottomNav
         items={[
           { id: 'home', label: 'Home', icon: LayoutDashboard },
-          { id: 'campaigns', label: 'Campaigns', icon: Layers },
-          { id: 'contracts', label: 'Contracts', icon: FileText },
           { id: 'discover', label: 'Discover', icon: Compass },
+          { id: 'campaigns', label: 'Campaigns', icon: Layers },
           {
             id: 'messages',
             label: 'Messages',
             icon: MessageSquare,
             badge: totalUnreadMessages > 0 ? totalUnreadMessages : undefined,
           },
+          { id: 'profile', label: 'Profile', icon: User },
         ]}
         activeTab={activeTab}
         onNavigate={handleNavigate}

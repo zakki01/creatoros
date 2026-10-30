@@ -186,7 +186,7 @@ export const BrandProfileModal: React.FC<BrandProfileModalProps> = ({
           </button>
 
           {/* Cover Banner */}
-          <div className="relative h-36 sm:h-44 w-full overflow-hidden bg-white">
+          <div className="relative h-36 sm:h-44 w-full overflow-hidden bg-[var(--surface-subtle)]">
             <img
               src={brandData.coverUrl || 'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=1200&auto=format&fit=crop&q=80'}
               alt={brandData.name}
@@ -202,7 +202,7 @@ export const BrandProfileModal: React.FC<BrandProfileModalProps> = ({
                 <img
                   src={brandData.logo}
                   alt={brandData.name}
-                  className="w-20 h-20 rounded-2xl object-cover ring-2 ring-[#0c0c11] shadow-xl bg-white shrink-0"
+                  className="w-20 h-20 rounded-2xl object-cover ring-2 ring-[#0c0c11] shadow-xl bg-[var(--surface-subtle)] shrink-0"
                 />
                 <div>
                   <div className="flex items-center gap-2">
@@ -476,7 +476,7 @@ export const BrandProfileModal: React.FC<BrandProfileModalProps> = ({
                           className="rounded-xl bg-[var(--surface)] border border-[var(--border)] hover:border-[var(--border-strong)] p-3.5 space-y-2 cursor-pointer group transition-all"
                         >
                           {blog.blogCoverImage && (
-                            <div className="h-28 rounded-lg overflow-hidden bg-white">
+                            <div className="h-28 rounded-lg overflow-hidden bg-[var(--surface-subtle)]">
                               <img
                                 src={blog.blogCoverImage}
                                 alt={blog.blogTitle || 'Cover'}

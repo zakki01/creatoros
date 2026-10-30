@@ -3,16 +3,98 @@
  * Light Studio Theme & Neumorphic-Glass Hybrid Foundation
  */
 
+/**
+ * CreatorOS Centralized Design Tokens
+ * Light Studio Theme & True Dark Mode Surface System
+ */
+
+export const lightTokens = {
+  colors: {
+    // CreatorOS Brand Identity
+    brandPrimary: '#123047',
+    brandSecondary: '#365267',
+    brandAccent: '#00869B',
+    brandAccentHover: '#006C80',
+    brandAccentLight: 'rgba(0, 134, 155, 0.12)',
+
+    // Surfaces & Foundation
+    background: '#EDF0F4',
+    surface: '#FFFFFF',
+    surfaceElevated: '#F7F9FC',
+    surfaceSubtle: '#F1F4F8',
+    surfaceRecessed: '#E2E7ED',
+    surfaceInput: '#FFFFFF',
+    surfaceGlass: 'rgba(255, 255, 255, 0.82)',
+
+    // Typography
+    textPrimary: '#0F172A',
+    textSecondary: '#475569',
+    textTertiary: '#64748B',
+    textDisabled: '#94A3B8',
+    textInverse: '#FFFFFF',
+
+    // Borders & Dividers
+    border: '#D5DDE6',
+    borderSubtle: 'rgba(0, 0, 0, 0.06)',
+    borderStrong: '#94A3B8',
+    borderFocus: '#00869B',
+
+    // Feedback
+    success: '#047857',
+    warning: '#92400E',
+    danger: '#B4233C',
+    info: '#00869B',
+  },
+} as const;
+
+export const darkTokens = {
+  colors: {
+    // CreatorOS Brand Identity
+    brandPrimary: '#00B4D8',
+    brandSecondary: '#94A3B8',
+    brandAccent: '#00B4D8',
+    brandAccentHover: '#0096B4',
+    brandAccentLight: 'rgba(0, 180, 216, 0.15)',
+
+    // Surfaces & Foundation (True Dark Surface Hierarchy)
+    background: '#0B0D11',
+    sidebar: '#10131A',
+    surface: '#151922',
+    surfaceElevated: '#1A1F29',
+    surfaceSubtle: '#1E232E',
+    surfaceRecessed: '#11151C',
+    surfaceInput: '#11151C',
+    surfaceGlass: 'rgba(21, 25, 34, 0.85)',
+
+    // Typography
+    textPrimary: '#F4F7FA',
+    textSecondary: '#A9B2C0',
+    textTertiary: '#737D8C',
+    textDisabled: '#4A5260',
+    textInverse: '#0B0D11',
+
+    // Borders & Dividers
+    border: 'rgba(255, 255, 255, 0.08)',
+    borderSubtle: 'rgba(255, 255, 255, 0.04)',
+    borderStrong: 'rgba(255, 255, 255, 0.16)',
+    borderFocus: '#00B4D8',
+
+    // Feedback
+    success: '#10B981',
+    warning: '#F59E0B',
+    danger: '#EF4444',
+    info: '#00B4D8',
+  },
+} as const;
+
 export const tokens = {
   colors: {
-    // CreatorOS Brand Identity (derived from official logo emblem)
-    brandPrimary: '#123047', // Charcoal deep slate
-    brandSecondary: '#365267', // Studio medium slate
-    brandAccent: '#00869B', // Electric Cyan / Ocean Blue
+    brandPrimary: '#123047',
+    brandSecondary: '#365267',
+    brandAccent: '#00869B',
     brandAccentHover: '#006C80',
     brandAccentLight: 'rgba(0, 180, 216, 0.12)',
 
-    // Surface Grays & Studio Foundation
     surfaceStudio: '#EDF0F4',
     surfaceCard: '#F7F9FC',
     surfaceCardHighlight: '#FFFFFF',
@@ -20,26 +102,22 @@ export const tokens = {
     surfaceRecessed: '#E2E7ED',
     surfaceInput: '#FFFFFF',
 
-    // Typography
     textPrimary: '#0F172A',
     textSecondary: '#4E5F72',
     textMuted: '#64758A',
     textInverse: '#FFFFFF',
 
-    // Borders & Dividers
     borderSubtle: 'rgba(0, 0, 0, 0.08)',
     borderMedium: 'rgba(0, 0, 0, 0.14)',
     borderHighlight: 'rgba(255, 255, 255, 0.85)',
     borderFocus: '#00B4D8',
 
-    // Feedback
     success: '#047857',
     warning: '#92400E',
     danger: '#B4233C',
   },
 
   shadows: {
-    // Soft UI / Neumorphism
     cardFloating:
       '0 16px 36px -14px rgba(23, 37, 54, 0.18), 0 4px 10px -3px rgba(23, 37, 54, 0.06), inset 0 1px 1px rgba(255, 255, 255, 0.95)',
     controlRaised:

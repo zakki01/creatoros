@@ -52,12 +52,12 @@ export const BusinessAiInsights: React.FC<{ onOpenCampaign: (id: string) => void
       {/* Header */}
       <div>
         <div className="flex items-center gap-2">
-          <h1 className="text-xl font-bold text-zinc-900 font-display">
+          <h1 className="text-xl font-bold text-[var(--text-primary)] font-display">
             AI Insights
           </h1>
-          <Sparkles className="w-4 h-4 text-[#007E93]" />
+          <Sparkles className="w-4 h-4 text-[#00B4D8]" />
         </div>
-        <p className="text-xs text-zinc-500 mt-1">
+        <p className="text-xs text-[var(--text-secondary)] mt-1">
           Contextual intelligence and algorithmic optimizations across your active campaigns.
         </p>
       </div>
@@ -67,15 +67,15 @@ export const BusinessAiInsights: React.FC<{ onOpenCampaign: (id: string) => void
         {insights.map((item) => (
           <div
             key={item.id}
-            className="p-5 rounded-2xl bg-white shadow-xs border border-zinc-200 hover:border-zinc-300 transition-all space-y-3"
+            className="p-5 rounded-2xl bg-[var(--surface)] shadow-xs border border-[var(--border)] hover:border-[var(--border-strong)] transition-all space-y-3"
           >
             <div className="flex items-center justify-between">
-              <span className="text-[10px] font-mono font-medium text-[#007E93] uppercase tracking-wider bg-[#E9FAFC] px-2 py-0.5 rounded border border-[#00B4D8]/20">
+              <span className="text-[10px] font-mono font-medium text-[#00B4D8] uppercase tracking-wider bg-[#007E93]/15 px-2 py-0.5 rounded border border-[#00B4D8]/20">
                 {item.category}
               </span>
               <button
                 onClick={() => onOpenCampaign(item.campaignId)}
-                className="text-xs text-zinc-500 hover:text-zinc-800 inline-flex items-center gap-1 transition-colors"
+                className="text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] inline-flex items-center gap-1 transition-colors cursor-pointer"
               >
                 <span>{item.actionText}</span>
                 <ArrowRight className="w-3 h-3" />
@@ -83,8 +83,8 @@ export const BusinessAiInsights: React.FC<{ onOpenCampaign: (id: string) => void
             </div>
 
             <div>
-              <h3 className="text-sm font-semibold text-zinc-900">{item.title}</h3>
-              <p className="text-xs text-zinc-500 mt-1 leading-relaxed">{item.description}</p>
+              <h3 className="text-sm font-semibold text-[var(--text-primary)]">{item.title}</h3>
+              <p className="text-xs text-[var(--text-secondary)] mt-1 leading-relaxed">{item.description}</p>
             </div>
           </div>
         ))}

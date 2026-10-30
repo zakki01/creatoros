@@ -27,7 +27,7 @@ export const ApproachCreatorModal: React.FC<ApproachCreatorModalProps> = ({
   creator,
   onSuccess,
 }) => {
-  const { campaigns, addOutreachItem, addNotification, triggerCelebration } = useAppState();
+  const { campaigns, addOutreachItem, addNotification, triggerCelebration, workspace } = useAppState();
 
   const [selectedCampaignId, setSelectedCampaignId] = useState<string>(
     campaigns[0]?.id || 'custom'
@@ -115,7 +115,7 @@ export const ApproachCreatorModal: React.FC<ApproachCreatorModalProps> = ({
         ],
         aiDraftProposal: `Direct brief invitation sent to ${creator.name}. 88% estimated acceptance probability.`,
         pitchDetails: {
-          brandName: 'Aura Streetwear Co.',
+          brandName: workspace.name,
           availability: targetDeadline,
           deliverableTypes: selectedDeliverables,
           usageRights,
@@ -129,7 +129,7 @@ export const ApproachCreatorModal: React.FC<ApproachCreatorModalProps> = ({
       const creatorNotif: NotificationItem = {
         id: `notif-${Date.now()}`,
         title: 'New Campaign Invitation',
-        description: `Aura Streetwear Co. invited you to "${briefTitle}" (₹${proposedBudget.toLocaleString()} offer).`,
+        description: `${workspace.name} invited you to "${briefTitle}" (₹${proposedBudget.toLocaleString()} offer).`,
         time: 'Just now',
         read: false,
         type: 'campaign',

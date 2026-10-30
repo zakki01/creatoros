@@ -175,12 +175,12 @@ export const SpatialEmptyState: React.FC<SpatialEmptyStateProps> = ({
         {render3DObject(objectType)}
       </div>
 
-      <h3 className="relative z-10 text-base sm:text-lg font-semibold text-zinc-900 tracking-tight">
+      <h3 className="relative z-10 text-base sm:text-lg font-semibold text-[var(--text-primary)] tracking-tight font-display">
         {title}
       </h3>
 
       {descText && (
-        <p className="relative z-10 text-xs sm:text-sm text-zinc-500 mt-1 max-w-xs">
+        <p className="relative z-10 text-xs sm:text-sm text-[var(--text-secondary)] mt-1 max-w-xs leading-relaxed">
           {descText}
         </p>
       )}

@@ -145,26 +145,26 @@ export const ContractsWorkspace: React.FC<ContractsWorkspaceProps> = ({
   ).length;
 
   return (
-    <div className="space-y-6 animate-fade-in font-sans pb-16 text-zinc-900">
+    <div className="space-y-6 animate-fade-in font-sans pb-16 text-[var(--text-primary)]">
       {/* 1. Header with Prominent "+ Create Contract" */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-xl sm:text-2xl font-bold text-zinc-900 font-display">
+            <h1 className="text-xl sm:text-2xl font-bold text-[var(--text-primary)] font-display">
               Contracts
             </h1>
-            <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-sky-50 text-sky-800 font-bold border border-sky-200">
+            <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-sky-500/10 text-sky-400 font-bold border border-sky-500/20">
               Protected Escrow
             </span>
           </div>
-          <p className="text-xs text-zinc-500 mt-1">
+          <p className="text-xs text-[var(--text-secondary)] mt-1">
             Commercial agreements, deliverable tracking, and escrow payments.
           </p>
         </div>
 
         <button
           onClick={() => setViewMode('new')}
-          className="min-h-[44px] px-5 py-2.5 rounded-xl bg-[#007E93] hover:bg-[#006779] text-slate-950 text-xs font-bold flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer active:scale-95 self-start sm:self-auto shrink-0"
+          className="min-h-[44px] px-5 py-2.5 rounded-xl bg-[#007E93] hover:bg-[#006779] text-white text-xs font-bold flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer active:scale-95 self-start sm:self-auto shrink-0"
         >
           <Plus className="w-4 h-4" />
           <span>Create Contract</span>
@@ -173,31 +173,31 @@ export const ContractsWorkspace: React.FC<ContractsWorkspaceProps> = ({
 
       {/* 2. Compact Metric Strip */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div className="p-3.5 rounded-xl bg-white border border-black/[0.08] shadow-xs space-y-1">
-          <span className="text-[10px] font-mono uppercase text-zinc-500 block">Active Projects</span>
-          <p className="text-base font-bold text-zinc-900 font-mono">{activeCount}</p>
+        <div className="p-3.5 rounded-xl bg-[var(--surface)] border border-[var(--border)] shadow-xs space-y-1">
+          <span className="text-[10px] font-mono uppercase text-[var(--text-muted)] block">Active Projects</span>
+          <p className="text-base font-bold text-[var(--text-primary)] font-mono">{activeCount}</p>
         </div>
 
-        <div className="p-3.5 rounded-xl bg-white border border-black/[0.08] shadow-xs space-y-1">
-          <span className="text-[10px] font-mono uppercase text-zinc-500 block">Funds in Protection</span>
-          <p className="text-base font-bold text-emerald-700 font-mono">
+        <div className="p-3.5 rounded-xl bg-[var(--surface)] border border-[var(--border)] shadow-xs space-y-1">
+          <span className="text-[10px] font-mono uppercase text-[var(--text-muted)] block">Funds in Protection</span>
+          <p className="text-base font-bold text-emerald-500 font-mono">
             ${totalProtectedFunds.toLocaleString()}
           </p>
         </div>
 
-        <div className="p-3.5 rounded-xl bg-white border border-black/[0.08] shadow-xs space-y-1">
-          <span className="text-[10px] font-mono uppercase text-zinc-500 block">Pending Reviews</span>
-          <p className="text-base font-bold text-amber-700 font-mono">{pendingApprovals}</p>
+        <div className="p-3.5 rounded-xl bg-[var(--surface)] border border-[var(--border)] shadow-xs space-y-1">
+          <span className="text-[10px] font-mono uppercase text-[var(--text-muted)] block">Pending Reviews</span>
+          <p className="text-base font-bold text-amber-500 font-mono">{pendingApprovals}</p>
         </div>
 
-        <div className="p-3.5 rounded-xl bg-white border border-black/[0.08] shadow-xs space-y-1">
-          <span className="text-[10px] font-mono uppercase text-zinc-500 block">Dispute-Free Rate</span>
-          <p className="text-base font-bold text-[#007E93] font-mono">98.4%</p>
+        <div className="p-3.5 rounded-xl bg-[var(--surface)] border border-[var(--border)] shadow-xs space-y-1">
+          <span className="text-[10px] font-mono uppercase text-[var(--text-muted)] block">Dispute-Free Rate</span>
+          <p className="text-base font-bold text-[#00B4D8] font-mono">98.4%</p>
         </div>
       </div>
 
       {/* 3. Navigation Filter Tabs (All, Drafts, Review, Awaiting Creator, Active, Review Work, Completed, Disputed) */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-zinc-200 pb-3">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[var(--border)] pb-3">
         <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
           {[
             { id: 'all', label: 'All', count: tabCounts.all },
@@ -216,8 +216,8 @@ export const ContractsWorkspace: React.FC<ContractsWorkspaceProps> = ({
                 onClick={() => setActiveTab(tab.id as any)}
                 className={`min-h-[44px] px-3 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer shrink-0 flex items-center gap-1.5 ${
                   isCurrent
-                    ? 'bg-white text-zinc-900 border border-black/[0.08] shadow-xs font-bold'
-                    : 'text-zinc-600 hover:text-zinc-900 hover:bg-black/[0.04]'
+                    ? 'bg-[var(--surface-elevated)] text-[var(--text-primary)] border border-[var(--border)] shadow-xs font-bold'
+                    : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-subtle)]'
                 }`}
               >
                 <span>{tab.label}</span>
@@ -225,8 +225,8 @@ export const ContractsWorkspace: React.FC<ContractsWorkspaceProps> = ({
                   <span
                     className={`text-[10px] font-mono px-1.5 py-0.2 rounded-full ${
                       isCurrent
-                        ? 'bg-sky-100 text-sky-800 font-bold'
-                        : 'bg-zinc-200 text-zinc-600'
+                        ? 'bg-sky-500/20 text-sky-400 font-bold'
+                        : 'bg-[var(--surface-subtle)] text-[var(--text-secondary)]'
                     }`}
                   >
                     {tab.count}
@@ -239,13 +239,13 @@ export const ContractsWorkspace: React.FC<ContractsWorkspaceProps> = ({
 
         {/* Search Input */}
         <div className="relative min-w-[220px]">
-          <Search className="w-3.5 h-3.5 text-zinc-500 absolute left-3 top-3.5" />
+          <Search className="w-3.5 h-3.5 text-[var(--text-muted)] absolute left-3 top-3.5" />
           <input
             type="text"
             placeholder="Search contracts..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full min-h-[44px] pl-9 pr-3 rounded-xl bg-white border border-zinc-300 text-zinc-900 text-xs focus:outline-none focus:border-[#00B4D8] shadow-xs"
+            className="w-full min-h-[44px] pl-9 pr-3 rounded-xl bg-[var(--input)] border border-[var(--border)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)] text-xs focus:outline-none focus:border-[#00B4D8] shadow-xs"
           />
         </div>
       </div>
@@ -264,10 +264,10 @@ export const ContractsWorkspace: React.FC<ContractsWorkspaceProps> = ({
         </div>
       ) : (
         /* Empty State */
-        <div className="p-12 rounded-2xl bg-white border border-dashed border-zinc-300 text-center space-y-4">
-          <FileText className="w-10 h-10 text-zinc-500 mx-auto" />
+        <div className="p-12 rounded-2xl bg-[var(--surface)] border border-dashed border-[var(--border)] text-center space-y-4">
+          <FileText className="w-10 h-10 text-[var(--text-muted)] mx-auto" />
           <div className="space-y-1">
-            <h3 className="text-sm font-bold text-zinc-900">
+            <h3 className="text-sm font-bold text-[var(--text-primary)]">
               {activeTab === 'drafts'
                 ? 'No saved drafts'
                 : activeTab === 'review'
@@ -284,14 +284,14 @@ export const ContractsWorkspace: React.FC<ContractsWorkspaceProps> = ({
                 ? 'Zero disputes'
                 : 'No contracts found'}
             </h3>
-            <p className="text-xs text-zinc-500 max-w-sm mx-auto">
+            <p className="text-xs text-[var(--text-secondary)] max-w-sm mx-auto">
               Create a contract to collaborate with creators under protected payments.
             </p>
           </div>
 
           <button
             onClick={() => setViewMode('new')}
-            className="min-h-[44px] px-5 py-2.5 rounded-xl bg-[#007E93] hover:bg-[#006779] text-slate-950 text-xs font-bold inline-flex items-center gap-1.5 shadow-sm transition-all cursor-pointer"
+            className="min-h-[44px] px-5 py-2.5 rounded-xl bg-[#007E93] hover:bg-[#006779] text-white text-xs font-bold inline-flex items-center gap-1.5 shadow-sm transition-all cursor-pointer"
           >
             <Plus className="w-4 h-4" />
             <span>Create Contract</span>

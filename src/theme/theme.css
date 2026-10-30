@@ -5,22 +5,26 @@
 
 :root,
 [data-theme="light"] {
-  /* Semantic Design Tokens */
+  /* Semantic Design Tokens (Light Studio) */
   --background: #EDF0F4;
+  --sidebar: #FFFFFF;
   --surface: #FFFFFF;
-  --surface-elevated: #FFFFFF;
+  --surface-elevated: #F7F9FC;
   --surface-muted: #F1F4F8;
+  --surface-subtle: #F1F4F8;
   --surface-recessed: #E2E7ED;
   --input: #FFFFFF;
-  --sidebar: #FFFFFF;
-  --header: rgba(255, 255, 255, 0.85);
+  --header: rgba(255, 255, 255, 0.88);
 
   --text-primary: #0F172A;
   --text-secondary: #475569;
+  --text-tertiary: #64748B;
   --text-muted: #64748B;
+  --text-disabled: #94A3B8;
   --text-inverse: #FFFFFF;
 
   --border: #D5DDE6;
+  --border-subtle: rgba(0, 0, 0, 0.06);
   --border-strong: #94A3B8;
 
   --accent: #00869B;
@@ -31,6 +35,7 @@
   --success: #047857;
   --warning: #92400E;
   --danger: #B4233C;
+  --info: #00869B;
 
   --live-canvas: #090C10;
 
@@ -47,7 +52,7 @@
 
   --color-surface: #EDF0F4;
   --color-surface-card: #FFFFFF;
-  --color-surface-glass: rgba(255, 255, 255, 0.76);
+  --color-surface-glass: rgba(255, 255, 255, 0.82);
   --color-surface-recessed: #E2E7ED;
   --color-surface-input: #FFFFFF;
 
@@ -63,32 +68,37 @@
 
 [data-theme="dark"],
 .dark {
-  /* Semantic Design Tokens */
-  --background: #0B0E14;
-  --surface: #151921;
-  --surface-elevated: #1A1F2C;
-  --surface-muted: #222938;
-  --surface-recessed: #1A1F2B;
-  --input: #151921;
-  --sidebar: #151921;
-  --header: rgba(21, 25, 33, 0.85);
+  /* Semantic Design Tokens (True Dark Surface Hierarchy) */
+  --background: #0B0D11;
+  --sidebar: #10131A;
+  --surface: #151922;
+  --surface-elevated: #1A1F29;
+  --surface-muted: #1E232E;
+  --surface-subtle: #1E232E;
+  --surface-recessed: #11151C;
+  --input: #11151C;
+  --header: rgba(16, 19, 26, 0.88);
 
-  --text-primary: #F8FAFC;
-  --text-secondary: #CBD5E1;
-  --text-muted: #94A3B8;
-  --text-inverse: #0B0E14;
+  --text-primary: #F4F7FA;
+  --text-secondary: #A9B2C0;
+  --text-tertiary: #737D8C;
+  --text-muted: #737D8C;
+  --text-disabled: #4A5260;
+  --text-inverse: #0B0D11;
 
   --border: rgba(255, 255, 255, 0.08);
-  --border-strong: rgba(255, 255, 255, 0.18);
+  --border-subtle: rgba(255, 255, 255, 0.04);
+  --border-strong: rgba(255, 255, 255, 0.16);
 
   --accent: #00B4D8;
   --accent-hover: #0096B4;
   --accent-soft: rgba(0, 180, 216, 0.15);
-  --accent-foreground: #0B0E14;
+  --accent-foreground: #0B0D11;
 
   --success: #10B981;
   --warning: #F59E0B;
   --danger: #EF4444;
+  --info: #00B4D8;
 
   --live-canvas: #06080C;
 

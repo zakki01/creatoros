@@ -94,15 +94,15 @@ export const CampaignTimeline: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl sm:text-3xl font-bold text-zinc-900 font-display">
+            <h1 className="text-2xl sm:text-3xl font-bold text-[var(--text-primary)] font-display">
               Campaign Timeline & Blockers
             </h1>
             <Badge variant="brand" size="sm">
               Live Progress
             </Badge>
           </div>
-          <p className="text-sm text-zinc-500 mt-1">
-            Tracking execution milestones for <strong className="text-zinc-800">"{activeCampaign.name}"</strong>
+          <p className="text-sm text-[var(--text-secondary)] mt-1">
+            Tracking execution milestones for <strong className="text-[var(--text-primary)]">"{activeCampaign.name}"</strong>
           </p>
         </div>
 
@@ -111,10 +111,10 @@ export const CampaignTimeline: React.FC = () => {
             <button
               key={c.id}
               onClick={() => setActiveCampaignId(c.id)}
-              className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-all ${
+              className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-all cursor-pointer ${
                 c.id === activeCampaign.id
                   ? 'bg-[#007E93] text-white shadow-sm'
-                  : 'bg-white text-zinc-500 hover:text-zinc-800 border border-zinc-200'
+                  : 'bg-[var(--surface)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] border border-[var(--border)]'
               }`}
             >
               {c.name}
@@ -124,20 +124,20 @@ export const CampaignTimeline: React.FC = () => {
       </div>
 
       {/* Overdue / Blocker Alert Banner */}
-      <div className="p-4 rounded-2xl bg-amber-50 border border-amber-500/30 flex items-start gap-3 text-xs">
-        <AlertTriangle className="w-5 h-5 text-amber-800 shrink-0 mt-0.5" />
+      <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-start gap-3 text-xs">
+        <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
         <div className="space-y-1">
-          <p className="font-semibold text-amber-800">
+          <p className="font-semibold text-amber-400">
             Active Milestone Blocker Detected: Content Submission Wave 1
           </p>
-          <p className="text-zinc-700 leading-relaxed">
+          <p className="text-[var(--text-secondary)] leading-relaxed">
             Publishing wave was scheduled for Friday; 2 creators are delayed in transit due to courier delivery latency. AI recommends auto-adjusting wave 1 schedule by 24h to synchronize creator release impact.
           </p>
         </div>
       </div>
 
       {/* Visual Pipeline Timeline Cards */}
-      <div className="relative pl-6 space-y-6 before:absolute before:left-2.5 before:top-3 before:bottom-3 before:w-0.5 before:bg-zinc-100">
+      <div className="relative pl-6 space-y-6 before:absolute before:left-2.5 before:top-3 before:bottom-3 before:w-0.5 before:bg-[var(--border)]">
         {timelineStages.map((stage, idx) => {
           const isDone = stage.status === 'completed';
           const isActive = stage.status === 'active';
@@ -150,7 +150,7 @@ export const CampaignTimeline: React.FC = () => {
                     ? 'bg-emerald-500 border-emerald-400 text-white'
                     : isActive
                     ? 'bg-[#00B4D8] border-indigo-400 text-white ring-4 ring-[#007E93]/20 animate-pulse-subtle'
-                    : 'bg-white border-zinc-300 text-zinc-500'
+                    : 'bg-[var(--surface)] border-[var(--border)] text-[var(--text-muted)]'
                 }`}
               >
                 {isDone ? (
@@ -164,16 +164,16 @@ export const CampaignTimeline: React.FC = () => {
               <Card
                 className={`p-5 space-y-3 transition-all ${
                   isActive
-                    ? 'bg-white/90 border-[#00B4D8]/60 shadow-lg shadow-indigo-500/5'
-                    : 'bg-zinc-50 border-zinc-200 opacity-80 group-hover:opacity-100'
+                    ? 'bg-[var(--surface-elevated)] border-[#00B4D8]/60 shadow-lg'
+                    : 'bg-[var(--surface)] border-[var(--border)] opacity-80 group-hover:opacity-100'
                 }`}
               >
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                   <div className="flex items-center gap-2.5">
-                    <span className="text-xs font-mono font-semibold text-zinc-500">
+                    <span className="text-xs font-mono font-semibold text-[var(--text-muted)]">
                       Phase {idx + 1}
                     </span>
-                    <h3 className="text-sm font-bold text-zinc-900 font-display">
+                    <h3 className="text-sm font-bold text-[var(--text-primary)] font-display">
                       {stage.name}
                     </h3>
                     <Badge
@@ -183,19 +183,19 @@ export const CampaignTimeline: React.FC = () => {
                       {stage.status.toUpperCase()}
                     </Badge>
                   </div>
-                  <span className="text-xs text-zinc-500 font-mono flex items-center gap-1.5">
-                    <Calendar className="w-3.5 h-3.5 text-zinc-500" />
+                  <span className="text-xs text-[var(--text-muted)] font-mono flex items-center gap-1.5">
+                    <Calendar className="w-3.5 h-3.5 text-[var(--text-muted)]" />
                     <span>{stage.date}</span>
                   </span>
                 </div>
 
-                <p className="text-xs text-zinc-500 leading-relaxed">
+                <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
                   {stage.description}
                 </p>
 
                 {stage.blockers && (
-                  <div className="p-2.5 rounded-xl bg-amber-50 border border-amber-200 flex items-center gap-2 text-[11px] text-amber-800">
-                    <AlertTriangle className="w-3.5 h-3.5 text-amber-800 shrink-0" />
+                  <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center gap-2 text-[11px] text-amber-400">
+                    <AlertTriangle className="w-3.5 h-3.5 text-amber-400 shrink-0" />
                     <span><strong>Active Blocker:</strong> {stage.blockers}</span>
                   </div>
                 )}

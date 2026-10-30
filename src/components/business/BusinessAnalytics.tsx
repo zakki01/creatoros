@@ -32,14 +32,14 @@ export const BusinessAnalytics: React.FC = () => {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-2xl sm:text-3xl font-bold text-zinc-900 font-display">
+              <h1 className="text-2xl sm:text-3xl font-bold text-[var(--text-primary)] font-display">
                 Campaign Analytics & Attribution
               </h1>
               <Badge variant="brand" size="sm">
                 Real-Time Tracking
               </Badge>
             </div>
-            <p className="text-sm text-zinc-500 mt-1">
+            <p className="text-sm text-[var(--text-secondary)] mt-1">
               End-to-end performance and creator-level ROI
             </p>
           </div>
@@ -92,15 +92,15 @@ export const BusinessAnalytics: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl sm:text-3xl font-bold text-zinc-900 font-display">
+            <h1 className="text-2xl sm:text-3xl font-bold text-[var(--text-primary)] font-display">
               Campaign Analytics & Attribution
             </h1>
             <Badge variant="brand" size="sm">
               Real-Time Tracking
             </Badge>
           </div>
-          <p className="text-sm text-zinc-500 mt-1">
-            End-to-end performance and creator-level ROI for <strong className="text-zinc-800">"{activeCampaign.name}"</strong>
+          <p className="text-sm text-[var(--text-secondary)] mt-1">
+            End-to-end performance and creator-level ROI for <strong className="text-[var(--text-primary)]">"{activeCampaign.name}"</strong>
           </p>
         </div>
 
@@ -111,9 +111,9 @@ export const BusinessAnalytics: React.FC = () => {
           <Button
             variant="outline"
             size="md"
-            leftIcon={<Download className="w-4 h-4 text-emerald-700" />}
+            leftIcon={<Download className="w-4 h-4 text-emerald-500" />}
             onClick={() => setIsReportModalOpen(true)}
-            className="border-zinc-200 text-zinc-800 cursor-pointer"
+            className="border-[var(--border)] text-[var(--text-primary)] hover:bg-[var(--surface-subtle)] cursor-pointer"
           >
             Export & Share Report
           </Button>
@@ -126,15 +126,15 @@ export const BusinessAnalytics: React.FC = () => {
           const Icon = m.icon;
           return (
             <Card key={idx} className="p-4 space-y-2">
-              <div className="flex items-center justify-between text-zinc-500">
+              <div className="flex items-center justify-between text-[var(--text-secondary)]">
                 <span className="text-[11px] font-medium truncate">{m.label}</span>
-                <Icon className="w-3.5 h-3.5 text-zinc-500" />
+                <Icon className="w-3.5 h-3.5 text-[var(--text-muted)]" />
               </div>
               <div>
-                <p className="text-lg font-bold text-zinc-900 font-mono tracking-tight">
+                <p className="text-lg font-bold text-[var(--text-primary)] font-mono tracking-tight">
                   {m.value}
                 </p>
-                <span className="text-[10px] text-emerald-700 font-mono font-medium">
+                <span className="text-[10px] text-emerald-500 font-mono font-medium">
                   {m.delta} vs forecasted
                 </span>
               </div>
@@ -147,10 +147,10 @@ export const BusinessAnalytics: React.FC = () => {
       <Card className="p-6 space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-base font-bold text-zinc-900 font-display">
+            <h3 className="text-base font-bold text-[var(--text-primary)] font-display">
               Creator-Level Performance & Attribution
             </h3>
-            <p className="text-xs text-zinc-500 mt-0.5">
+            <p className="text-xs text-[var(--text-secondary)] mt-0.5">
               Exact spend, revenue, and individual return on ad spend (ROAS) per partner.
             </p>
           </div>
@@ -161,7 +161,7 @@ export const BusinessAnalytics: React.FC = () => {
 
         <div className="overflow-x-auto pt-2">
           <table className="w-full text-left text-xs">
-            <thead className="bg-white shadow-xs text-zinc-500 border-b border-zinc-200 uppercase text-[10px] font-semibold tracking-wider">
+            <thead className="bg-[var(--surface-subtle)] text-[var(--text-secondary)] border-b border-[var(--border)] uppercase text-[10px] font-semibold tracking-wider">
               <tr>
                 <th className="py-3 px-4">Creator Partner</th>
                 <th className="py-3 px-4">Deliverables</th>
@@ -174,30 +174,30 @@ export const BusinessAnalytics: React.FC = () => {
                 <th className="py-3 px-4 text-right">Status</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-zinc-200">
+            <tbody className="divide-y divide-[var(--border)]">
               {creatorPerformances.length === 0 ? (
                 <tr>
-                  <td colSpan={9} className="py-8 text-center text-zinc-500 font-normal">
+                  <td colSpan={9} className="py-8 text-center text-[var(--text-secondary)] font-normal">
                     No creator-level performance data recorded yet.
                   </td>
                 </tr>
               ) : (
                 creatorPerformances.map((c, idx) => (
-                  <tr key={idx} className="hover:bg-zinc-100 transition-colors">
+                  <tr key={idx} className="hover:bg-[var(--surface-subtle)] transition-colors">
                     <td className="py-3.5 px-4">
                       <div className="flex items-center gap-2.5">
                         <img
                           src={c.avatar}
                           alt={c.name}
-                          className="w-8 h-8 rounded-xl object-cover ring-1 ring-zinc-700"
+                          className="w-8 h-8 rounded-xl object-cover ring-1 ring-[var(--border)]"
                         />
                         <div>
-                          <p className="font-semibold text-zinc-800">{c.name}</p>
-                          <p className="text-[10px] text-zinc-500 font-mono">{c.handle}</p>
+                          <p className="font-semibold text-[var(--text-primary)]">{c.name}</p>
+                          <p className="text-[10px] text-[var(--text-muted)] font-mono">{c.handle}</p>
                         </div>
                       </div>
                     </td>
-                    <td className="py-3.5 px-4 text-zinc-500 font-mono">{c.deliverables}</td>
+                    <td className="py-3.5 px-4 text-[var(--text-secondary)] font-mono">{c.deliverables}</td>
                     <td className="py-3.5 px-4 font-mono font-semibold text-zinc-800">
                       ₹{(c.spend / 1000).toFixed(0)}K
                     </td>
