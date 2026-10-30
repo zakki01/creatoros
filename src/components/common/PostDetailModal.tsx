@@ -51,17 +51,17 @@ export const PostDetailModal: React.FC<PostDetailModalProps> = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-6 bg-black/45 backdrop-blur-md animate-fade-in overflow-y-auto"
+      className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-6 bg-black/60 backdrop-blur-md animate-fade-in overflow-y-auto"
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-4xl max-h-[92vh] rounded-2xl bg-white text-zinc-900 border border-black/[0.08] shadow-2xl text-zinc-900 flex flex-col md:flex-row overflow-hidden my-auto"
+        className="relative w-full max-w-4xl max-h-[92vh] rounded-2xl bg-[var(--surface)] text-[var(--text-primary)] border border-[var(--border)] shadow-2xl flex flex-col md:flex-row overflow-hidden my-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-3 right-3 z-30 p-1.5 rounded-full bg-black/60 backdrop-blur-md text-zinc-500 hover:text-white border border-black/[0.08] transition-colors cursor-pointer"
+          className="absolute top-3 right-3 z-30 p-1.5 rounded-full bg-black/60 backdrop-blur-md text-[var(--text-muted)] hover:text-white border border-[var(--border)] transition-colors cursor-pointer"
         >
           <X className="w-4 h-4" />
         </button>
@@ -81,7 +81,7 @@ export const PostDetailModal: React.FC<PostDetailModalProps> = ({
               />
               <button
                 onClick={() => setIsMuted(!isMuted)}
-                className="absolute bottom-4 right-4 p-2 rounded-full bg-black/60 backdrop-blur-md text-white border border-black/15 hover:bg-black/90 transition-all cursor-pointer"
+                className="absolute bottom-4 right-4 p-2 rounded-full bg-black/60 backdrop-blur-md text-white border border-white/15 hover:bg-black/90 transition-all cursor-pointer"
                 title={isMuted ? 'Unmute' : 'Mute'}
               >
                 {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
@@ -94,33 +94,33 @@ export const PostDetailModal: React.FC<PostDetailModalProps> = ({
               className="w-full h-full max-h-[520px] object-cover"
             />
           ) : (
-            <div className="p-8 text-center text-zinc-500 font-mono text-xs">
+            <div className="p-8 text-center text-[var(--text-muted)] font-mono text-xs">
               No media attached
             </div>
           )}
         </div>
 
         {/* Right: Author info, Full Content, Campaign Brief Details */}
-        <div className="w-full md:w-1/2 flex flex-col justify-between p-5 md:p-6 overflow-y-auto max-h-[520px] scrollbar-thin">
+        <div className="w-full md:w-1/2 flex flex-col justify-between p-5 md:p-6 overflow-y-auto max-h-[520px] scrollbar-thin text-[var(--text-primary)]">
           <div className="space-y-4">
             {/* Author Header */}
-            <div className="flex items-center justify-between border-b border-black/[0.08] pb-4">
+            <div className="flex items-center justify-between border-b border-[var(--border)] pb-4">
               <div className="flex items-center gap-3">
                 <img
                   src={post.authorAvatar}
                   alt={post.authorName}
-                  className="w-10 h-10 rounded-full object-cover ring-1 ring-white/10"
+                  className="w-10 h-10 rounded-full object-cover ring-1 ring-[var(--border)]"
                 />
                 <div>
                   <div className="flex items-center gap-1.5">
-                    <span className="font-bold text-xs text-zinc-900">
+                    <span className="font-bold text-xs text-[var(--text-primary)]">
                       {post.authorName}
                     </span>
                     {post.authorVerified && (
-                      <ShieldCheck className="w-3.5 h-3.5 text-[#007E93]" />
+                      <ShieldCheck className="w-3.5 h-3.5 text-[var(--accent)]" />
                     )}
                   </div>
-                  <div className="flex items-center gap-2 text-[10px] text-zinc-500 font-mono">
+                  <div className="flex items-center gap-2 text-[10px] text-[var(--text-muted)] font-mono">
                     <span>{post.authorHandle}</span>
                     <span>•</span>
                     <span>{post.timestamp}</span>
@@ -130,14 +130,14 @@ export const PostDetailModal: React.FC<PostDetailModalProps> = ({
 
               {/* Connect CTA */}
               {isConnected ? (
-                <span className="px-3 py-1 rounded-xl bg-emerald-50 border border-emerald-500/20 text-emerald-700 text-xs font-semibold flex items-center gap-1">
+                <span className="px-3 py-1 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-semibold flex items-center gap-1">
                   <Check className="w-3.5 h-3.5" />
                   <span>Connected</span>
                 </span>
               ) : (
                 <button
                   onClick={onOpenConnect}
-                  className="px-3 py-1.5 rounded-xl bg-white text-zinc-950 hover:bg-zinc-200 text-xs font-semibold flex items-center gap-1 transition-all cursor-pointer"
+                  className="px-3 py-1.5 rounded-xl bg-[var(--accent)] text-white hover:opacity-90 text-xs font-semibold flex items-center gap-1 transition-all cursor-pointer shadow-sm"
                 >
                   <UserPlus className="w-3.5 h-3.5" />
                   <span>Connect</span>
@@ -147,17 +147,17 @@ export const PostDetailModal: React.FC<PostDetailModalProps> = ({
 
             {/* Format & Badge */}
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-white/[0.08] text-zinc-800 border border-black/[0.08] font-mono">
+              <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-[var(--surface-muted)] text-[var(--text-secondary)] border border-[var(--border)] font-mono">
                 {post.contentType === 'reel' ? '🎬 Reel' : post.contentType === 'blog' ? '✍ Blog' : '📸 Shot'}
               </span>
               {post.discoveryBadge && (
-                <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-[#00B4D8]/10 text-[#007E93] border border-[#00B4D8]/20">
+                <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-[var(--accent)]/10 text-[var(--accent)] border border-[var(--accent)]/20">
                   {post.discoveryBadge}
                 </span>
               )}
               {post.location && (
-                <span className="text-[10px] text-zinc-500 flex items-center gap-1 font-mono">
-                  <MapPin className="w-3 h-3 text-zinc-500" />
+                <span className="text-[10px] text-[var(--text-muted)] flex items-center gap-1 font-mono">
+                  <MapPin className="w-3 h-3 text-[var(--text-muted)]" />
                   {post.location}
                 </span>
               )}
@@ -165,13 +165,13 @@ export const PostDetailModal: React.FC<PostDetailModalProps> = ({
 
             {/* Blog Title if blog */}
             {post.blogTitle && (
-              <h2 className="text-lg font-bold text-zinc-900 font-display">
+              <h2 className="text-lg font-bold text-[var(--text-primary)] font-display">
                 {post.blogTitle}
               </h2>
             )}
 
-            {/* Full Post Description / Article Text (Single unified fullContent, zero repetition) */}
-            <div className="text-xs text-zinc-800 leading-relaxed whitespace-pre-line space-y-2">
+            {/* Full Post Description */}
+            <div className="text-xs text-[var(--text-secondary)] leading-relaxed whitespace-pre-line space-y-2">
               <p>{post.fullContent || post.blogContent || post.content}</p>
             </div>
 
@@ -181,7 +181,7 @@ export const PostDetailModal: React.FC<PostDetailModalProps> = ({
                 {post.tags.map((t, idx) => (
                   <span
                     key={idx}
-                    className="text-[11px] font-mono text-[#007E93] hover:text-[#007E93] cursor-pointer"
+                    className="text-[11px] font-mono text-[var(--accent)] hover:underline cursor-pointer"
                   >
                     {t}
                   </span>
@@ -191,32 +191,32 @@ export const PostDetailModal: React.FC<PostDetailModalProps> = ({
 
             {/* Full Campaign Opportunity Brief Section */}
             {opp && (
-              <div className="p-4 rounded-xl bg-white shadow-sm border border-black/[0.08] space-y-3">
+              <div className="p-4 rounded-xl bg-[var(--surface-muted)] shadow-sm border border-[var(--border)] space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-mono uppercase text-amber-800 font-semibold flex items-center gap-1">
-                    <Sparkles className="w-3 h-3 text-amber-800" />
+                  <span className="text-[10px] font-mono uppercase text-amber-500 font-semibold flex items-center gap-1">
+                    <Sparkles className="w-3 h-3 text-amber-500" />
                     Commercial Brief
                   </span>
-                  <span className="text-xs font-bold font-mono text-emerald-700 bg-emerald-50 border border-emerald-500/20 px-2 py-0.5 rounded-md">
+                  <span className="text-xs font-bold font-mono text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-md">
                     {opp.budgetFormatted}
                   </span>
                 </div>
                 <div>
-                  <h4 className="text-sm font-bold text-zinc-900">{opp.title}</h4>
-                  <p className="text-xs text-zinc-700 mt-0.5">{opp.deliverablesSummary}</p>
+                  <h4 className="text-sm font-bold text-[var(--text-primary)]">{opp.title}</h4>
+                  <p className="text-xs text-[var(--text-secondary)] mt-0.5">{opp.deliverablesSummary}</p>
                 </div>
-                <div className="grid grid-cols-2 gap-2 text-[11px] font-mono text-zinc-500 pt-1 border-t border-black/[0.06]">
-                  <div>Deadline: <strong className="text-zinc-800">{opp.deadline}</strong></div>
-                  <div>Location: <strong className="text-zinc-800">{opp.location}</strong></div>
-                  <div>Niche: <strong className="text-zinc-800">{opp.requiredNiche}</strong></div>
-                  <div>Brand: <strong className="text-zinc-800">{opp.brandName}</strong></div>
+                <div className="grid grid-cols-2 gap-2 text-[11px] font-mono text-[var(--text-muted)] pt-1 border-t border-[var(--border)]">
+                  <div>Deadline: <strong className="text-[var(--text-primary)]">{opp.deadline}</strong></div>
+                  <div>Location: <strong className="text-[var(--text-primary)]">{opp.location}</strong></div>
+                  <div>Niche: <strong className="text-[var(--text-primary)]">{opp.requiredNiche}</strong></div>
+                  <div>Brand: <strong className="text-[var(--text-primary)]">{opp.brandName}</strong></div>
                 </div>
               </div>
             )}
           </div>
 
           {/* Engagement Action Bar */}
-          <div className="pt-4 border-t border-black/[0.08] space-y-3 mt-4">
+          <div className="pt-4 border-t border-[var(--border)] space-y-3 mt-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-5">
                 {/* Like with Reaction trigger */}

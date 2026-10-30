@@ -92,7 +92,7 @@ export const LiveReferencePanel: React.FC<LiveReferencePanelProps> = ({
           type="button"
           onClick={() => fileInputRef.current?.click()}
           disabled={disabled}
-          className={`w-full flex items-center justify-center gap-2 p-3.5 rounded-2xl border border-dashed border-zinc-300 hover:border-[#007E93]/50 bg-white hover:bg-zinc-50 text-zinc-600 hover:text-zinc-900 text-xs transition-all ${
+          className={`w-full flex items-center justify-center gap-2 p-3.5 rounded-2xl border border-dashed border-[var(--border)] hover:border-[var(--accent)]/50 bg-[var(--surface-muted)] hover:bg-[var(--surface-elevated)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] text-xs transition-all ${
             disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
           }`}
         >

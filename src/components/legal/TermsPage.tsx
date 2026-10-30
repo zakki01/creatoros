@@ -84,7 +84,7 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onBack }) => {
           <div className="flex items-center gap-2">
             <button
               onClick={handlePrint}
-              className="hidden sm:flex min-h-[44px] px-3.5 py-1.5 rounded-xl border border-black/[0.08] bg-white hover:bg-zinc-100 text-xs font-medium text-zinc-700 items-center gap-1.5 transition-colors cursor-pointer"
+              className="hidden sm:flex min-h-[44px] px-3.5 py-1.5 rounded-xl border border-[var(--border)] bg-[var(--surface)] hover:bg-[var(--surface-elevated)] text-xs font-medium text-[var(--text-primary)] items-center gap-1.5 transition-colors cursor-pointer"
             >
               <Download className="w-3.5 h-3.5" />
               <span>Print</span>
@@ -114,7 +114,7 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onBack }) => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Left Table of Contents Rail (Desktop) */}
           <aside className="hidden lg:block lg:col-span-4 sticky top-24 space-y-3">
-            <div className="p-4 rounded-2xl bg-white shadow-sm border border-black/[0.08] backdrop-blur-xl">
+            <div className="p-4 rounded-2xl bg-[var(--surface)] shadow-sm border border-[var(--border)] backdrop-blur-xl">
               <div className="flex items-center gap-2 pb-3 mb-2 border-b border-black/[0.06] text-xs font-bold text-zinc-800 font-mono uppercase tracking-wider">
                 <FileText className="w-4 h-4 text-[#007E93]" />
                 <span>Document Outline</span>
@@ -484,7 +484,7 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onBack }) => {
       </main>
 
       {/* Minimal Legal Footer */}
-      <footer className="border-t border-black/[0.08] py-8 bg-white text-xs text-zinc-500">
+      <footer className="border-t border-[var(--border)] py-8 bg-[var(--surface)] text-xs text-[var(--text-muted)]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             <BrandLogo size="xs" />

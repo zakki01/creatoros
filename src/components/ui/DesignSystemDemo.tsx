@@ -84,7 +84,7 @@ export const DesignSystemDemo: React.FC<{ onBack?: () => void }> = ({ onBack }) 
             1. Core Design Tokens & Surface Hierarchy
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            <div className="p-3.5 rounded-xl border border-zinc-200 bg-white border border-zinc-200 space-y-1">
+            <div className="p-3.5 rounded-xl border border-[var(--border)] bg-[var(--surface)] space-y-1">
               <span className="text-[11px] text-zinc-500 font-mono">bgBase</span>
               <p className="text-xs font-semibold text-zinc-800">#070709</p>
             </div>

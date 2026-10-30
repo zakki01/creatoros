@@ -177,7 +177,7 @@ export const PostCard: React.FC<PostCardProps> = ({
                   role: post.authorType,
                 })
               }
-              className="px-3 py-1 rounded-xl bg-white text-zinc-950 hover:bg-zinc-200 text-xs font-semibold flex items-center gap-1 shadow-sm transition-all cursor-pointer active:scale-95"
+              className="px-3 py-1 rounded-xl bg-[var(--accent)] text-white hover:opacity-90 text-xs font-semibold flex items-center gap-1 shadow-sm transition-all cursor-pointer active:scale-95"
             >
               <UserPlus className="w-3.5 h-3.5" />
               <span>Connect</span>
@@ -200,7 +200,7 @@ export const PostCard: React.FC<PostCardProps> = ({
             {showMoreMenu && (
               <div
                 onClick={(e) => e.stopPropagation()}
-                className="absolute right-0 top-8 w-44 rounded-xl bg-white shadow-sm border border-black/[0.08] shadow-2xl p-1 z-30 animate-slide-up text-left"
+                className="absolute right-0 top-8 w-44 rounded-xl bg-[var(--surface-elevated)] shadow-lg border border-[var(--border)] p-1 z-30 animate-slide-up text-left text-[var(--text-primary)]"
               >
                 <button
                   onClick={() => {
@@ -429,20 +429,20 @@ export const PostCard: React.FC<PostCardProps> = ({
           </div>
         )}
 
-        {/* 5. COMPACT CAMPAIGN BRIEF (Section 16: Casting Call / Opportunity) */}
+        {/* 5. COMPACT CAMPAIGN BRIEF */}
         {opp && (
-          <div className="mt-2 p-2.5 rounded-xl bg-white shadow-sm border border-black/[0.08] flex items-center justify-between gap-3">
+          <div className="mt-2 p-2.5 rounded-xl bg-[var(--surface-muted)] shadow-sm border border-[var(--border)] flex items-center justify-between gap-3 text-[var(--text-primary)]">
             <div className="min-w-0 space-y-0.5">
-              <span className="text-[10px] font-mono uppercase text-amber-800 font-semibold flex items-center gap-1">
-                <Sparkles className="w-3 h-3 text-amber-800" />
+              <span className="text-[10px] font-mono uppercase text-amber-500 font-semibold flex items-center gap-1">
+                <Sparkles className="w-3 h-3 text-amber-500" />
                 Casting Call
               </span>
-              <h4 className="text-xs font-bold text-zinc-900 truncate">{opp.title}</h4>
-              <p className="text-[10px] text-zinc-500 font-mono truncate">{opp.requiredNiche} • {opp.budgetFormatted}</p>
+              <h4 className="text-xs font-bold text-[var(--text-primary)] truncate">{opp.title}</h4>
+              <p className="text-[10px] text-[var(--text-muted)] font-mono truncate">{opp.requiredNiche} • {opp.budgetFormatted}</p>
             </div>
             <button
               onClick={() => onOpenDetail(post)}
-              className="text-[11px] font-semibold text-[#007E93] hover:text-[#007E93] shrink-0 cursor-pointer flex items-center gap-1"
+              className="text-[11px] font-semibold text-[var(--accent)] hover:underline shrink-0 cursor-pointer flex items-center gap-1"
             >
               <span>View Brief</span>
               <ArrowRight className="w-3 h-3" />

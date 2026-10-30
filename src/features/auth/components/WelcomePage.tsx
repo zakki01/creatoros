@@ -72,7 +72,7 @@ export const WelcomePage: React.FC<WelcomePageProps> = ({
       {/* ========================================================================= */}
       {/* 2. PUBLIC HEADER — STRICTLY ONLY CREATOROS LOGO                           */}
       {/* ========================================================================= */}
-      <header className="sticky top-0 z-50 w-full border-b border-black/[0.06] bg-white/70 backdrop-blur-2xl transition-all">
+      <header className="sticky top-0 z-50 w-full border-b border-[var(--border)] bg-[var(--header)] backdrop-blur-2xl transition-all">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center">
           <BrandLogo size="md" variant="light" />
         </div>
@@ -114,44 +114,44 @@ export const WelcomePage: React.FC<WelcomePageProps> = ({
           aria-label="Platform Telemetry"
           className="w-full pt-1 sm:pt-2"
         >
-          <div className="w-full rounded-2xl bg-white/75 backdrop-blur-md border border-white/90 shadow-[0_4px_16px_-4px_rgba(15,23,42,0.06)] px-4 sm:px-6 py-3.5">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 divide-y sm:divide-y-0 sm:divide-x divide-black/[0.06]">
+          <div className="w-full rounded-2xl bg-[var(--surface)]/80 backdrop-blur-md border border-[var(--border)] shadow-xs px-4 sm:px-6 py-3.5">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 divide-y sm:divide-y-0 sm:divide-x divide-[var(--border)]">
               {/* Metric 1 */}
               <div className="flex flex-col items-center sm:items-start text-center sm:text-left pt-2 sm:pt-0 sm:px-3 first:px-0">
-                <span className="text-base sm:text-lg font-bold font-mono text-zinc-900 tracking-tight">
+                <span className="text-base sm:text-lg font-bold font-mono text-[var(--text-primary)] tracking-tight">
                   4,800+
                 </span>
-                <span className="text-[11px] font-sans text-zinc-500 font-medium">
+                <span className="text-[11px] font-sans text-[var(--text-secondary)] font-medium">
                   Verified Creators
                 </span>
               </div>
 
               {/* Metric 2 */}
               <div className="flex flex-col items-center sm:items-start text-center sm:text-left pt-2 sm:pt-0 sm:px-3">
-                <span className="text-base sm:text-lg font-bold font-mono text-[#007E93] tracking-tight">
+                <span className="text-base sm:text-lg font-bold font-mono text-[var(--accent)] tracking-tight">
                   ₹4.2 Cr+
                 </span>
-                <span className="text-[11px] font-sans text-zinc-500 font-medium">
+                <span className="text-[11px] font-sans text-[var(--text-secondary)] font-medium">
                   Escrow Protected
                 </span>
               </div>
 
               {/* Metric 3 */}
               <div className="flex flex-col items-center sm:items-start text-center sm:text-left pt-2 sm:pt-0 sm:px-3">
-                <span className="text-base sm:text-lg font-bold font-mono text-zinc-900 tracking-tight">
+                <span className="text-base sm:text-lg font-bold font-mono text-[var(--text-primary)] tracking-tight">
                   &lt;120ms
                 </span>
-                <span className="text-[11px] font-sans text-zinc-500 font-medium">
+                <span className="text-[11px] font-sans text-[var(--text-secondary)] font-medium">
                   Sync Latency SLA
                 </span>
               </div>
 
               {/* Metric 4 */}
               <div className="flex flex-col items-center sm:items-start text-center sm:text-left pt-2 sm:pt-0 sm:px-3">
-                <span className="text-base sm:text-lg font-bold font-mono text-zinc-900 tracking-tight">
+                <span className="text-base sm:text-lg font-bold font-mono text-[var(--text-primary)] tracking-tight">
                   99.4%
                 </span>
-                <span className="text-[11px] font-sans text-zinc-500 font-medium">
+                <span className="text-[11px] font-sans text-[var(--text-secondary)] font-medium">
                   Fulfillment Rate
                 </span>
               </div>
@@ -164,19 +164,19 @@ export const WelcomePage: React.FC<WelcomePageProps> = ({
       {/* ========================================================================= */}
       {/* 5. MINIMAL CLEAN FOOTER                                                    */}
       {/* ========================================================================= */}
-      <footer className="w-full border-t border-black/[0.06] bg-white/60 backdrop-blur-xl py-6 text-xs text-zinc-500 font-sans">
+      <footer className="w-full border-t border-[var(--border)] bg-[var(--surface)]/60 backdrop-blur-xl py-6 text-xs text-[var(--text-secondary)] font-sans">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2.5">
             <BrandLogo size="xs" variant="light" />
-            <span className="text-zinc-400">•</span>
-            <span className="text-zinc-600 font-medium">Creators &amp; Brands</span>
+            <span className="text-[var(--text-muted)]">•</span>
+            <span className="text-[var(--text-secondary)] font-medium">Creators &amp; Brands</span>
           </div>
 
-          <div className="flex items-center flex-wrap gap-5 sm:gap-7 text-zinc-600 font-medium">
-            <a href="/terms" className="hover:text-zinc-900 transition-colors">
+          <div className="flex items-center flex-wrap gap-5 sm:gap-7 text-[var(--text-secondary)] font-medium">
+            <a href="/terms" className="hover:text-[var(--text-primary)] transition-colors">
               Terms
             </a>
-            <a href="/privacy" className="hover:text-zinc-900 transition-colors">
+            <a href="/privacy" className="hover:text-[var(--text-primary)] transition-colors">
               Privacy
             </a>
             <a href="/support" className="hover:text-zinc-900 transition-colors">

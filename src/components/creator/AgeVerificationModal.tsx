@@ -40,25 +40,25 @@ export const AgeVerificationModal: React.FC<AgeVerificationModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/45 backdrop-blur-md animate-fade-in">
-      <div className="relative w-full max-w-lg rounded-2xl bg-white border border-black/[0.08] shadow-2xl p-6 md:p-8 shadow-2xl space-y-5">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-fade-in">
+      <div className="relative w-full max-w-lg rounded-2xl bg-[var(--surface)] text-[var(--text-primary)] border border-[var(--border)] shadow-2xl p-6 md:p-8 space-y-5">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-1.5 rounded-lg text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 transition-colors"
+          className="absolute top-4 right-4 p-1.5 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-elevated)] transition-colors cursor-pointer"
         >
           <X className="w-5 h-5" />
         </button>
 
         {/* Header */}
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-500/20 flex items-center justify-center shrink-0">
-            <ShieldCheck className="w-6 h-6 text-emerald-700" />
+          <div className="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shrink-0">
+            <ShieldCheck className="w-6 h-6 text-emerald-500" />
           </div>
           <div>
-            <h2 className="text-base font-bold text-zinc-900 tracking-tight font-mono">
+            <h2 className="text-base font-bold text-[var(--text-primary)] tracking-tight font-mono">
               18+ Age & Child Safety Verification
             </h2>
-            <p className="text-xs text-zinc-500 mt-0.5">
+            <p className="text-xs text-[var(--text-secondary)] mt-0.5">
               CreatorOS enforces strict 18+ creator onboarding and automated child safety protections.
             </p>
           </div>
@@ -104,17 +104,17 @@ export const AgeVerificationModal: React.FC<AgeVerificationModalProps> = ({
               required
               value={dob}
               onChange={(e) => setDob(e.target.value)}
-              className="w-full bg-white border border-zinc-300 rounded-xl px-3.5 py-2 text-xs text-zinc-900 focus:border-[#00B4D8] focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]"
+              className="w-full bg-[var(--input)] border border-[var(--border)] rounded-xl px-3.5 py-2 text-xs text-[var(--text-primary)] focus:outline-none focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent)]"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1">
-              <label className="text-xs font-medium text-zinc-700">Document Type</label>
+              <label className="text-xs font-medium text-[var(--text-secondary)]">Document Type</label>
               <select
                 value={docType}
                 onChange={(e) => setDocType(e.target.value)}
-                className="w-full bg-white border border-zinc-300 rounded-xl px-3 py-2 text-xs text-zinc-900 focus:border-[#00B4D8] focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]"
+                className="w-full bg-[var(--input)] border border-[var(--border)] rounded-xl px-3 py-2 text-xs text-[var(--text-primary)] focus:outline-none focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent)] cursor-pointer"
               >
                 <option value="Passport">Passport</option>
                 <option value="National ID">National Identity Card</option>
@@ -122,21 +122,21 @@ export const AgeVerificationModal: React.FC<AgeVerificationModalProps> = ({
               </select>
             </div>
             <div className="space-y-1">
-              <label className="text-xs font-medium text-zinc-700">Document Number / Hash</label>
+              <label className="text-xs font-medium text-[var(--text-secondary)]">Document Number / Hash</label>
               <input
                 type="text"
                 required
                 value={docNumber}
                 onChange={(e) => setDocNumber(e.target.value)}
-                className="w-full bg-white border border-zinc-300 rounded-xl px-3 py-2 text-xs text-zinc-900 focus:border-[#00B4D8] font-mono focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]"
+                className="w-full bg-[var(--input)] border border-[var(--border)] rounded-xl px-3 py-2 text-xs text-[var(--text-primary)] font-mono focus:outline-none focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent)]"
               />
             </div>
           </div>
 
           {/* Child Safety & Automated Moderation Note */}
-          <div className="p-3.5 rounded-xl bg-zinc-50 border border-zinc-200 text-[11px] text-zinc-500 space-y-1.5">
-            <div className="flex items-center gap-1.5 font-semibold text-zinc-700">
-              <Lock className="w-3.5 h-3.5 text-[#007E93]" />
+          <div className="p-3.5 rounded-xl bg-[var(--surface-muted)] border border-[var(--border)] text-[11px] text-[var(--text-muted)] space-y-1.5">
+            <div className="flex items-center gap-1.5 font-semibold text-[var(--text-primary)]">
+              <Lock className="w-3.5 h-3.5 text-[var(--accent)]" />
               <span>Automated Deliverable Moderation Scan</span>
             </div>
             <p className="leading-relaxed">

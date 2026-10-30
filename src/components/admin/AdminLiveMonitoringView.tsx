@@ -1,73 +1,122 @@
 import React, { useState } from 'react';
 import {
-  Video,
   Radio,
-  Coins,
-  ShieldAlert,
-  Users,
   Eye,
   AlertTriangle,
-  CheckCircle,
+  Gift,
+  Coins,
+  ShieldAlert,
+  Flame,
   Clock,
   Sparkles,
+  Users,
+  Activity,
+  CheckCircle2,
 } from 'lucide-react';
-import { GiftLedgerService, VIRTUAL_GIFTS_CATALOG } from '../../services/giftLedgerService';
 import { Button } from '../ui/Button';
-import { useToast } from '../ui/Toast';
+
+interface LiveRoom {
+  id: string;
+  hostName: string;
+  hostHandle: string;
+  title: string;
+  viewerCount: number;
+  provider: 'livekit' | 'webrtc-p2p';
+  activeEffect: string;
+  health: 'optimal' | 'degraded' | 'critical';
+  durationSeconds: number;
+}
+
+interface GiftAuditItem {
+  id: string;
+  streamId: string;
+  senderHandle: string;
+  recipientHandle: string;
+  giftType: string;
+  coinValue: number;
+  timestamp: string;
+}
 
 export const AdminLiveMonitoringView: React.FC = () => {
-  const toast = useToast();
-  const [activeStreams, setActiveStreams] = useState([
+  const [activeStreams, setActiveStreams] = useState<LiveRoom[]>([
     {
-      id: 'room-studio-live-01',
+      id: 'stream-01',
       hostName: 'Rohan Sharma',
       hostHandle: '@rohansharma',
-      title: 'Cinematic 3D Lookbook BTS & Lighting Session',
+      title: 'Neon Tokyo Studio Live Drop #2',
       viewerCount: 142,
-      startedAt: '24m ago',
-      provider: 'WebRTC / SFU',
-      health: 'Excellent (60 FPS)',
-      giftsReceivedCoins: 1250,
-      activeEffect: 'Studio Luxe Glow',
-      status: 'live',
+      provider: 'livekit',
+      activeEffect: 'Cyber Visor (Face Tracking)',
+      health: 'optimal',
+      durationSeconds: 1420,
     },
     {
-      id: 'room-studio-live-02',
-      hostName: 'Maya Patel',
-      hostHandle: '@mayapatel',
-      title: 'Live Editing: 4K Commercial Grade Color Workflow',
+      id: 'stream-02',
+      hostName: 'Aanya Deshmukh',
+      hostHandle: '@aanya_fashion',
+      title: 'Streetwear Styling Session & Brand Collab QA',
       viewerCount: 88,
-      startedAt: '1h 12m ago',
-      provider: 'LiveKit SFU',
-      health: 'Good (30 FPS)',
-      giftsReceivedCoins: 4800,
-      activeEffect: '35mm Kodak Portra Grade',
-      status: 'live',
+      provider: 'livekit',
+      activeEffect: 'Studio Glow',
+      health: 'optimal',
+      durationSeconds: 780,
     },
   ]);
 
-  const ledgerEntries = GiftLedgerService.getAllLedgerEntries();
-  const giftTransactions = GiftLedgerService.getGiftTransactions();
+  const [giftTransactions] = useState<GiftAuditItem[]>([
+    {
+      id: 'gift-01',
+      streamId: 'stream-01',
+      senderHandle: '@superfan99',
+      recipientHandle: '@rohansharma',
+      giftType: 'Diamond Cyber Mask',
+      coinValue: 5000,
+      timestamp: new Date(Date.now() - 5 * 60 * 1000).toISOString(),
+    },
+    {
+      id: 'gift-02',
+      streamId: 'stream-01',
+      senderHandle: '@kartik_c',
+      recipientHandle: '@rohansharma',
+      giftType: 'Coffee Cup',
+      coinValue: 50,
+      timestamp: new Date(Date.now() - 12 * 60 * 1000).toISOString(),
+    },
+    {
+      id: 'gift-03',
+      streamId: 'stream-02',
+      senderHandle: '@priya_m',
+      recipientHandle: '@aanya_fashion',
+      giftType: 'Rocket Launcher',
+      coinValue: 1000,
+      timestamp: new Date(Date.now() - 18 * 60 * 1000).toISOString(),
+    },
+  ]);
 
-  const handleEmergencyKillStream = (roomId: string, hostName: string) => {
-    setActiveStreams((prev) => prev.filter((s) => s.id !== roomId));
-    toast.error(`Emergency shutdown executed for stream ${roomId} (${hostName}).`);
+  const handleEmergencyKillStream = (streamId: string, hostName: string) => {
+    if (
+      window.confirm(
+        `Are you sure you want to terminate live stream ${streamId} hosted by ${hostName}? This disconnects all LiveKit participants immediately.`
+      )
+    ) {
+      setActiveStreams((prev) => prev.filter((s) => s.id !== streamId));
+    }
   };
 
   return (
-    <div className="space-y-6">
-      {/* Title */}
+    <div className="space-y-6 text-[var(--text-primary)]">
+      {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-zinc-900 tracking-tight">
+          <h1 className="text-2xl font-bold text-[var(--text-primary)] tracking-tight">
             Live Stream Supervision &amp; Gift Ledgers
           </h1>
-          <p className="text-xs text-zinc-500">
+          <p className="text-xs text-[var(--text-secondary)]">
             Real-time broadcast monitoring, WebRTC/LiveKit health telemetry, and coin audit logs.
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold">
+          <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-500 dark:text-emerald-400 text-xs font-semibold">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
             {activeStreams.length} Active Broadcasts
           </span>
@@ -76,53 +125,53 @@ export const AdminLiveMonitoringView: React.FC = () => {
 
       {/* Metrics Row */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="p-4 rounded-2xl bg-white border border-zinc-200 shadow-sm">
+        <div className="p-4 rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-xs">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-medium text-zinc-500">Total Live Viewers</span>
-            <Users className="w-4 h-4 text-[#00869B]" />
+            <span className="text-xs font-medium text-[var(--text-muted)]">Total Live Viewers</span>
+            <Users className="w-4 h-4 text-[var(--accent)]" />
           </div>
-          <div className="text-2xl font-bold font-mono text-zinc-900">
+          <div className="text-2xl font-bold font-mono text-[var(--text-primary)]">
             {activeStreams.reduce((sum, s) => sum + s.viewerCount, 0)}
           </div>
-          <div className="text-[11px] text-zinc-400 mt-1">Across global CDN edge nodes</div>
+          <div className="text-[11px] text-[var(--text-muted)] mt-1">Across global CDN edge nodes</div>
         </div>
 
-        <div className="p-4 rounded-2xl bg-white border border-zinc-200 shadow-sm">
+        <div className="p-4 rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-xs">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-medium text-zinc-500">Gifts Exchanged Today</span>
+            <span className="text-xs font-medium text-[var(--text-muted)]">Gifts Exchanged Today</span>
             <Coins className="w-4 h-4 text-amber-500" />
           </div>
-          <div className="text-2xl font-bold font-mono text-zinc-900">
-            6,050 <span className="text-xs font-sans text-zinc-500">Coins</span>
+          <div className="text-2xl font-bold font-mono text-[var(--text-primary)]">
+            6,050 <span className="text-xs font-sans text-[var(--text-muted)]">Coins</span>
           </div>
-          <div className="text-[11px] text-zinc-400 mt-1">
-            Platform 30% Fee: <span className="font-semibold text-emerald-600">$18.15 USD</span>
+          <div className="text-[11px] text-[var(--text-muted)] mt-1">
+            Platform 30% Fee: <span className="font-semibold text-emerald-500 dark:text-emerald-400">$18.15 USD</span>
           </div>
         </div>
 
-        <div className="p-4 rounded-2xl bg-white border border-zinc-200 shadow-sm">
+        <div className="p-4 rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-xs">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-medium text-zinc-500">Stream Health Index</span>
-            <Radio className="w-4 h-4 text-emerald-600" />
+            <span className="text-xs font-medium text-[var(--text-muted)]">Stream Health Index</span>
+            <Radio className="w-4 h-4 text-emerald-500 dark:text-emerald-400" />
           </div>
-          <div className="text-2xl font-bold font-mono text-zinc-900">99.8%</div>
-          <div className="text-[11px] text-zinc-400 mt-1">0 reported packet losses</div>
+          <div className="text-2xl font-bold font-mono text-[var(--text-primary)]">99.8%</div>
+          <div className="text-[11px] text-[var(--text-muted)] mt-1">0 reported packet losses</div>
         </div>
       </div>
 
       {/* Live Stream Table */}
-      <div className="p-5 rounded-3xl bg-white border border-zinc-200 shadow-sm">
-        <h2 className="text-base font-bold text-zinc-900 mb-4 flex items-center gap-2">
+      <div className="p-5 rounded-3xl bg-[var(--surface)] border border-[var(--border)] shadow-xs">
+        <h2 className="text-base font-bold text-[var(--text-primary)] mb-4 flex items-center gap-2">
           <Radio className="w-4 h-4 text-rose-500 animate-pulse" />
           <span>Active Broadcast Rooms</span>
         </h2>
 
         {activeStreams.length === 0 ? (
-          <div className="py-10 text-center text-xs text-zinc-500">
+          <div className="py-10 text-center text-xs text-[var(--text-muted)]">
             No broadcasts are currently live.
           </div>
         ) : (
-          <div className="divide-y divide-zinc-100">
+          <div className="divide-y divide-[var(--border)]">
             {activeStreams.map((stream) => (
               <div
                 key={stream.id}
@@ -130,31 +179,31 @@ export const AdminLiveMonitoringView: React.FC = () => {
               >
                 <div>
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="font-bold text-sm text-zinc-900">{stream.title}</span>
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-800">
+                    <span className="font-bold text-sm text-[var(--text-primary)]">{stream.title}</span>
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-500 text-white">
                       LIVE
                     </span>
                   </div>
-                  <div className="flex items-center flex-wrap gap-3 text-xs text-zinc-500">
-                    <span>Host: <strong className="text-zinc-800">{stream.hostName}</strong> ({stream.hostHandle})</span>
+                  <div className="flex items-center flex-wrap gap-3 text-xs text-[var(--text-muted)]">
+                    <span>Host: <strong className="text-[var(--text-primary)]">{stream.hostName}</strong> ({stream.hostHandle})</span>
                     <span>•</span>
                     <span>Provider: {stream.provider}</span>
                     <span>•</span>
                     <span>AR: {stream.activeEffect}</span>
                     <span>•</span>
-                    <span className="text-emerald-600 font-medium">{stream.health}</span>
+                    <span className="text-emerald-500 dark:text-emerald-400 font-medium">{stream.health}</span>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <div className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-zinc-100 text-zinc-700 text-xs font-bold font-mono">
+                  <div className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-[var(--surface-muted)] text-[var(--text-secondary)] text-xs font-bold font-mono border border-[var(--border)]">
                     <Eye className="w-3.5 h-3.5" />
                     <span>{stream.viewerCount}</span>
                   </div>
                   <Button
                     variant="outline"
                     size="sm"
-                    className="text-rose-600 border-rose-200 hover:bg-rose-50"
+                    className="text-rose-500 border-rose-500/30 hover:bg-rose-500/10 cursor-pointer"
                     onClick={() => handleEmergencyKillStream(stream.id, stream.hostName)}
                   >
                     <AlertTriangle className="w-3.5 h-3.5 mr-1" />
@@ -168,48 +217,52 @@ export const AdminLiveMonitoringView: React.FC = () => {
       </div>
 
       {/* Virtual Gifts Double-Entry Ledger */}
-      <div className="p-5 rounded-3xl bg-white border border-zinc-200 shadow-sm">
-        <h2 className="text-base font-bold text-zinc-900 mb-4 flex items-center gap-2">
+      <div className="p-5 rounded-3xl bg-[var(--surface)] border border-[var(--border)] shadow-xs">
+        <h2 className="text-base font-bold text-[var(--text-primary)] mb-4 flex items-center gap-2">
           <Coins className="w-4 h-4 text-amber-500" />
           <span>Virtual Gifts Financial Ledger</span>
         </h2>
 
         {giftTransactions.length === 0 ? (
-          <div className="py-6 text-center text-xs text-zinc-500">
+          <div className="py-6 text-center text-xs text-[var(--text-muted)]">
             No gift transactions recorded yet. Transactions are logged immutably upon broadcast gift transfer.
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead>
-                <tr className="border-b border-zinc-200 text-zinc-500 uppercase text-[10px] tracking-wider font-semibold">
-                  <th className="pb-2">Transaction ID</th>
-                  <th className="pb-2">Sender</th>
-                  <th className="pb-2">Recipient</th>
-                  <th className="pb-2">Gift Item</th>
-                  <th className="pb-2">Coins</th>
-                  <th className="pb-2">Creator Share</th>
-                  <th className="pb-2">Platform Fee</th>
-                  <th className="pb-2">Status</th>
+              <thead className="bg-[var(--surface-muted)] text-[var(--text-secondary)] uppercase text-[10px] font-mono tracking-wider border-b border-[var(--border)]">
+                <tr>
+                  <th className="py-2.5 px-3">Transaction ID</th>
+                  <th className="py-2.5 px-3">Sender</th>
+                  <th className="py-2.5 px-3">Recipient</th>
+                  <th className="py-2.5 px-3">Virtual Gift</th>
+                  <th className="py-2.5 px-3">Coins Transferred</th>
+                  <th className="py-2.5 px-3">Timestamp</th>
+                  <th className="py-2.5 px-3 text-right">Status</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-zinc-100">
+              <tbody className="divide-y divide-[var(--border)] font-sans">
                 {giftTransactions.map((tx) => (
-                  <tr key={tx.id} className="hover:bg-zinc-50">
-                    <td className="py-2.5 font-mono text-zinc-600">{tx.id}</td>
-                    <td className="py-2.5 font-semibold text-zinc-900">{tx.senderName}</td>
-                    <td className="py-2.5 text-zinc-800">{tx.recipientName}</td>
-                    <td className="py-2.5">
-                      <span className="mr-1">{tx.giftIcon}</span> {tx.giftName}
+                  <tr key={tx.id} className="hover:bg-[var(--surface-elevated)] transition-colors">
+                    <td className="py-3 px-3 font-mono text-[var(--text-muted)]">{tx.id}</td>
+                    <td className="py-3 px-3 font-medium text-[var(--text-primary)]">{tx.senderHandle}</td>
+                    <td className="py-3 px-3 font-medium text-[var(--text-primary)]">{tx.recipientHandle}</td>
+                    <td className="py-3 px-3">
+                      <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-[var(--surface-muted)] text-[var(--text-primary)] border border-[var(--border)] text-[11px]">
+                        <Gift className="w-3 h-3 text-amber-500" />
+                        {tx.giftType}
+                      </span>
                     </td>
-                    <td className="py-2.5 font-bold font-mono text-amber-600">{tx.coinAmount}</td>
-                    <td className="py-2.5 font-mono text-emerald-700 font-semibold">
-                      ${tx.creatorEarningUsd.toFixed(2)}
+                    <td className="py-3 px-3 font-mono font-bold text-amber-500">
+                      {tx.coinValue.toLocaleString()} Coins
                     </td>
-                    <td className="py-2.5 font-mono text-zinc-500">${tx.platformFeeUsd.toFixed(2)}</td>
-                    <td className="py-2.5">
-                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">
-                        {tx.status}
+                    <td className="py-3 px-3 text-[var(--text-muted)] font-mono text-[11px]">
+                      {new Date(tx.timestamp).toLocaleTimeString()}
+                    </td>
+                    <td className="py-3 px-3 text-right">
+                      <span className="inline-flex items-center gap-1 text-[11px] font-medium text-emerald-500 dark:text-emerald-400">
+                        <CheckCircle2 className="w-3 h-3" />
+                        Settled
                       </span>
                     </td>
                   </tr>

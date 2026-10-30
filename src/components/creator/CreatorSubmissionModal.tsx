@@ -151,7 +151,7 @@ export const CreatorSubmissionModal: React.FC<CreatorSubmissionModalProps> = ({
             <select
               value={deliverableType}
               onChange={(e) => setDeliverableType(e.target.value as DeliverableType)}
-              className="w-full bg-white text-zinc-900 text-xs py-2.5 px-3 rounded-xl border border-zinc-300 shadow-xs focus:border-[#00B4D8] focus:outline-none"
+              className="w-full bg-[var(--input)] text-[var(--text-primary)] text-xs py-2.5 px-3 rounded-xl border border-[var(--border)] shadow-xs focus:border-[var(--accent)] focus:outline-none cursor-pointer"
             >
               <option value="Reel">Instagram Reel</option>
               <option value="Story">Instagram Story</option>
@@ -182,7 +182,7 @@ export const CreatorSubmissionModal: React.FC<CreatorSubmissionModalProps> = ({
                 value={caption}
                 onChange={(e) => setCaption(e.target.value)}
                 placeholder="Include mandatory brand mentions and description..."
-                className="w-full bg-white text-zinc-900 text-xs p-3 rounded-xl border border-zinc-300 shadow-xs focus:border-[#00B4D8] focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] focus:outline-none leading-relaxed"
+                className="w-full bg-[var(--input)] text-[var(--text-primary)] text-xs p-3 rounded-xl border border-[var(--border)] shadow-xs focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent)] focus:outline-none leading-relaxed placeholder-[var(--text-muted)]"
               />
             </div>
 

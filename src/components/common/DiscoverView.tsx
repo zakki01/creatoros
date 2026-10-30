@@ -331,8 +331,8 @@ export const DiscoverView: React.FC = () => {
               onClick={() => setSelectedLocation(loc)}
               className={`px-2.5 py-1 rounded-xl text-[11px] font-mono transition-all cursor-pointer ${
                 selectedLocation === loc
-                  ? 'surface-3 text-zinc-900 border-[#007E93]/35'
-                  : 'text-zinc-600 hover:text-zinc-900 bg-white border border-zinc-200'
+                  ? 'surface-3 text-[var(--text-primary)] border-[var(--accent)]/35'
+                  : 'text-[var(--text-muted)] hover:text-[var(--text-primary)] bg-[var(--surface)] border border-[var(--border)]'
               }`}
             >
               {loc}
@@ -365,11 +365,11 @@ export const DiscoverView: React.FC = () => {
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
             <div>
-              <label className="text-[10px] uppercase font-mono text-zinc-500 block mb-1">Format</label>
+              <label className="text-[10px] uppercase font-mono text-[var(--text-muted)] block mb-1">Format</label>
               <select
                 value={selectedContentType}
                 onChange={(e) => setSelectedContentType(e.target.value)}
-                className="w-full bg-white border border-black/[0.08] rounded-xl p-1.5 text-xs text-zinc-800"
+                className="w-full bg-[var(--input)] border border-[var(--border)] rounded-xl p-1.5 text-xs text-[var(--text-primary)]"
               >
                 <option value="All">All</option>
                 <option value="Reels">Reels</option>
@@ -379,11 +379,11 @@ export const DiscoverView: React.FC = () => {
             </div>
 
             <div>
-              <label className="text-[10px] uppercase font-mono text-zinc-500 block mb-1">Niche</label>
+              <label className="text-[10px] uppercase font-mono text-[var(--text-muted)] block mb-1">Niche</label>
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="w-full bg-white border border-black/[0.08] rounded-xl p-1.5 text-xs text-zinc-800"
+                className="w-full bg-[var(--input)] border border-[var(--border)] rounded-xl p-1.5 text-xs text-[var(--text-primary)]"
               >
                 {categoryOptions.map((c) => (
                   <option key={c} value={c}>{c}</option>
@@ -392,11 +392,11 @@ export const DiscoverView: React.FC = () => {
             </div>
 
             <div>
-              <label className="text-[10px] uppercase font-mono text-zinc-500 block mb-1">Location</label>
+              <label className="text-[10px] uppercase font-mono text-[var(--text-muted)] block mb-1">Location</label>
               <select
                 value={selectedLocation}
                 onChange={(e) => setSelectedLocation(e.target.value)}
-                className="w-full bg-white border border-black/[0.08] rounded-xl p-1.5 text-xs text-zinc-800"
+                className="w-full bg-[var(--input)] border border-[var(--border)] rounded-xl p-1.5 text-xs text-[var(--text-primary)]"
               >
                 {locationOptions.map((l) => (
                   <option key={l} value={l}>{l}</option>
@@ -405,14 +405,14 @@ export const DiscoverView: React.FC = () => {
             </div>
 
             <div className="flex flex-col justify-end">
-              <label className="flex items-center gap-2 cursor-pointer p-1.5 rounded-xl bg-white shadow-sm border border-black/[0.08]">
+              <label className="flex items-center gap-2 cursor-pointer p-1.5 rounded-xl bg-[var(--input)] shadow-sm border border-[var(--border)]">
                 <input
                   type="checkbox"
                   checked={verifiedOnly}
                   onChange={(e) => setVerifiedOnly(e.target.checked)}
-                  className="rounded border-zinc-300 text-[#006779] focus:ring-0"
+                  className="rounded border-[var(--border)] text-[var(--accent)] focus:ring-0"
                 />
-                <span className="text-xs text-zinc-700 font-medium">Verified</span>
+                <span className="text-xs text-[var(--text-primary)] font-medium">Verified</span>
               </label>
             </div>
           </div>
@@ -497,7 +497,7 @@ export const DiscoverView: React.FC = () => {
                   {/* Latest Work Visual Preview */}
                   <div
                     onClick={() => setSelectedCreatorModal(c)}
-                    className="relative h-40 w-full rounded-2xl overflow-hidden bg-white border border-black/[0.08] cursor-pointer group/img"
+                    className="relative h-40 w-full rounded-2xl overflow-hidden bg-[var(--surface-muted)] border border-[var(--border)] cursor-pointer group/img"
                   >
                     <img
                       src={latestWorkImg}
@@ -630,7 +630,7 @@ export const DiscoverView: React.FC = () => {
                   {/* Cover Image + Brief Overlay */}
                   <div
                     onClick={() => setSelectedBrandModalData(b)}
-                    className="relative h-36 w-full rounded-2xl overflow-hidden bg-white border border-black/[0.08] cursor-pointer group/cover"
+                    className="relative h-36 w-full rounded-2xl overflow-hidden bg-[var(--surface-muted)] border border-[var(--border)] cursor-pointer group/cover"
                   >
                     <img
                       src={b.coverUrl}
@@ -730,7 +730,7 @@ export const DiscoverView: React.FC = () => {
                 return (
                   <div
                     key={reel.id}
-                    className="relative rounded-2xl overflow-hidden bg-white border border-black/[0.08] aspect-[9/16] group shadow-xl flex flex-col justify-between"
+                    className="relative rounded-2xl overflow-hidden bg-[var(--surface)] border border-[var(--border)] aspect-[9/16] group shadow-xl flex flex-col justify-between"
                   >
                     {isPlaying && reel.videoUrl ? (
                       <video
@@ -786,7 +786,7 @@ export const DiscoverView: React.FC = () => {
                           {openMoreMenuPostId === reel.id && (
                             <div
                               onClick={(e) => e.stopPropagation()}
-                              className="absolute right-0 top-9 w-44 rounded-xl bg-white shadow-sm border border-black/[0.08] shadow-2xl p-1 z-30 animate-slide-up text-left"
+                              className="absolute right-0 top-9 w-44 rounded-xl bg-[var(--surface-elevated)] shadow-lg border border-[var(--border)] p-1 z-30 animate-slide-up text-left text-[var(--text-primary)]"
                             >
                               <button
                                 onClick={() => {
@@ -1108,9 +1108,9 @@ export const DiscoverView: React.FC = () => {
 
       {/* 11. CREATOR PROFILE MODAL */}
       {selectedCreatorModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/45 backdrop-blur-md animate-fade-in overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/60 backdrop-blur-md animate-fade-in overflow-y-auto">
           <div
-            className="relative w-full max-w-4xl rounded-2xl bg-white text-zinc-900 border border-black/[0.08] p-6 shadow-2xl text-zinc-900 overflow-hidden my-auto"
+            className="relative w-full max-w-4xl rounded-2xl bg-[var(--surface)] text-[var(--text-primary)] border border-[var(--border)] p-6 shadow-2xl overflow-hidden my-auto"
             onClick={(e) => e.stopPropagation()}
           >
             <button

@@ -8,23 +8,23 @@ export const ProUpgradeModal: React.FC = () => {
   if (!isProModalOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/45 backdrop-blur-md animate-fade-in">
-      <div className="relative w-full max-w-3xl rounded-2xl bg-white border border-zinc-200 p-6 md:p-8 shadow-2xl overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-fade-in">
+      <div className="relative w-full max-w-3xl rounded-2xl bg-[var(--surface)] text-[var(--text-primary)] border border-[var(--border)] p-6 md:p-8 shadow-2xl overflow-hidden">
         {/* Ambient background glow */}
-        <div className="absolute -top-32 -left-32 w-80 h-80 bg-[#00B4D8]/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-32 -right-32 w-80 h-80 bg-[#007E93]/8 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -top-32 -left-32 w-80 h-80 bg-[var(--accent)]/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-32 -right-32 w-80 h-80 bg-[var(--accent)]/8 rounded-full blur-3xl pointer-events-none" />
 
         {/* Close Button */}
         <button
           onClick={() => setIsProModalOpen(false)}
-          className="absolute top-4 right-4 p-1.5 rounded-lg text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 transition-colors"
+          className="absolute top-4 right-4 p-1.5 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-elevated)] transition-colors cursor-pointer"
         >
           <X className="w-5 h-5" />
         </button>
 
         {/* Header */}
         <div className="text-center max-w-lg mx-auto mb-8">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 border border-amber-500/20 text-amber-800 text-xs font-semibold mb-3">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 text-xs font-semibold mb-3">
             <Zap className="w-3.5 h-3.5 fill-amber-400" />
             <span>7-Day Free Trial Active ({trialDaysLeft} days remaining)</span>
           </div>
@@ -116,8 +116,8 @@ export const ProUpgradeModal: React.FC = () => {
         </div>
 
         {/* Safe Downgrade Guarantee Notice */}
-        <div className="p-3 rounded-lg bg-white shadow-sm border border-zinc-200 text-[11px] text-zinc-500 flex items-center gap-2.5">
-          <Shield className="w-4 h-4 text-emerald-700 shrink-0" />
+        <div className="p-3 rounded-lg bg-[var(--surface-muted)] shadow-sm border border-[var(--border)] text-[11px] text-[var(--text-secondary)] flex items-center gap-2.5">
+          <Shield className="w-4 h-4 text-emerald-500 shrink-0" />
           <span>
             <strong>Graceful Downgrade Protection:</strong> If you ever choose to cancel, your existing data, past contracts, and creator passport assets remain 100% accessible. We never delete historical work.
           </span>

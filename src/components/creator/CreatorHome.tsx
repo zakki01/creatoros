@@ -111,12 +111,12 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
               <h1 className="text-xl sm:text-2xl font-bold text-[var(--text-primary)] font-display tracking-tight">
                 {currentCreator.name}
               </h1>
-              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200 shadow-xs">
-                <ShieldCheck className="w-3 h-3 text-emerald-600" />
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 shadow-xs">
+                <ShieldCheck className="w-3 h-3 text-emerald-500" />
                 Verified
               </span>
             </div>
-            <p className="text-xs text-zinc-500 mt-0.5">
+            <p className="text-xs text-[var(--text-secondary)] mt-0.5">
               {currentCreator.category || currentCreator.niche} · {currentCreator.location}
             </p>
           </div>
@@ -162,8 +162,8 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
 
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-5 h-full">
             <div className="space-y-3 max-w-sm">
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-mono uppercase tracking-wider bg-sky-50 text-sky-800 border border-sky-200">
-                <Sparkles className="w-3 h-3 text-[#007E93]" />
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-mono uppercase tracking-wider bg-[var(--accent)]/10 text-[var(--accent)] border border-[var(--accent)]/20">
+                <Sparkles className="w-3 h-3 text-[var(--accent)]" />
                 <span>3D AI Environment</span>
               </div>
               <div>
@@ -240,11 +240,11 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
             <>
               <div className="flex items-start justify-between gap-3">
                 <div className="flex items-center gap-3">
-                  <div className="w-11 h-11 rounded-2xl bg-amber-500/10 border border-amber-500/25 text-amber-700 flex items-center justify-center shadow-xs shrink-0">
+                  <div className="w-11 h-11 rounded-2xl bg-amber-500/10 border border-amber-500/25 text-amber-500 flex items-center justify-center shadow-xs shrink-0">
                     <FileText className="w-5 h-5" />
                   </div>
                   <div>
-                    <span className="inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-wider text-amber-800 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200">
+                    <span className="inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-wider text-amber-600 dark:text-amber-400 bg-amber-500/10 px-2.5 py-0.5 rounded-full border border-amber-500/20">
                       <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
                       Active Agreement
                     </span>
@@ -253,13 +253,13 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
                     </h3>
                   </div>
                 </div>
-                <span className="text-lg font-bold font-mono text-emerald-700">
+                <span className="text-lg font-bold font-mono text-emerald-500 dark:text-emerald-400">
                   ₹{activeCampaignItems[0].proposedFee.toLocaleString()}
                 </span>
               </div>
 
               <div className="flex items-center justify-between pt-2 border-t border-[var(--border)]">
-                <span className="text-xs text-zinc-500 font-mono">Deliverables in Progress</span>
+                <span className="text-xs text-[var(--text-muted)] font-mono">Deliverables in Progress</span>
                 <Button
                   variant="primary"
                   size="sm"
@@ -275,14 +275,14 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
           ) : (
             <div className="h-full flex flex-col justify-between py-1">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-2xl bg-zinc-100 border border-zinc-200 text-zinc-500 flex items-center justify-center shrink-0">
+                <div className="w-10 h-10 rounded-2xl bg-[var(--surface-muted)] border border-[var(--border)] text-[var(--text-muted)] flex items-center justify-center shrink-0">
                   <FileText className="w-5 h-5" />
                 </div>
                 <div>
                   <h3 className="text-sm font-semibold text-[var(--text-primary)]">
                     No active contracts
                   </h3>
-                  <p className="text-xs text-zinc-500 mt-0.5">
+                  <p className="text-xs text-[var(--text-muted)] mt-0.5">
                     Formal brand agreements and escrow releases appear here.
                   </p>
                 </div>
@@ -316,24 +316,24 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
           className="p-5 flex flex-col justify-between space-y-3 shadow-sm"
         >
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-mono uppercase tracking-wider text-[#007E93] font-semibold">
+            <span className="text-[11px] font-mono uppercase tracking-wider text-[var(--accent)] font-semibold">
               Opportunity
             </span>
             {incomingOpportunities.length > 0 && (
-              <span className="w-2 h-2 rounded-full bg-[#00B4D8] animate-pulse" />
+              <span className="w-2 h-2 rounded-full bg-[var(--accent)] animate-pulse" />
             )}
           </div>
           <div>
             <h3 className="text-2xl font-bold text-[var(--text-primary)] font-display">
               {incomingOpportunities.length} New
             </h3>
-            <p className="text-xs text-zinc-500 mt-0.5 truncate">
+            <p className="text-xs text-[var(--text-secondary)] mt-0.5 truncate">
               {incomingOpportunities.length > 0
                 ? `${incomingOpportunities[0].campaignName} · ₹${incomingOpportunities[0].proposedFee.toLocaleString()}`
                 : 'No pending brand invitations'}
             </p>
           </div>
-          <div className="flex items-center text-xs text-[#007E93] font-medium gap-1 pt-1">
+          <div className="flex items-center text-xs text-[var(--accent)] font-medium gap-1 pt-1">
             <span>View opportunities →</span>
           </div>
         </SpatialCard>
@@ -347,32 +347,32 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
           className="p-5 flex flex-col justify-between space-y-3 shadow-sm"
         >
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-500 font-semibold">
+            <span className="text-[11px] font-mono uppercase tracking-wider text-[var(--text-muted)] font-semibold">
               Content Pipeline
             </span>
-            <Film className="w-4 h-4 text-zinc-500" />
+            <Film className="w-4 h-4 text-[var(--text-muted)]" />
           </div>
           <div className="grid grid-cols-3 gap-2 pt-0.5 text-center">
             <div className="p-2 rounded-xl bg-[var(--surface-muted)] border border-[var(--border)]">
               <span className="text-base font-bold font-mono text-[var(--text-primary)]">
                 {draftsCount}
               </span>
-              <p className="text-[10px] text-zinc-500">Drafts</p>
+              <p className="text-[10px] text-[var(--text-muted)]">Drafts</p>
             </div>
             <div className="p-2 rounded-xl bg-amber-500/10 border border-amber-500/25">
-              <span className="text-base font-bold font-mono text-amber-700 dark:text-amber-400">
+              <span className="text-base font-bold font-mono text-amber-500 dark:text-amber-400">
                 {pendingApprovalCount}
               </span>
-              <p className="text-[10px] text-amber-700">Pending</p>
+              <p className="text-[10px] text-amber-500 dark:text-amber-400">Pending</p>
             </div>
             <div className="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/25">
-              <span className="text-base font-bold font-mono text-emerald-700 dark:text-emerald-400">
+              <span className="text-base font-bold font-mono text-emerald-500 dark:text-emerald-400">
                 {approvedCount}
               </span>
-              <p className="text-[10px] text-emerald-700">Approved</p>
+              <p className="text-[10px] text-emerald-500 dark:text-emerald-400">Approved</p>
             </div>
           </div>
-          <div className="flex items-center text-xs text-zinc-600 font-medium gap-1">
+          <div className="flex items-center text-xs text-[var(--text-secondary)] font-medium gap-1">
             <span>Deliverables →</span>
           </div>
         </SpatialCard>
@@ -387,20 +387,20 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
           className="p-5 flex flex-col justify-between space-y-3 shadow-sm"
         >
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-mono uppercase tracking-wider text-emerald-700 font-semibold">
+            <span className="text-[11px] font-mono uppercase tracking-wider text-emerald-500 dark:text-emerald-400 font-semibold">
               Earnings
             </span>
-            <CreditCard className="w-4 h-4 text-emerald-600" />
+            <CreditCard className="w-4 h-4 text-emerald-500" />
           </div>
           <div>
             <h3 className="text-2xl font-bold text-[var(--text-primary)] font-mono">
               ₹{pendingEarnings.toLocaleString()}
             </h3>
-            <p className="text-xs text-zinc-500 mt-0.5">
-              Available: <span className="text-emerald-700 font-mono font-medium">₹{paidEarnings.toLocaleString()}</span>
+            <p className="text-xs text-[var(--text-secondary)] mt-0.5">
+              Available: <span className="text-emerald-500 dark:text-emerald-400 font-mono font-medium">₹{paidEarnings.toLocaleString()}</span>
             </p>
           </div>
-          <div className="flex items-center text-xs text-emerald-700 font-medium gap-1 pt-1">
+          <div className="flex items-center text-xs text-emerald-500 dark:text-emerald-400 font-medium gap-1 pt-1">
             <span>Payouts →</span>
           </div>
         </SpatialCard>
@@ -415,20 +415,20 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
           className="p-5 flex flex-col justify-between space-y-3 shadow-sm"
         >
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-500 font-semibold">
+            <span className="text-[11px] font-mono uppercase tracking-wider text-[var(--text-muted)] font-semibold">
               Reach
             </span>
-            <TrendingUp className="w-4 h-4 text-emerald-600" />
+            <TrendingUp className="w-4 h-4 text-emerald-500" />
           </div>
           <div>
             <h3 className="text-2xl font-bold text-[var(--text-primary)] font-mono">
               {currentCreator.followers || '0'}
             </h3>
-            <p className="text-xs text-emerald-700 font-mono mt-0.5">
+            <p className="text-xs text-emerald-500 dark:text-emerald-400 font-mono mt-0.5">
               {currentCreator.engagementRate || '0%'} engagement
             </p>
           </div>
-          <div className="flex items-center text-xs text-zinc-600 font-medium gap-1 pt-1">
+          <div className="flex items-center text-xs text-[var(--text-secondary)] font-medium gap-1 pt-1">
             <span>Analytics →</span>
           </div>
         </SpatialCard>
@@ -438,7 +438,7 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
       <div className="space-y-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Layers className="w-4 h-4 text-[#007E93]" />
+            <Layers className="w-4 h-4 text-[var(--accent)]" />
             <h2 className="text-base font-bold text-[var(--text-primary)] font-display">Active Campaigns</h2>
           </div>
           <Button
@@ -453,7 +453,7 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
         </div>
 
         {activeCampaignItems.length === 0 ? (
-          <div className="p-8 rounded-2xl bg-white shadow-xs border border-black/[0.08] text-center text-xs text-zinc-500">
+          <div className="p-8 rounded-2xl bg-[var(--surface)] shadow-xs border border-[var(--border)] text-center text-xs text-[var(--text-muted)]">
             No active campaigns. Verified brand campaigns and deliverables appear here once confirmed.
           </div>
         ) : (
@@ -468,7 +468,7 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <h3 className="text-sm font-bold text-[var(--text-primary)]">{item.campaignName}</h3>
-                    <p className="text-xs text-zinc-500 mt-0.5">
+                    <p className="text-xs text-[var(--text-secondary)] mt-0.5">
                       Brand Campaign
                     </p>
                   </div>
@@ -479,24 +479,24 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
 
                 <div className="p-3 rounded-xl bg-[var(--surface-muted)] border border-[var(--border)] space-y-2 text-xs">
                   <div className="flex justify-between items-center">
-                    <span className="text-zinc-500 text-[11px]">Milestone</span>
-                    <span className="font-semibold text-emerald-700 text-[11px]">Deliverable Cut</span>
+                    <span className="text-[var(--text-muted)] text-[11px]">Milestone</span>
+                    <span className="font-semibold text-emerald-500 dark:text-emerald-400 text-[11px]">Deliverable Cut</span>
                   </div>
                   <div className="w-full bg-[var(--surface-recessed)] h-1.5 rounded-full overflow-hidden">
                     <div className="bg-gradient-to-r from-[#00B4D8] to-emerald-500 h-full rounded-full w-2/3" />
                   </div>
-                  <div className="flex justify-between text-[10px] text-zinc-500 font-mono">
-                    <span className="flex items-center gap-1 text-emerald-700">
+                  <div className="flex justify-between text-[10px] text-[var(--text-muted)] font-mono">
+                    <span className="flex items-center gap-1 text-emerald-500 dark:text-emerald-400">
                       <CheckCircle2 className="w-3 h-3" /> Signed
                     </span>
-                    <span className="text-amber-800 font-medium">Review</span>
+                    <span className="text-amber-500 font-medium">Review</span>
                     <span>Payout</span>
                   </div>
                 </div>
 
                 <div className="flex items-center justify-between text-xs pt-1 border-t border-[var(--border)]">
-                  <div className="flex items-center gap-1.5 text-zinc-500">
-                    <Clock className="w-3.5 h-3.5 text-zinc-400" />
+                  <div className="flex items-center gap-1.5 text-[var(--text-muted)]">
+                    <Clock className="w-3.5 h-3.5 text-[var(--text-muted)]" />
                     <span className="font-mono text-[11px]">In progress</span>
                   </div>
                   <div className="flex items-center gap-3">

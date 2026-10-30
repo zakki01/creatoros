@@ -90,8 +90,8 @@ export const ReportCenterModal: React.FC<ReportCenterModalProps> = ({
                 onClick={() => setReportType(type.id)}
                 className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
                   isSelected
-                    ? 'bg-[#007E93] border-[#007E93] text-white shadow-md'
-                    : 'bg-white shadow-sm border-zinc-200 text-zinc-500 hover:text-zinc-800 hover:border-zinc-300'
+                    ? 'bg-[var(--accent)] border-[var(--accent)] text-white shadow-md'
+                    : 'bg-[var(--surface-muted)] shadow-sm border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:border-[var(--accent)]/40'
                 }`}
               >
                 <Icon className={`w-4 h-4 mb-2 ${isSelected ? 'text-[#007E93]' : 'text-zinc-500'}`} />
@@ -109,7 +109,7 @@ export const ReportCenterModal: React.FC<ReportCenterModalProps> = ({
               <Calendar className="w-3.5 h-3.5 text-zinc-500" />
               <span>Reporting Horizon</span>
             </label>
-            <div className="grid grid-cols-4 gap-1.5 p-1 bg-white shadow-sm rounded-xl border border-zinc-200">
+            <div className="grid grid-cols-4 gap-1.5 p-1 bg-[var(--surface-muted)] shadow-sm rounded-xl border border-[var(--border)]">
               {[
                 { id: '7d', label: '7 Days' },
                 { id: '30d', label: '30 Days' },
@@ -122,8 +122,8 @@ export const ReportCenterModal: React.FC<ReportCenterModalProps> = ({
                   onClick={() => setDateRange(range.id as any)}
                   className={`py-1.5 text-[11px] font-mono rounded-lg transition-colors cursor-pointer ${
                     dateRange === range.id
-                      ? 'bg-[#007E93] text-white font-semibold'
-                      : 'text-zinc-500 hover:text-zinc-800'
+                      ? 'bg-[var(--accent)] text-white font-semibold'
+                      : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
                   }`}
                 >
                   {range.label}
@@ -134,11 +134,11 @@ export const ReportCenterModal: React.FC<ReportCenterModalProps> = ({
 
           {/* Visibility Controls */}
           <div className="space-y-2">
-            <label className="text-xs font-semibold text-zinc-700 flex items-center gap-1.5">
-              <Lock className="w-3.5 h-3.5 text-zinc-500" />
+            <label className="text-xs font-semibold text-[var(--text-secondary)] flex items-center gap-1.5">
+              <Lock className="w-3.5 h-3.5 text-[var(--text-muted)]" />
               <span>Link Access & Governance</span>
             </label>
-            <div className="grid grid-cols-3 gap-1.5 p-1 bg-white shadow-sm rounded-xl border border-zinc-200">
+            <div className="grid grid-cols-3 gap-1.5 p-1 bg-[var(--surface-muted)] shadow-sm rounded-xl border border-[var(--border)]">
               {[
                 { id: 'private', label: 'Private', icon: Lock },
                 { id: 'team', label: 'Workspace', icon: Users },

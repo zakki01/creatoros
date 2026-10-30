@@ -308,7 +308,7 @@ export const WelcomeAuth: React.FC<WelcomeAuthProps> = ({
             onClick={() => handleSocialSelect('google')}
             aria-label="Continue with Google"
             title="Continue with Google"
-            className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-white border border-zinc-200/90 shadow-[0_2px_6px_rgba(15,23,42,0.08),inset_0_1px_1px_rgba(255,255,255,0.9)] flex items-center justify-center hover:scale-105 active:scale-95 transition-transform cursor-pointer"
+            className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-xs flex items-center justify-center hover:scale-105 active:scale-95 transition-transform cursor-pointer"
           >
             <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24">
               <path

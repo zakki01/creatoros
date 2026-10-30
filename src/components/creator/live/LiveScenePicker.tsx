@@ -36,8 +36,8 @@ export const LiveScenePicker: React.FC<LiveScenePickerProps> = ({
               onClick={() => onSelectScene(scene)}
               className={`group relative overflow-hidden rounded-2xl text-left transition-all duration-200 flex flex-col justify-between ${
                 isSelected
-                  ? 'bg-[#E9FAFC] border-[#007E93]/50 ring-1 ring-[#007E93]/20 shadow-[0_8px_20px_-8px_rgba(0,126,147,0.22)] -translate-y-0.5'
-                  : 'bg-white border-zinc-200 hover:border-[#007E93]/30 hover:-translate-y-0.5 shadow-sm'
+                  ? 'bg-[var(--accent)]/10 border-[var(--accent)]/50 ring-1 ring-[var(--accent)]/20 shadow-xs -translate-y-0.5'
+                  : 'bg-[var(--surface-muted)] border-[var(--border)] hover:border-[var(--accent)]/30 hover:-translate-y-0.5 shadow-xs'
               } ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
             >
               {/* Visual Preview Thumbnail */}

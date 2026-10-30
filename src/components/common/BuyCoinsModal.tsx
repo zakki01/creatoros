@@ -44,11 +44,11 @@ export const BuyCoinsModal: React.FC<BuyCoinsModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="studio-card-soft rounded-3xl w-full max-w-lg p-6 sm:p-8 bg-white border border-zinc-200 shadow-2xl relative">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+      <div className="studio-card-soft rounded-3xl w-full max-w-lg p-6 sm:p-8 bg-[var(--surface)] text-[var(--text-primary)] border border-[var(--border)] shadow-2xl relative">
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 p-2 rounded-full text-zinc-400 hover:text-zinc-700 hover:bg-zinc-100 transition-colors"
+          className="absolute top-5 right-5 p-2 rounded-full text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-elevated)] transition-colors cursor-pointer"
         >
           <X className="w-5 h-5" />
         </button>
@@ -58,8 +58,8 @@ export const BuyCoinsModal: React.FC<BuyCoinsModalProps> = ({
             <Coins className="w-6 h-6" />
           </div>
           <div>
-            <h3 className="text-xl font-bold text-zinc-900 tracking-tight">Buy CreatorOS Coins</h3>
-            <p className="text-xs text-zinc-500">
+            <h3 className="text-xl font-bold text-[var(--text-primary)] tracking-tight">Buy CreatorOS Coins</h3>
+            <p className="text-xs text-[var(--text-secondary)]">
               Support your favorite creators during live streams and direct drops.
             </p>
           </div>
@@ -75,12 +75,12 @@ export const BuyCoinsModal: React.FC<BuyCoinsModalProps> = ({
                 onClick={() => setSelectedPkg(pkg)}
                 className={`relative p-4 rounded-2xl text-left border transition-all cursor-pointer ${
                   isSelected
-                    ? 'border-[#00869B] bg-cyan-50/50 shadow-md ring-2 ring-[#00869B]/20'
-                    : 'border-zinc-200 hover:border-zinc-300 bg-white'
+                    ? 'border-[var(--accent)] bg-[var(--accent)]/10 shadow-md ring-2 ring-[var(--accent)]/20'
+                    : 'border-[var(--border)] hover:border-[var(--accent)]/40 bg-[var(--surface-muted)]'
                 }`}
               >
                 {pkg.isPopular && (
-                  <span className="absolute -top-2.5 right-3 px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#00869B] text-white uppercase tracking-wider shadow-sm">
+                  <span className="absolute -top-2.5 right-3 px-2 py-0.5 rounded-full text-[10px] font-bold bg-[var(--accent)] text-white uppercase tracking-wider shadow-sm">
                     Popular
                   </span>
                 )}
@@ -88,7 +88,7 @@ export const BuyCoinsModal: React.FC<BuyCoinsModalProps> = ({
                   <Coins className="w-5 h-5" />
                   <span>{pkg.coins}</span>
                   {pkg.bonusCoins > 0 && (
-                    <span className="text-xs text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded-md font-semibold">
+                    <span className="text-xs text-emerald-500 bg-emerald-500/10 border border-emerald-500/20 px-1.5 py-0.5 rounded-md font-semibold">
                       +{pkg.bonusCoins} bonus
                     </span>
                   )}

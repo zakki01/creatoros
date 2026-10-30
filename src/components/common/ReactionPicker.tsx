@@ -36,7 +36,7 @@ export const ReactionPicker: React.FC<ReactionPickerProps> = ({
     >
       {/* Compact Reaction Tray */}
       <div
-        className={`flex items-center gap-1 p-1.5 rounded-full bg-white/95 backdrop-blur-xl border border-zinc-200 shadow-xl shadow-slate-900/15 transition-all ${
+        className={`flex items-center gap-1 p-1.5 rounded-full bg-[var(--surface)]/95 backdrop-blur-xl border border-[var(--border)] shadow-xl shadow-slate-900/15 transition-all ${
           position === 'top' ? 'bottom-full mb-2' : 'top-full mt-2'
         }`}
       >
@@ -52,8 +52,8 @@ export const ReactionPicker: React.FC<ReactionPickerProps> = ({
               title={item.label}
               className={`w-9 h-9 rounded-full flex items-center justify-center text-xl hover:scale-130 active:scale-95 transition-all duration-150 cursor-pointer ${
                 isSelected
-                  ? 'bg-sky-50 ring-1 ring-sky-200 scale-110'
-                  : 'hover:bg-zinc-100'
+                  ? 'bg-[var(--accent)]/15 ring-1 ring-[var(--accent)]/30 scale-110'
+                  : 'hover:bg-[var(--surface-muted)]'
               }`}
             >
               <span className="transform transition-transform">{item.emoji}</span>

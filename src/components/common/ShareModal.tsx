@@ -72,18 +72,18 @@ export const ShareModal: React.FC<ShareModalProps> = ({
       onClick={onClose}
     >
       <div
-        className="w-full sm:max-w-md bg-white text-zinc-900 border border-black/[0.08] rounded-t-3xl sm:rounded-2xl shadow-2xl p-5 text-zinc-900 space-y-4 animate-slide-up"
+        className="w-full sm:max-w-md bg-[var(--surface)] text-[var(--text-primary)] border border-[var(--border)] rounded-t-3xl sm:rounded-2xl shadow-2xl p-5 space-y-4 animate-slide-up"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-black/[0.08] pb-3">
+        <div className="flex items-center justify-between border-b border-[var(--border)] pb-3">
           <div className="flex items-center gap-2">
-            <Share2 className="w-4 h-4 text-[#007E93]" />
-            <h3 className="text-sm font-bold text-zinc-900">Share Drop</h3>
+            <Share2 className="w-4 h-4 text-[var(--accent)]" />
+            <h3 className="text-sm font-bold text-[var(--text-primary)]">Share Drop</h3>
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded-lg text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 transition-colors cursor-pointer"
+            className="p-1 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-elevated)] transition-colors cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
@@ -91,7 +91,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
 
         {/* Quick Send to Connected Messages */}
         <div className="space-y-2">
-          <span className="text-[10px] font-mono uppercase text-zinc-500 tracking-wider font-semibold block">
+          <span className="text-[10px] font-mono uppercase text-[var(--text-muted)] tracking-wider font-semibold block">
             Send via Direct Message
           </span>
           <div className="flex gap-2.5 overflow-x-auto pb-1 scrollbar-none">
@@ -99,13 +99,13 @@ export const ShareModal: React.FC<ShareModalProps> = ({
               <button
                 key={conv.id}
                 onClick={() => handleSendViaDM(conv.id)}
-                className="flex flex-col items-center gap-1.5 p-2 rounded-xl hover:bg-zinc-100/60 transition-colors cursor-pointer min-w-[64px]"
+                className="flex flex-col items-center gap-1.5 p-2 rounded-xl hover:bg-[var(--surface-elevated)] transition-colors cursor-pointer min-w-[64px]"
               >
                 <div className="relative">
                   <img
                     src={conv.participantAvatar}
                     alt={conv.participantName}
-                    className="w-10 h-10 rounded-full object-cover ring-1 ring-zinc-200"
+                    className="w-10 h-10 rounded-full object-cover ring-1 ring-[var(--border)]"
                   />
                   {sentConvId === conv.id && (
                     <div className="absolute inset-0 bg-emerald-500/80 rounded-full flex items-center justify-center text-white">
@@ -113,7 +113,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
                     </div>
                   )}
                 </div>
-                <span className="text-[10px] text-zinc-700 font-medium truncate max-w-[60px] text-center">
+                <span className="text-[10px] text-[var(--text-secondary)] font-medium truncate max-w-[60px] text-center">
                   {conv.participantName.split(' ')[0]}
                 </span>
               </button>
@@ -122,42 +122,42 @@ export const ShareModal: React.FC<ShareModalProps> = ({
         </div>
 
         {/* Primary Share Action Rows */}
-        <div className="space-y-1.5 border-t border-black/[0.08] pt-3">
+        <div className="space-y-1.5 border-t border-[var(--border)] pt-3">
           {/* Copy Link */}
           <button
             onClick={handleCopyLink}
-            className="w-full flex items-center justify-between p-3 rounded-xl bg-white shadow-sm hover:bg-zinc-100/80 border border-black/[0.06] transition-all cursor-pointer text-left"
+            className="w-full flex items-center justify-between p-3 rounded-xl bg-[var(--surface-muted)] shadow-sm hover:bg-[var(--surface-elevated)] border border-[var(--border)] transition-all cursor-pointer text-left"
           >
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-zinc-100 flex items-center justify-center text-zinc-700">
-                {copied ? <Check className="w-4 h-4 text-emerald-700" /> : <Copy className="w-4 h-4" />}
+              <div className="w-8 h-8 rounded-lg bg-[var(--surface)] border border-[var(--border)] flex items-center justify-center text-[var(--text-primary)]">
+                {copied ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
               </div>
               <div>
-                <span className="text-xs font-semibold text-zinc-900 block">
+                <span className="text-xs font-semibold text-[var(--text-primary)] block">
                   {copied ? 'Link Copied to Clipboard!' : 'Copy Link'}
                 </span>
-                <span className="text-[10px] text-zinc-500 font-mono">
+                <span className="text-[10px] text-[var(--text-muted)] font-mono">
                   Direct permalink to this content
                 </span>
               </div>
             </div>
-            {copied && <span className="text-xs text-emerald-700 font-mono font-bold">Copied ✓</span>}
+            {copied && <span className="text-xs text-emerald-500 font-mono font-bold">Copied ✓</span>}
           </button>
 
           {/* External Share */}
           <button
             onClick={handleExternalShare}
-            className="w-full flex items-center justify-between p-3 rounded-xl bg-white shadow-sm hover:bg-zinc-100/80 border border-black/[0.06] transition-all cursor-pointer text-left"
+            className="w-full flex items-center justify-between p-3 rounded-xl bg-[var(--surface-muted)] shadow-sm hover:bg-[var(--surface-elevated)] border border-[var(--border)] transition-all cursor-pointer text-left"
           >
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-zinc-100 flex items-center justify-center text-zinc-700">
+              <div className="w-8 h-8 rounded-lg bg-[var(--surface)] border border-[var(--border)] flex items-center justify-center text-[var(--text-primary)]">
                 <ExternalLink className="w-4 h-4" />
               </div>
               <div>
-                <span className="text-xs font-semibold text-zinc-900 block">
+                <span className="text-xs font-semibold text-[var(--text-primary)] block">
                   Share Externally
                 </span>
-                <span className="text-[10px] text-zinc-500 font-mono">
+                <span className="text-[10px] text-[var(--text-muted)] font-mono">
                   WhatsApp, X, Instagram, Telegram
                 </span>
               </div>

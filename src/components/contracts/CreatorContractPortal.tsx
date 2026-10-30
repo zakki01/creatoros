@@ -245,8 +245,8 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
             onClick={() => setActiveTab(tab.id as TabType)}
             className={`min-h-[38px] px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap ${
               activeTab === tab.id
-                ? 'bg-white text-zinc-900 shadow-xs border border-black/[0.06]'
-                : 'text-zinc-600 hover:text-zinc-900'
+                ? 'bg-[var(--surface)] text-[var(--text-primary)] shadow-xs border border-[var(--border)]'
+                : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
             }`}
           >
             <span>{tab.label}</span>
@@ -429,7 +429,7 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
                   <button
                     type="button"
                     onClick={() => setIsDeclineModalOpen(true)}
-                    className="min-h-[44px] px-4 rounded-xl bg-white hover:bg-zinc-100 text-zinc-700 hover:text-zinc-900 text-xs font-semibold cursor-pointer border border-zinc-300 transition-colors shadow-xs"
+                    className="min-h-[44px] px-4 rounded-xl bg-[var(--surface-muted)] hover:bg-[var(--surface-elevated)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] text-xs font-semibold cursor-pointer border border-[var(--border)] transition-colors shadow-xs"
                   >
                     Decline
                   </button>
@@ -448,19 +448,19 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
 
             {/* Revision Requested Callout */}
             {selectedContract.status === 'revision_requested' && (
-              <div className="p-4 rounded-xl bg-amber-50 border border-amber-300/90 space-y-2">
+              <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 space-y-2">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-1.5 text-amber-900 font-bold text-xs">
-                    <RefreshCw className="w-4 h-4 text-amber-600" />
+                  <div className="flex items-center gap-1.5 text-amber-600 dark:text-amber-400 font-bold text-xs">
+                    <RefreshCw className="w-4 h-4 text-amber-500" />
                     <span>Revision Requested</span>
                   </div>
-                  <span className="text-[10px] font-mono text-amber-800">
+                  <span className="text-[10px] font-mono text-amber-600 dark:text-amber-400">
                     Round 1 of {selectedContract.terms.includedRevisions}
                   </span>
                 </div>
 
                 {selectedContract.deliveries[0]?.brandFeedback && (
-                  <p className="text-[var(--text-primary)] text-xs italic bg-white p-2.5 rounded-lg border border-amber-200">
+                  <p className="text-[var(--text-primary)] text-xs italic bg-[var(--surface)] p-2.5 rounded-lg border border-amber-500/20">
                     "{selectedContract.deliveries[0].brandFeedback}"
                   </p>
                 )}
@@ -631,7 +631,7 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
 
       {/* 4. Sticky Mobile Action Bar (Section 13) */}
       {selectedContract && selectedContract.status === 'awaiting_creator' && (
-        <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 p-3 bg-white/95 backdrop-blur-xl border-t border-zinc-200 flex items-center gap-3 shadow-lg">
+        <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 p-3 bg-[var(--surface)]/95 backdrop-blur-xl border-t border-[var(--border)] flex items-center gap-3 shadow-lg">
           <button
             type="button"
             onClick={() => setIsDeclineModalOpen(true)}

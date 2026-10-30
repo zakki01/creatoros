@@ -132,7 +132,7 @@ const ToastCard: React.FC<{ toast: ToastItem; onDismiss: () => void }> = ({
     <div
       role="alert"
       className={clsx(
-        'pointer-events-auto flex items-start gap-3 p-3.5 rounded-xl border backdrop-blur-xl bg-white/95 text-zinc-900 shadow-xl shadow-slate-900/10',
+        'pointer-events-auto flex items-start gap-3 p-3.5 rounded-xl border backdrop-blur-xl bg-[var(--surface)] text-[var(--text-primary)] border-[var(--border)] shadow-xl shadow-slate-900/10',
         'animate-in fade-in slide-in-from-top-2 duration-200',
         cfg.color
       )}
@@ -140,16 +140,16 @@ const ToastCard: React.FC<{ toast: ToastItem; onDismiss: () => void }> = ({
       <div className="shrink-0 mt-0.5">{cfg.icon}</div>
       <div className="flex-1 min-w-0 pr-1">
         {toast.title && (
-          <h4 className="text-xs font-semibold text-zinc-900 mb-0.5">{toast.title}</h4>
+          <h4 className="text-xs font-semibold text-[var(--text-primary)] mb-0.5">{toast.title}</h4>
         )}
-        <p className="text-xs text-zinc-700 leading-relaxed break-words">{toast.message}</p>
+        <p className="text-xs text-[var(--text-secondary)] leading-relaxed break-words">{toast.message}</p>
       </div>
       <IconButton
         aria-label="Dismiss toast"
         variant="ghost"
         size="sm"
         onClick={onDismiss}
-        className="-mr-1.5 -mt-1.5 text-zinc-500 hover:text-zinc-800"
+        className="-mr-1.5 -mt-1.5 text-[var(--text-muted)] hover:text-[var(--text-primary)]"
       >
         <X className="w-4 h-4" />
       </IconButton>

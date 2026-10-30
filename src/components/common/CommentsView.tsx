@@ -112,19 +112,19 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="pointer-events-auto max-w-[440px] w-full rounded-3xl overflow-hidden bg-white/95 border border-black/[0.08] shadow-[0_24px_60px_rgba(23,37,54,0.18)] backdrop-blur-xl flex flex-col"
+            className="pointer-events-auto max-w-[440px] w-full rounded-3xl overflow-hidden bg-[var(--surface)]/95 border border-[var(--border)] shadow-[0_24px_60px_rgba(0,0,0,0.3)] backdrop-blur-xl flex flex-col text-[var(--text-primary)]"
           >
-            <div className="px-4 py-3 flex items-center gap-2.5 border-b border-black/[0.06]">
+            <div className="px-4 py-3 flex items-center gap-2.5 border-b border-[var(--border)]">
               <Avatar
                 src={post.authorAvatar}
                 name={post.authorName}
                 size="xs"
                 verified={post.authorVerified}
               />
-              <span className="text-xs font-semibold text-zinc-900 truncate">
+              <span className="text-xs font-semibold text-[var(--text-primary)] truncate">
                 {post.authorName}
               </span>
-              <span className="text-[11px] text-zinc-500 truncate">
+              <span className="text-[11px] text-[var(--text-muted)] truncate">
                 {post.authorHandle}
               </span>
             </div>
@@ -136,8 +136,8 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
               />
             </div>
             {post.caption && (
-              <div className="px-4 py-3 text-xs text-zinc-700 line-clamp-2 border-t border-black/[0.06]">
-                <span className="font-semibold text-zinc-900 mr-1.5">{post.authorName}</span>
+              <div className="px-4 py-3 text-xs text-[var(--text-secondary)] line-clamp-2 border-t border-[var(--border)]">
+                <span className="font-semibold text-[var(--text-primary)] mr-1.5">{post.authorName}</span>
                 {post.caption}
               </div>
             )}
@@ -145,12 +145,9 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
         </div>
       )}
 
-      {/* Responsive Social Comments Panel:
-          - Desktop (sm+): Compact Right Panel (w-[390px])
-          - Mobile (<sm): Bottom Sheet (max-h-[72dvh], rounded-t-3xl) leaving post partially visible behind sheet
-      */}
+      {/* Responsive Social Comments Panel */}
       <aside
-        className="fixed z-50 flex flex-col bg-white/98 border-black/[0.08] shadow-[0_-20px_60px_rgba(23,37,54,0.18)] backdrop-blur-2xl text-zinc-900 transition-all duration-300 overflow-hidden
+        className="fixed z-50 flex flex-col bg-[var(--surface)] border-[var(--border)] shadow-[0_-20px_60px_rgba(0,0,0,0.4)] backdrop-blur-2xl text-[var(--text-primary)] transition-all duration-300 overflow-hidden
           inset-x-0 bottom-0 max-h-[72dvh] rounded-t-3xl border-t
           sm:inset-y-0 sm:right-0 sm:left-auto sm:h-full sm:max-h-full sm:w-[390px] sm:rounded-none sm:border-l sm:border-t-0 animate-in slide-in-from-bottom sm:slide-in-from-right duration-200"
         role="dialog"
@@ -162,11 +159,11 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
           className="sm:hidden w-full pt-2.5 pb-1 flex justify-center cursor-pointer select-none"
           onClick={onClose}
         >
-          <div className="w-9 h-1 bg-zinc-300 rounded-full" />
+          <div className="w-9 h-1 bg-[var(--border)] rounded-full" />
         </div>
 
-        {/* Clean Header: ONLY Comments + Count + [X] */}
-        <header className="px-4 py-3 border-b border-zinc-200 flex items-center justify-between shrink-0">
+        {/* Clean Header */}
+        <header className="px-4 py-3 border-b border-[var(--border)] flex items-center justify-between shrink-0">
           <div className="flex items-center gap-2">
             <h2 className="text-sm font-semibold text-zinc-900 tracking-tight">
               Comments
@@ -231,13 +228,13 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
                       )}
 
                       {comment.gifUrl && (
-                        <div className="mt-1.5 relative w-44 h-28 rounded-xl overflow-hidden border border-white/[0.1] bg-white">
+                        <div className="mt-1.5 relative w-44 h-28 rounded-xl overflow-hidden border border-[var(--border)] bg-[var(--surface-muted)]">
                           <img
                             src={comment.gifUrl}
                             alt="Comment GIF"
                             className="w-full h-full object-cover block"
                           />
-                          <span className="absolute bottom-1.5 right-1.5 px-1.5 py-0.5 rounded bg-black/80 text-[9px] font-bold text-[#007E93] border border-black/[0.08]">
+                          <span className="absolute bottom-1.5 right-1.5 px-1.5 py-0.5 rounded bg-black/80 text-[9px] font-bold text-[var(--accent)] border border-black/[0.08]">
                             GIF
                           </span>
                         </div>
@@ -310,7 +307,7 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
                         onClick={() => toggleRepliesExpansion(comment.id)}
                         className="flex items-center gap-1.5 text-[11px] text-zinc-500 hover:text-zinc-800 font-medium cursor-pointer transition-colors"
                       >
-                        <div className="w-4 h-px bg-white/15" />
+                        <div className="w-4 h-px bg-[var(--border)]" />
                         <span>
                           {isRepliesOpen
                             ? 'Hide replies'
@@ -421,26 +418,26 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
 
         {/* Attached GIF Preview Bar (when user picks/uploads a GIF from EmojiPicker) */}
         {pendingGif && (
-          <div className="px-4 py-2 bg-white/95 border-t border-black/[0.08] flex items-center justify-between gap-2 shrink-0">
+          <div className="px-4 py-2 bg-[var(--surface-muted)] border-t border-[var(--border)] flex items-center justify-between gap-2 shrink-0">
             <div className="flex items-center gap-2.5 min-w-0">
-              <div className="relative w-11 h-11 rounded-lg overflow-hidden bg-black border border-black/[0.08] shrink-0">
+              <div className="relative w-11 h-11 rounded-lg overflow-hidden bg-black border border-[var(--border)] shrink-0">
                 <img
                   src={pendingGif.url}
                   alt={pendingGif.title || 'GIF'}
                   className="w-full h-full object-cover"
                 />
-                <span className="absolute bottom-0.5 right-0.5 px-1 rounded bg-black/80 text-[8px] font-bold text-[#007E93]">
+                <span className="absolute bottom-0.5 right-0.5 px-1 rounded bg-black/80 text-[8px] font-bold text-[var(--accent)]">
                   GIF
                 </span>
               </div>
-              <span className="text-xs text-zinc-800 truncate">
+              <span className="text-xs text-[var(--text-primary)] truncate">
                 {pendingGif.title || 'Animated GIF'}
               </span>
             </div>
             <button
               type="button"
               onClick={() => setPendingGif(null)}
-              className="p-1 rounded-lg text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100"
+              className="p-1 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-elevated)]"
               aria-label="Remove GIF"
             >
               <X className="w-3.5 h-3.5" />
@@ -448,8 +445,8 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
           </div>
         )}
 
-        {/* Persistent Bottom Composer: [avatar] [ Add a comment... 😊 ] [Send] */}
-        <footer className="p-3 border-t border-zinc-200 bg-white/95 backdrop-blur-md pb-safe relative shrink-0 z-10">
+        {/* Persistent Bottom Composer */}
+        <footer className="p-3 border-t border-[var(--border)] bg-[var(--surface)]/95 backdrop-blur-md pb-safe relative shrink-0 z-10">
           {showEmojiPicker && (
             <div className="fixed bottom-20 left-3 right-3 sm:left-auto sm:right-3 sm:absolute sm:bottom-full sm:mb-2 z-50 flex justify-end">
               <EmojiPicker
@@ -488,7 +485,7 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
                     : 'Add a comment...'
                 }
                 data-testid="comment-composer-input"
-                className="w-full bg-white border border-zinc-200 rounded-xl pl-3 pr-9 py-2 min-h-[40px] text-xs text-zinc-900 placeholder-zinc-500 focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]/70 transition-all"
+                className="w-full bg-[var(--input)] border border-[var(--border)] rounded-xl pl-3 pr-9 py-2 min-h-[40px] text-xs text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent)] transition-all"
               />
 
               <button
@@ -497,8 +494,8 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
                 data-testid="comment-emoji-gif-btn"
                 className={`absolute right-1.5 w-7 h-7 rounded-lg flex items-center justify-center transition-colors cursor-pointer ${
                   showEmojiPicker || pendingGif
-                    ? 'text-[#007E93] bg-[#00B4D8]/10'
-                    : 'text-zinc-500 hover:text-zinc-800'
+                    ? 'text-[var(--accent)] bg-[var(--accent)]/10'
+                    : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
                 }`}
                 title="Emoji & GIF"
                 aria-label="Emoji & GIF"

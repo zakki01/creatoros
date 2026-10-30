@@ -97,26 +97,26 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 sm:pt-24 p-4 animate-fade-in">
-      <div className="fixed inset-0 bg-black/45 backdrop-blur-md" onClick={onClose} />
-      <div className="relative w-full max-w-xl bg-white text-zinc-900 border border-black/[0.08] shadow-2xl rounded-3xl overflow-hidden z-10 animate-slide-up">
+      <div className="fixed inset-0 bg-black/60 backdrop-blur-md" onClick={onClose} />
+      <div className="relative w-full max-w-xl bg-[var(--surface)] text-[var(--text-primary)] border border-[var(--border)] shadow-2xl rounded-3xl overflow-hidden z-10 animate-slide-up">
         {/* Top specular highlight */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/80 to-transparent"
+          className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[var(--accent)]/40 to-transparent"
         />
 
         {/* Search Input */}
-        <div className="flex items-center px-4 py-3.5 border-b border-zinc-200 bg-zinc-50/70">
-          <Search className="w-4 h-4 text-[#007E93] mr-3 shrink-0" />
+        <div className="flex items-center px-4 py-3.5 border-b border-[var(--border)] bg-[var(--surface-muted)]">
+          <Search className="w-4 h-4 text-[var(--accent)] mr-3 shrink-0" />
           <input
             type="text"
             placeholder="Jump to workspace, creator, or campaign..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             autoFocus
-            className="w-full bg-transparent text-sm text-zinc-900 placeholder-zinc-400 focus:outline-none font-sans"
+            className="w-full bg-transparent text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none font-sans"
           />
-          <kbd className="text-[10px] bg-white border border-zinc-300 text-zinc-600 px-2 py-0.5 rounded-md font-mono shrink-0 shadow-xs">
+          <kbd className="text-[10px] bg-[var(--surface)] border border-[var(--border)] text-[var(--text-muted)] px-2 py-0.5 rounded-md font-mono shrink-0 shadow-xs">
             ESC
           </kbd>
         </div>
@@ -124,7 +124,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
         {/* Options */}
         <div className="max-h-80 overflow-y-auto p-2 space-y-1">
           {filtered.length === 0 && matchingCreators.length === 0 && matchingCampaigns.length === 0 ? (
-            <div className="text-center py-8 text-xs text-zinc-500">
+            <div className="text-center py-8 text-xs text-[var(--text-muted)]">
               No results for "{query}"
             </div>
           ) : (
@@ -135,15 +135,15 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
                   <button
                     key={item.id}
                     onClick={() => handleSelect(item.id)}
-                    className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-zinc-100 text-left transition-all text-zinc-800 group cursor-pointer"
+                    className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-[var(--surface-elevated)] text-left transition-all text-[var(--text-primary)] group cursor-pointer"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="p-1.5 rounded-lg bg-zinc-100 border border-zinc-200 text-zinc-600 group-hover:text-[#007E93] group-hover:border-[#00B4D8]/40 transition-colors">
+                      <div className="p-1.5 rounded-lg bg-[var(--surface-muted)] border border-[var(--border)] text-[var(--text-muted)] group-hover:text-[var(--accent)] group-hover:border-[var(--accent)]/40 transition-colors">
                         <Icon className="w-4 h-4" />
                       </div>
-                      <span className="text-xs font-medium text-zinc-900">{item.title}</span>
+                      <span className="text-xs font-medium text-[var(--text-primary)]">{item.title}</span>
                     </div>
-                    <span className="text-[10px] text-zinc-500 bg-zinc-100 border border-zinc-200 px-2 py-0.5 rounded-md">
+                    <span className="text-[10px] text-[var(--text-muted)] bg-[var(--surface-muted)] border border-[var(--border)] px-2 py-0.5 rounded-md">
                       {item.category}
                     </span>
                   </button>
@@ -152,20 +152,20 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
 
               {matchingCreators.length > 0 && (
                 <div className="pt-2">
-                  <p className="px-2.5 pb-1 text-[10px] font-semibold uppercase tracking-wider text-zinc-500">
+                  <p className="px-2.5 pb-1 text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)]">
                     Creators
                   </p>
                   {matchingCreators.map((creator) => (
                     <button
                       key={creator.id}
                       onClick={() => handleSelect(role === 'business' ? 'creators' : 'discover')}
-                      className="w-full flex items-center justify-between p-2 rounded-xl hover:bg-zinc-100 text-left transition-all cursor-pointer"
+                      className="w-full flex items-center justify-between p-2 rounded-xl hover:bg-[var(--surface-elevated)] text-left transition-all cursor-pointer text-[var(--text-primary)]"
                     >
                       <div className="flex items-center gap-2.5">
                         <img
                           src={creator.avatar}
                           alt={creator.name}
-                          className="w-7 h-7 rounded-full object-cover border border-black/10"
+                          className="w-7 h-7 rounded-full object-cover border border-[var(--border)]"
                         />
                         <div>
                           <p className="text-xs font-medium text-zinc-900">{creator.name}</p>

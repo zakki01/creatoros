@@ -315,8 +315,8 @@ export const CreatorPassport: React.FC<CreatorPassportProps> = ({ onBack }) => {
                     data-testid={`passport-credential-${cred.id}`}
                     className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition-all cursor-pointer border ${
                       isSelected
-                        ? 'bg-emerald-50 text-emerald-800 border-emerald-200 shadow-sm'
-                        : 'bg-white hover:bg-[var(--surface-muted)] text-[var(--text-secondary)] border-[var(--border)]'
+                        ? 'bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 border-emerald-500/30 shadow-xs'
+                        : 'bg-[var(--surface-muted)] hover:bg-[var(--surface-elevated)] text-[var(--text-secondary)] border-[var(--border)]'
                     }`}
                   >
                     <span className="text-emerald-700 font-bold">✓</span>

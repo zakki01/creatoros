@@ -60,31 +60,31 @@ export const ReportContentModal: React.FC<ReportContentModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/45 backdrop-blur-md animate-fade-in overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/60 backdrop-blur-md animate-fade-in overflow-y-auto">
       <div
-        className="relative w-full max-w-md rounded-2xl bg-white text-zinc-900 border border-black/[0.08] p-6 shadow-2xl text-zinc-900 space-y-4 my-auto"
+        className="relative w-full max-w-md rounded-2xl bg-[var(--surface)] text-[var(--text-primary)] border border-[var(--border)] p-6 shadow-2xl space-y-4 my-auto"
         onClick={(e) => e.stopPropagation()}
       >
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-1.5 rounded-lg text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 transition-all cursor-pointer"
+          className="absolute top-4 right-4 p-1.5 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-elevated)] transition-all cursor-pointer"
         >
           <X className="w-4 h-4" />
         </button>
 
         {isSubmitted ? (
           <div className="py-8 text-center space-y-3 animate-fade-in">
-            <div className="w-12 h-12 rounded-full bg-emerald-50 border border-emerald-500/30 text-emerald-700 flex items-center justify-center mx-auto">
+            <div className="w-12 h-12 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-500 flex items-center justify-center mx-auto">
               <Check className="w-6 h-6" />
             </div>
-            <h3 className="text-base font-semibold text-zinc-900">Report Submitted</h3>
-            <p className="text-xs text-zinc-500 max-w-xs mx-auto">
+            <h3 className="text-base font-semibold text-[var(--text-primary)]">Report Submitted</h3>
+            <p className="text-xs text-[var(--text-secondary)] max-w-xs mx-auto">
               Thank you for keeping CreatorOS safe. Our Super Admin Trust & Safety moderation desk has queued this item for investigation.
             </p>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="flex items-center gap-2.5 pb-2 border-b border-black/[0.06]">
+            <div className="flex items-center gap-2.5 pb-2 border-b border-[var(--border)]">
               <div className="w-9 h-9 rounded-xl bg-rose-500/15 border border-rose-500/30 text-rose-400 flex items-center justify-center">
                 <ShieldAlert className="w-4 h-4" />
               </div>
@@ -138,15 +138,15 @@ export const ReportContentModal: React.FC<ReportContentModalProps> = ({
                 value={details}
                 onChange={(e) => setDetails(e.target.value)}
                 placeholder="Include relevant timestamps, handles, or context..."
-                className="w-full bg-white shadow-sm border border-zinc-200 rounded-xl p-2.5 text-xs text-zinc-900 placeholder-zinc-500 focus:outline-none focus:border-rose-500 resize-none"
+                className="w-full bg-[var(--input)] shadow-sm border border-[var(--border)] rounded-xl p-2.5 text-xs text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:border-rose-500 resize-none"
               />
             </div>
 
-            <div className="flex items-center justify-end gap-2 pt-2 border-t border-black/[0.06]">
+            <div className="flex items-center justify-end gap-2 pt-2 border-t border-[var(--border)]">
               <button
                 type="button"
                 onClick={onClose}
-                className="px-3.5 py-1.5 rounded-xl text-xs text-zinc-500 hover:text-zinc-800 cursor-pointer"
+                className="px-3.5 py-1.5 rounded-xl text-xs text-[var(--text-muted)] hover:text-[var(--text-primary)] cursor-pointer"
               >
                 Cancel
               </button>

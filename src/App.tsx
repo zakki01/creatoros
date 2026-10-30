@@ -69,12 +69,12 @@ const Error500Page = lazy(() =>
 );
 
 const AppLoadingScreen: React.FC = () => (
-  <div className="h-screen w-full bg-[#EAECEF] flex flex-col items-center justify-center space-y-4 font-sans">
+  <div className="h-screen w-full bg-[var(--background)] text-[var(--text-primary)] flex flex-col items-center justify-center space-y-4 font-sans">
     <div className="animate-pulse">
       <BrandLogo size="lg" iconOnly />
     </div>
-    <div className="flex items-center gap-2 text-xs font-mono text-zinc-600">
-      <span className="w-2 h-2 rounded-full bg-[#00B4D8] animate-ping" />
+    <div className="flex items-center gap-2 text-xs font-mono text-[var(--text-muted)]">
+      <span className="w-2 h-2 rounded-full bg-[var(--accent)] animate-ping" />
       <span>Loading CreatorOS workspace...</span>
     </div>
   </div>

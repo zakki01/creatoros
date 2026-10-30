@@ -46,32 +46,32 @@ export class ErrorBoundary extends Component<Props, State> {
       }
 
       return (
-        <div className="min-h-screen w-full bg-[#EDF0F4] flex flex-col justify-between p-6 sm:p-10 font-sans text-zinc-900">
-          <header className="max-w-4xl mx-auto w-full flex items-center justify-between pb-6 border-b border-zinc-200">
+        <div className="min-h-screen w-full bg-[var(--background)] flex flex-col justify-between p-6 sm:p-10 font-sans text-[var(--text-primary)]">
+          <header className="max-w-4xl mx-auto w-full flex items-center justify-between pb-6 border-b border-[var(--border)]">
             <BrandLogo size="md" variant="light" />
-            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-50 border border-rose-200 text-rose-800 text-xs font-semibold">
+            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs font-semibold">
               <ShieldAlert className="w-3.5 h-3.5" />
               <span>Runtime Safeguard Triggered</span>
             </div>
           </header>
 
           <main className="max-w-xl mx-auto w-full my-auto text-center space-y-6">
-            <div className="w-16 h-16 rounded-3xl bg-rose-50 border border-rose-200 flex items-center justify-center text-rose-600 mx-auto shadow-sm">
+            <div className="w-16 h-16 rounded-3xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-400 mx-auto shadow-xs">
               <AlertTriangle className="w-8 h-8" />
             </div>
 
             <div className="space-y-2">
-              <h1 className="text-2xl font-bold tracking-tight text-zinc-900">
+              <h1 className="text-2xl font-bold tracking-tight text-[var(--text-primary)]">
                 Application Rendering Interrupted
               </h1>
-              <p className="text-xs sm:text-sm text-zinc-600">
+              <p className="text-xs sm:text-sm text-[var(--text-secondary)]">
                 A component failed to render cleanly. Your session data and contracts remain safe in the vault.
               </p>
             </div>
 
             {this.state.error && (
-              <div className="p-4 rounded-2xl bg-white border border-zinc-200 text-left overflow-x-auto text-[11px] font-mono text-zinc-600 shadow-inner max-h-36">
-                <span className="font-bold text-rose-700">Error:</span> {this.state.error.message}
+              <div className="p-4 rounded-2xl bg-[var(--surface-muted)] border border-[var(--border)] text-left overflow-x-auto text-[11px] font-mono text-[var(--text-muted)] shadow-inner max-h-36">
+                <span className="font-bold text-rose-400">Error:</span> {this.state.error.message}
               </div>
             )}
 

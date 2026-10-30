@@ -93,19 +93,19 @@ export const LiveRecordingPreviewModal: React.FC<LiveRecordingPreviewModalProps>
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/45 backdrop-blur-md animate-fade-in">
-      <div className="relative w-full max-w-3xl rounded-2xl bg-white border border-black/[0.08] shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-fade-in">
+      <div className="relative w-full max-w-3xl rounded-2xl bg-[var(--surface)] text-[var(--text-primary)] border border-[var(--border)] shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
         {/* Header */}
-        <div className="p-4 border-b border-zinc-200 flex items-center justify-between">
+        <div className="p-4 border-b border-[var(--border)] flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center">
+            <div className="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center">
               <Film className="w-4 h-4" />
             </div>
             <div>
-              <h2 className="text-sm font-semibold text-zinc-900">
+              <h2 className="text-sm font-semibold text-[var(--text-primary)]">
                 Recorded Live Clip Preview
               </h2>
-              <p className="text-[11px] text-zinc-500">
+              <p className="text-[11px] text-[var(--text-muted)]">
                 {clip.sceneName} • {clip.durationSec}s duration • {clip.aspectRatio} format
               </p>
             </div>
@@ -113,7 +113,7 @@ export const LiveRecordingPreviewModal: React.FC<LiveRecordingPreviewModalProps>
 
           <button
             onClick={onClose}
-            className="p-1 rounded-lg text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 transition-colors"
+            className="p-1 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-elevated)] transition-colors cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
@@ -167,13 +167,13 @@ export const LiveRecordingPreviewModal: React.FC<LiveRecordingPreviewModalProps>
 
               {/* Select Campaign */}
               <div className="space-y-1">
-                <label className="text-[11px] font-medium text-zinc-500">
+                <label className="text-[11px] font-medium text-[var(--text-secondary)]">
                   Target Campaign
                 </label>
                 <select
                   value={selectedCampaignId}
                   onChange={(e) => setSelectedCampaignId(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg bg-white border border-zinc-300 text-xs text-zinc-900 focus:border-[#00B4D8] focus:outline-none focus:border-emerald-500"
+                  className="w-full px-3 py-2 rounded-lg bg-[var(--input)] border border-[var(--border)] text-xs text-[var(--text-primary)] focus:outline-none focus:border-[var(--accent)] cursor-pointer"
                 >
                   {campaigns.map((camp) => (
                     <option key={camp.id} value={camp.id}>
@@ -185,7 +185,7 @@ export const LiveRecordingPreviewModal: React.FC<LiveRecordingPreviewModalProps>
 
               {/* Title */}
               <div className="space-y-1">
-                <label className="text-[11px] font-medium text-zinc-500">
+                <label className="text-[11px] font-medium text-[var(--text-secondary)]">
                   Deliverable Title
                 </label>
                 <input
@@ -193,13 +193,13 @@ export const LiveRecordingPreviewModal: React.FC<LiveRecordingPreviewModalProps>
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="e.g. Summer Launch Reel - Cut 1"
-                  className="w-full px-3 py-2 rounded-lg bg-white border border-zinc-300 text-xs text-zinc-900 focus:border-[#00B4D8] focus:outline-none focus:border-emerald-500"
+                  className="w-full px-3 py-2 rounded-lg bg-[var(--input)] border border-[var(--border)] text-xs text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:border-[var(--accent)]"
                 />
               </div>
 
               {/* Caption */}
               <div className="space-y-1">
-                <label className="text-[11px] font-medium text-zinc-500">
+                <label className="text-[11px] font-medium text-[var(--text-secondary)]">
                   Caption & Description
                 </label>
                 <textarea
@@ -207,7 +207,7 @@ export const LiveRecordingPreviewModal: React.FC<LiveRecordingPreviewModalProps>
                   value={caption}
                   onChange={(e) => setCaption(e.target.value)}
                   placeholder="Include hashtags, mentions, and call-to-action"
-                  className="w-full px-3 py-2 rounded-lg bg-white border border-zinc-300 text-xs text-zinc-900 focus:border-[#00B4D8] focus:outline-none focus:border-emerald-500 resize-none"
+                  className="w-full px-3 py-2 rounded-lg bg-[var(--input)] border border-[var(--border)] text-xs text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:border-[var(--accent)] resize-none"
                 />
               </div>
 

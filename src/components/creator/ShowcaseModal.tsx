@@ -193,20 +193,20 @@ export const ShowcaseModal: React.FC<ShowcaseModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/60 backdrop-blur-md animate-fade-in overflow-y-auto">
       <div
-        className="relative w-full max-w-2xl rounded-3xl bg-white text-zinc-900 border border-black/[0.08] p-5 sm:p-7 shadow-2xl overflow-hidden my-auto animate-scale-up"
+        className="relative w-full max-w-2xl rounded-3xl bg-[var(--surface)] text-[var(--text-primary)] border border-[var(--border)] p-5 sm:p-7 shadow-2xl overflow-hidden my-auto animate-scale-up"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between pb-4 border-b border-black/[0.06]">
+        <div className="flex items-center justify-between pb-4 border-b border-[var(--border)]">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-[#007E93]/10 text-[#007E93] flex items-center justify-center">
+            <div className="w-9 h-9 rounded-xl bg-[var(--accent)]/10 text-[var(--accent)] flex items-center justify-center">
               <Film className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-zinc-900 font-display">
+              <h2 className="text-lg font-bold text-[var(--text-primary)] font-display">
                 {initialProject ? 'Edit Showcase Project' : 'New Showcase Project'}
               </h2>
-              <p className="text-xs text-zinc-500">
+              <p className="text-xs text-[var(--text-secondary)]">
                 1 project · Up to 4 high-definition video assets
               </p>
             </div>
@@ -215,7 +215,7 @@ export const ShowcaseModal: React.FC<ShowcaseModalProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 rounded-xl text-zinc-400 hover:text-zinc-700 hover:bg-black/5 transition-all cursor-pointer"
+            className="p-1.5 rounded-xl text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-elevated)] transition-all cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -224,8 +224,8 @@ export const ShowcaseModal: React.FC<ShowcaseModalProps> = ({
         {/* Form Body */}
         <form onSubmit={handleSubmit} className="space-y-5 pt-4">
           {errorMessage && (
-            <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs flex items-start gap-2 animate-fade-in">
-              <AlertCircle className="w-4 h-4 shrink-0 text-rose-600 mt-0.5" />
+            <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-600 dark:text-rose-400 text-xs flex items-start gap-2 animate-fade-in">
+              <AlertCircle className="w-4 h-4 shrink-0 text-rose-500 mt-0.5" />
               <span>{errorMessage}</span>
             </div>
           )}
@@ -233,7 +233,7 @@ export const ShowcaseModal: React.FC<ShowcaseModalProps> = ({
           {/* Section 1: Video Upload & Slots Indicator */}
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <label className="text-xs font-bold text-zinc-900 uppercase tracking-wider flex items-center gap-1.5 font-mono">
+              <label className="text-xs font-bold text-[var(--text-primary)] uppercase tracking-wider flex items-center gap-1.5 font-mono">
                 <span>Showcase Media</span>
                 <span className="text-rose-500">*</span>
               </label>
@@ -241,8 +241,8 @@ export const ShowcaseModal: React.FC<ShowcaseModalProps> = ({
               <span
                 className={`text-[11px] font-mono font-semibold px-2.5 py-0.5 rounded-full ${
                   videos.length >= MAX_SHOWCASE_VIDEOS
-                    ? 'bg-amber-100 text-amber-900 border border-amber-300'
-                    : 'bg-[#007E93]/10 text-[#007E93] border border-[#007E93]/20'
+                    ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20'
+                    : 'bg-[var(--accent)]/10 text-[var(--accent)] border border-[var(--accent)]/20'
                 }`}
               >
                 {videos.length >= MAX_SHOWCASE_VIDEOS
@@ -267,8 +267,8 @@ export const ShowcaseModal: React.FC<ShowcaseModalProps> = ({
                 onClick={() => fileInputRef.current?.click()}
                 className={`relative border-2 border-dashed rounded-2xl p-6 text-center cursor-pointer transition-all ${
                   isDragging
-                    ? 'border-[#007E93] bg-[#007E93]/5 scale-[0.99]'
-                    : 'border-zinc-300 hover:border-[#007E93] bg-zinc-50/70 hover:bg-zinc-50'
+                    ? 'border-[var(--accent)] bg-[var(--accent)]/5 scale-[0.99]'
+                    : 'border-[var(--border)] hover:border-[var(--accent)] bg-[var(--surface-muted)]/50 hover:bg-[var(--surface-muted)]'
                 }`}
               >
                 <input
@@ -281,17 +281,17 @@ export const ShowcaseModal: React.FC<ShowcaseModalProps> = ({
                 />
 
                 <div className="flex flex-col items-center gap-2">
-                  <div className="w-12 h-12 rounded-2xl bg-white border border-black/10 shadow-sm flex items-center justify-center text-[#007E93]">
+                  <div className="w-12 h-12 rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-sm flex items-center justify-center text-[var(--accent)]">
                     <Upload className="w-6 h-6" />
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-zinc-900">
+                    <p className="text-sm font-semibold text-[var(--text-primary)]">
                       Drag &amp; drop videos or{' '}
-                      <span className="text-[#007E93] underline underline-offset-2">
+                      <span className="text-[var(--accent)] underline underline-offset-2">
                         browse files
                       </span>
                     </p>
-                    <p className="text-[11px] text-zinc-500 mt-0.5">
+                    <p className="text-[11px] text-[var(--text-muted)] mt-0.5">
                       MP4, WebM, or MOV · Max 100MB per file · Up to 4 videos
                     </p>
                   </div>
@@ -300,8 +300,8 @@ export const ShowcaseModal: React.FC<ShowcaseModalProps> = ({
             )}
 
             {isProcessing && (
-              <div className="p-3 rounded-xl bg-sky-50 border border-sky-200 text-sky-900 text-xs flex items-center gap-2 animate-pulse font-mono">
-                <Sparkles className="w-4 h-4 text-[#007E93] animate-spin" />
+              <div className="p-3 rounded-xl bg-sky-500/10 border border-sky-500/20 text-sky-600 dark:text-sky-400 text-xs flex items-center gap-2 animate-pulse font-mono">
+                <Sparkles className="w-4 h-4 text-[var(--accent)] animate-spin" />
                 <span>{processingStatus || 'Inspecting and processing media...'}</span>
               </div>
             )}
@@ -312,11 +312,11 @@ export const ShowcaseModal: React.FC<ShowcaseModalProps> = ({
                 {videos.map((vid, idx) => (
                   <div
                     key={vid.id}
-                    className="flex items-center justify-between gap-3 p-2.5 rounded-2xl bg-zinc-50 border border-black/[0.06] shadow-sm hover:border-black/10 transition-colors"
+                    className="flex items-center justify-between gap-3 p-2.5 rounded-2xl bg-[var(--surface-muted)] border border-[var(--border)] shadow-sm hover:border-[var(--accent)]/40 transition-colors"
                   >
                     {/* Thumbnail & Info */}
                     <div className="flex items-center gap-3 min-w-0">
-                      <div className="relative w-14 h-14 rounded-xl overflow-hidden bg-black shrink-0 border border-black/10">
+                      <div className="relative w-14 h-14 rounded-xl overflow-hidden bg-black shrink-0 border border-[var(--border)]">
                         <img
                           src={vid.thumbnailUrl}
                           alt={vid.name}
@@ -329,14 +329,14 @@ export const ShowcaseModal: React.FC<ShowcaseModalProps> = ({
 
                       <div className="min-w-0">
                         <div className="flex items-center gap-2">
-                          <span className="text-xs font-mono font-bold text-[#007E93]">
+                          <span className="text-xs font-mono font-bold text-[var(--accent)]">
                             #{idx + 1}
                           </span>
-                          <p className="text-xs font-semibold text-zinc-900 truncate">
+                          <p className="text-xs font-semibold text-[var(--text-primary)] truncate">
                             {vid.name}
                           </p>
                         </div>
-                        <p className="text-[11px] text-zinc-500 mt-0.5 font-mono">
+                        <p className="text-[11px] text-[var(--text-muted)] mt-0.5 font-mono">
                           {vid.formattedSize} · {vid.width}×{vid.height} · {vid.mimeType.split('/')[1]?.toUpperCase()}
                         </p>
                       </div>
@@ -349,7 +349,7 @@ export const ShowcaseModal: React.FC<ShowcaseModalProps> = ({
                         disabled={idx === 0}
                         onClick={() => handleMoveUp(idx)}
                         title="Move Up"
-                        className="p-1.5 rounded-lg text-zinc-500 hover:text-zinc-900 hover:bg-black/5 disabled:opacity-30 disabled:pointer-events-none cursor-pointer"
+                        className="p-1.5 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-elevated)] disabled:opacity-30 disabled:pointer-events-none cursor-pointer"
                       >
                         <ArrowUp className="w-3.5 h-3.5" />
                       </button>
@@ -358,7 +358,7 @@ export const ShowcaseModal: React.FC<ShowcaseModalProps> = ({
                         disabled={idx === videos.length - 1}
                         onClick={() => handleMoveDown(idx)}
                         title="Move Down"
-                        className="p-1.5 rounded-lg text-zinc-500 hover:text-zinc-900 hover:bg-black/5 disabled:opacity-30 disabled:pointer-events-none cursor-pointer"
+                        className="p-1.5 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-elevated)] disabled:opacity-30 disabled:pointer-events-none cursor-pointer"
                       >
                         <ArrowDown className="w-3.5 h-3.5" />
                       </button>
@@ -366,7 +366,7 @@ export const ShowcaseModal: React.FC<ShowcaseModalProps> = ({
                         type="button"
                         onClick={() => handleRemoveVideo(vid.id)}
                         title="Remove Video"
-                        className="p-1.5 rounded-lg text-rose-500 hover:text-rose-700 hover:bg-rose-50 cursor-pointer"
+                        className="p-1.5 rounded-lg text-rose-500 hover:text-rose-700 hover:bg-rose-500/10 cursor-pointer"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                       </button>
@@ -378,9 +378,9 @@ export const ShowcaseModal: React.FC<ShowcaseModalProps> = ({
           </div>
 
           {/* Section 2: Project Metadata */}
-          <div className="space-y-3.5 pt-2 border-t border-black/[0.06]">
+          <div className="space-y-3.5 pt-2 border-t border-[var(--border)]">
             <div>
-              <label className="text-xs font-bold text-zinc-900 uppercase tracking-wider block mb-1 font-mono">
+              <label className="text-xs font-bold text-[var(--text-primary)] uppercase tracking-wider block mb-1 font-mono">
                 Project Title <span className="text-rose-500">*</span>
               </label>
               <input
@@ -389,13 +389,13 @@ export const ShowcaseModal: React.FC<ShowcaseModalProps> = ({
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="e.g. Autumn Streetwear Lookbook Campaign"
                 required
-                className="w-full px-3.5 py-2.5 rounded-xl border border-zinc-300 text-xs text-zinc-900 bg-white focus:outline-none focus:ring-2 focus:ring-[#007E93] focus:border-transparent"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-[var(--border)] text-xs text-[var(--text-primary)] bg-[var(--input)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)] focus:border-transparent"
               />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label className="text-xs font-bold text-zinc-900 uppercase tracking-wider block mb-1 font-mono">
+                <label className="text-xs font-bold text-[var(--text-primary)] uppercase tracking-wider block mb-1 font-mono">
                   Client / Brand
                 </label>
                 <input
@@ -403,12 +403,12 @@ export const ShowcaseModal: React.FC<ShowcaseModalProps> = ({
                   value={client}
                   onChange={(e) => setClient(e.target.value)}
                   placeholder="e.g. Aura Streetwear Co."
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-zinc-300 text-xs text-zinc-900 bg-white focus:outline-none focus:ring-2 focus:ring-[#007E93] focus:border-transparent"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-[var(--border)] text-xs text-[var(--text-primary)] bg-[var(--input)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)] focus:border-transparent"
                 />
               </div>
 
               <div>
-                <label className="text-xs font-bold text-zinc-900 uppercase tracking-wider block mb-1 font-mono">
+                <label className="text-xs font-bold text-[var(--text-primary)] uppercase tracking-wider block mb-1 font-mono">
                   Creator Role
                 </label>
                 <input
@@ -416,20 +416,20 @@ export const ShowcaseModal: React.FC<ShowcaseModalProps> = ({
                   value={creatorRole}
                   onChange={(e) => setCreatorRole(e.target.value)}
                   placeholder="e.g. Director & Cinematographer"
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-zinc-300 text-xs text-zinc-900 bg-white focus:outline-none focus:ring-2 focus:ring-[#007E93] focus:border-transparent"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-[var(--border)] text-xs text-[var(--text-primary)] bg-[var(--input)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)] focus:border-transparent"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label className="text-xs font-bold text-zinc-900 uppercase tracking-wider block mb-1 font-mono">
+                <label className="text-xs font-bold text-[var(--text-primary)] uppercase tracking-wider block mb-1 font-mono">
                   Category
                 </label>
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-zinc-300 text-xs text-zinc-900 bg-white focus:outline-none focus:ring-2 focus:ring-[#007E93] focus:border-transparent"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-[var(--border)] text-xs text-[var(--text-primary)] bg-[var(--input)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)] focus:border-transparent cursor-pointer"
                 >
                   <option value="Streetwear & Lifestyle">Streetwear &amp; Lifestyle</option>
                   <option value="Footwear & Sneakers">Footwear &amp; Sneakers</option>
@@ -441,13 +441,13 @@ export const ShowcaseModal: React.FC<ShowcaseModalProps> = ({
               </div>
 
               <div>
-                <label className="text-xs font-bold text-zinc-900 uppercase tracking-wider block mb-1 font-mono">
+                <label className="text-xs font-bold text-[var(--text-primary)] uppercase tracking-wider block mb-1 font-mono">
                   Deliverable Format
                 </label>
                 <select
                   value={deliverableFormat}
                   onChange={(e) => setDeliverableFormat(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-zinc-300 text-xs text-zinc-900 bg-white focus:outline-none focus:ring-2 focus:ring-[#007E93] focus:border-transparent"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-[var(--border)] text-xs text-[var(--text-primary)] bg-[var(--input)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)] focus:border-transparent cursor-pointer"
                 >
                   <option value="9:16 Vertical Reel">9:16 Vertical Reel</option>
                   <option value="16:9 Hero Video">16:9 Hero Video</option>
@@ -458,7 +458,7 @@ export const ShowcaseModal: React.FC<ShowcaseModalProps> = ({
             </div>
 
             <div>
-              <label className="text-xs font-bold text-zinc-900 uppercase tracking-wider block mb-1 font-mono">
+              <label className="text-xs font-bold text-[var(--text-primary)] uppercase tracking-wider block mb-1 font-mono">
                 Description / Creative Direction
               </label>
               <textarea
@@ -466,17 +466,17 @@ export const ShowcaseModal: React.FC<ShowcaseModalProps> = ({
                 onChange={(e) => setDescription(e.target.value)}
                 rows={3}
                 placeholder="Briefly describe the campaign goals, visual style, cinematography approach, and results..."
-                className="w-full px-3.5 py-2.5 rounded-xl border border-zinc-300 text-xs text-zinc-900 bg-white focus:outline-none focus:ring-2 focus:ring-[#007E93] focus:border-transparent resize-none"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-[var(--border)] text-xs text-[var(--text-primary)] bg-[var(--input)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)] focus:border-transparent resize-none"
               />
             </div>
 
-            {/* Optional Metrics (Truthful labeling) */}
-            <div className="p-3.5 rounded-2xl bg-zinc-50 border border-black/[0.06] space-y-2">
+            {/* Optional Metrics */}
+            <div className="p-3.5 rounded-2xl bg-[var(--surface-muted)] border border-[var(--border)] space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-zinc-800">
+                <span className="text-xs font-bold text-[var(--text-primary)]">
                   Self-Reported Performance Metrics
                 </span>
-                <span className="text-[10px] font-mono text-zinc-500">
+                <span className="text-[10px] font-mono text-[var(--text-muted)]">
                   Optional · Unverified unless linked to API
                 </span>
               </div>
@@ -486,32 +486,32 @@ export const ShowcaseModal: React.FC<ShowcaseModalProps> = ({
                   value={reportedViews}
                   onChange={(e) => setReportedViews(e.target.value)}
                   placeholder="Estimated Views (e.g. 500000)"
-                  className="w-full px-3 py-2 rounded-xl border border-zinc-300 text-xs text-zinc-900 bg-white"
+                  className="w-full px-3 py-2 rounded-xl border border-[var(--border)] text-xs text-[var(--text-primary)] bg-[var(--input)] placeholder:text-[var(--text-muted)]"
                 />
                 <input
                   type="number"
                   value={reportedEngagement}
                   onChange={(e) => setReportedEngagement(e.target.value)}
                   placeholder="Estimated Engagements (e.g. 32000)"
-                  className="w-full px-3 py-2 rounded-xl border border-zinc-300 text-xs text-zinc-900 bg-white"
+                  className="w-full px-3 py-2 rounded-xl border border-[var(--border)] text-xs text-[var(--text-primary)] bg-[var(--input)] placeholder:text-[var(--text-muted)]"
                 />
               </div>
             </div>
           </div>
 
           {/* Action Footer */}
-          <div className="flex items-center justify-end gap-3 pt-4 border-t border-black/[0.06]">
+          <div className="flex items-center justify-end gap-3 pt-4 border-t border-[var(--border)]">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2.5 rounded-xl border border-zinc-300 text-xs font-semibold text-zinc-700 hover:bg-zinc-100 transition-all cursor-pointer"
+              className="px-4 py-2.5 rounded-xl border border-[var(--border)] text-xs font-semibold text-[var(--text-secondary)] hover:bg-[var(--surface-elevated)] transition-all cursor-pointer"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isProcessing || videos.length === 0}
-              className="px-5 py-2.5 rounded-xl bg-[#007E93] hover:bg-[#006779] text-white text-xs font-bold transition-all shadow-md active:scale-95 disabled:opacity-50 disabled:pointer-events-none cursor-pointer flex items-center gap-1.5"
+              className="px-5 py-2.5 rounded-xl bg-[var(--accent)] hover:opacity-90 text-white text-xs font-bold transition-all shadow-md active:scale-95 disabled:opacity-50 disabled:pointer-events-none cursor-pointer flex items-center gap-1.5"
             >
               <CheckCircle className="w-4 h-4" />
               <span>Publish to Showcase</span>

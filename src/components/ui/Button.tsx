@@ -27,7 +27,7 @@ export const Button: React.FC<ButtonProps> = ({
     sm: 'text-xs px-2.5 py-1.5 rounded-lg gap-1.5',
     md: 'text-sm px-3.5 py-2 rounded-xl gap-2',
     lg: 'text-base px-5 py-2.5 rounded-2xl gap-2.5',
-    icon: 'p-2 rounded-xl text-zinc-500 hover:text-zinc-900 hover:bg-black/[0.05]',
+    icon: 'p-2 rounded-xl text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-muted)]',
   };
 
   const variantStyles = {

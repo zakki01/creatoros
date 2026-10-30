@@ -258,13 +258,13 @@ export const SuperAdminLayout: React.FC<SuperAdminLayoutProps> = ({
             {/* Quick Command Trigger */}
             <button
               onClick={() => setIsCommandPaletteOpen(true)}
-              className="hidden md:flex items-center gap-2 ml-4 px-2.5 py-1.5 rounded-lg bg-[#E2E5E9]/60 hover:bg-[#E2E5E9] border border-black/[0.08] text-zinc-600 text-xs transition-all w-52 justify-between cursor-pointer"
+              className="hidden md:flex items-center gap-2 ml-4 px-2.5 py-1.5 rounded-lg bg-[var(--surface-muted)] hover:bg-[var(--surface-elevated)] border border-[var(--border)] text-[var(--text-secondary)] text-xs transition-all w-52 justify-between cursor-pointer"
             >
               <div className="flex items-center gap-2">
-                <Search className="w-3.5 h-3.5 text-zinc-500" />
-                <span className="text-zinc-600">Quick action...</span>
+                <Search className="w-3.5 h-3.5 text-[var(--text-muted)]" />
+                <span className="text-[var(--text-secondary)]">Quick action...</span>
               </div>
-              <div className="flex items-center gap-0.5 text-[10px] bg-white px-1.5 py-0.5 rounded text-zinc-700 font-mono border border-black/10">
+              <div className="flex items-center gap-0.5 text-[10px] bg-[var(--surface)] px-1.5 py-0.5 rounded text-[var(--text-secondary)] font-mono border border-[var(--border)]">
                 <Command className="w-2.5 h-2.5" />
                 <span>K</span>
               </div>
@@ -273,8 +273,8 @@ export const SuperAdminLayout: React.FC<SuperAdminLayoutProps> = ({
 
           <div className="flex items-center gap-3">
             {/* Super Admin Badge */}
-            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-50 border border-rose-200 text-rose-800 text-xs font-medium">
-              <ShieldAlert className="w-3.5 h-3.5 text-rose-600" />
+            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs font-medium">
+              <ShieldAlert className="w-3.5 h-3.5 text-rose-400" />
               <span>Super Admin Authority</span>
               <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse ml-0.5" />
             </div>
