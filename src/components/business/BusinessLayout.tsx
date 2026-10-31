@@ -15,6 +15,7 @@ import {
   FileText,
   LifeBuoy,
   User,
+  LayoutGrid,
 } from 'lucide-react';
 import { BrandLogo } from '../common/BrandLogo';
 import { useAppState } from '../../context/StateContext';
@@ -25,6 +26,7 @@ import { DirectMessagesView } from '../common/DirectMessagesView';
 import { SocialFeedView } from '../common/SocialFeedView';
 import { DiscoverView } from '../common/DiscoverView';
 import { MobileBottomNav } from '../common/MobileBottomNav';
+import { MobileAppsDrawer } from '../common/MobileAppsDrawer';
 import { ProUpgradeModal } from '../common/ProUpgradeModal';
 import { BrandProfileModal } from '../common/BrandProfileModal';
 import { SupportPortal } from '../support/SupportPortal';
@@ -83,6 +85,7 @@ export const BusinessLayout: React.FC = () => {
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [isCreateCampaignOpen, setIsCreateCampaignOpen] = useState(false);
   const [isBrandProfileOpen, setIsBrandProfileOpen] = useState(false);
+  const [isAppsDrawerOpen, setIsAppsDrawerOpen] = useState(false);
 
   const pendingApprovalsCount = submissions.filter((s) => s.status === 'submitted').length;
   const activeAttentionCount = attentionItems.filter((i) => !i.resolved).length;
@@ -295,6 +298,7 @@ export const BusinessLayout: React.FC = () => {
           onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
           onOpenNotifications={() => setIsNotificationsOpen(true)}
           onOpenMessages={() => handleNavigate('messages')}
+          onOpenAppsDrawer={() => setIsAppsDrawerOpen(true)}
         />
 
         {/* Content Canvas */}
@@ -394,7 +398,16 @@ export const BusinessLayout: React.FC = () => {
       {/* Pro Tier & 7-Day Trial Modal */}
       <ProUpgradeModal />
 
-      {/* Mobile Bottom Navigation Bar (Section 11: Home, Discover, Campaigns, Messages, Profile) */}
+      {/* Mobile Apps & Directory Drawer */}
+      <MobileAppsDrawer
+        isOpen={isAppsDrawerOpen}
+        onClose={() => setIsAppsDrawerOpen(false)}
+        activeTab={activeTab}
+        onNavigate={handleNavigate}
+        role="business"
+      />
+
+      {/* Mobile Bottom Navigation Bar (Primary 5: Home, Discover, Campaigns, Messages, Apps/More) */}
       <MobileBottomNav
         items={[
           { id: 'home', label: 'Home', icon: LayoutDashboard },
@@ -406,10 +419,11 @@ export const BusinessLayout: React.FC = () => {
             icon: MessageSquare,
             badge: totalUnreadMessages > 0 ? totalUnreadMessages : undefined,
           },
-          { id: 'profile', label: 'Profile', icon: User },
+          { id: 'apps', label: 'Apps', icon: LayoutGrid },
         ]}
         activeTab={activeTab}
         onNavigate={handleNavigate}
+        onOpenAppsDrawer={() => setIsAppsDrawerOpen(true)}
         accentColor="indigo"
       />
     </div>

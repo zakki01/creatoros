@@ -25,7 +25,7 @@ export const Tabs: React.FC<TabsProps> = ({
 }) => {
   if (variant === 'underline') {
     return (
-      <div className={clsx('flex space-x-6 border-b border-[var(--border)]', className)}>
+      <div className={clsx('flex space-x-4 sm:space-x-6 border-b border-[var(--border)] overflow-x-auto no-scrollbar scroll-smooth flex-nowrap w-full', className)}>
         {tabs.map((tab) => {
           const isActive = tab.id === activeTab;
           return (
@@ -33,7 +33,7 @@ export const Tabs: React.FC<TabsProps> = ({
               key={tab.id}
               onClick={() => onChange(tab.id)}
               className={clsx(
-                'flex items-center gap-2 py-3 px-1 text-sm font-medium border-b-2 transition-all duration-150',
+                'min-h-[44px] flex items-center gap-2 py-3 px-2 sm:px-1 text-xs sm:text-sm font-medium border-b-2 transition-all duration-150 shrink-0 whitespace-nowrap cursor-pointer select-none',
                 isActive
                   ? 'border-[var(--primary)] text-[var(--text-primary)] font-semibold'
                   : 'border-transparent text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:border-[var(--border-strong)]'
@@ -61,7 +61,7 @@ export const Tabs: React.FC<TabsProps> = ({
   return (
     <div
       className={clsx(
-        'inline-flex p-1 bg-[var(--surface-recessed)] rounded-2xl border border-[var(--border)] shadow-inner gap-1 overflow-x-auto max-w-full',
+        'inline-flex p-1 bg-[var(--surface-recessed)] rounded-2xl border border-[var(--border)] shadow-inner gap-1 overflow-x-auto no-scrollbar scroll-smooth flex-nowrap max-w-full w-full sm:w-auto',
         className
       )}
     >
@@ -72,7 +72,7 @@ export const Tabs: React.FC<TabsProps> = ({
             key={tab.id}
             onClick={() => onChange(tab.id)}
             className={clsx(
-              'flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-medium transition-all duration-150 whitespace-nowrap select-none',
+              'min-h-[44px] flex items-center justify-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all duration-150 whitespace-nowrap shrink-0 select-none cursor-pointer',
               isActive
                 ? 'bg-[var(--surface)] text-[var(--text-primary)] shadow-xs border border-[var(--border)] font-semibold'
                 : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-muted)]'

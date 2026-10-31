@@ -177,7 +177,59 @@ export const AdminContractsGovernance: React.FC = () => {
             </select>
           </div>
 
-          <div className="rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-xs overflow-hidden">
+          {/* Mobile Admin Contracts Card List */}
+          <div className="space-y-3 md:hidden">
+            {filteredContracts.map((c) => (
+              <div
+                key={c.id}
+                className="p-4 rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-xs space-y-3 text-xs"
+              >
+                <div className="flex items-start justify-between gap-2">
+                  <div>
+                    <span className="text-[10px] font-mono text-[var(--primary)] uppercase font-semibold">
+                      {c.contractNumber}
+                    </span>
+                    <h4 className="font-bold text-[var(--text-primary)] text-sm mt-0.5">{c.brandName}</h4>
+                  </div>
+                  <ContractStatusBadge status={c.status} size="sm" />
+                </div>
+
+                <div className="flex items-center gap-2 pt-1 border-t border-[var(--border)]/50">
+                  <img
+                    src={c.creatorAvatar}
+                    alt={c.creatorName}
+                    className="w-6 h-6 rounded-md object-cover"
+                  />
+                  <span className="text-[var(--text-secondary)] font-medium">{c.creatorName}</span>
+                  <span className="text-[var(--text-muted)]">•</span>
+                  <span className="text-[var(--text-secondary)] truncate">{c.projectName}</span>
+                </div>
+
+                <div className="flex items-center justify-between pt-1">
+                  <div>
+                    <span className="text-[10px] font-mono text-[var(--text-muted)] block">Total Value</span>
+                    <span className="text-base font-bold font-mono text-emerald-500 dark:text-emerald-400">
+                      ${c.payment.totalAmount.toLocaleString()}
+                    </span>
+                  </div>
+
+                  {c.status === 'disputed' ? (
+                    <button
+                      onClick={() => setSelectedDisputeContract(c)}
+                      className="min-h-[44px] px-4 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs cursor-pointer shadow-xs"
+                    >
+                      Arbitrate
+                    </button>
+                  ) : (
+                    <span className="text-[var(--text-muted)] text-[11px] font-mono">Governed</span>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Desktop Table View */}
+          <div className="rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-xs overflow-hidden hidden md:block">
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
                 <thead className="bg-[var(--surface-muted)] text-[var(--text-secondary)] border-b border-[var(--border)] uppercase text-[10px] font-semibold tracking-wider font-mono">

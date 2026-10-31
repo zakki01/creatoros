@@ -210,6 +210,15 @@
   min-height: 44px;
 }
 
+/* Hide scrollbar for Chrome, Safari, Edge and Firefox */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 /* Semantic Surface Hierarchy Classes */
 .surface-0 {
   background-color: var(--background);

@@ -64,33 +64,34 @@ export const Modal: React.FC<ModalProps> = ({
         />
 
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--border)] bg-[var(--surface-muted)]/80 text-[var(--text-primary)]">
-          <div>
+        <div className="flex items-center justify-between px-4 sm:px-6 py-3.5 sm:py-4 pt-[calc(0.75rem+env(safe-area-inset-top,0px))] sm:pt-4 border-b border-[var(--border)] bg-[var(--surface-muted)]/80 text-[var(--text-primary)] shrink-0">
+          <div className="min-w-0 pr-2">
             {typeof title === 'string' ? (
-              <h2 className="text-base sm:text-lg font-semibold text-[var(--text-primary)] font-display tracking-tight">
+              <h2 className="text-base sm:text-lg font-semibold text-[var(--text-primary)] font-display tracking-tight truncate">
                 {title}
               </h2>
             ) : (
               title
             )}
             {description && (
-              <p className="text-xs text-[var(--text-muted)] mt-0.5">{description}</p>
+              <p className="text-xs text-[var(--text-muted)] mt-0.5 truncate">{description}</p>
             )}
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-xl text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-muted)] transition-colors"
+            aria-label="Close dialog"
+            className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-muted)] transition-colors cursor-pointer shrink-0"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Content */}
-        <div className="px-6 py-5 overflow-y-auto flex-1 text-[var(--text-primary)]">{children}</div>
+        <div className="px-4 sm:px-6 py-4 sm:py-5 overflow-y-auto flex-1 text-[var(--text-primary)]">{children}</div>
 
         {/* Footer */}
         {footer && (
-          <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-[var(--border)] bg-[var(--surface-muted)]/80">
+          <div className="flex items-center justify-end gap-3 px-4 sm:px-6 py-3.5 sm:py-4 pb-[calc(1rem+env(safe-area-inset-bottom,0px))] sm:pb-4 border-t border-[var(--border)] bg-[var(--surface-muted)]/80 shrink-0">
             {footer}
           </div>
         )}

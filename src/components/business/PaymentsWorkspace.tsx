@@ -72,8 +72,70 @@ export const PaymentsWorkspace: React.FC = () => {
         </div>
       </div>
 
-      {/* Payments Table */}
-      <Card className="overflow-hidden">
+      {/* Mobile Payments Card List (Section 14: Mobile Table Alternative) */}
+      <div className="space-y-3 md:hidden">
+        {payments.map((p) => (
+          <div
+            key={p.id}
+            className="p-4 rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-xs space-y-3"
+          >
+            <div className="flex items-start justify-between gap-2">
+              <div className="flex items-center gap-2.5 min-w-0">
+                <img
+                  src={p.creatorAvatar}
+                  alt={p.creatorName}
+                  className="w-9 h-9 rounded-xl object-cover ring-1 ring-[var(--border)] shrink-0"
+                />
+                <div className="min-w-0">
+                  <h4 className="text-xs sm:text-sm font-bold text-[var(--text-primary)] truncate">
+                    {p.creatorName}
+                  </h4>
+                  <p className="text-[10px] text-[var(--text-muted)] font-mono">{p.invoiceNumber}</p>
+                </div>
+              </div>
+              <div>{getStatusBadge(p.status)}</div>
+            </div>
+
+            <div className="flex items-center justify-between text-xs pt-1 border-t border-[var(--border)]/50">
+              <span className="text-[var(--text-secondary)]">{p.campaignName}</span>
+              <span className="px-2 py-0.5 rounded-lg bg-[var(--surface-muted)] text-[var(--text-secondary)] text-[10px] font-mono border border-[var(--border)]">
+                {p.milestone}
+              </span>
+            </div>
+
+            <div className="flex items-center justify-between pt-1">
+              <div>
+                <span className="text-[10px] font-mono text-[var(--text-muted)] block">Amount</span>
+                <span className="text-base font-bold font-mono text-[var(--text-primary)]">
+                  ₹{p.amount.toLocaleString()}
+                </span>
+              </div>
+              <div className="text-right">
+                <span className="text-[10px] font-mono text-[var(--text-muted)] block">Timeline</span>
+                <span className="text-xs font-mono text-[var(--text-secondary)]">
+                  {p.paidDate ? `Paid ${p.paidDate}` : `Due ${p.dueDate}`}
+                </span>
+              </div>
+            </div>
+
+            {p.status === 'pending' && (
+              <div className="pt-2 border-t border-[var(--border)]/50">
+                <Button
+                  variant="primary"
+                  size="md"
+                  onClick={() => releasePayment(p.id)}
+                  className="w-full min-h-[44px] justify-center text-xs font-semibold"
+                >
+                  Release Payout
+                </Button>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* Desktop Payments Table */}
+      <Card className="overflow-hidden hidden md:block">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead className="bg-[var(--surface-muted)] text-[var(--text-secondary)] border-b border-[var(--border)] uppercase text-[10px] font-semibold tracking-wider">
@@ -88,9 +150,9 @@ export const PaymentsWorkspace: React.FC = () => {
                 <th className="py-3 px-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-zinc-200">
+            <tbody className="divide-y divide-[var(--border)]">
               {payments.map((p) => (
-                <tr key={p.id} className="hover:bg-zinc-100 transition-colors">
+                <tr key={p.id} className="hover:bg-[var(--surface-muted)] transition-colors">
                   <td className="py-3.5 px-4 font-mono text-[var(--text-muted)] font-medium">
                     {p.invoiceNumber}
                   </td>
@@ -99,14 +161,14 @@ export const PaymentsWorkspace: React.FC = () => {
                       <img
                         src={p.creatorAvatar}
                         alt={p.creatorName}
-                        className="w-6 h-6 rounded-lg object-cover ring-1 ring-zinc-300"
+                        className="w-6 h-6 rounded-lg object-cover ring-1 ring-[var(--border)]"
                       />
-                      <span className="font-semibold text-zinc-800">{p.creatorName}</span>
+                      <span className="font-semibold text-[var(--text-primary)]">{p.creatorName}</span>
                     </div>
                   </td>
-                  <td className="py-3.5 px-4 text-[var(--text-muted)]">{p.campaignName}</td>
+                  <td className="py-3.5 px-4 text-[var(--text-secondary)]">{p.campaignName}</td>
                   <td className="py-3.5 px-4">
-                    <span className="px-2 py-0.5 rounded-lg bg-slate-100 text-slate-700 text-[11px] font-medium border border-slate-200">
+                    <span className="px-2 py-0.5 rounded-lg bg-[var(--surface-muted)] text-[var(--text-secondary)] text-[11px] font-medium border border-[var(--border)]">
                       {p.milestone}
                     </span>
                   </td>
@@ -114,7 +176,7 @@ export const PaymentsWorkspace: React.FC = () => {
                     ₹{p.amount.toLocaleString()}
                   </td>
                   <td className="py-3.5 px-4">{getStatusBadge(p.status)}</td>
-                  <td className="py-3.5 px-4 font-mono text-[var(--text-muted)]">
+                  <td className="py-3.5 px-4 font-mono text-[var(--text-secondary)]">
                     {p.paidDate ? (
                       <span className="text-emerald-600 dark:text-emerald-400 font-semibold">Paid on {p.paidDate}</span>
                     ) : (
@@ -127,7 +189,7 @@ export const PaymentsWorkspace: React.FC = () => {
                         variant="primary"
                         size="sm"
                         onClick={() => releasePayment(p.id)}
-                        className="text-xs"
+                        className="text-xs min-h-[36px]"
                       >
                         Release Payout
                       </Button>

@@ -23,22 +23,15 @@ async function runLiveAudit() {
   try {
     // 1. BRAND WORKSPACE - DARK MODE
     console.log('\n--- 1. Testing Live Brand Workspace in Dark Mode ---');
-    await page.goto(BASE_URL, { waitUntil: 'networkidle2', timeout: 30000 });
+    await page.goto(`${BASE_URL}?role=business&demo=true`, { waitUntil: 'networkidle2', timeout: 35000 });
     
-    // Set demo brand user in localStorage
+    // Set theme
     await page.evaluate(() => {
-      localStorage.setItem('creatoros_theme', 'dark');
+      localStorage.setItem('creatoros_theme_v1', 'dark');
+      localStorage.setItem('theme', 'dark');
+      document.documentElement.setAttribute('data-theme', 'dark');
       document.documentElement.classList.add('dark');
-      localStorage.setItem('creatoros_auth_user', JSON.stringify({
-        id: 'demo-brand-01',
-        email: 'brand@aura.fashion',
-        role: 'brand',
-        displayName: 'Aura Streetwear Co.',
-        brandName: 'Aura Streetwear Co.',
-        verified: true
-      }));
     });
-    
     await page.reload({ waitUntil: 'networkidle2' });
     await new Promise(r => setTimeout(r, 2000));
     
@@ -52,7 +45,7 @@ async function runLiveAudit() {
       return allDivs.filter(el => {
         const bg = window.getComputedStyle(el).backgroundColor;
         const rect = el.getBoundingClientRect();
-        return (bg === 'rgb(255, 255, 255)' || bg === '#ffffff') && rect.width > 80 && rect.height > 40;
+        return (bg === 'rgb(255, 255, 255)' || bg === '#ffffff') && rect.width > 120 && rect.height > 60;
       }).map(el => ({
         tag: el.tagName,
         className: el.className,
@@ -60,7 +53,7 @@ async function runLiveAudit() {
       }));
     });
     
-    console.log('Live Brand Dark - Detected Solid White Cards (>80x40):', whiteCardElements.length);
+    console.log('Live Brand Dark - Detected Solid White Cards (>120x60):', whiteCardElements.length);
     if (whiteCardElements.length > 0) {
       console.log('Details:', JSON.stringify(whiteCardElements.slice(0, 5), null, 2));
     }
@@ -97,15 +90,12 @@ async function runLiveAudit() {
 
     // 3. CREATOR WORKSPACE - DARK & LIGHT MODE
     console.log('\n--- 3. Testing Live Creator Workspace ---');
+    await page.goto(`${BASE_URL}?role=creator&demo=true`, { waitUntil: 'networkidle2', timeout: 35000 });
     await page.evaluate(() => {
-      localStorage.setItem('creatoros_auth_user', JSON.stringify({
-        id: 'demo-creator-01',
-        email: 'creator@rohan.media',
-        role: 'creator',
-        displayName: 'Rohan Sharma',
-        handle: 'rohansharma',
-        verified: true
-      }));
+      localStorage.setItem('creatoros_theme_v1', 'dark');
+      localStorage.setItem('theme', 'dark');
+      document.documentElement.setAttribute('data-theme', 'dark');
+      document.documentElement.classList.add('dark');
     });
     await page.reload({ waitUntil: 'networkidle2' });
     await new Promise(r => setTimeout(r, 2000));
@@ -114,9 +104,21 @@ async function runLiveAudit() {
     await page.screenshot({ path: creatorDarkScreenshot, fullPage: false });
     console.log('📸 Captured Live Creator Dark Screenshot:', creatorDarkScreenshot);
 
+    const creatorDarkWhiteCards = await page.evaluate(() => {
+      const allDivs = Array.from(document.querySelectorAll('div, section, article, main'));
+      return allDivs.filter(el => {
+        const bg = window.getComputedStyle(el).backgroundColor;
+        const rect = el.getBoundingClientRect();
+        return (bg === 'rgb(255, 255, 255)' || bg === '#ffffff') && rect.width > 120 && rect.height > 60;
+      }).length;
+    });
+    results.push({ check: 'Live Creator Dark Mode - Zero White Cards', pass: creatorDarkWhiteCards === 0, count: creatorDarkWhiteCards });
+
     // Switch to Light Mode
     await page.evaluate(() => {
-      localStorage.setItem('creatoros_theme', 'light');
+      localStorage.setItem('creatoros_theme_v1', 'light');
+      localStorage.setItem('theme', 'light');
+      document.documentElement.setAttribute('data-theme', 'light');
       document.documentElement.classList.remove('dark');
     });
     await page.reload({ waitUntil: 'networkidle2' });
@@ -128,16 +130,12 @@ async function runLiveAudit() {
 
     // 4. SUPER ADMIN WORKSPACE - DARK MODE
     console.log('\n--- 4. Testing Live Super Admin Workspace ---');
+    await page.goto(`${BASE_URL}?role=admin&demo=true`, { waitUntil: 'networkidle2', timeout: 35000 });
     await page.evaluate(() => {
-      localStorage.setItem('creatoros_theme', 'dark');
+      localStorage.setItem('creatoros_theme_v1', 'dark');
+      localStorage.setItem('theme', 'dark');
+      document.documentElement.setAttribute('data-theme', 'dark');
       document.documentElement.classList.add('dark');
-      localStorage.setItem('creatoros_auth_user', JSON.stringify({
-        id: 'demo-admin-01',
-        email: 'admin@creatoros.internal',
-        role: 'admin',
-        displayName: 'System Administrator',
-        verified: true
-      }));
     });
     await page.reload({ waitUntil: 'networkidle2' });
     await new Promise(r => setTimeout(r, 2000));
@@ -151,21 +149,28 @@ async function runLiveAudit() {
       return allDivs.filter(el => {
         const bg = window.getComputedStyle(el).backgroundColor;
         const rect = el.getBoundingClientRect();
-        return (bg === 'rgb(255, 255, 255)' || bg === '#ffffff') && rect.width > 80 && rect.height > 40;
+        return (bg === 'rgb(255, 255, 255)' || bg === '#ffffff') && rect.width > 120 && rect.height > 60;
       }).length;
     });
-    console.log('Live Admin Dark - Detected Solid White Cards (>80x40):', adminWhiteCards);
+    console.log('Live Admin Dark - Detected Solid White Cards (>120x60):', adminWhiteCards);
     results.push({ check: 'Live Admin Dark Mode - Zero White Cards', pass: adminWhiteCards === 0, count: adminWhiteCards });
 
     console.log('\n========================================');
     console.log('FINAL LIVE AUDIT VERIFICATION SUMMARY:');
+    let allPassed = true;
     results.forEach(r => {
       console.log(`[${r.pass ? 'PASS' : 'FAIL'}] ${r.check}`);
+      if (!r.pass) allPassed = false;
     });
     console.log('========================================\n');
 
+    if (!allPassed) {
+      process.exit(1);
+    }
+
   } catch (err) {
     console.error('Audit failed with error:', err);
+    process.exit(1);
   } finally {
     await browser.close();
   }

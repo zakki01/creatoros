@@ -14,6 +14,7 @@ export interface MobileBottomNavProps {
   activeTab: string;
   onNavigate: (tabId: string) => void;
   accentColor?: 'indigo' | 'emerald';
+  onOpenAppsDrawer?: () => void;
 }
 
 export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
@@ -21,6 +22,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
   activeTab,
   onNavigate,
   accentColor = 'indigo',
+  onOpenAppsDrawer,
 }) => {
   const activeColorStyles = {
     indigo: 'text-[var(--primary)]',
@@ -35,7 +37,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
   return (
     <nav
       aria-label="Mobile Bottom Navigation"
-      className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[var(--surface-glass-strong)] backdrop-blur-2xl rounded-t-2xl border-t border-[var(--border)] shadow-lg text-[var(--text-primary)] px-1.5 pt-1 pb-[calc(0.25rem+env(safe-area-inset-bottom,0px))] flex items-center justify-around"
+      className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[var(--surface-glass-strong)] backdrop-blur-2xl rounded-t-2xl border-t border-[var(--border)] shadow-lg text-[var(--text-primary)] px-2 pt-1 pb-[calc(0.5rem+env(safe-area-inset-bottom,0px))] flex items-center justify-around"
     >
       {items.map((item) => {
         const Icon = item.icon;
@@ -45,12 +47,18 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
           <button
             key={item.id}
             type="button"
-            onClick={() => onNavigate(item.id)}
+            onClick={() => {
+              if ((item.id === 'apps' || item.id === 'more') && onOpenAppsDrawer) {
+                onOpenAppsDrawer();
+              } else {
+                onNavigate(item.id);
+              }
+            }}
             aria-label={item.label}
             aria-current={isActive ? 'page' : undefined}
             className={clsx(
               // Strict 44px minimum touch target hit-box
-              'relative flex flex-col items-center justify-center min-w-[52px] min-h-[44px] py-1 px-1.5 rounded-xl transition-all cursor-pointer select-none',
+              'relative flex flex-col items-center justify-center min-w-[56px] min-h-[48px] py-1 px-1.5 rounded-xl transition-all cursor-pointer select-none',
               'focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]',
               isActive
                 ? clsx(activeColorStyles[accentColor], 'bg-[var(--surface-muted)] shadow-xs')

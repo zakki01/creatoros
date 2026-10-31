@@ -173,56 +173,61 @@ export const BrandProfileModal: React.FC<BrandProfileModalProps> = ({
     <>
       <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-6 bg-black/60 backdrop-blur-md animate-fade-in overflow-hidden">
         <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="Brand Profile"
           className="relative w-full h-full sm:h-auto max-h-full sm:max-h-[92vh] max-w-3xl rounded-none sm:rounded-3xl bg-[var(--surface-elevated)] text-[var(--text-primary)] border-0 sm:border border-[var(--border)] shadow-2xl overflow-y-auto flex flex-col"
           onClick={(e) => e.stopPropagation()}
         >
-          {/* Close Button */}
+          {/* Close Button: Safe Area aware, touch-friendly min 44px */}
           <button
             onClick={onClose}
             aria-label="Close brand profile"
-            className="absolute top-3 right-3 z-20 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full bg-black/60 text-white hover:text-white hover:bg-black/90 transition-all cursor-pointer backdrop-blur-sm border border-[var(--border)]"
+            className="absolute top-[calc(0.75rem+env(safe-area-inset-top,0px))] right-3 z-30 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full bg-black/60 text-white hover:text-white hover:bg-black/90 transition-all cursor-pointer backdrop-blur-md border border-white/20 shadow-md"
           >
-            <X className="w-4 h-4" />
+            <X className="w-5 h-5" />
           </button>
 
-          {/* Cover Banner */}
-          <div className="relative h-36 sm:h-44 w-full overflow-hidden bg-[var(--surface-subtle)]">
+          {/* Cover Banner: Responsive aspect ratio */}
+          <div className="relative h-36 sm:h-48 md:h-56 w-full overflow-hidden bg-[var(--surface-subtle)] shrink-0">
             <img
               src={brandData.coverUrl || 'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=1200&auto=format&fit=crop&q=80'}
               alt={brandData.name}
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0c0c11] via-black/40 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[var(--surface-elevated)] via-black/40 to-transparent" />
           </div>
 
-          {/* Profile Header Info */}
-          <div className="px-6 pb-4 -mt-12 relative z-10 space-y-4">
+          {/* Profile Header Info: Responsive Stack */}
+          <div className="px-4 sm:px-6 pb-6 -mt-12 sm:-mt-14 relative z-10 space-y-5">
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-              <div className="flex items-end gap-3.5">
+              <div className="flex flex-col sm:flex-row sm:items-end gap-3.5 sm:gap-4">
                 <img
                   src={brandData.logo}
                   alt={brandData.name}
-                  className="w-20 h-20 rounded-2xl object-cover ring-2 ring-[#0c0c11] shadow-xl bg-[var(--surface-subtle)] shrink-0"
+                  className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl object-cover ring-4 ring-[var(--surface-elevated)] shadow-xl bg-[var(--surface-subtle)] shrink-0"
                 />
-                <div>
-                  <div className="flex items-center gap-2">
-                    <h2 className="text-lg font-bold text-[var(--text-primary)] font-display">{brandData.name}</h2>
-                    <span className="p-0.5 rounded-full bg-[var(--primary)]/10 text-[var(--primary)]">
+                <div className="min-w-0 space-y-1">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h2 className="text-xl sm:text-2xl font-bold text-[var(--text-primary)] font-display tracking-tight">{brandData.name}</h2>
+                    <span className="p-0.5 rounded-full bg-[var(--primary)]/15 text-[var(--primary)] shrink-0">
                       <ShieldCheck className="w-4 h-4" />
                     </span>
                   </div>
-                  <p className="text-xs text-[var(--text-muted)] font-mono">{brandData.handle}</p>
-                  <p className="text-[11px] text-[var(--text-muted)] flex items-center gap-1.5 mt-0.5">
-                    <MapPin className="w-3 h-3 text-[var(--text-muted)]" />
-                    <span>{brandData.location}</span>
+                  <p className="text-xs sm:text-sm text-[var(--text-muted)] font-mono">{brandData.handle}</p>
+                  <div className="text-xs text-[var(--text-muted)] flex items-center gap-2 flex-wrap pt-0.5">
+                    <span className="flex items-center gap-1">
+                      <MapPin className="w-3.5 h-3.5 text-[var(--text-muted)] shrink-0" />
+                      <span>{brandData.location}</span>
+                    </span>
                     <span>•</span>
-                    <span className="text-[var(--primary)]">{brandData.category}</span>
-                  </p>
+                    <span className="text-[var(--primary)] font-medium">{brandData.category}</span>
+                  </div>
                 </div>
               </div>
 
-              {/* Action Buttons (Strict Profile Relationship Resolution) */}
-              <div className="flex flex-wrap items-center gap-2 shrink-0">
+              {/* Action Buttons: Responsive Full-Width Grid on Mobile, Flex on Desktop */}
+              <div className="grid grid-cols-2 sm:flex sm:items-center gap-2 w-full sm:w-auto shrink-0 pt-2 sm:pt-0">
                 {/* Primary: Pitch to Brand */}
                 {profileActions.canPitch && (
                   <button
@@ -230,21 +235,10 @@ export const BrandProfileModal: React.FC<BrandProfileModalProps> = ({
                       setTargetCampaignPitch(undefined);
                       setIsPitchModalOpen(true);
                     }}
-                    className="min-h-[42px] px-4 py-2 rounded-xl bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white text-xs font-semibold flex items-center justify-center gap-1.5 shadow-sm transition-all cursor-pointer active:scale-95"
+                    className="col-span-2 sm:col-auto min-h-[44px] px-5 py-2.5 rounded-xl bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer active:scale-95"
                   >
-                    <Send className="w-3.5 h-3.5" />
+                    <Send className="w-4 h-4" />
                     <span>Pitch to Brand</span>
-                  </button>
-                )}
-
-                {/* Share Profile */}
-                {profileActions.canShare && (
-                  <button
-                    onClick={() => setIsShareModalOpen(true)}
-                    className="min-h-[42px] px-3 py-2 rounded-xl bg-[var(--surface)] text-[var(--text-primary)] border border-[var(--border)] hover:bg-[var(--surface-muted)] text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer"
-                  >
-                    <Share2 className="w-3.5 h-3.5 text-[var(--text-muted)]" />
-                    <span>Share</span>
                   </button>
                 )}
 
@@ -252,10 +246,21 @@ export const BrandProfileModal: React.FC<BrandProfileModalProps> = ({
                 {profileActions.canMessage && (
                   <button
                     onClick={handleMessageClick}
-                    className="min-h-[42px] px-3.5 py-2 rounded-xl bg-[var(--surface)] text-[var(--text-primary)] border border-[var(--border)] hover:bg-[var(--surface-muted)] text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                    className="col-span-1 sm:col-auto min-h-[44px] px-4 py-2.5 rounded-xl bg-[var(--surface)] text-[var(--text-primary)] border border-[var(--border)] hover:bg-[var(--surface-muted)] text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer"
                   >
-                    <MessageSquare className="w-3.5 h-3.5 text-[var(--text-muted)]" />
+                    <MessageSquare className="w-4 h-4 text-[var(--text-muted)]" />
                     <span>Message</span>
+                  </button>
+                )}
+
+                {/* Share Profile */}
+                {profileActions.canShare && (
+                  <button
+                    onClick={() => setIsShareModalOpen(true)}
+                    className="col-span-1 sm:col-auto min-h-[44px] px-4 py-2.5 rounded-xl bg-[var(--surface)] text-[var(--text-primary)] border border-[var(--border)] hover:bg-[var(--surface-muted)] text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer"
+                  >
+                    <Share2 className="w-4 h-4 text-[var(--text-muted)]" />
+                    <span>Share</span>
                   </button>
                 )}
 
@@ -264,25 +269,25 @@ export const BrandProfileModal: React.FC<BrandProfileModalProps> = ({
                   connectionState === 'connected' ? (
                     <button
                       disabled
-                      className="min-h-[42px] px-3.5 py-2 rounded-xl bg-emerald-50 border border-emerald-500/30 text-emerald-700 text-xs font-semibold flex items-center justify-center gap-1.5"
+                      className="col-span-2 sm:col-auto min-h-[44px] px-4 py-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 text-xs sm:text-sm font-semibold flex items-center justify-center gap-2"
                     >
-                      <Check className="w-3.5 h-3.5" />
+                      <Check className="w-4 h-4" />
                       <span>Connected ✓</span>
                     </button>
                   ) : connectionState === 'pending' ? (
                     <button
                       disabled
-                      className="min-h-[42px] px-3.5 py-2 rounded-xl bg-amber-50 border border-amber-500/30 text-amber-800 text-xs font-semibold flex items-center justify-center gap-1.5"
+                      className="col-span-2 sm:col-auto min-h-[44px] px-4 py-2.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-600 text-xs sm:text-sm font-semibold flex items-center justify-center gap-2"
                     >
-                      <Clock className="w-3.5 h-3.5" />
+                      <Clock className="w-4 h-4" />
                       <span>Pending</span>
                     </button>
                   ) : (
                     <button
                       onClick={() => setIsConnectModalOpen(true)}
-                      className="min-h-[42px] px-3.5 py-2 rounded-xl bg-[var(--surface-muted)] hover:bg-[var(--surface-recessed)] border border-[var(--border)] text-[var(--text-primary)] text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer active:scale-95"
+                      className="col-span-2 sm:col-auto min-h-[44px] px-4 py-2.5 rounded-xl bg-[var(--surface-muted)] hover:bg-[var(--surface-recessed)] border border-[var(--border)] text-[var(--text-primary)] text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer active:scale-95"
                     >
-                      <UserPlus className="w-3.5 h-3.5" />
+                      <UserPlus className="w-4 h-4" />
                       <span>Connect</span>
                     </button>
                   )
@@ -290,36 +295,40 @@ export const BrandProfileModal: React.FC<BrandProfileModalProps> = ({
               </div>
             </div>
 
-            {/* Quick Metrics Bar */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 p-3 rounded-xl bg-[var(--surface-muted)] border border-[var(--border)]">
-              <div>
-                <span className="text-[10px] font-mono uppercase text-[var(--text-muted)] block">Open Briefs</span>
-                <span className="text-sm font-bold text-[var(--text-primary)] font-mono mt-0.5 block">
+            {/* Quick Metrics Bar: 2x2 on Mobile, 4-col on Desktop */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3 p-3.5 sm:p-4 rounded-2xl bg-[var(--surface-muted)]/70 border border-[var(--border)]">
+              <div className="p-3 rounded-xl bg-[var(--surface-card)]/50 border border-[var(--border)]/40 flex flex-col justify-between">
+                <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-wider text-[var(--text-muted)] block">Open Briefs</span>
+                <span className="text-sm sm:text-base font-bold text-[var(--text-primary)] font-mono mt-1 block">
                   {brandData.activeCampaignsCount} Active
                 </span>
+                <span className="text-[10px] text-[var(--text-secondary)] mt-0.5">Accepting Pitches</span>
               </div>
-              <div>
-                <span className="text-[10px] font-mono uppercase text-[var(--text-muted)] block">Creators Partnered</span>
-                <span className="text-sm font-bold text-[var(--text-primary)] font-mono mt-0.5 block">
+              <div className="p-3 rounded-xl bg-[var(--surface-card)]/50 border border-[var(--border)]/40 flex flex-col justify-between">
+                <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-wider text-[var(--text-muted)] block">Creators Partnered</span>
+                <span className="text-sm sm:text-base font-bold text-[var(--text-primary)] font-mono mt-1 block">
                   {brandData.creatorsPartnered}+ Creators
                 </span>
+                <span className="text-[10px] text-[var(--text-secondary)] mt-0.5">Verified Roster</span>
               </div>
-              <div>
-                <span className="text-[10px] font-mono uppercase text-[var(--text-muted)] block">Avg Rate / Creator</span>
-                <span className="text-sm font-bold text-emerald-700 font-mono mt-0.5 block">
+              <div className="p-3 rounded-xl bg-[var(--surface-card)]/50 border border-[var(--border)]/40 flex flex-col justify-between">
+                <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-wider text-[var(--text-muted)] block">Avg Rate / Creator</span>
+                <span className="text-sm sm:text-base font-bold text-emerald-600 dark:text-emerald-400 font-mono mt-1 block">
                   {brandData.avgBudget}
                 </span>
+                <span className="text-[10px] text-[var(--text-secondary)] mt-0.5">Per Deliverable</span>
               </div>
-              <div>
-                <span className="text-[10px] font-mono uppercase text-[var(--text-muted)] block">Payment Escrow</span>
-                <span className="text-sm font-bold text-[var(--primary)] font-mono mt-0.5 block">
+              <div className="p-3 rounded-xl bg-[var(--surface-card)]/50 border border-[var(--border)]/40 flex flex-col justify-between">
+                <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-wider text-[var(--text-muted)] block">Payment Escrow</span>
+                <span className="text-sm sm:text-base font-bold text-[var(--primary)] font-mono mt-1 block">
                   100% Guaranteed
                 </span>
+                <span className="text-[10px] text-[var(--text-secondary)] mt-0.5">Secured Vault</span>
               </div>
             </div>
 
-            {/* Navigation Tabs */}
-            <div className="flex items-center gap-1 border-b border-[var(--border)] pt-1 overflow-x-auto">
+            {/* Navigation Tabs: Horizontal Scroll with No Scrollbar */}
+            <div className="flex items-center gap-1.5 border-b border-[var(--border)] pt-2 overflow-x-auto no-scrollbar scroll-smooth">
               {[
                 { id: 'about', label: 'About', icon: Info },
                 { id: 'content', label: 'Content', icon: Layers },
@@ -334,13 +343,13 @@ export const BrandProfileModal: React.FC<BrandProfileModalProps> = ({
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id as any)}
-                    className={`flex items-center gap-1.5 px-3.5 py-2 border-b-2 text-xs font-semibold transition-all shrink-0 cursor-pointer ${
+                    className={`min-h-[44px] flex items-center gap-2 px-4 py-2.5 border-b-2 text-xs sm:text-sm font-semibold transition-all shrink-0 cursor-pointer ${
                       isActive
-                        ? 'border-[var(--primary)] text-[var(--primary-hover)]'
+                        ? 'border-[var(--primary)] text-[var(--primary)]'
                         : 'border-transparent text-[var(--text-muted)] hover:text-[var(--text-primary)]'
                     }`}
                   >
-                    <Icon className="w-3.5 h-3.5" />
+                    <Icon className="w-4 h-4" />
                     <span>{tab.label}</span>
                   </button>
                 );

@@ -238,7 +238,7 @@ export const ContractsWorkspace: React.FC<ContractsWorkspaceProps> = ({
         </div>
 
         {/* Search Input */}
-        <div className="relative min-w-[220px]">
+        <div className="relative w-full sm:w-64">
           <Search className="w-3.5 h-3.5 text-[var(--text-muted)] absolute left-3 top-3.5" />
           <input
             type="text"

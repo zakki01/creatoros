@@ -17,6 +17,7 @@ import {
   FileText,
   LifeBuoy,
   Radio,
+  LayoutGrid,
 } from 'lucide-react';
 import { BrandLogo } from '../common/BrandLogo';
 import { useAppState } from '../../context/StateContext';
@@ -33,6 +34,8 @@ import { AdminLiveMonitoringView } from './AdminLiveMonitoringView';
 import { DiscoverView } from '../common/DiscoverView';
 import { CommandPalette } from '../common/CommandPalette';
 import { NotificationDrawer } from '../common/NotificationDrawer';
+import { MobileBottomNav } from '../common/MobileBottomNav';
+import { MobileAppsDrawer } from '../common/MobileAppsDrawer';
 
 interface SuperAdminLayoutProps {
   initialPath?: string;
@@ -84,6 +87,7 @@ export const SuperAdminLayout: React.FC<SuperAdminLayoutProps> = ({
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+  const [isAppsDrawerOpen, setIsAppsDrawerOpen] = useState(false);
 
   const adminSession = AdminAuthService.getStoredSession();
 
@@ -271,9 +275,19 @@ export const SuperAdminLayout: React.FC<SuperAdminLayoutProps> = ({
             </button>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
+            {/* Mobile All Apps Button */}
+            <button
+              onClick={() => setIsAppsDrawerOpen(true)}
+              className="flex md:hidden p-2 rounded-lg text-[var(--primary)] hover:bg-[var(--surface-muted)] transition-all cursor-pointer min-w-[44px] min-h-[44px] items-center justify-center"
+              title="All Admin Workspaces"
+              aria-label="All Admin Workspaces"
+            >
+              <LayoutGrid className="w-5 h-5" />
+            </button>
+
             {/* Super Admin Badge */}
-            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs font-medium">
+            <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs font-medium">
               <ShieldAlert className="w-3.5 h-3.5 text-rose-400" />
               <span>Super Admin Authority</span>
               <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse ml-0.5" />
@@ -282,12 +296,12 @@ export const SuperAdminLayout: React.FC<SuperAdminLayoutProps> = ({
             {/* Notifications */}
             <button
               onClick={() => setIsNotificationsOpen(true)}
-              className="relative p-1.5 rounded-lg text-zinc-500 hover:text-zinc-900 hover:bg-black/[0.05] transition-all cursor-pointer"
+              className="relative p-2 rounded-lg text-zinc-500 hover:text-zinc-900 hover:bg-black/[0.05] transition-all cursor-pointer min-w-[44px] min-h-[44px] flex items-center justify-center"
               title="Notifications"
             >
               <Bell className="w-4 h-4" />
               {pendingReportsCount > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-rose-500 text-[9px] font-bold text-white flex items-center justify-center ring-2 ring-white">
+                <span className="absolute top-1.5 right-1.5 w-3.5 h-3.5 rounded-full bg-rose-500 text-[9px] font-bold text-white flex items-center justify-center ring-2 ring-white">
                   {pendingReportsCount}
                 </span>
               )}
@@ -296,7 +310,7 @@ export const SuperAdminLayout: React.FC<SuperAdminLayoutProps> = ({
         </header>
 
         {/* Main Content Area */}
-        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto space-y-8">
+        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 pb-24 md:pb-8 max-w-7xl w-full mx-auto space-y-8">
           {activeTab === 'overview' && <AdminOverviewView onNavigateTab={handleTabChange} />}
           {activeTab === 'live' && <AdminLiveMonitoringView />}
           {activeTab === 'contracts' && <AdminContractsGovernance />}
@@ -323,6 +337,35 @@ export const SuperAdminLayout: React.FC<SuperAdminLayoutProps> = ({
       <NotificationDrawer
         isOpen={isNotificationsOpen}
         onClose={() => setIsNotificationsOpen(false)}
+      />
+
+      {/* Mobile Apps & Directory Drawer */}
+      <MobileAppsDrawer
+        isOpen={isAppsDrawerOpen}
+        onClose={() => setIsAppsDrawerOpen(false)}
+        activeTab={activeTab}
+        onNavigate={handleTabChange}
+        role="super_admin"
+      />
+
+      {/* Mobile Bottom Navigation Bar (Overview, Live, Moderation, Reports, Apps) */}
+      <MobileBottomNav
+        items={[
+          { id: 'overview', label: 'Overview', icon: Activity },
+          { id: 'live', label: 'Live', icon: Radio },
+          { id: 'moderation', label: 'Moderation', icon: ShieldCheck },
+          {
+            id: 'reports',
+            label: 'Reports',
+            icon: ShieldAlert,
+            badge: pendingReportsCount > 0 ? pendingReportsCount : undefined,
+          },
+          { id: 'apps', label: 'Apps', icon: LayoutGrid },
+        ]}
+        activeTab={activeTab}
+        onNavigate={handleTabChange}
+        onOpenAppsDrawer={() => setIsAppsDrawerOpen(true)}
+        accentColor="indigo"
       />
     </div>
   );

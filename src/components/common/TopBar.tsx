@@ -8,6 +8,7 @@ import {
   MessageSquare,
   LogOut,
   User,
+  LayoutGrid,
 } from 'lucide-react';
 import { useAppState } from '../../context/StateContext';
 import { IconButton } from '../ui/IconButton';
@@ -19,12 +20,14 @@ interface TopBarProps {
   onOpenCommandPalette: () => void;
   onOpenNotifications: () => void;
   onOpenMessages?: () => void;
+  onOpenAppsDrawer?: () => void;
 }
 
 export const TopBar: React.FC<TopBarProps> = ({
   onOpenCommandPalette,
   onOpenNotifications,
   onOpenMessages,
+  onOpenAppsDrawer,
 }) => {
   const {
     role,
@@ -81,8 +84,19 @@ export const TopBar: React.FC<TopBarProps> = ({
           </div>
         </button>
 
-        {/* Mobile & Tablet Search Icon Button */}
-        <div className="flex lg:hidden">
+        {/* Mobile & Tablet Search and All Apps Buttons */}
+        <div className="flex items-center gap-0.5 lg:hidden">
+          {onOpenAppsDrawer && (
+            <IconButton
+              aria-label="All Apps"
+              title="All Apps & Workspaces"
+              variant="ghost"
+              size="sm"
+              onClick={onOpenAppsDrawer}
+            >
+              <LayoutGrid className="w-4 h-4 text-[var(--primary)]" />
+            </IconButton>
+          )}
           <IconButton
             aria-label="Search"
             title="Search (⌘K)"

@@ -207,45 +207,45 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
 
         {/* Top: 3D Avatar, Name, Category, Location & Availability */}
         <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 relative z-10">
-          <div className="flex items-start gap-4">
+          <div className="flex items-start gap-3.5 sm:gap-4">
             <Avatar
               src={creator.avatar}
               name={creator.name}
               size="2xl"
               verified={creator.verified}
               ring="primary"
-              className="rounded-2xl"
+              className="rounded-2xl shrink-0"
             />
-            <div className="min-w-0 pt-0.5">
+            <div className="min-w-0 pt-0.5 space-y-1">
               <div className="flex items-center gap-2 flex-wrap">
-                <h1 className="text-xl sm:text-2xl font-bold text-zinc-900 font-display tracking-tight">
+                <h1 className="text-xl sm:text-2xl font-bold text-[var(--text-primary)] font-display tracking-tight">
                   {creator.name}
                 </h1>
                 {creator.verified && (
-                  <span className="text-emerald-700 font-bold text-sm" title="Verified Creator">
+                  <span className="text-emerald-500 font-bold text-sm" title="Verified Creator">
                     ✓
                   </span>
                 )}
               </div>
-              <p className="text-xs sm:text-sm text-zinc-700 font-medium mt-0.5">
+              <p className="text-xs sm:text-sm text-[var(--text-secondary)] font-medium">
                 {creator.category || 'Sneaker & Streetwear'} Creator
               </p>
-              <p className="text-xs text-zinc-500 mt-1 flex items-center gap-1.5 flex-wrap">
-                <MapPin className="w-3.5 h-3.5 text-zinc-500 shrink-0" />
+              <p className="text-xs text-[var(--text-muted)] flex items-center gap-1.5 flex-wrap">
+                <MapPin className="w-3.5 h-3.5 text-[var(--text-muted)] shrink-0" />
                 <span>{creator.location}</span>
                 <span>·</span>
-                <span className="text-emerald-700 font-semibold">{creator.availability}</span>
+                <span className="text-emerald-500 font-semibold">{creator.availability}</span>
               </p>
             </div>
           </div>
 
-          {/* Concise Action Buttons */}
-          <div className="flex items-center gap-2 flex-wrap self-stretch sm:self-auto justify-end">
+          {/* Concise Action Buttons: Responsive Grid on Mobile */}
+          <div className="grid grid-cols-2 sm:flex sm:items-center gap-2 w-full sm:w-auto shrink-0 pt-2 sm:pt-0">
             {isOwnProfile ? (
               <>
                 <button
                   onClick={() => setCreatorActiveTab('settings')}
-                  className="flex-1 sm:flex-none min-h-[40px] px-3.5 py-2 rounded-xl text-xs font-semibold bg-[var(--surface-elevated)] border border-[var(--border)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-subtle)] flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                  className="col-span-1 sm:col-auto min-h-[44px] px-3.5 py-2 rounded-xl text-xs font-semibold bg-[var(--surface-elevated)] border border-[var(--border)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-subtle)] flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                 >
                   <Edit3 className="w-3.5 h-3.5 text-[var(--text-tertiary)]" />
                   <span>Edit Profile</span>
@@ -253,7 +253,7 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
 
                 <button
                   onClick={handleShare}
-                  className="flex-1 sm:flex-none min-h-[40px] px-3.5 py-2 rounded-xl text-xs font-semibold bg-[var(--surface-elevated)] border border-[var(--border)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-subtle)] flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                  className="col-span-1 sm:col-auto min-h-[44px] px-3.5 py-2 rounded-xl text-xs font-semibold bg-[var(--surface-elevated)] border border-[var(--border)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-subtle)] flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                 >
                   <Share2 className="w-3.5 h-3.5 text-[var(--text-tertiary)]" />
                   <span>{copied ? 'Copied' : 'Share Profile'}</span>
@@ -261,15 +261,15 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
 
                 <button
                   onClick={() => setCreatorActiveTab('passport')}
-                  className="flex-1 sm:flex-none min-h-[40px] px-3.5 py-2 rounded-xl text-xs font-semibold border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/15 flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                  className="col-span-1 sm:col-auto min-h-[44px] px-3.5 py-2 rounded-xl text-xs font-semibold border border-emerald-500/30 bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500/15 flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                 >
-                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
                   <span>Passport</span>
                 </button>
 
                 <button
                   onClick={() => setIsAddShowcaseOpen(true)}
-                  className="flex-1 sm:flex-none min-h-[40px] px-4 py-2 rounded-xl bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-slate-950 text-xs font-semibold flex items-center justify-center gap-1.5 shadow-sm transition-colors cursor-pointer"
+                  className="col-span-1 sm:col-auto min-h-[44px] px-4 py-2 rounded-xl bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white text-xs font-semibold flex items-center justify-center gap-1.5 shadow-sm transition-colors cursor-pointer"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   <span>Add Work</span>
@@ -281,7 +281,7 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
                 {role === 'business' && (
                   <button
                     onClick={() => setIsApproachModalOpen(true)}
-                    className="flex-1 sm:flex-none min-h-[42px] px-4 py-2 rounded-xl bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-slate-950 text-xs font-semibold flex items-center justify-center gap-1.5 shadow-sm transition-all cursor-pointer active:scale-95"
+                    className="col-span-2 sm:col-auto min-h-[44px] px-4 py-2 rounded-xl bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white text-xs font-semibold flex items-center justify-center gap-1.5 shadow-sm transition-all cursor-pointer active:scale-95"
                   >
                     <Send className="w-3.5 h-3.5" />
                     <span>Invite Creator</span>
@@ -293,7 +293,7 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
                   connectionState === 'connected' ? (
                     <button
                       disabled
-                      className="flex-1 sm:flex-none min-h-[42px] px-3.5 py-2 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold flex items-center justify-center gap-1.5"
+                      className="col-span-2 sm:col-auto min-h-[44px] px-3.5 py-2 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-500 text-xs font-semibold flex items-center justify-center gap-1.5"
                     >
                       <Check className="w-4 h-4" />
                       <span>Connected</span>
@@ -301,7 +301,7 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
                   ) : connectionState === 'pending' ? (
                     <button
                       disabled
-                      className="flex-1 sm:flex-none min-h-[42px] px-3.5 py-2 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-semibold flex items-center justify-center gap-1.5"
+                      className="col-span-2 sm:col-auto min-h-[44px] px-3.5 py-2 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-500 text-xs font-semibold flex items-center justify-center gap-1.5"
                     >
                       <Clock className="w-4 h-4" />
                       <span>Pending</span>
@@ -309,7 +309,7 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
                   ) : (
                     <button
                       onClick={() => setIsConnectModalOpen(true)}
-                      className="flex-1 sm:flex-none min-h-[42px] px-4 py-2 rounded-xl bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-slate-950 text-xs font-semibold flex items-center justify-center gap-1.5 shadow-sm transition-all cursor-pointer"
+                      className="col-span-2 sm:col-auto min-h-[44px] px-4 py-2 rounded-xl bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white text-xs font-semibold flex items-center justify-center gap-1.5 shadow-sm transition-all cursor-pointer"
                     >
                       <UserPlus className="w-3.5 h-3.5" />
                       <span>Connect</span>
@@ -321,7 +321,7 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
                 {profileActions.canShare && (
                   <button
                     onClick={handleShare}
-                    className="flex-1 sm:flex-none min-h-[42px] px-3.5 py-2 rounded-xl bg-[var(--surface-elevated)] border border-[var(--border)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-subtle)] text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                    className="col-span-1 sm:col-auto min-h-[44px] px-3.5 py-2 rounded-xl bg-[var(--surface-elevated)] border border-[var(--border)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-subtle)] text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                   >
                     <Share2 className="w-3.5 h-3.5 text-[var(--text-tertiary)]" />
                     <span>Share Profile</span>
@@ -332,7 +332,7 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
                 {profileActions.canMessage && (
                   <button
                     onClick={handleMessageClick}
-                    className="flex-1 sm:flex-none min-h-[42px] px-3.5 py-2 rounded-xl bg-[var(--surface-elevated)] border border-[var(--border)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-subtle)] text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                    className="col-span-1 sm:col-auto min-h-[44px] px-3.5 py-2 rounded-xl bg-[var(--surface-elevated)] border border-[var(--border)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-subtle)] text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                   >
                     <MessageSquare className="w-3.5 h-3.5 text-[var(--text-tertiary)]" />
                     <span>Message</span>
@@ -343,47 +343,47 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
           </div>
         </div>
 
-        {/* 4 Spatial Reputation & Portfolio Pills */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-1 relative z-10">
+        {/* 4 Spatial Reputation & Portfolio Pills: 2x2 on Mobile, 4 on Desktop */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 pt-1 relative z-10">
           <div className="p-3 rounded-xl bg-[var(--surface-subtle)] border border-[var(--border)] text-center">
             <span className="text-base sm:text-lg font-bold font-mono text-[var(--primary)] block">
               96
             </span>
-            <span className="text-[11px] text-[var(--text-tertiary)] font-medium">Reputation</span>
+            <span className="text-[11px] text-[var(--text-muted)] font-medium">Reputation</span>
           </div>
           <div className="p-3 rounded-xl bg-[var(--surface-subtle)] border border-[var(--border)] text-center">
             <span className="text-base sm:text-lg font-bold font-mono text-[var(--text-primary)] block">
               {(creator.totalFollowers / 1000).toFixed(0)}K
             </span>
-            <span className="text-[11px] text-[var(--text-tertiary)] font-medium">Followers</span>
+            <span className="text-[11px] text-[var(--text-muted)] font-medium">Followers</span>
           </div>
           <div className="p-3 rounded-xl bg-[var(--surface-subtle)] border border-[var(--border)] text-center">
-            <span className="text-base sm:text-lg font-bold font-mono text-emerald-400 block">
+            <span className="text-base sm:text-lg font-bold font-mono text-emerald-500 block">
               {creator.avgEngagement}%
             </span>
-            <span className="text-[11px] text-[var(--text-tertiary)] font-medium">Engagement</span>
+            <span className="text-[11px] text-[var(--text-muted)] font-medium">Engagement</span>
           </div>
           <div className="p-3 rounded-xl bg-[var(--surface-subtle)] border border-[var(--border)] text-center">
             <span className="text-base sm:text-lg font-bold font-mono text-[var(--text-primary)] block">
               12
             </span>
-            <span className="text-[11px] text-[var(--text-tertiary)] font-medium">Campaigns</span>
+            <span className="text-[11px] text-[var(--text-muted)] font-medium">Campaigns</span>
           </div>
         </div>
       </SpatialCard>
 
-      {/* Spatial Tabs Pill Bar */}
-      <div className="flex items-center gap-1 p-1 rounded-xl bg-[var(--surface)] border border-[var(--border)] overflow-x-auto no-scrollbar">
+      {/* Spatial Tabs Pill Bar: Smooth Horizontal Scroll */}
+      <div className="flex items-center gap-1.5 p-1 rounded-2xl bg-[var(--surface)] border border-[var(--border)] overflow-x-auto no-scrollbar scroll-smooth">
         {tabs.map((tab) => {
           const isActive = activeTab === tab.id;
           return (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as any)}
-              className={`px-3.5 py-2 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
+              className={`min-h-[44px] px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition-all cursor-pointer select-none shrink-0 ${
                 isActive
-                  ? 'bg-[var(--surface-elevated)] text-[var(--text-primary)] shadow-sm'
-                  : 'text-[var(--text-tertiary)] hover:text-[var(--text-primary)]'
+                  ? 'bg-[var(--surface-elevated)] text-[var(--text-primary)] shadow-sm border border-[var(--border)]'
+                  : 'text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-muted)]'
               }`}
             >
               {tab.label}

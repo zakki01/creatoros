@@ -71,23 +71,23 @@ export const BusinessOverview: React.FC<BusinessOverviewProps> = ({
          ───────────────────────────────────────────────────────────── */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-[var(--text-primary)] font-display tracking-tight">
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-[var(--text-primary)] font-display tracking-tight">
             {greeting}, {workspace.name}
           </h1>
-          <p className="text-xs text-[var(--text-secondary)] mt-1">
+          <p className="text-xs sm:text-sm text-[var(--text-secondary)] mt-1">
             {isFirstTimeBrand
               ? "Find creators, launch a campaign & manage everything from one workspace."
               : "Here is what needs your attention today across active campaigns and creators."}
           </p>
         </div>
 
-        <div className="flex items-center gap-2.5">
+        <div className="grid grid-cols-2 sm:flex sm:items-center gap-2.5 w-full sm:w-auto shrink-0">
           <Button
             variant="outline"
             size="sm"
             onClick={() => onNavigate('discover')}
             leftIcon={<Compass className="w-3.5 h-3.5" />}
-            className="text-xs"
+            className="text-xs min-h-[44px] justify-center"
           >
             Discover Creators
           </Button>
@@ -97,7 +97,7 @@ export const BusinessOverview: React.FC<BusinessOverviewProps> = ({
             size="sm"
             onClick={onOpenCreateCampaign}
             leftIcon={<Plus className="w-3.5 h-3.5" />}
-            className="text-xs"
+            className="text-xs min-h-[44px] justify-center"
           >
             Create Campaign
           </Button>
@@ -110,7 +110,7 @@ export const BusinessOverview: React.FC<BusinessOverviewProps> = ({
       {isFirstTimeBrand && (
         <div className="space-y-6">
           {/* Welcome Hero / Primary Task Callout */}
-          <div className="p-6 sm:p-8 rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-xs space-y-4">
+          <div className="p-5 sm:p-8 rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-xs space-y-4">
             <div className="max-w-xl space-y-2">
               <span className="text-[11px] font-mono uppercase tracking-wider text-[var(--accent)] font-semibold flex items-center gap-1.5">
                 <Sparkles className="w-3.5 h-3.5 text-[var(--accent)]" />
@@ -124,13 +124,13 @@ export const BusinessOverview: React.FC<BusinessOverviewProps> = ({
               </p>
             </div>
 
-            <div className="flex flex-wrap items-center gap-3 pt-2">
+            <div className="grid grid-cols-2 sm:flex sm:items-center gap-3 pt-2 w-full sm:w-auto">
               <Button
                 variant="primary"
                 size="md"
                 onClick={onOpenCreateCampaign}
                 leftIcon={<Plus className="w-4 h-4" />}
-                className="text-xs font-semibold"
+                className="text-xs font-semibold min-h-[44px] justify-center"
               >
                 Create Campaign
               </Button>
@@ -139,7 +139,7 @@ export const BusinessOverview: React.FC<BusinessOverviewProps> = ({
                 size="md"
                 onClick={() => onNavigate('discover')}
                 leftIcon={<Compass className="w-4 h-4" />}
-                className="text-xs"
+                className="text-xs min-h-[44px] justify-center"
               >
                 Discover Creators
               </Button>
@@ -147,7 +147,7 @@ export const BusinessOverview: React.FC<BusinessOverviewProps> = ({
           </div>
 
           {/* Calm, Linear Onboarding Progress Checklist */}
-          <div className="p-5 sm:p-6 rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-xs space-y-4">
+          <div className="p-4 sm:p-6 rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-xs space-y-4">
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-xs font-bold uppercase tracking-wider text-[var(--text-primary)]">
@@ -179,7 +179,7 @@ export const BusinessOverview: React.FC<BusinessOverviewProps> = ({
               {/* Step 2 */}
               <div
                 onClick={() => onNavigate('discover')}
-                className="flex items-center justify-between p-3 rounded-xl bg-[var(--surface)] hover:bg-[var(--surface-elevated)] border border-[var(--border)] text-xs cursor-pointer transition-colors group"
+                className="flex items-center justify-between p-3 rounded-xl bg-[var(--surface)] hover:bg-[var(--surface-elevated)] border border-[var(--border)] text-xs cursor-pointer transition-colors group min-h-[44px]"
               >
                 <div className="flex items-center gap-3">
                   <Circle className="w-4 h-4 text-[var(--text-muted)] group-hover:text-[var(--accent)] transition-colors shrink-0" />
@@ -196,7 +196,7 @@ export const BusinessOverview: React.FC<BusinessOverviewProps> = ({
               {/* Step 3 */}
               <div
                 onClick={onOpenCreateCampaign}
-                className="flex items-center justify-between p-3 rounded-xl bg-[var(--surface)] hover:bg-[var(--surface-elevated)] border border-[var(--border)] text-xs cursor-pointer transition-colors group"
+                className="flex items-center justify-between p-3 rounded-xl bg-[var(--surface)] hover:bg-[var(--surface-elevated)] border border-[var(--border)] text-xs cursor-pointer transition-colors group min-h-[44px]"
               >
                 <div className="flex items-center gap-3">
                   <Circle className="w-4 h-4 text-[var(--text-muted)] group-hover:text-[var(--accent)] transition-colors shrink-0" />
@@ -213,7 +213,7 @@ export const BusinessOverview: React.FC<BusinessOverviewProps> = ({
               {/* Step 4 */}
               <div
                 onClick={() => onNavigate('discover')}
-                className="flex items-center justify-between p-3 rounded-xl bg-[var(--surface)] hover:bg-[var(--surface-elevated)] border border-[var(--border)] text-xs cursor-pointer transition-colors group"
+                className="flex items-center justify-between p-3 rounded-xl bg-[var(--surface)] hover:bg-[var(--surface-elevated)] border border-[var(--border)] text-xs cursor-pointer transition-colors group min-h-[44px]"
               >
                 <div className="flex items-center gap-3">
                   <Circle className="w-4 h-4 text-[var(--text-muted)] group-hover:text-[var(--accent)] transition-colors shrink-0" />
@@ -228,7 +228,7 @@ export const BusinessOverview: React.FC<BusinessOverviewProps> = ({
               </div>
 
               {/* Step 5 */}
-              <div className="flex items-center justify-between p-3 rounded-xl bg-[var(--surface)] border border-[var(--border)]/60 text-xs opacity-75">
+              <div className="flex items-center justify-between p-3 rounded-xl bg-[var(--surface)] border border-[var(--border)]/60 text-xs opacity-75 min-h-[44px]">
                 <div className="flex items-center gap-3">
                   <Circle className="w-4 h-4 text-[var(--text-muted)] shrink-0" />
                   <span className="text-[var(--text-secondary)]">Start your first collaboration</span>
@@ -244,40 +244,40 @@ export const BusinessOverview: React.FC<BusinessOverviewProps> = ({
           3. ACTIVE ACCOUNT: COMPACT METRICS STRIP (REPLACES 4 GIANT CARDS)
          ───────────────────────────────────────────────────────────── */}
       {!isFirstTimeBrand && (
-        <div className="p-4 sm:p-5 rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-xs">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 divide-y sm:divide-y-0 sm:divide-x divide-[var(--border)]">
-            <div className="pt-2 sm:pt-0 sm:px-4 first:pl-0">
-              <span className="text-[11px] font-medium text-[var(--text-muted)] uppercase tracking-wider block">
+        <div className="p-3.5 sm:p-5 rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-xs">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
+            <div className="p-3 sm:p-4 rounded-xl bg-[var(--surface-muted)]/50 border border-[var(--border)]/60 flex flex-col justify-between">
+              <span className="text-[10px] sm:text-[11px] font-medium text-[var(--text-muted)] uppercase tracking-wider block">
                 Active Campaigns
               </span>
-              <span className="text-xl sm:text-2xl font-bold font-mono text-[var(--text-primary)] mt-1 block">
+              <span className="text-lg sm:text-2xl font-bold font-mono text-[var(--text-primary)] mt-1 block">
                 {activeCampaigns.length}
               </span>
             </div>
 
-            <div className="pt-2 sm:pt-0 sm:px-4">
-              <span className="text-[11px] font-medium text-[var(--text-muted)] uppercase tracking-wider block">
+            <div className="p-3 sm:p-4 rounded-xl bg-[var(--surface-muted)]/50 border border-[var(--border)]/60 flex flex-col justify-between">
+              <span className="text-[10px] sm:text-[11px] font-medium text-[var(--text-muted)] uppercase tracking-wider block">
                 Creators in Roster
               </span>
-              <span className="text-xl sm:text-2xl font-bold font-mono text-[var(--text-primary)] mt-1 block">
+              <span className="text-lg sm:text-2xl font-bold font-mono text-[var(--text-primary)] mt-1 block">
                 {creators.length}
               </span>
             </div>
 
-            <div className="pt-2 sm:pt-0 sm:px-4">
-              <span className="text-[11px] font-medium text-[var(--text-muted)] uppercase tracking-wider block">
+            <div className="p-3 sm:p-4 rounded-xl bg-[var(--surface-muted)]/50 border border-[var(--border)]/60 flex flex-col justify-between">
+              <span className="text-[10px] sm:text-[11px] font-medium text-[var(--text-muted)] uppercase tracking-wider block">
                 Pending Approvals
               </span>
-              <span className="text-xl sm:text-2xl font-bold font-mono text-[var(--accent)] mt-1 block">
+              <span className="text-lg sm:text-2xl font-bold font-mono text-[var(--accent)] mt-1 block">
                 {pendingApprovals.length}
               </span>
             </div>
 
-            <div className="pt-2 sm:pt-0 sm:px-4 last:pr-0">
-              <span className="text-[11px] font-medium text-[var(--text-muted)] uppercase tracking-wider block">
+            <div className="p-3 sm:p-4 rounded-xl bg-[var(--surface-muted)]/50 border border-[var(--border)]/60 flex flex-col justify-between">
+              <span className="text-[10px] sm:text-[11px] font-medium text-[var(--text-muted)] uppercase tracking-wider block">
                 Budget / Spend
               </span>
-              <span className="text-xl sm:text-2xl font-bold font-mono text-[var(--text-primary)] mt-1 block">
+              <span className="text-lg sm:text-2xl font-bold font-mono text-[var(--text-primary)] mt-1 block">
                 ₹{(totalSpent / 100000).toFixed(1)}L{' '}
                 <span className="text-xs text-[var(--text-muted)] font-normal">
                   / ₹{(totalBudget / 100000).toFixed(1)}L
@@ -329,12 +329,12 @@ export const BusinessOverview: React.FC<BusinessOverviewProps> = ({
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2 shrink-0 self-end sm:self-center">
+                <div className="flex items-center justify-end gap-2 shrink-0 w-full sm:w-auto pt-2 sm:pt-0 border-t border-[var(--border)]/40 sm:border-t-0">
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={() => resolveAttentionItem(item.id)}
-                    className="text-xs text-[var(--text-muted)] hover:text-[var(--text-primary)] cursor-pointer"
+                    className="text-xs text-[var(--text-muted)] hover:text-[var(--text-primary)] cursor-pointer min-h-[40px]"
                   >
                     Resolve
                   </Button>
@@ -342,7 +342,7 @@ export const BusinessOverview: React.FC<BusinessOverviewProps> = ({
                     variant="primary"
                     size="sm"
                     onClick={() => handleAttentionAction(item)}
-                    className="text-xs cursor-pointer"
+                    className="text-xs cursor-pointer min-h-[40px]"
                   >
                     {item.actionType === 'review'
                       ? 'Review'

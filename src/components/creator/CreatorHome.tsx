@@ -122,13 +122,14 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
           </div>
         </div>
 
-        {/* Clean Tactile Quick Actions */}
-        <div className="flex items-center gap-2">
+        {/* Clean Tactile Quick Actions: Responsive Grid on Mobile */}
+        <div className="grid grid-cols-2 sm:flex sm:items-center gap-2 w-full sm:w-auto shrink-0">
           <Button
             variant="secondary"
             size="md"
             leftIcon={<ShieldCheck className="w-4 h-4 text-emerald-600" />}
             onClick={() => onNavigate('passport')}
+            className="w-full sm:w-auto min-h-[44px] justify-center"
           >
             Passport
           </Button>
@@ -138,6 +139,7 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
             size="md"
             leftIcon={<Plus className="w-4 h-4" />}
             onClick={onOpenSubmissionModal}
+            className="w-full sm:w-auto min-h-[44px] justify-center"
           >
             Submit Work
           </Button>

@@ -243,7 +243,7 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id as TabType)}
-            className={`min-h-[38px] px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap ${
+            className={`min-h-[44px] px-3.5 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
               activeTab === tab.id
                 ? 'bg-[var(--surface)] text-[var(--text-primary)] shadow-xs border border-[var(--border)]'
                 : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
@@ -268,7 +268,7 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
       {/* 3. Main Workspace: 2-Column Responsive Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
         {/* Left Column: Spatial Contracts List (5 Cols) */}
-        <div className="lg:col-span-5 space-y-2.5">
+        <div className={`lg:col-span-5 space-y-2.5 ${selectedContract ? 'hidden lg:block' : 'block'}`}>
           {filteredContracts.length === 0 ? (
             <SpatialEmptyState
               objectType="document"
@@ -376,6 +376,18 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
         {/* Right Column: Progressive Disclosure Detail View (7 Cols) */}
         {selectedContract ? (
           <div className="lg:col-span-7 rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-sm p-4 sm:p-6 space-y-6 text-xs text-[var(--text-secondary)] relative overflow-hidden">
+            {/* Mobile Back Button */}
+            <div className="flex lg:hidden pb-1">
+              <button
+                type="button"
+                onClick={() => setSelectedContractId(null)}
+                className="min-h-[44px] px-3.5 py-2 rounded-xl bg-[var(--surface-muted)] text-[var(--text-primary)] border border-[var(--border)] text-xs font-semibold flex items-center gap-2 cursor-pointer transition-colors"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                <span>← Back to contracts list</span>
+              </button>
+            </div>
+
             {/* Header: Brand, Project, Status */}
             <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 border-b border-[var(--border)] pb-4">
               <div>
