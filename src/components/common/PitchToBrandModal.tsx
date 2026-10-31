@@ -232,7 +232,7 @@ export const PitchToBrandModal: React.FC<PitchToBrandModalProps> = ({
                 <h3 className="text-base font-bold text-[var(--text-primary)] font-display">
                   Pitch to {brandData.name}
                 </h3>
-                <ShieldCheck className="w-4 h-4 text-[#007E93]" />
+                <ShieldCheck className="w-4 h-4 text-[var(--primary)]" />
               </div>
               <p className="text-xs text-[var(--text-muted)] font-mono">Direct Creator Pitch Pipeline</p>
             </div>
@@ -262,7 +262,7 @@ export const PitchToBrandModal: React.FC<PitchToBrandModalProps> = ({
               <img
                 src={currentCreator.avatar}
                 alt={currentCreator.name}
-                className="w-11 h-11 rounded-2xl object-cover ring-1 ring-[#007E93]/30"
+                className="w-11 h-11 rounded-2xl object-cover ring-1 ring-[var(--primary)]/30"
               />
               <div>
                 <div className="flex items-center gap-1.5">
@@ -288,7 +288,7 @@ export const PitchToBrandModal: React.FC<PitchToBrandModalProps> = ({
               value={campaignTitle}
               onChange={(e) => setCampaignTitle(e.target.value)}
               required
-              className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-[var(--border)] bg-[var(--surface)] text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-[#007E93]"
+              className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-[var(--border)] bg-[var(--surface)] text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]"
               placeholder="e.g. Summer Drop 2026 Ambassador & Editorial Reels"
             />
           </div>
@@ -309,7 +309,7 @@ export const PitchToBrandModal: React.FC<PitchToBrandModalProps> = ({
               onChange={(e) => setPitchMessage(e.target.value)}
               required
               placeholder={`Hi ${brandData.name} team, I love your latest collection aesthetic! Here is how I plan to create a high-conversion 4K transition reel styling your core pieces with authentic storytelling...`}
-              className="w-full p-3.5 text-xs rounded-2xl border border-[var(--border)] bg-[var(--surface)] text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-[#007E93] resize-none leading-relaxed"
+              className="w-full p-3.5 text-xs rounded-2xl border border-[var(--border)] bg-[var(--surface)] text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)] resize-none leading-relaxed"
             />
           </div>
 
@@ -321,9 +321,9 @@ export const PitchToBrandModal: React.FC<PitchToBrandModalProps> = ({
             </label>
 
             {uploadedFile ? (
-              <div className="p-3 rounded-2xl bg-[#007E93]/15 border border-[#007E93]/30 flex items-center justify-between">
+              <div className="p-3 rounded-2xl bg-[var(--primary)]/15 border border-[var(--primary)]/30 flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-xl bg-[#007E93]/15 flex items-center justify-center text-[#007E93]">
+                  <div className="w-8 h-8 rounded-xl bg-[var(--primary)]/15 flex items-center justify-center text-[var(--primary)]">
                     <FileText className="w-4 h-4" />
                   </div>
                   <div>
@@ -340,7 +340,7 @@ export const PitchToBrandModal: React.FC<PitchToBrandModalProps> = ({
                 </button>
               </div>
             ) : (
-              <label className="border-2 border-dashed border-[var(--border)] hover:border-[#007E93] rounded-2xl p-4 flex flex-col items-center justify-center cursor-pointer transition-colors bg-[var(--surface-muted)] hover:bg-[var(--surface-recessed)]">
+              <label className="border-2 border-dashed border-[var(--border)] hover:border-[var(--primary)] rounded-2xl p-4 flex flex-col items-center justify-center cursor-pointer transition-colors bg-[var(--surface-muted)] hover:bg-[var(--surface-recessed)]">
                 <Upload className="w-5 h-5 text-[var(--text-muted)] mb-1" />
                 <span className="text-xs font-medium text-[var(--text-primary)]">
                   Click to upload media kit / pitch deck
@@ -377,7 +377,7 @@ export const PitchToBrandModal: React.FC<PitchToBrandModalProps> = ({
                     onClick={() => togglePortfolio(p.title)}
                     className={`p-2.5 rounded-xl border flex items-center gap-2.5 cursor-pointer transition-all ${
                       isSelected
-                        ? 'bg-[#007E93]/10 border-[#007E93] text-[var(--text-primary)]'
+                        ? 'bg-[var(--primary)]/10 border-[var(--primary)] text-[var(--text-primary)]'
                         : 'bg-[var(--surface-muted)] border-[var(--border)] text-[var(--text-secondary)] hover:border-[var(--border)]'
                     }`}
                   >
@@ -394,7 +394,7 @@ export const PitchToBrandModal: React.FC<PitchToBrandModalProps> = ({
                     </div>
                     <div
                       className={`w-4 h-4 rounded-full flex items-center justify-center shrink-0 ${
-                        isSelected ? 'bg-[#007E93] text-white' : 'border border-zinc-400'
+                        isSelected ? 'bg-[var(--primary)] text-white' : 'border border-zinc-400'
                       }`}
                     >
                       {isSelected && <CheckCircle className="w-3.5 h-3.5" />}
@@ -417,7 +417,7 @@ export const PitchToBrandModal: React.FC<PitchToBrandModalProps> = ({
                   value={proposedRate}
                   onChange={(e) => setProposedRate(Number(e.target.value))}
                   required
-                  className="w-full pl-7 pr-3.5 py-2.5 text-xs font-mono font-semibold rounded-xl border border-[var(--border)] bg-[var(--surface)] text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-[#007E93]"
+                  className="w-full pl-7 pr-3.5 py-2.5 text-xs font-mono font-semibold rounded-xl border border-[var(--border)] bg-[var(--surface)] text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]"
                 />
               </div>
             </div>
@@ -427,7 +427,7 @@ export const PitchToBrandModal: React.FC<PitchToBrandModalProps> = ({
               <select
                 value={availability}
                 onChange={(e) => setAvailability(e.target.value)}
-                className="w-full px-3 py-2.5 text-xs rounded-xl border border-[var(--border)] bg-[var(--surface)] text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-[#007E93]"
+                className="w-full px-3 py-2.5 text-xs rounded-xl border border-[var(--border)] bg-[var(--surface)] text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]"
               >
                 <option value="Available Now (Within 48h)">Available Now (Within 48h)</option>
                 <option value="Next 1-2 Weeks">Next 1-2 Weeks</option>
@@ -452,7 +452,7 @@ export const PitchToBrandModal: React.FC<PitchToBrandModalProps> = ({
                     onClick={() => toggleDeliverable(del)}
                     className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer ${
                       isSelected
-                        ? 'bg-[#007E93] text-white shadow-xs'
+                        ? 'bg-[var(--primary)] text-white shadow-xs'
                         : 'bg-[var(--surface-muted)] hover:bg-[var(--surface-recessed)] text-[var(--text-secondary)] border border-[var(--border)]'
                     }`}
                   >
@@ -483,7 +483,7 @@ export const PitchToBrandModal: React.FC<PitchToBrandModalProps> = ({
               type="button"
               onClick={handleSubmit}
               disabled={isSubmitting}
-              className="px-5 py-2.5 text-xs font-semibold rounded-xl bg-[#007E93] hover:bg-[#006779] text-white flex items-center gap-2 shadow-sm transition-all cursor-pointer active:scale-95 disabled:opacity-50"
+              className="px-5 py-2.5 text-xs font-semibold rounded-xl bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white flex items-center gap-2 shadow-sm transition-all cursor-pointer active:scale-95 disabled:opacity-50"
             >
               <Send className="w-3.5 h-3.5" />
               <span>{isSubmitting ? 'Delivering Pitch...' : 'Send Pitch to Brand'}</span>

@@ -70,14 +70,14 @@ export const ProUpgradeModal: React.FC = () => {
           </div>
 
           {/* Pro Plan */}
-          <div className="relative rounded-xl p-5 border-2 border-[#007E93]/30 bg-gradient-to-b from-[#F7FCFD] to-[#EAF6F8] flex flex-col justify-between shadow-lg shadow-slate-300/50">
-            <div className="absolute -top-2.5 right-4 px-2 py-0.5 rounded-full bg-[#007E93] text-white text-[10px] font-bold uppercase tracking-wider">
+          <div className="relative rounded-xl p-5 border-2 border-[var(--primary)]/30 bg-gradient-to-b from-[#F7FCFD] to-[#EAF6F8] flex flex-col justify-between shadow-lg shadow-slate-300/50">
+            <div className="absolute -top-2.5 right-4 px-2 py-0.5 rounded-full bg-[var(--primary)] text-white text-[10px] font-bold uppercase tracking-wider">
               Most Popular
             </div>
             <div>
               <div className="flex items-center justify-between mb-2">
-                <h3 className="text-sm font-semibold text-[#007E93] uppercase tracking-wider flex items-center gap-1.5">
-                  <Sparkles className="w-4 h-4 text-[#007E93]" />
+                <h3 className="text-sm font-semibold text-[var(--primary)] uppercase tracking-wider flex items-center gap-1.5">
+                  <Sparkles className="w-4 h-4 text-[var(--primary)]" />
                   <span>CreatorOS Pro</span>
                 </h3>
               </div>
@@ -103,10 +103,10 @@ export const ProUpgradeModal: React.FC = () => {
                 </li>
               </ul>
             </div>
-            <div className="mt-6 pt-4 border-t border-[#00B4D8]/20">
+            <div className="mt-6 pt-4 border-t border-[var(--primary)]/20">
               <button
                 onClick={upgradeToPro}
-                className="w-full py-2.5 px-4 rounded-lg bg-[#007E93] hover:bg-[#006779] text-white text-xs font-semibold flex items-center justify-center gap-2 transition-all shadow-md shadow-[#007E93]/20 active:scale-[0.98]"
+                className="w-full py-2.5 px-4 rounded-lg bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white text-xs font-semibold flex items-center justify-center gap-2 transition-all shadow-md shadow-[var(--primary)]/20 active:scale-[0.98]"
               >
                 <Rocket className="w-3.5 h-3.5" />
                 <span>Activate Pro Membership</span>

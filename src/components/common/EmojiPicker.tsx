@@ -370,7 +370,7 @@ export const EmojiPicker: React.FC<EmojiPickerProps> = ({
             data-testid="picker-tab-emoji"
             className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
               activeTab === 'emoji'
-                ? 'bg-gradient-to-b from-[#078FA5] to-[#006C80] text-white shadow-[0_4px_12px_rgba(0,108,128,0.22)]'
+                ? 'bg-gradient-to-b from-[var(--primary)] to-[var(--primary-hover)] text-white shadow-[0_4px_12px_rgba(0,108,128,0.22)]'
                 : 'text-zinc-500 hover:text-zinc-800'
             }`}
           >
@@ -386,7 +386,7 @@ export const EmojiPicker: React.FC<EmojiPickerProps> = ({
             data-testid="picker-tab-gif"
             className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
               activeTab === 'gif'
-                ? 'bg-gradient-to-b from-[#078FA5] to-[#006C80] text-white shadow-[0_4px_12px_rgba(0,108,128,0.22)]'
+                ? 'bg-gradient-to-b from-[var(--primary)] to-[var(--primary-hover)] text-white shadow-[0_4px_12px_rgba(0,108,128,0.22)]'
                 : 'text-zinc-500 hover:text-zinc-800'
             }`}
           >
@@ -437,7 +437,7 @@ export const EmojiPicker: React.FC<EmojiPickerProps> = ({
                 onClick={() => setActiveCategory('recent')}
                 className={`p-1.5 rounded-lg text-xs transition-colors cursor-pointer ${
                   activeCategory === 'recent'
-                    ? 'bg-[#00B4D8]/20 text-[#007E93] border border-[#00B4D8]/30'
+                    ? 'bg-[var(--primary)]/20 text-[var(--primary)] border border-[var(--primary)]/30'
                     : 'text-zinc-500 hover:text-zinc-800 hover:bg-zinc-100/60'
                 }`}
                 title="Recent"
@@ -454,7 +454,7 @@ export const EmojiPicker: React.FC<EmojiPickerProps> = ({
                     onClick={() => setActiveCategory(cat.id)}
                     className={`p-1.5 rounded-lg text-xs transition-colors cursor-pointer ${
                       isActive
-                        ? 'bg-[#00B4D8]/20 text-[#007E93] border border-[#00B4D8]/30'
+                        ? 'bg-[var(--primary)]/20 text-[var(--primary)] border border-[var(--primary)]/30'
                         : 'text-zinc-500 hover:text-zinc-800 hover:bg-zinc-100/60'
                     }`}
                     title={cat.name}
@@ -553,7 +553,7 @@ export const EmojiPicker: React.FC<EmojiPickerProps> = ({
               type="button"
               onClick={() => gifFileInputRef.current?.click()}
               data-testid="picker-upload-gif-btn"
-              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-[#00B4D8]/10 hover:bg-[#007E93]/25 border border-[#00B4D8]/30 text-[#007E93] text-[11px] font-semibold transition-all cursor-pointer shrink-0"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-[var(--primary)]/10 hover:bg-[var(--primary)]/25 border border-[var(--primary)]/30 text-[var(--primary)] text-[11px] font-semibold transition-all cursor-pointer shrink-0"
               title="Upload a .gif from your device"
             >
               <Upload className="w-3.5 h-3.5" />
@@ -616,7 +616,7 @@ export const EmojiPicker: React.FC<EmojiPickerProps> = ({
                   alt={stagedUploadGif.title || 'GIF Preview'}
                   className="max-h-36 w-auto object-contain"
                 />
-                <span className="absolute top-1.5 left-1.5 px-1.5 py-0.5 rounded bg-black/75 text-[9px] font-bold text-[#007E93] border border-black/[0.08]">
+                <span className="absolute top-1.5 left-1.5 px-1.5 py-0.5 rounded bg-black/75 text-[9px] font-bold text-[var(--primary)] border border-black/[0.08]">
                   GIF PREVIEW
                 </span>
               </div>
@@ -632,7 +632,7 @@ export const EmojiPicker: React.FC<EmojiPickerProps> = ({
                   type="button"
                   onClick={handleConfirmStagedGif}
                   data-testid="picker-confirm-uploaded-gif"
-                  className="flex items-center gap-1 px-3 py-1 rounded-lg bg-[#007E93] hover:bg-[#006779] text-white text-xs font-semibold shadow-sm transition-all cursor-pointer"
+                  className="flex items-center gap-1 px-3 py-1 rounded-lg bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white text-xs font-semibold shadow-sm transition-all cursor-pointer"
                 >
                   <Check className="w-3.5 h-3.5" />
                   <span>Use GIF</span>
@@ -669,7 +669,7 @@ export const EmojiPicker: React.FC<EmojiPickerProps> = ({
                         }}
                         className={`px-2.5 py-1 rounded-lg text-[11px] font-medium whitespace-nowrap transition-all cursor-pointer flex items-center gap-1 ${
                           active
-                            ? 'bg-[#007E93]/10 text-[#007E93] border border-[#00B4D8]/35'
+                            ? 'bg-[var(--primary)]/10 text-[var(--primary)] border border-[var(--primary)]/35'
                             : 'text-zinc-500 hover:text-zinc-800 hover:bg-zinc-100/60'
                         }`}
                       >
@@ -719,7 +719,7 @@ export const EmojiPicker: React.FC<EmojiPickerProps> = ({
                         <span className="text-[10px] font-medium text-white truncate">
                           {gif.title}
                         </span>
-                        <span className="text-[8px] font-bold px-1 py-0.2 rounded bg-black/70 text-[#007E93] border border-black/[0.08] shrink-0">
+                        <span className="text-[8px] font-bold px-1 py-0.2 rounded bg-black/70 text-[var(--primary)] border border-black/[0.08] shrink-0">
                           GIF
                         </span>
                       </div>

@@ -125,7 +125,7 @@ export const ShowcaseMediaViewerModal: React.FC<ShowcaseMediaViewerModalProps> =
                 <span className="px-2.5 py-1 rounded-full text-xs font-mono font-bold bg-black/70 backdrop-blur-md border border-white/20 text-white shadow-md">
                   {activeVideoIndex + 1} / {totalVideos}
                 </span>
-                <span className="px-2 py-1 rounded-full text-[10px] font-mono uppercase bg-[#007E93]/80 backdrop-blur-md text-white font-semibold">
+                <span className="px-2 py-1 rounded-full text-[10px] font-mono uppercase bg-[var(--primary)]/80 backdrop-blur-md text-white font-semibold">
                   {project.deliverableFormat}
                 </span>
               </div>
@@ -168,7 +168,7 @@ export const ShowcaseMediaViewerModal: React.FC<ShowcaseMediaViewerModalProps> =
           <div className="space-y-4">
             {/* Title & Client */}
             <div>
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono uppercase tracking-wider bg-[#007E93]/20 text-cyan-300 border border-cyan-500/30 mb-2">
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono uppercase tracking-wider bg-[var(--primary)]/20 text-cyan-300 border border-cyan-500/30 mb-2">
                 <span>{project.category}</span>
               </div>
               <h2 className="text-lg sm:text-xl font-bold text-white font-display">
@@ -239,7 +239,7 @@ export const ShowcaseMediaViewerModal: React.FC<ShowcaseMediaViewerModalProps> =
                         onClick={() => setActiveVideoIndex(idx)}
                         className={`w-full flex items-center gap-2.5 p-2 rounded-xl text-left transition-all cursor-pointer ${
                           isSelected
-                            ? 'bg-[#007E93]/25 border border-[#00F0FF]/50 text-white'
+                            ? 'bg-[var(--primary)]/25 border border-[#00F0FF]/50 text-white'
                             : 'bg-black/30 hover:bg-black/50 border border-white/5 text-zinc-300'
                         }`}
                       >

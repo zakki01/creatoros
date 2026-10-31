@@ -129,7 +129,7 @@ export const CreatorDiscovery: React.FC = () => {
             placeholder="Search creators by name, handle, category, location, or keywords..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-[var(--input)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)] pl-10 pr-4 py-2.5 text-xs rounded-2xl border border-[var(--border)] focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] focus:outline-none transition-colors"
+            className="w-full bg-[var(--input)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)] pl-10 pr-4 py-2.5 text-xs rounded-2xl border border-[var(--border)] focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] focus:outline-none transition-colors"
           />
         </div>
 
@@ -162,7 +162,7 @@ export const CreatorDiscovery: React.FC = () => {
           <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
-            className="bg-[var(--input)] text-[var(--text-primary)] text-xs px-3 py-2 rounded-xl border border-[var(--border)] shadow-[inset_0_1px_2px_rgba(0,0,0,0.1)] focus:outline-none focus:ring-2 focus:ring-[#007E93]/20 focus:border-[#007E93]"
+            className="bg-[var(--input)] text-[var(--text-primary)] text-xs px-3 py-2 rounded-xl border border-[var(--border)] shadow-[inset_0_1px_2px_rgba(0,0,0,0.1)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)]"
           >
             {categories.map((c) => (
               <option key={c} value={c}>
@@ -175,7 +175,7 @@ export const CreatorDiscovery: React.FC = () => {
           <select
             value={selectedLocation}
             onChange={(e) => setSelectedLocation(e.target.value)}
-            className="bg-[var(--input)] text-[var(--text-primary)] text-xs px-3 py-2 rounded-xl border border-[var(--border)] shadow-[inset_0_1px_2px_rgba(0,0,0,0.1)] focus:outline-none focus:ring-2 focus:ring-[#007E93]/20 focus:border-[#007E93]"
+            className="bg-[var(--input)] text-[var(--text-primary)] text-xs px-3 py-2 rounded-xl border border-[var(--border)] shadow-[inset_0_1px_2px_rgba(0,0,0,0.1)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)]"
           >
             {locations.map((l) => (
               <option key={l} value={l}>
@@ -188,7 +188,7 @@ export const CreatorDiscovery: React.FC = () => {
           <select
             value={selectedReliability}
             onChange={(e) => setSelectedReliability(e.target.value)}
-            className="bg-[var(--input)] text-[var(--text-primary)] text-xs px-3 py-2 rounded-xl border border-[var(--border)] shadow-[inset_0_1px_2px_rgba(0,0,0,0.1)] focus:outline-none focus:ring-2 focus:ring-[#007E93]/20 focus:border-[#007E93]"
+            className="bg-[var(--input)] text-[var(--text-primary)] text-xs px-3 py-2 rounded-xl border border-[var(--border)] shadow-[inset_0_1px_2px_rgba(0,0,0,0.1)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)]"
           >
             <option value="All">All Reliability Scores</option>
             <option value="95+">Top Tier (&gt;95% On-Time)</option>
@@ -229,7 +229,7 @@ export const CreatorDiscovery: React.FC = () => {
                           {creator.name}
                         </h3>
                         {creator.verified && (
-                          <ShieldCheck className="w-4 h-4 text-[#007E93] shrink-0" />
+                          <ShieldCheck className="w-4 h-4 text-[var(--primary)] shrink-0" />
                         )}
                       </div>
                       <p className="text-[11px] text-[var(--text-muted)] font-mono">@{creator.handle}</p>
@@ -242,18 +242,18 @@ export const CreatorDiscovery: React.FC = () => {
                   {/* AI Match Fit Badge (Clickable to show WHY) */}
                   <button
                     onClick={() => setExpandedWhyId(isWhyExpanded ? null : creator.id)}
-                    className="flex items-center gap-1 px-2.5 py-1 rounded-xl bg-[#00B4D8]/10 hover:bg-[#00B4D8]/20 border border-[#00B4D8]/30 text-[#00B4D8] text-xs font-semibold shrink-0 transition-colors cursor-pointer"
+                    className="flex items-center gap-1 px-2.5 py-1 rounded-xl bg-[var(--primary)]/10 hover:bg-[var(--primary)]/20 border border-[var(--primary)]/30 text-[var(--primary)] text-xs font-semibold shrink-0 transition-colors cursor-pointer"
                     title="Click to view AI Match explanation"
                   >
-                    <Sparkles className="w-3 h-3 text-[#00B4D8] animate-pulse-subtle" />
+                    <Sparkles className="w-3 h-3 text-[var(--primary)] animate-pulse-subtle" />
                     <span>{creator.aiMatchScore || 92}% Fit</span>
                   </button>
                 </div>
 
                 {/* AI Match Explanation Drawer if expanded */}
                 {isWhyExpanded && creator.aiMatchFactors && (
-                  <div className="p-3.5 rounded-2xl bg-[var(--surface-subtle)] border border-[#00B4D8]/30 text-xs space-y-2 animate-slide-up">
-                    <div className="flex items-center justify-between text-[#00B4D8] font-semibold text-[11px] uppercase tracking-wider">
+                  <div className="p-3.5 rounded-2xl bg-[var(--surface-subtle)] border border-[var(--primary)]/30 text-xs space-y-2 animate-slide-up">
+                    <div className="flex items-center justify-between text-[var(--primary)] font-semibold text-[11px] uppercase tracking-wider">
                       <span>Why this creator matches:</span>
                       <button
                         onClick={() => setExpandedWhyId(null)}
@@ -286,7 +286,7 @@ export const CreatorDiscovery: React.FC = () => {
                   </div>
                   <div className="border-x border-[var(--border)]">
                     <p className="text-[10px] text-[var(--text-muted)] font-medium">Engagement</p>
-                    <p className="text-xs font-bold text-[#00B4D8] font-mono mt-0.5">
+                    <p className="text-xs font-bold text-[var(--primary)] font-mono mt-0.5">
                       {creator.avgEngagement}%
                     </p>
                   </div>

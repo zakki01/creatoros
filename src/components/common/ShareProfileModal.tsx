@@ -109,7 +109,7 @@ export const ShareProfileModal: React.FC<ShareProfileModalProps> = ({
         {/* Header */}
         <div className="px-6 py-4 border-b border-[var(--border)] flex items-center justify-between bg-[var(--surface-muted)]">
           <div className="flex items-center gap-2">
-            <Share2 className="w-4 h-4 text-[#007E93]" />
+            <Share2 className="w-4 h-4 text-[var(--primary)]" />
             <h3 className="text-base font-bold text-[var(--text-primary)] font-display">Share Profile</h3>
           </div>
           <button
@@ -127,12 +127,12 @@ export const ShareProfileModal: React.FC<ShareProfileModalProps> = ({
             <img
               src={profileData.avatar}
               alt={profileData.name}
-              className="w-14 h-14 rounded-2xl object-cover ring-1 ring-[#007E93]/20"
+              className="w-14 h-14 rounded-2xl object-cover ring-1 ring-[var(--primary)]/20"
             />
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-1.5">
                 <h4 className="text-sm font-bold text-[var(--text-primary)] truncate">{profileData.name}</h4>
-                {profileData.verified && <ShieldCheck className="w-4 h-4 text-[#007E93] shrink-0" />}
+                {profileData.verified && <ShieldCheck className="w-4 h-4 text-[var(--primary)] shrink-0" />}
               </div>
               <p className="text-xs text-[var(--text-muted)] font-mono">{profileData.handle}</p>
               <div className="flex items-center gap-2 mt-1 text-[11px] text-[var(--text-secondary)]">
@@ -156,7 +156,7 @@ export const ShareProfileModal: React.FC<ShareProfileModalProps> = ({
               <button
                 type="button"
                 onClick={handleCopyLink}
-                className="px-3.5 py-2 text-xs font-semibold rounded-xl bg-[#007E93] hover:bg-[#006779] text-white flex items-center gap-1.5 shrink-0 transition-all cursor-pointer active:scale-95 shadow-xs"
+                className="px-3.5 py-2 text-xs font-semibold rounded-xl bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white flex items-center gap-1.5 shrink-0 transition-all cursor-pointer active:scale-95 shadow-xs"
               >
                 {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
                 <span>{copied ? 'Copied!' : 'Copy'}</span>
@@ -184,7 +184,7 @@ export const ShareProfileModal: React.FC<ShareProfileModalProps> = ({
                 <select
                   value={selectedCampaignId}
                   onChange={(e) => setSelectedCampaignId(e.target.value)}
-                  className="flex-1 px-3 py-2 text-xs bg-[var(--surface)] rounded-xl border border-teal-200 text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[#007E93]"
+                  className="flex-1 px-3 py-2 text-xs bg-[var(--surface)] rounded-xl border border-teal-200 text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
                 >
                   {campaigns.map((c) => (
                     <option key={c.id} value={c.id}>
@@ -196,7 +196,7 @@ export const ShareProfileModal: React.FC<ShareProfileModalProps> = ({
                   type="button"
                   onClick={handleShareToCampaign}
                   disabled={campaignShared}
-                  className="px-3.5 py-2 text-xs font-semibold rounded-xl bg-[#007E93] hover:bg-[#006779] text-white flex items-center gap-1.5 shrink-0 transition-all cursor-pointer shadow-xs active:scale-95"
+                  className="px-3.5 py-2 text-xs font-semibold rounded-xl bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white flex items-center gap-1.5 shrink-0 transition-all cursor-pointer shadow-xs active:scale-95"
                 >
                   {campaignShared ? <Check className="w-3.5 h-3.5" /> : <Send className="w-3.5 h-3.5" />}
                   <span>{campaignShared ? 'Added ✓' : 'Add to Brief'}</span>
@@ -221,7 +221,7 @@ export const ShareProfileModal: React.FC<ShareProfileModalProps> = ({
                   return (
                     <div
                       key={conv.id}
-                      className="p-2.5 rounded-xl border border-[var(--border)] hover:border-[#007E93]/40 bg-[var(--surface-muted)] hover:bg-[var(--surface-muted)] flex items-center justify-between transition-colors"
+                      className="p-2.5 rounded-xl border border-[var(--border)] hover:border-[var(--primary)]/40 bg-[var(--surface-muted)] hover:bg-[var(--surface-muted)] flex items-center justify-between transition-colors"
                     >
                       <div className="flex items-center gap-2.5 min-w-0">
                         <img
@@ -246,7 +246,7 @@ export const ShareProfileModal: React.FC<ShareProfileModalProps> = ({
                         className={`px-3 py-1.5 text-xs font-semibold rounded-lg flex items-center gap-1.5 transition-all cursor-pointer ${
                           isSent
                             ? 'bg-emerald-600 text-white'
-                            : 'bg-zinc-200 hover:bg-[#007E93] hover:text-white text-[var(--text-primary)]'
+                            : 'bg-zinc-200 hover:bg-[var(--primary)] hover:text-white text-[var(--text-primary)]'
                         }`}
                       >
                         {isSent ? <Check className="w-3.5 h-3.5" /> : <Send className="w-3 h-3" />}

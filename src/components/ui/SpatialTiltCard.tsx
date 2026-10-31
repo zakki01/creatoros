@@ -69,7 +69,7 @@ export const SpatialTiltCard: React.FC<SpatialTiltCardProps> = ({
 
   const glowShadows = {
     none: '',
-    indigo: 'hover:shadow-[0_20px_48px_-12px_rgba(99,102,241,0.22)] hover:border-[#007E93]/25',
+    indigo: 'hover:shadow-[0_20px_48px_-12px_rgba(99,102,241,0.22)] hover:border-[var(--primary)]/25',
     sky: 'hover:shadow-[0_20px_48px_-12px_rgba(56,189,248,0.2)] hover:border-sky-500/30',
     emerald: 'hover:shadow-[0_20px_48px_-12px_rgba(16,185,129,0.2)] hover:border-emerald-500/30',
     amber: 'hover:shadow-[0_20px_48px_-12px_rgba(245,158,11,0.2)] hover:border-amber-500/30',

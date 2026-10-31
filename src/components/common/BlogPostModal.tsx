@@ -75,7 +75,7 @@ export const BlogPostModal: React.FC<BlogPostModalProps> = ({
           {/* Top Sticky Bar */}
           <div className="p-3.5 sm:p-4 border-b border-[var(--border)] bg-[var(--surface-elevated)]/95 backdrop-blur-md border-b border-[var(--border)] flex items-center justify-between z-20 shrink-0">
             <div className="flex items-center gap-2">
-              <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full bg-[#00B4D8]/10 text-[#007E93] border border-[#00B4D8]/25">
+              <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full bg-[var(--primary)]/10 text-[var(--primary)] border border-[var(--primary)]/25">
                 ✍ Editorial Article
               </span>
               <span className="text-xs text-[var(--text-muted)] font-mono hidden sm:inline">
@@ -145,7 +145,7 @@ export const BlogPostModal: React.FC<BlogPostModalProps> = ({
                   <div>
                     <div className="flex items-center gap-1.5">
                       <span className="text-sm font-bold text-[var(--text-primary)]">{post.authorName}</span>
-                      <ShieldCheck className="w-3.5 h-3.5 text-[#007E93]" />
+                      <ShieldCheck className="w-3.5 h-3.5 text-[var(--primary)]" />
                     </div>
                     <p className="text-xs text-[var(--text-muted)] font-mono">
                       {post.authorHandle} • {post.timestamp} • {post.blogReadingTime || '4 min read'}
@@ -162,7 +162,7 @@ export const BlogPostModal: React.FC<BlogPostModalProps> = ({
                   ) : (
                     <button
                       onClick={() => setIsConnectOpen(true)}
-                      className="px-3.5 py-1.5 rounded-xl bg-[#007E93] hover:bg-[#006779] text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm shadow-xs transition-all cursor-pointer"
+                      className="px-3.5 py-1.5 rounded-xl bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm shadow-xs transition-all cursor-pointer"
                     >
                       <UserPlus className="w-3.5 h-3.5" />
                       <span>Connect</span>
@@ -194,7 +194,7 @@ export const BlogPostModal: React.FC<BlogPostModalProps> = ({
                     return (
                       <blockquote
                         key={idx}
-                        className="pl-4 border-l-2 border-[#00B4D8] text-[var(--text-primary)] italic my-3 bg-[var(--surface-muted)] py-2 rounded-r-xl"
+                        className="pl-4 border-l-2 border-[var(--primary)] text-[var(--text-primary)] italic my-3 bg-[var(--surface-muted)] py-2 rounded-r-xl"
                       >
                         {paragraph.replace('> ', '')}
                       </blockquote>
@@ -230,7 +230,7 @@ export const BlogPostModal: React.FC<BlogPostModalProps> = ({
                 {post.tags.map((t, i) => (
                   <span
                     key={i}
-                    className="text-xs font-mono px-2.5 py-1 rounded-lg bg-[var(--surface)] border border-[var(--border)] text-[#007E93]"
+                    className="text-xs font-mono px-2.5 py-1 rounded-lg bg-[var(--surface)] border border-[var(--border)] text-[var(--primary)]"
                   >
                     {t}
                   </span>
@@ -241,7 +241,7 @@ export const BlogPostModal: React.FC<BlogPostModalProps> = ({
             {/* Comments Section */}
             <div className="space-y-4 pt-6 border-t border-[var(--border)]">
               <div className="flex items-center gap-2">
-                <MessageCircle className="w-4 h-4 text-[#007E93]" />
+                <MessageCircle className="w-4 h-4 text-[var(--primary)]" />
                 <h4 className="text-sm font-bold text-[var(--text-primary)] font-display">
                   Discussion & Responses ({post.commentsCount})
                 </h4>
@@ -254,12 +254,12 @@ export const BlogPostModal: React.FC<BlogPostModalProps> = ({
                   value={commentInput}
                   onChange={(e) => setCommentInput(e.target.value)}
                   placeholder="Join the discussion or share feedback..."
-                  className="flex-1 bg-[var(--surface)] border border-[var(--border)] rounded-xl px-3.5 py-2 text-xs text-[var(--text-primary)] placeholder-zinc-500 focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]"
+                  className="flex-1 bg-[var(--surface)] border border-[var(--border)] rounded-xl px-3.5 py-2 text-xs text-[var(--text-primary)] placeholder-zinc-500 focus:outline-none focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)]"
                 />
                 <button
                   type="submit"
                   disabled={!commentInput.trim()}
-                  className="px-4 py-2 rounded-xl bg-[#007E93] hover:bg-[#006779] disabled:opacity-40 text-xs font-semibold text-white flex items-center gap-1.5 cursor-pointer transition-all"
+                  className="px-4 py-2 rounded-xl bg-[var(--primary)] hover:bg-[var(--primary-hover)] disabled:opacity-40 text-xs font-semibold text-white flex items-center gap-1.5 cursor-pointer transition-all"
                 >
                   <Send className="w-3 h-3" />
                   <span>Reply</span>

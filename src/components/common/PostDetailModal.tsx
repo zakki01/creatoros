@@ -272,7 +272,7 @@ export const PostDetailModal: React.FC<PostDetailModalProps> = ({
               <button
                 onClick={() => togglePostSave(post.id)}
                 className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
-                  post.savedByMe ? 'text-[#007E93] bg-[#00B4D8]/10' : 'text-zinc-500 hover:text-zinc-800'
+                  post.savedByMe ? 'text-[var(--primary)] bg-[var(--primary)]/10' : 'text-zinc-500 hover:text-zinc-800'
                 }`}
               >
                 <Bookmark className={`w-4 h-4 ${post.savedByMe ? 'fill-current' : ''}`} />
@@ -282,7 +282,7 @@ export const PostDetailModal: React.FC<PostDetailModalProps> = ({
             {/* Quick view comments trigger */}
             <button
               onClick={() => setShowComments(true)}
-              className="text-xs text-[#007E93] hover:text-[#007E93] font-medium block cursor-pointer"
+              className="text-xs text-[var(--primary)] hover:text-[var(--primary)] font-medium block cursor-pointer"
             >
               View conversation ({post.commentsCount} comments) →
             </button>

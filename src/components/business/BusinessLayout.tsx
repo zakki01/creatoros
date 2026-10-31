@@ -189,7 +189,7 @@ export const BusinessLayout: React.FC = () => {
               >
                 <Icon
                   className={`w-4 h-4 shrink-0 transition-colors ${
-                    isActive ? 'text-[#007E93]' : 'text-zinc-500'
+                    isActive ? 'text-[var(--primary)]' : 'text-zinc-500'
                   }`}
                 />
                 {!isSidebarCollapsed && (

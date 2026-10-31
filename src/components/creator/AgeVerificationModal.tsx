@@ -96,7 +96,7 @@ export const AgeVerificationModal: React.FC<AgeVerificationModalProps> = ({
         <form onSubmit={handleVerify} className="space-y-4">
           <div className="space-y-1">
             <label className="text-xs font-medium text-zinc-700 flex items-center gap-1.5">
-              <Calendar className="w-3.5 h-3.5 text-[#007E93]" />
+              <Calendar className="w-3.5 h-3.5 text-[var(--primary)]" />
               <span>Date of Birth (Must be 18+ to accept commercial brand campaigns)</span>
             </label>
             <input

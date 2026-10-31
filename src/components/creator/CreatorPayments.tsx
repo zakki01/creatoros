@@ -116,7 +116,7 @@ export const CreatorPayments: React.FC = () => {
           <Check className="w-4 h-4 text-emerald-700 shrink-0" />
         </div>
 
-        <div className="p-3.5 rounded-xl surface-2 border-[#007E93]/25 flex items-center justify-between">
+        <div className="p-3.5 rounded-xl surface-2 border-[var(--primary)]/25 flex items-center justify-between">
           <div>
             <span className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 block">3. Review</span>
             <span className="text-[10px] text-[var(--text-secondary)]">Brand sign-off</span>

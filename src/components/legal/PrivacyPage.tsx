@@ -41,7 +41,7 @@ export const PrivacyPage: React.FC<PrivacyPageProps> = ({ onBack }) => {
   };
 
   return (
-    <div className="min-h-screen bg-[#EAECEF] text-zinc-900 font-sans selection:bg-[#007E93]/10 selection:text-[#005564]">
+    <div className="min-h-screen bg-[#EAECEF] text-zinc-900 font-sans selection:bg-[var(--primary)]/10 selection:text-[#005564]">
       {/* Top Header */}
       <header className="sticky top-0 z-40 border-b border-black/[0.08] bg-[#EAECEF]/90 backdrop-blur-2xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
@@ -96,7 +96,7 @@ export const PrivacyPage: React.FC<PrivacyPageProps> = ({ onBack }) => {
           <aside className="hidden lg:block lg:col-span-4 sticky top-24 space-y-3">
             <div className="p-4 rounded-2xl bg-[var(--surface)] shadow-sm border border-[var(--border)] backdrop-blur-xl">
               <div className="flex items-center gap-2 pb-3 mb-2 border-b border-black/[0.06] text-xs font-bold text-zinc-800 font-mono uppercase tracking-wider">
-                <FileText className="w-4 h-4 text-[#007E93]" />
+                <FileText className="w-4 h-4 text-[var(--primary)]" />
                 <span>Policy Outline</span>
               </div>
               <div className="max-h-[calc(100vh-200px)] overflow-y-auto space-y-1 pr-1 text-xs">
@@ -107,7 +107,7 @@ export const PrivacyPage: React.FC<PrivacyPageProps> = ({ onBack }) => {
                     onClick={() => setActiveSection(sec.id)}
                     className={`block px-3 py-2 rounded-xl transition-all ${
                       activeSection === sec.id
-                        ? 'bg-[#00B4D8]/20 text-[#007E93] font-semibold border border-[#00B4D8]/30'
+                        ? 'bg-[var(--primary)]/20 text-[var(--primary)] font-semibold border border-[var(--primary)]/30'
                         : 'text-zinc-500 hover:text-zinc-800 hover:bg-zinc-100/40'
                     }`}
                   >
@@ -280,7 +280,7 @@ export const PrivacyPage: React.FC<PrivacyPageProps> = ({ onBack }) => {
                 <h2 className="text-lg font-bold text-zinc-900 font-display">Data Protection Officer Contact</h2>
               </div>
               <p className="text-xs text-zinc-700">
-                To submit a Subject Access Request (SAR), exercise privacy rights, or contact our Data Protection Officer, email <strong className="text-white">privacy@creatoros.ai</strong> or submit an inquiry through the <a href="/support" className="text-[#007E93] underline hover:text-[#007E93]">CreatorOS Support Portal</a>.
+                To submit a Subject Access Request (SAR), exercise privacy rights, or contact our Data Protection Officer, email <strong className="text-white">privacy@creatoros.ai</strong> or submit an inquiry through the <a href="/support" className="text-[var(--primary)] underline hover:text-[var(--primary)]">CreatorOS Support Portal</a>.
               </p>
             </section>
           </div>

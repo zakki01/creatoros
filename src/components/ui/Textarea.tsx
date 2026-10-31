@@ -77,7 +77,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
             }}
             className={clsx(
               'w-full bg-[var(--surface)] text-[var(--text-primary)] placeholder-[var(--text-muted)] text-sm rounded-xl',
-              'border border-[var(--border)] shadow-xs focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] focus:outline-none',
+              'border border-[var(--border)] shadow-xs focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] focus:outline-none',
               'transition-colors duration-150 py-2.5 px-3.5 resize-none leading-relaxed',
               error && 'border-rose-500 focus:border-rose-500 focus:ring-rose-500',
               className

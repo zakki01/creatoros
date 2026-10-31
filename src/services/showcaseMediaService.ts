@@ -248,7 +248,7 @@ function generateGradientPlaceholder(title: string): string {
     const grad = ctx.createLinearGradient(0, 0, 640, 360);
     grad.addColorStop(0, '#0F172A');
     grad.addColorStop(0.5, '#1E293B');
-    grad.addColorStop(1, '#007E93');
+    grad.addColorStop(1, 'var(--primary)');
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, 640, 360);
     ctx.fillStyle = '#FFFFFF';

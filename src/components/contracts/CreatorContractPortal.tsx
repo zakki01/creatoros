@@ -380,7 +380,7 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
             <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 border-b border-[var(--border)] pb-4">
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-mono uppercase text-[#007E93] font-semibold">
+                  <span className="text-[10px] font-mono uppercase text-[var(--primary)] font-semibold">
                     {selectedContract.contractNumber}
                   </span>
                   <span className="text-zinc-400">•</span>
@@ -413,7 +413,7 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
               <div className="p-4 rounded-xl bg-sky-50/70 border border-sky-300/80 space-y-3">
                 <div className="flex items-center justify-between gap-2">
                   <div className="flex items-center gap-1.5 text-sky-900 font-bold text-xs">
-                    <Sparkles className="w-4 h-4 text-[#007E93]" />
+                    <Sparkles className="w-4 h-4 text-[var(--primary)]" />
                     <span>Response Needed</span>
                   </div>
                   <span className="text-[11px] font-mono text-amber-800 font-semibold bg-amber-100 px-2.5 py-0.5 rounded-full border border-amber-300">
@@ -472,7 +472,7 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
                       setSelectedDeliverableId(selectedContract.deliverables[0]?.id || null);
                       setIsSubmitModalOpen(true);
                     }}
-                    className="min-h-[44px] px-4 rounded-xl bg-[#007E93] hover:bg-[#006779] text-white font-bold text-xs cursor-pointer shadow-xs"
+                    className="min-h-[44px] px-4 rounded-xl bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white font-bold text-xs cursor-pointer shadow-xs"
                   >
                     Submit Revision
                   </button>
@@ -494,7 +494,7 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
                       setSelectedDeliverableId(firstPending?.id || selectedContract.deliverables[0]?.id || null);
                       setIsSubmitModalOpen(true);
                     }}
-                    className="min-h-[36px] px-3.5 rounded-xl bg-[#007E93] hover:bg-[#006779] text-white font-bold text-xs flex items-center gap-1.5 cursor-pointer shadow-xs"
+                    className="min-h-[36px] px-3.5 rounded-xl bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white font-bold text-xs flex items-center gap-1.5 cursor-pointer shadow-xs"
                   >
                     <Upload className="w-3.5 h-3.5" />
                     <span>Submit Work</span>
@@ -531,7 +531,7 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
 
                       {hasDelivery && (
                         <div className="p-2 rounded-lg bg-[var(--surface)] border border-[var(--border)] flex items-center justify-between text-[11px]">
-                          <span className="font-mono text-[#007E93] font-semibold">
+                          <span className="font-mono text-[var(--primary)] font-semibold">
                             Version {hasDelivery.version} Submitted
                           </span>
                           <span className="text-zinc-500 font-mono text-[10px]">
@@ -586,7 +586,7 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
                         step.state === 'done'
                           ? 'bg-emerald-600 text-white'
                           : step.state === 'current'
-                          ? 'bg-[#00B4D8] text-slate-950 font-bold animate-pulse'
+                          ? 'bg-[var(--primary)] text-slate-950 font-bold animate-pulse'
                           : 'bg-zinc-200 text-zinc-600'
                       }`}
                     >
@@ -597,7 +597,7 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
                         step.state === 'done'
                           ? 'text-zinc-700'
                           : step.state === 'current'
-                          ? 'text-[#007E93] font-bold'
+                          ? 'text-[var(--primary)] font-bold'
                           : 'text-zinc-400'
                       }`}
                     >
@@ -695,7 +695,7 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
                     value={reason}
                     checked={declineReason === reason}
                     onChange={(e) => setDeclineReason(e.target.value)}
-                    className="text-[#00B4D8] focus:ring-0"
+                    className="text-[var(--primary)] focus:ring-0"
                   />
                   <span className="text-[var(--text-primary)] text-xs">{reason}</span>
                 </label>
@@ -746,7 +746,7 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
 
             {/* Attached Files Simulation */}
             <div className="p-3.5 rounded-xl border border-dashed border-[var(--border)] bg-[var(--surface-muted)] text-center space-y-1.5">
-              <Upload className="w-5 h-5 text-[#007E93] mx-auto" />
+              <Upload className="w-5 h-5 text-[var(--primary)] mx-auto" />
               <p className="text-xs font-semibold text-[var(--text-primary)]">2 files attached</p>
               <ul className="text-[10px] text-zinc-500 font-mono space-y-0.5">
                 {uploadedFiles.map((fn, i) => (
@@ -778,7 +778,7 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
               <button
                 type="button"
                 onClick={handleSubmitWorkConfirm}
-                className="min-h-[44px] px-5 rounded-xl bg-[#007E93] hover:bg-[#006779] text-white font-bold cursor-pointer"
+                className="min-h-[44px] px-5 rounded-xl bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white font-bold cursor-pointer"
               >
                 Submit Work
               </button>

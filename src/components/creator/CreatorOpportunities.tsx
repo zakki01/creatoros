@@ -102,8 +102,8 @@ export const CreatorOpportunities: React.FC = () => {
                     <span className="text-base sm:text-lg font-bold font-mono text-emerald-700">
                       ₹{opp.proposedFee.toLocaleString()}
                     </span>
-                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-[#00B4D8]/10 border border-[#00B4D8]/30 text-[#007E93] text-xs font-semibold">
-                      <Sparkles className="w-3 h-3 text-[#007E93]" />
+                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-[var(--primary)]/10 border border-[var(--primary)]/30 text-[var(--primary)] text-xs font-semibold">
+                      <Sparkles className="w-3 h-3 text-[var(--primary)]" />
                       94% Match
                     </span>
                   </div>

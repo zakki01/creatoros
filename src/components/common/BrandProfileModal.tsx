@@ -207,7 +207,7 @@ export const BrandProfileModal: React.FC<BrandProfileModalProps> = ({
                 <div>
                   <div className="flex items-center gap-2">
                     <h2 className="text-lg font-bold text-[var(--text-primary)] font-display">{brandData.name}</h2>
-                    <span className="p-0.5 rounded-full bg-[#007E93]/10 text-[#007E93]">
+                    <span className="p-0.5 rounded-full bg-[var(--primary)]/10 text-[var(--primary)]">
                       <ShieldCheck className="w-4 h-4" />
                     </span>
                   </div>
@@ -216,7 +216,7 @@ export const BrandProfileModal: React.FC<BrandProfileModalProps> = ({
                     <MapPin className="w-3 h-3 text-[var(--text-muted)]" />
                     <span>{brandData.location}</span>
                     <span>•</span>
-                    <span className="text-[#007E93]">{brandData.category}</span>
+                    <span className="text-[var(--primary)]">{brandData.category}</span>
                   </p>
                 </div>
               </div>
@@ -230,7 +230,7 @@ export const BrandProfileModal: React.FC<BrandProfileModalProps> = ({
                       setTargetCampaignPitch(undefined);
                       setIsPitchModalOpen(true);
                     }}
-                    className="min-h-[42px] px-4 py-2 rounded-xl bg-[#007E93] hover:bg-[#006779] text-white text-xs font-semibold flex items-center justify-center gap-1.5 shadow-sm transition-all cursor-pointer active:scale-95"
+                    className="min-h-[42px] px-4 py-2 rounded-xl bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white text-xs font-semibold flex items-center justify-center gap-1.5 shadow-sm transition-all cursor-pointer active:scale-95"
                   >
                     <Send className="w-3.5 h-3.5" />
                     <span>Pitch to Brand</span>
@@ -312,7 +312,7 @@ export const BrandProfileModal: React.FC<BrandProfileModalProps> = ({
               </div>
               <div>
                 <span className="text-[10px] font-mono uppercase text-[var(--text-muted)] block">Payment Escrow</span>
-                <span className="text-sm font-bold text-[#007E93] font-mono mt-0.5 block">
+                <span className="text-sm font-bold text-[var(--primary)] font-mono mt-0.5 block">
                   100% Guaranteed
                 </span>
               </div>
@@ -336,7 +336,7 @@ export const BrandProfileModal: React.FC<BrandProfileModalProps> = ({
                     onClick={() => setActiveTab(tab.id as any)}
                     className={`flex items-center gap-1.5 px-3.5 py-2 border-b-2 text-xs font-semibold transition-all shrink-0 cursor-pointer ${
                       isActive
-                        ? 'border-[#007E93] text-[#006C80]'
+                        ? 'border-[var(--primary)] text-[var(--primary-hover)]'
                         : 'border-transparent text-[var(--text-muted)] hover:text-[var(--text-primary)]'
                     }`}
                   >
@@ -361,7 +361,7 @@ export const BrandProfileModal: React.FC<BrandProfileModalProps> = ({
 
                   <div className="p-3.5 rounded-xl bg-[var(--surface-muted)] border border-[var(--border)] space-y-2">
                     <h5 className="font-semibold text-[var(--text-primary)] flex items-center gap-1.5 text-xs">
-                      <Sparkles className="w-3.5 h-3.5 text-[#007E93]" />
+                      <Sparkles className="w-3.5 h-3.5 text-[var(--primary)]" />
                       <span>Creator Collaboration Standards</span>
                     </h5>
                     <ul className="space-y-1 text-[var(--text-muted)] text-[11px] list-disc list-inside">
@@ -417,7 +417,7 @@ export const BrandProfileModal: React.FC<BrandProfileModalProps> = ({
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex flex-col justify-end p-2.5">
-                        <span className="text-[10px] text-[#007E93] font-mono">{reel.creator}</span>
+                        <span className="text-[10px] text-[var(--primary)] font-mono">{reel.creator}</span>
                         <p className="text-xs font-semibold text-white leading-tight line-clamp-2">
                           {reel.title}
                         </p>
@@ -489,7 +489,7 @@ export const BrandProfileModal: React.FC<BrandProfileModalProps> = ({
                             <span>•</span>
                             <span>{new Date(blog.createdAt || blog.timestamp || Date.now()).toLocaleDateString()}</span>
                           </div>
-                          <h4 className="text-xs font-semibold text-[var(--text-primary)] group-hover:text-[#006C80] transition-colors line-clamp-1">
+                          <h4 className="text-xs font-semibold text-[var(--text-primary)] group-hover:text-[var(--primary-hover)] transition-colors line-clamp-1">
                             {blog.blogTitle || blog.content || blog.caption}
                           </h4>
                           <p className="text-[11px] text-[var(--text-muted)] line-clamp-2 font-light">
@@ -497,7 +497,7 @@ export const BrandProfileModal: React.FC<BrandProfileModalProps> = ({
                           </p>
                           <div className="pt-2 border-t border-[var(--border)] flex items-center justify-between text-[11px]">
                             <span className="text-[var(--text-muted)] font-mono">{blog.likesCount || blog.likes || 0} claps</span>
-                            <span className="text-[#007E93] group-hover:text-[#005564] font-medium flex items-center gap-1">
+                            <span className="text-[var(--primary)] group-hover:text-[#005564] font-medium flex items-center gap-1">
                               Read Article →
                             </span>
                           </div>
@@ -540,7 +540,7 @@ export const BrandProfileModal: React.FC<BrandProfileModalProps> = ({
                             setTargetCampaignPitch(camp.title);
                             setIsPitchModalOpen(true);
                           }}
-                          className="px-3.5 py-1.5 rounded-lg bg-[#007E93] hover:bg-[#006779] text-white text-[11px] font-semibold flex items-center gap-1.5 transition-all cursor-pointer active:scale-95 shadow-xs"
+                          className="px-3.5 py-1.5 rounded-lg bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white text-[11px] font-semibold flex items-center gap-1.5 transition-all cursor-pointer active:scale-95 shadow-xs"
                         >
                           <Send className="w-3 h-3" />
                           <span>Pitch for this Brief</span>

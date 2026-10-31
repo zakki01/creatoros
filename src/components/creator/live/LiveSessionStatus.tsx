@@ -129,7 +129,7 @@ export const LiveSessionStatus: React.FC<LiveSessionStatusProps> = ({
             : effectiveTransport === 'transport_error'
             ? 'bg-rose-500/15 text-rose-700 dark:text-rose-400 border border-rose-500/30'
             : effectiveCamera === 'camera_ready'
-            ? 'bg-sky-500/10 text-[#007E93] dark:text-[#00B4D8] border border-sky-500/25'
+            ? 'bg-sky-500/10 text-[var(--primary)] dark:text-[var(--primary)] border border-sky-500/25'
             : 'bg-amber-500/10 text-amber-800 dark:text-amber-300 border border-amber-500/30'
         }`}
       >
@@ -142,7 +142,7 @@ export const LiveSessionStatus: React.FC<LiveSessionStatusProps> = ({
               : effectiveTransport === 'transport_error'
               ? 'bg-rose-600'
               : effectiveCamera === 'camera_ready'
-              ? 'bg-[#007E93]'
+              ? 'bg-[var(--primary)]'
               : 'bg-amber-500'
           }`}
         />
@@ -175,7 +175,7 @@ export const LiveSessionStatus: React.FC<LiveSessionStatusProps> = ({
       <div
         className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold ${
           faceDetected
-            ? 'bg-sky-500/10 text-[#007E93] dark:text-[#00B4D8] border border-sky-500/25'
+            ? 'bg-sky-500/10 text-[var(--primary)] dark:text-[var(--primary)] border border-sky-500/25'
             : arState === 'ar_ready'
             ? 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/25'
             : arState === 'ar_initializing'
@@ -183,7 +183,7 @@ export const LiveSessionStatus: React.FC<LiveSessionStatusProps> = ({
             : 'bg-[var(--surface-muted)] text-[var(--text-muted)] border border-[var(--border)]'
         }`}
       >
-        <Sparkles className="w-3 h-3 text-[#007E93] dark:text-[#00B4D8]" />
+        <Sparkles className="w-3 h-3 text-[var(--primary)] dark:text-[var(--primary)]" />
         <span>
           {faceDetected
             ? `Face Detected (${Math.round(faceConfidence * 100)}%)`
@@ -237,7 +237,7 @@ export const LiveSessionStatus: React.FC<LiveSessionStatusProps> = ({
       {isLive && (
         <div className="flex items-center gap-2 pl-1 border-l border-[var(--border)]">
           <div className="flex items-center gap-1 text-[11px] font-mono text-[var(--text-secondary)]">
-            <Clock className="w-3 h-3 text-[#007E93]" />
+            <Clock className="w-3 h-3 text-[var(--primary)]" />
             <span
               className={
                 remainingSeconds < 300
@@ -260,7 +260,7 @@ export const LiveSessionStatus: React.FC<LiveSessionStatusProps> = ({
                   ? 'bg-rose-500'
                   : progressPct < 40
                   ? 'bg-amber-500'
-                  : 'bg-[#007E93]'
+                  : 'bg-[var(--primary)]'
               }`}
               style={{ width: `${progressPct}%` }}
             />

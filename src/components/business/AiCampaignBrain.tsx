@@ -80,13 +80,13 @@ export const AiCampaignBrain: React.FC<{ onNavigate: (tab: string) => void }> = 
         </div>
 
         <div className="flex items-center gap-2 text-xs text-[var(--text-secondary)] bg-[var(--surface-subtle)] border border-[var(--border)] px-3.5 py-1.5 rounded-xl">
-          <Sparkles className="w-3.5 h-3.5 text-[#00B4D8]" />
-          <span>Active Guardrail: <strong className="text-[#00B4D8] uppercase">{automationLevel}</strong></span>
+          <Sparkles className="w-3.5 h-3.5 text-[var(--primary)]" />
+          <span>Active Guardrail: <strong className="text-[var(--primary)] uppercase">{automationLevel}</strong></span>
         </div>
       </div>
 
       {actionFeedback && (
-        <div className="p-3.5 rounded-2xl bg-[#00B4D8]/10 border border-[#00B4D8]/20 text-xs text-[#00B4D8] flex items-center gap-2 animate-fade-in">
+        <div className="p-3.5 rounded-2xl bg-[var(--primary)]/10 border border-[var(--primary)]/20 text-xs text-[var(--primary)] flex items-center gap-2 animate-fade-in">
           <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
           <span>{actionFeedback}</span>
         </div>
@@ -99,7 +99,7 @@ export const AiCampaignBrain: React.FC<{ onNavigate: (tab: string) => void }> = 
           <div className="p-6 rounded-3xl bg-[var(--surface)] border border-[var(--border)] space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Bot className="w-5 h-5 text-[#00B4D8]" />
+                <Bot className="w-5 h-5 text-[var(--primary)]" />
                 <h3 className="text-base font-bold text-[var(--text-primary)] font-display">
                   Autonomous Risk & Opportunity Detection
                 </h3>
@@ -133,9 +133,9 @@ export const AiCampaignBrain: React.FC<{ onNavigate: (tab: string) => void }> = 
                     </span>
                   </div>
 
-                  <div className="p-3 rounded-xl bg-[#00B4D8]/10 border border-[#00B4D8]/20 text-xs text-[#00B4D8] flex items-center justify-between gap-3">
+                  <div className="p-3 rounded-xl bg-[var(--primary)]/10 border border-[var(--primary)]/20 text-xs text-[var(--primary)] flex items-center justify-between gap-3">
                     <div className="flex items-center gap-2">
-                      <Sparkles className="w-3.5 h-3.5 text-[#00B4D8] shrink-0" />
+                      <Sparkles className="w-3.5 h-3.5 text-[var(--primary)] shrink-0" />
                       <span>{item.recommendedAction}</span>
                     </div>
 
@@ -178,7 +178,7 @@ export const AiCampaignBrain: React.FC<{ onNavigate: (tab: string) => void }> = 
                 value={customTask}
                 onChange={(e) => setCustomTask(e.target.value)}
                 placeholder="Instruct AI Brain to generate reminder, dispatch sample, or flag creator..."
-                className="flex-1 bg-[var(--input)] text-[var(--text-primary)] placeholder-[var(--text-tertiary)] text-xs px-4 py-2.5 rounded-xl border border-[var(--border)] focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] focus:outline-none"
+                className="flex-1 bg-[var(--input)] text-[var(--text-primary)] placeholder-[var(--text-tertiary)] text-xs px-4 py-2.5 rounded-xl border border-[var(--border)] focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] focus:outline-none"
               />
               <Button
                 variant="primary"
@@ -230,7 +230,7 @@ export const AiCampaignBrain: React.FC<{ onNavigate: (tab: string) => void }> = 
               </div>
               <div className="p-3 rounded-xl bg-[var(--surface-subtle)] border border-[var(--border)] flex justify-between items-center">
                 <span className="text-[var(--text-secondary)]">Drafts in AI Pre-Check</span>
-                <span className="font-mono font-bold text-[#00B4D8]">
+                <span className="font-mono font-bold text-[var(--primary)]">
                   {submissions.filter((s) => s.status === 'submitted').length}
                 </span>
               </div>
@@ -243,8 +243,8 @@ export const AiCampaignBrain: React.FC<{ onNavigate: (tab: string) => void }> = 
             </div>
           </Card>
 
-          <Card className="p-5 space-y-3 bg-[var(--surface-subtle)] border border-[#00B4D8]/20">
-            <div className="flex items-center gap-2 text-[#00B4D8] text-xs font-semibold">
+          <Card className="p-5 space-y-3 bg-[var(--surface-subtle)] border border-[var(--primary)]/20">
+            <div className="flex items-center gap-2 text-[var(--primary)] text-xs font-semibold">
               <ShieldCheck className="w-4 h-4" />
               <span>Safe Autopilot Rules</span>
             </div>

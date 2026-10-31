@@ -116,7 +116,7 @@ export const ContentApprovalWorkspace: React.FC = () => {
                   onClick={() => setSelectedSubmissionId(sub.id)}
                   className={`p-4 rounded-2xl border transition-all cursor-pointer space-y-2 ${
                     isSelected
-                      ? 'bg-[var(--surface-elevated)] border-[#00B4D8] shadow-lg ring-1 ring-[#007E93]'
+                      ? 'bg-[var(--surface-elevated)] border-[var(--primary)] shadow-lg ring-1 ring-[var(--primary)]'
                       : 'bg-[var(--surface)] shadow-xs border-[var(--border)] hover:border-[var(--border-strong)] hover:bg-[var(--surface-subtle)]'
                   }`}
                 >
@@ -212,11 +212,11 @@ export const ContentApprovalWorkspace: React.FC = () => {
                 <div className="md:col-span-7 space-y-5 flex flex-col justify-between">
                   <div className="space-y-4">
                     {/* AI PRE-CHECK REPORT (Specified in requirements) */}
-                    <div className="p-4 rounded-2xl bg-[#00B4D8]/10 border border-[#00B4D8]/30 space-y-3">
+                    <div className="p-4 rounded-2xl bg-[var(--primary)]/10 border border-[var(--primary)]/30 space-y-3">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                          <Sparkles className="w-4 h-4 text-[#00B4D8]" />
-                          <h4 className="text-xs font-semibold text-[#00B4D8] uppercase tracking-wider">
+                          <Sparkles className="w-4 h-4 text-[var(--primary)]" />
+                          <h4 className="text-xs font-semibold text-[var(--primary)] uppercase tracking-wider">
                             AI Pre-Check Verification
                           </h4>
                         </div>
@@ -305,7 +305,7 @@ export const ContentApprovalWorkspace: React.FC = () => {
                         {selectedSub.hashtags.map((tag, idx) => (
                           <span
                             key={idx}
-                            className="text-[10px] text-[#00B4D8] bg-[#00B4D8]/10 border border-[#00B4D8]/20 px-2 py-0.5 rounded-md"
+                            className="text-[10px] text-[var(--primary)] bg-[var(--primary)]/10 border border-[var(--primary)]/20 px-2 py-0.5 rounded-md"
                           >
                             {tag}
                           </span>
@@ -321,7 +321,7 @@ export const ContentApprovalWorkspace: React.FC = () => {
                       value={feedbackNote}
                       onChange={(e) => setFeedbackNote(e.target.value)}
                       placeholder="Add feedback or revision notes for creator..."
-                      className="w-full bg-[var(--input)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)] text-xs px-3.5 py-2.5 rounded-xl border border-[var(--border)] focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] focus:outline-none"
+                      className="w-full bg-[var(--input)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)] text-xs px-3.5 py-2.5 rounded-xl border border-[var(--border)] focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] focus:outline-none"
                     />
 
                     <div className="flex items-center gap-2">

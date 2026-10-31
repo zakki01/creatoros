@@ -55,7 +55,7 @@ export const BusinessAiInsights: React.FC<{ onOpenCampaign: (id: string) => void
           <h1 className="text-xl font-bold text-[var(--text-primary)] font-display">
             AI Insights
           </h1>
-          <Sparkles className="w-4 h-4 text-[#00B4D8]" />
+          <Sparkles className="w-4 h-4 text-[var(--primary)]" />
         </div>
         <p className="text-xs text-[var(--text-secondary)] mt-1">
           Contextual intelligence and algorithmic optimizations across your active campaigns.
@@ -70,7 +70,7 @@ export const BusinessAiInsights: React.FC<{ onOpenCampaign: (id: string) => void
             className="p-5 rounded-2xl bg-[var(--surface)] shadow-xs border border-[var(--border)] hover:border-[var(--border-strong)] transition-all space-y-3"
           >
             <div className="flex items-center justify-between">
-              <span className="text-[10px] font-mono font-medium text-[#00B4D8] uppercase tracking-wider bg-[#007E93]/15 px-2 py-0.5 rounded border border-[#00B4D8]/20">
+              <span className="text-[10px] font-mono font-medium text-[var(--primary)] uppercase tracking-wider bg-[var(--primary)]/15 px-2 py-0.5 rounded border border-[var(--primary)]/20">
                 {item.category}
               </span>
               <button

@@ -280,7 +280,7 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
             onClick={() => setActiveTab(tab.id as any)}
             className={`min-h-[44px] px-4 py-2 rounded-t-xl text-xs font-medium transition-all cursor-pointer border-b-2 ${
               activeTab === tab.id
-                ? 'border-[#00B4D8] text-[#007E93] font-bold bg-[#00B4D8]/10'
+                ? 'border-[var(--primary)] text-[var(--primary)] font-bold bg-[var(--primary)]/10'
                 : 'border-transparent text-zinc-500 hover:text-zinc-800'
             }`}
           >
@@ -324,7 +324,7 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex items-center gap-2.5">
-                      <span className="w-6 h-6 rounded-lg bg-[#007E93]/10 text-[#007E93] font-mono text-xs font-bold flex items-center justify-center">
+                      <span className="w-6 h-6 rounded-lg bg-[var(--primary)]/10 text-[var(--primary)] font-mono text-xs font-bold flex items-center justify-center">
                         {index + 1}
                       </span>
                       <div>
@@ -360,7 +360,7 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
                   {latestDelivery ? (
                     <div className="p-4 rounded-xl bg-[var(--surface-muted)] border border-[var(--border)] space-y-3">
                       <div className="flex items-center justify-between text-[11px]">
-                        <span className="font-bold text-[#006779] font-mono">
+                        <span className="font-bold text-[var(--primary-hover)] font-mono">
                           Submission v{latestDelivery.version}
                         </span>
                         <span className="text-zinc-500">
@@ -522,7 +522,7 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
             <h3 className="text-sm font-bold text-[var(--text-primary)] font-display">Formal Contract Amendments</h3>
             <button
               onClick={() => setIsAmendmentModalOpen(true)}
-              className="min-h-[44px] px-3.5 py-2 rounded-xl bg-[#007E93] hover:bg-[#006779] text-white font-semibold cursor-pointer"
+              className="min-h-[44px] px-3.5 py-2 rounded-xl bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white font-semibold cursor-pointer"
             >
               + Amend
             </button>
@@ -649,7 +649,7 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
               placeholder="e.g. Please trim intro to 3 seconds and highlight product texture..."
               value={revisionFeedback}
               onChange={(e) => setRevisionFeedback(e.target.value)}
-              className="w-full p-3 rounded-xl bg-[var(--input)] border border-[var(--border)] text-[var(--text-primary)] text-xs focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] resize-none"
+              className="w-full p-3 rounded-xl bg-[var(--input)] border border-[var(--border)] text-[var(--text-primary)] text-xs focus:outline-none focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] resize-none"
             />
 
             <div className="flex items-center justify-end gap-2.5">
@@ -663,7 +663,7 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
               <button
                 type="button"
                 onClick={handleRequestRevisionSubmit}
-                className="min-h-[44px] px-5 rounded-xl bg-[#007E93] hover:bg-[#006779] text-white font-bold cursor-pointer"
+                className="min-h-[44px] px-5 rounded-xl bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white font-bold cursor-pointer"
               >
                 Request Revision
               </button>
@@ -690,7 +690,7 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
                 placeholder="e.g. Additional video requested"
                 value={amendmentReason}
                 onChange={(e) => setAmendmentReason(e.target.value)}
-                className="w-full min-h-[44px] px-3.5 py-2 rounded-xl bg-[var(--input)] border border-[var(--border)] text-[var(--text-primary)] text-xs focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]"
+                className="w-full min-h-[44px] px-3.5 py-2 rounded-xl bg-[var(--input)] border border-[var(--border)] text-[var(--text-primary)] text-xs focus:outline-none focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)]"
               />
             </div>
 
@@ -702,7 +702,7 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
                 rows={3}
                 value={amendmentChanges}
                 onChange={(e) => setAmendmentChanges(e.target.value)}
-                className="w-full p-3 rounded-xl bg-[var(--input)] border border-[var(--border)] text-[var(--text-primary)] text-xs focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] resize-none"
+                className="w-full p-3 rounded-xl bg-[var(--input)] border border-[var(--border)] text-[var(--text-primary)] text-xs focus:outline-none focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] resize-none"
               />
             </div>
 
@@ -717,7 +717,7 @@ export const ContractDetailWorkspace: React.FC<ContractDetailWorkspaceProps> = (
               <button
                 type="button"
                 onClick={handleRequestAmendmentSubmit}
-                className="min-h-[44px] px-5 rounded-xl bg-[#007E93] hover:bg-[#006779] text-white font-bold cursor-pointer"
+                className="min-h-[44px] px-5 rounded-xl bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white font-bold cursor-pointer"
               >
                 Submit
               </button>

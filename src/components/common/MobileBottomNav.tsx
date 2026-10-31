@@ -23,12 +23,12 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
   accentColor = 'indigo',
 }) => {
   const activeColorStyles = {
-    indigo: 'text-[#007E93]',
+    indigo: 'text-[var(--primary)]',
     emerald: 'text-emerald-700',
   };
 
   const activePillStyles = {
-    indigo: 'bg-[#00B4D8]',
+    indigo: 'bg-[var(--primary)]',
     emerald: 'bg-emerald-600',
   };
 
@@ -51,7 +51,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
             className={clsx(
               // Strict 44px minimum touch target hit-box
               'relative flex flex-col items-center justify-center min-w-[52px] min-h-[44px] py-1 px-1.5 rounded-xl transition-all cursor-pointer select-none',
-              'focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00B4D8]',
+              'focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]',
               isActive
                 ? clsx(activeColorStyles[accentColor], 'bg-[var(--surface-muted)] shadow-xs')
                 : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
@@ -69,7 +69,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
               {item.badge !== undefined && item.badge !== false && (
                 <span
                   className={clsx(
-                    'absolute -top-1.5 -right-2.5 font-bold rounded-full bg-[#00B4D8] text-slate-950 flex items-center justify-center ring-2 ring-white shadow-xs',
+                    'absolute -top-1.5 -right-2.5 font-bold rounded-full bg-[var(--primary)] text-slate-950 flex items-center justify-center ring-2 ring-white shadow-xs',
                     typeof item.badge === 'number'
                       ? 'min-w-[16px] h-4 px-1 text-[9px]'
                       : 'w-2 h-2'

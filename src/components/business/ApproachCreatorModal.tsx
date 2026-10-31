@@ -164,7 +164,7 @@ export const ApproachCreatorModal: React.FC<ApproachCreatorModalProps> = ({
                 <h3 className="text-base font-bold text-[var(--text-primary)] font-display">
                   Approach {creator.name}
                 </h3>
-                {creator.verified && <ShieldCheck className="w-4 h-4 text-[#007E93]" />}
+                {creator.verified && <ShieldCheck className="w-4 h-4 text-[var(--primary)]" />}
               </div>
               <p className="text-xs text-[var(--text-muted)] font-mono">
                 @{creator.handle} • {creator.category}
@@ -221,7 +221,7 @@ export const ApproachCreatorModal: React.FC<ApproachCreatorModalProps> = ({
               <select
                 value={selectedCampaignId}
                 onChange={(e) => handleCampaignChange(e.target.value)}
-                className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-[var(--border)] bg-[var(--surface)] text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-[#007E93]"
+                className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-[var(--border)] bg-[var(--surface)] text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]"
               >
                 {campaigns.map((camp) => (
                   <option key={camp.id} value={camp.id}>
@@ -239,7 +239,7 @@ export const ApproachCreatorModal: React.FC<ApproachCreatorModalProps> = ({
                 value={briefTitle}
                 onChange={(e) => setBriefTitle(e.target.value)}
                 required
-                className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-[var(--border)] bg-[var(--surface)] text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-[#007E93]"
+                className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-[var(--border)] bg-[var(--surface)] text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]"
               />
             </div>
           </div>
@@ -258,7 +258,7 @@ export const ApproachCreatorModal: React.FC<ApproachCreatorModalProps> = ({
                   value={proposedBudget}
                   onChange={(e) => setProposedBudget(Number(e.target.value))}
                   required
-                  className="w-full pl-7 pr-3.5 py-2.5 text-xs font-mono font-semibold rounded-xl border border-[var(--border)] bg-[var(--surface)] text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-[#007E93]"
+                  className="w-full pl-7 pr-3.5 py-2.5 text-xs font-mono font-semibold rounded-xl border border-[var(--border)] bg-[var(--surface)] text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]"
                 />
               </div>
             </div>
@@ -272,7 +272,7 @@ export const ApproachCreatorModal: React.FC<ApproachCreatorModalProps> = ({
                 value={targetDeadline}
                 onChange={(e) => setTargetDeadline(e.target.value)}
                 required
-                className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-[var(--border)] bg-[var(--surface)] text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-[#007E93]"
+                className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-[var(--border)] bg-[var(--surface)] text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]"
               />
             </div>
           </div>
@@ -283,7 +283,7 @@ export const ApproachCreatorModal: React.FC<ApproachCreatorModalProps> = ({
             <select
               value={usageRights}
               onChange={(e) => setUsageRights(e.target.value)}
-              className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-[var(--border)] bg-[var(--surface)] text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-[#007E93]"
+              className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-[var(--border)] bg-[var(--surface)] text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]"
             >
               <option value="30-Day Organic + Paid Whitelisting">
                 30-Day Organic + Paid Whitelisting (Recommended)
@@ -313,7 +313,7 @@ export const ApproachCreatorModal: React.FC<ApproachCreatorModalProps> = ({
                     onClick={() => toggleDeliverable(del)}
                     className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer ${
                       isSelected
-                        ? 'bg-[#007E93] text-white shadow-xs'
+                        ? 'bg-[var(--primary)] text-white shadow-xs'
                         : 'bg-[var(--surface-muted)] hover:bg-[var(--surface-recessed)] text-[var(--text-secondary)] border border-[var(--border)]'
                     }`}
                   >
@@ -341,7 +341,7 @@ export const ApproachCreatorModal: React.FC<ApproachCreatorModalProps> = ({
               onChange={(e) => setBriefMessage(e.target.value)}
               required
               placeholder={`Hi ${creator.name}, we would love to collaborate on our upcoming collection! We envision an energetic transition reel showcasing how you style the drop with your signature urban flair. Moodboard and samples ready to dispatch...`}
-              className="w-full p-3.5 text-xs rounded-2xl border border-[var(--border)] bg-[var(--surface)] text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-[#007E93] resize-none leading-relaxed"
+              className="w-full p-3.5 text-xs rounded-2xl border border-[var(--border)] bg-[var(--surface)] text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)] resize-none leading-relaxed"
             />
           </div>
         </form>
@@ -364,7 +364,7 @@ export const ApproachCreatorModal: React.FC<ApproachCreatorModalProps> = ({
               type="button"
               onClick={handleSubmit}
               disabled={isSubmitting}
-              className="px-5 py-2.5 text-xs font-semibold rounded-xl bg-[#007E93] hover:bg-[#006779] text-white flex items-center gap-2 shadow-sm transition-all cursor-pointer active:scale-95 disabled:opacity-50"
+              className="px-5 py-2.5 text-xs font-semibold rounded-xl bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white flex items-center gap-2 shadow-sm transition-all cursor-pointer active:scale-95 disabled:opacity-50"
             >
               <Send className="w-3.5 h-3.5" />
               <span>{isSubmitting ? 'Sending Invitation...' : 'Send Campaign Brief'}</span>

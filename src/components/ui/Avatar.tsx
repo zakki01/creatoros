@@ -91,7 +91,7 @@ export const Avatar: React.FC<AvatarProps> = ({
 
   const ringStyles = {
     true: 'ring-2 ring-black/15 shadow-sm',
-    primary: 'ring-2 ring-[#00B4D8] ring-offset-2 ring-offset-white shadow-sm',
+    primary: 'ring-2 ring-[var(--primary)] ring-offset-2 ring-offset-white shadow-sm',
     success: 'ring-2 ring-emerald-500 ring-offset-2 ring-offset-white shadow-sm',
   };
 

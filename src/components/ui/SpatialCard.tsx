@@ -72,7 +72,7 @@ export const SpatialCard: React.FC<SpatialCardProps> = ({
 
   const glowClasses = {
     none: '',
-    indigo: 'hover:shadow-[var(--depth-2),0_0_32px_-6px_rgba(99,102,241,0.26)] hover:border-[#007E93]/30',
+    indigo: 'hover:shadow-[var(--depth-2),0_0_32px_-6px_rgba(99,102,241,0.26)] hover:border-[var(--primary)]/30',
     emerald: 'hover:shadow-[var(--depth-2),0_0_32px_-6px_rgba(16,185,129,0.24)] hover:border-emerald-500/35',
     amber: 'hover:shadow-[var(--depth-2),0_0_32px_-6px_rgba(245,158,11,0.24)] hover:border-amber-500/35',
     purple: 'hover:shadow-[var(--depth-2),0_0_32px_-6px_rgba(168,85,247,0.26)] hover:border-purple-500/35',

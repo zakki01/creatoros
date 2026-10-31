@@ -56,8 +56,8 @@ export const CreatorCampaigns: React.FC<{
               variant="outline"
               size="sm"
               onClick={() => onNavigate('live')}
-              leftIcon={<Video className="w-3.5 h-3.5 text-[#007E93]" />}
-              className="border-[#00B4D8]/30 hover:border-[#007E93]/40 text-zinc-800"
+              leftIcon={<Video className="w-3.5 h-3.5 text-[var(--primary)]" />}
+              className="border-[var(--primary)]/30 hover:border-[var(--primary)]/40 text-zinc-800"
             >
               Live Studio
             </Button>
@@ -133,9 +133,9 @@ export const CreatorCampaigns: React.FC<{
                   </div>
 
                   {/* Step 2 */}
-                  <div className="p-3 rounded-xl bg-[#00B4D8]/10 border border-[#00B4D8]/40 text-xs space-y-1">
-                    <div className="flex items-center gap-1.5 text-[#007E93] font-semibold">
-                      <Clock className="w-3.5 h-3.5 text-[#007E93] animate-pulse" />
+                  <div className="p-3 rounded-xl bg-[var(--primary)]/10 border border-[var(--primary)]/40 text-xs space-y-1">
+                    <div className="flex items-center gap-1.5 text-[var(--primary)] font-semibold">
+                      <Clock className="w-3.5 h-3.5 text-[var(--primary)] animate-pulse" />
                       <span>2. Content Submission</span>
                     </div>
                     <p className="text-[10px] text-zinc-500">Draft uploaded for AI pre-check</p>

@@ -83,8 +83,8 @@ export const LiveCamera: React.FC<LiveCameraProps> = ({
         <div className="absolute top-3 left-3 right-3 z-20 flex items-center justify-between pointer-events-none">
           <div className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-black/65 backdrop-blur-xl border border-white/15 text-white shadow-sm">
             <Sparkles
-              className="w-3.5 h-3.5 text-[#00B4D8]"
-              style={{ color: activeScene?.accentColor || '#00B4D8' }}
+              className="w-3.5 h-3.5 text-[var(--primary)]"
+              style={{ color: activeScene?.accentColor || 'var(--primary)' }}
             />
             <span>{activeScene?.name || 'Studio Feed'}</span>
           </div>
@@ -148,7 +148,7 @@ export const LiveCamera: React.FC<LiveCameraProps> = ({
           /* Normal Camera Standby State (Clean, professional, not dominating) */
           <div className="relative z-20 flex flex-col items-center justify-center text-center p-6 space-y-3.5 max-w-xs">
             <div className="w-16 h-16 rounded-3xl bg-white/5 border border-white/10 flex items-center justify-center text-zinc-300 shadow-inner">
-              <Camera className="w-8 h-8 text-[#00B4D8]" />
+              <Camera className="w-8 h-8 text-[var(--primary)]" />
             </div>
             <div className="space-y-1">
               <h3 className="text-sm font-semibold text-white tracking-tight">Studio Monitor Ready</h3>

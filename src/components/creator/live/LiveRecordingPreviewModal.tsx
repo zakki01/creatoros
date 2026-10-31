@@ -212,8 +212,8 @@ export const LiveRecordingPreviewModal: React.FC<LiveRecordingPreviewModalProps>
               </div>
 
               {/* AI Pre-check Reminder */}
-              <div className="p-2.5 rounded-lg bg-[#00B4D8]/10 border border-[#007E93]/20 text-[11px] text-[#007E93] flex items-start gap-2">
-                <Sparkles className="w-3.5 h-3.5 text-[#007E93] shrink-0 mt-0.5" />
+              <div className="p-2.5 rounded-lg bg-[var(--primary)]/10 border border-[var(--primary)]/20 text-[11px] text-[var(--primary)] flex items-start gap-2">
+                <Sparkles className="w-3.5 h-3.5 text-[var(--primary)] shrink-0 mt-0.5" />
                 <span>
                   Automatic AI Pre-check will run compliance against the brand guidelines upon submission.
                 </span>

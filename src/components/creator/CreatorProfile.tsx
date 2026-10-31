@@ -269,7 +269,7 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
 
                 <button
                   onClick={() => setIsAddShowcaseOpen(true)}
-                  className="flex-1 sm:flex-none min-h-[40px] px-4 py-2 rounded-xl bg-[#00B4D8] hover:bg-[#0096B4] text-slate-950 text-xs font-semibold flex items-center justify-center gap-1.5 shadow-sm transition-colors cursor-pointer"
+                  className="flex-1 sm:flex-none min-h-[40px] px-4 py-2 rounded-xl bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-slate-950 text-xs font-semibold flex items-center justify-center gap-1.5 shadow-sm transition-colors cursor-pointer"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   <span>Add Work</span>
@@ -281,7 +281,7 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
                 {role === 'business' && (
                   <button
                     onClick={() => setIsApproachModalOpen(true)}
-                    className="flex-1 sm:flex-none min-h-[42px] px-4 py-2 rounded-xl bg-[#00B4D8] hover:bg-[#0096B4] text-slate-950 text-xs font-semibold flex items-center justify-center gap-1.5 shadow-sm transition-all cursor-pointer active:scale-95"
+                    className="flex-1 sm:flex-none min-h-[42px] px-4 py-2 rounded-xl bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-slate-950 text-xs font-semibold flex items-center justify-center gap-1.5 shadow-sm transition-all cursor-pointer active:scale-95"
                   >
                     <Send className="w-3.5 h-3.5" />
                     <span>Invite Creator</span>
@@ -309,7 +309,7 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
                   ) : (
                     <button
                       onClick={() => setIsConnectModalOpen(true)}
-                      className="flex-1 sm:flex-none min-h-[42px] px-4 py-2 rounded-xl bg-[#00B4D8] hover:bg-[#0096B4] text-slate-950 text-xs font-semibold flex items-center justify-center gap-1.5 shadow-sm transition-all cursor-pointer"
+                      className="flex-1 sm:flex-none min-h-[42px] px-4 py-2 rounded-xl bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-slate-950 text-xs font-semibold flex items-center justify-center gap-1.5 shadow-sm transition-all cursor-pointer"
                     >
                       <UserPlus className="w-3.5 h-3.5" />
                       <span>Connect</span>
@@ -346,7 +346,7 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
         {/* 4 Spatial Reputation & Portfolio Pills */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-1 relative z-10">
           <div className="p-3 rounded-xl bg-[var(--surface-subtle)] border border-[var(--border)] text-center">
-            <span className="text-base sm:text-lg font-bold font-mono text-[#00B4D8] block">
+            <span className="text-base sm:text-lg font-bold font-mono text-[var(--primary)] block">
               96
             </span>
             <span className="text-[11px] text-[var(--text-tertiary)] font-medium">Reputation</span>
@@ -553,7 +553,7 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
                   </div>
 
                   <div className="p-3.5 space-y-1">
-                    <p className="text-xs font-bold text-zinc-900 line-clamp-1 group-hover:text-[#007E93] transition-colors">
+                    <p className="text-xs font-bold text-zinc-900 line-clamp-1 group-hover:text-[var(--primary)] transition-colors">
                       {p.title}
                     </p>
                     <p className="text-[11px] text-zinc-500 truncate">{p.creatorRole} · {p.category}</p>
@@ -592,7 +592,7 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
                 </div>
 
                 <div className="space-y-1">
-                  <span className="text-[10px] text-[#007E93] font-mono">{reel.brand}</span>
+                  <span className="text-[10px] text-[var(--primary)] font-mono">{reel.brand}</span>
                   <h4 className="text-xs font-bold text-white line-clamp-2 leading-snug">
                     {reel.title}
                   </h4>
@@ -702,7 +702,7 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
                       <span>{new Date(blog.createdAt || blog.timestamp || Date.now()).toLocaleDateString()}</span>
                     </div>
 
-                    <h3 className="text-sm font-semibold text-[var(--text-primary)] group-hover:text-[#00B4D8] transition-colors line-clamp-2 leading-snug">
+                    <h3 className="text-sm font-semibold text-[var(--text-primary)] group-hover:text-[var(--primary)] transition-colors line-clamp-2 leading-snug">
                       {blog.blogTitle || blog.content || blog.caption}
                     </h3>
 
@@ -715,7 +715,7 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
                     <span className="text-[11px] font-mono text-[var(--text-tertiary)]">
                       {blog.likesCount || blog.likes || 0} claps • {blog.commentsCount} comments
                     </span>
-                    <span className="text-[#00B4D8] group-hover:underline font-medium text-xs flex items-center gap-1">
+                    <span className="text-[var(--primary)] group-hover:underline font-medium text-xs flex items-center gap-1">
                       <span>Read Article</span>
                       <ExternalLink className="w-3 h-3" />
                     </span>

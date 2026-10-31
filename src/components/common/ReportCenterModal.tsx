@@ -94,7 +94,7 @@ export const ReportCenterModal: React.FC<ReportCenterModalProps> = ({
                     : 'bg-[var(--surface-muted)] shadow-sm border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:border-[var(--accent)]/40'
                 }`}
               >
-                <Icon className={`w-4 h-4 mb-2 ${isSelected ? 'text-[#007E93]' : 'text-zinc-500'}`} />
+                <Icon className={`w-4 h-4 mb-2 ${isSelected ? 'text-[var(--primary)]' : 'text-zinc-500'}`} />
                 <span className="text-xs font-semibold block">{type.label}</span>
               </button>
             );
@@ -152,7 +152,7 @@ export const ReportCenterModal: React.FC<ReportCenterModalProps> = ({
                     onClick={() => setVisibility(vis.id as any)}
                     className={`py-1.5 text-[11px] flex items-center justify-center gap-1.5 rounded-lg transition-colors cursor-pointer ${
                       visibility === vis.id
-                        ? 'bg-[#007E93] text-white font-semibold'
+                        ? 'bg-[var(--primary)] text-white font-semibold'
                         : 'text-zinc-500 hover:text-zinc-800'
                     }`}
                   >
@@ -194,22 +194,22 @@ export const ReportCenterModal: React.FC<ReportCenterModalProps> = ({
             </div>
             <div className="p-2.5 rounded-xl bg-zinc-50 border border-black/[0.06]">
               <span className="text-[10px] text-zinc-500 block font-mono">Verified Sign-off</span>
-              <span className="text-sm font-bold font-mono text-[#007E93]">100% Attributed</span>
+              <span className="text-sm font-bold font-mono text-[var(--primary)]">100% Attributed</span>
             </div>
           </div>
         </div>
 
         {/* Public Share Link Bar if Public or Workspace */}
         {visibility !== 'private' && (
-          <div className="p-3 rounded-xl bg-[#00B4D8]/10 border border-[#00B4D8]/30 flex items-center justify-between gap-3">
+          <div className="p-3 rounded-xl bg-[var(--primary)]/10 border border-[var(--primary)]/30 flex items-center justify-between gap-3">
             <div className="min-w-0 flex items-center gap-2 text-xs text-[#005564] truncate">
-              <Share2 className="w-4 h-4 shrink-0 text-[#007E93]" />
+              <Share2 className="w-4 h-4 shrink-0 text-[var(--primary)]" />
               <span className="truncate font-mono text-[11px]">{shareableUrl}</span>
             </div>
             <button
               type="button"
               onClick={handleCopyLink}
-              className="shrink-0 px-3 py-1.5 rounded-lg bg-[#007E93] hover:bg-[#006779] text-white text-xs font-medium flex items-center gap-1.5 transition-colors cursor-pointer"
+              className="shrink-0 px-3 py-1.5 rounded-lg bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white text-xs font-medium flex items-center gap-1.5 transition-colors cursor-pointer"
             >
               {isCopied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
               <span>{isCopied ? 'Copied' : 'Copy Link'}</span>
@@ -238,7 +238,7 @@ export const ReportCenterModal: React.FC<ReportCenterModalProps> = ({
             leftIcon={<Download className="w-4 h-4" />}
             onClick={() => handleExport('pdf')}
             disabled={isExporting !== null}
-            className="bg-[#007E93] hover:bg-[#006779] text-white shadow-teal-900/15 cursor-pointer"
+            className="bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white shadow-teal-900/15 cursor-pointer"
           >
             {isExporting === 'pdf' ? 'Generating PDF...' : 'Download Executive PDF'}
           </Button>

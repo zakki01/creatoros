@@ -157,7 +157,7 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
         >
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute -right-10 -top-10 w-64 h-64 rounded-full bg-[#00B4D8]/10 blur-3xl group-hover:bg-[#00B4D8]/18 transition-all duration-300"
+            className="pointer-events-none absolute -right-10 -top-10 w-64 h-64 rounded-full bg-[var(--primary)]/10 blur-3xl group-hover:bg-[var(--primary)]/18 transition-all duration-300"
           />
 
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-5 h-full">
@@ -198,13 +198,13 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
                 >
                   <defs>
                     <linearGradient id="heroCamBody" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="#00B4D8" />
+                      <stop offset="0%" stopColor="var(--primary)" />
                       <stop offset="55%" stopColor="#0077B6" />
                       <stop offset="100%" stopColor="#023E8A" />
                     </linearGradient>
                     <linearGradient id="heroCamLens" x1="0%" y1="0%" x2="100%" y2="100%">
                       <stop offset="0%" stopColor="#CAF0F8" />
-                      <stop offset="45%" stopColor="#00B4D8" />
+                      <stop offset="45%" stopColor="var(--primary)" />
                       <stop offset="100%" stopColor="#03045E" />
                     </linearGradient>
                     <linearGradient id="heroRim" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -483,7 +483,7 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
                     <span className="font-semibold text-emerald-500 dark:text-emerald-400 text-[11px]">Deliverable Cut</span>
                   </div>
                   <div className="w-full bg-[var(--surface-recessed)] h-1.5 rounded-full overflow-hidden">
-                    <div className="bg-gradient-to-r from-[#00B4D8] to-emerald-500 h-full rounded-full w-2/3" />
+                    <div className="bg-gradient-to-r from-[var(--primary)] to-emerald-500 h-full rounded-full w-2/3" />
                   </div>
                   <div className="flex justify-between text-[10px] text-[var(--text-muted)] font-mono">
                     <span className="flex items-center gap-1 text-emerald-500 dark:text-emerald-400">

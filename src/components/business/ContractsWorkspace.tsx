@@ -164,7 +164,7 @@ export const ContractsWorkspace: React.FC<ContractsWorkspaceProps> = ({
 
         <button
           onClick={() => setViewMode('new')}
-          className="min-h-[44px] px-5 py-2.5 rounded-xl bg-[#007E93] hover:bg-[#006779] text-white text-xs font-bold flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer active:scale-95 self-start sm:self-auto shrink-0"
+          className="min-h-[44px] px-5 py-2.5 rounded-xl bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white text-xs font-bold flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer active:scale-95 self-start sm:self-auto shrink-0"
         >
           <Plus className="w-4 h-4" />
           <span>Create Contract</span>
@@ -192,7 +192,7 @@ export const ContractsWorkspace: React.FC<ContractsWorkspaceProps> = ({
 
         <div className="p-3.5 rounded-xl bg-[var(--surface)] border border-[var(--border)] shadow-xs space-y-1">
           <span className="text-[10px] font-mono uppercase text-[var(--text-muted)] block">Dispute-Free Rate</span>
-          <p className="text-base font-bold text-[#00B4D8] font-mono">98.4%</p>
+          <p className="text-base font-bold text-[var(--primary)] font-mono">98.4%</p>
         </div>
       </div>
 
@@ -245,7 +245,7 @@ export const ContractsWorkspace: React.FC<ContractsWorkspaceProps> = ({
             placeholder="Search contracts..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full min-h-[44px] pl-9 pr-3 rounded-xl bg-[var(--input)] border border-[var(--border)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)] text-xs focus:outline-none focus:border-[#00B4D8] shadow-xs"
+            className="w-full min-h-[44px] pl-9 pr-3 rounded-xl bg-[var(--input)] border border-[var(--border)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)] text-xs focus:outline-none focus:border-[var(--primary)] shadow-xs"
           />
         </div>
       </div>
@@ -291,7 +291,7 @@ export const ContractsWorkspace: React.FC<ContractsWorkspaceProps> = ({
 
           <button
             onClick={() => setViewMode('new')}
-            className="min-h-[44px] px-5 py-2.5 rounded-xl bg-[#007E93] hover:bg-[#006779] text-white text-xs font-bold inline-flex items-center gap-1.5 shadow-sm transition-all cursor-pointer"
+            className="min-h-[44px] px-5 py-2.5 rounded-xl bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white text-xs font-bold inline-flex items-center gap-1.5 shadow-sm transition-all cursor-pointer"
           >
             <Plus className="w-4 h-4" />
             <span>Create Contract</span>

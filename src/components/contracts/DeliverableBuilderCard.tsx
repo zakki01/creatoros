@@ -74,7 +74,7 @@ export const DeliverableBuilderCard: React.FC<DeliverableBuilderCardProps> = ({
       {/* Header bar */}
       <div className="flex items-center justify-between gap-3 pb-3 border-b border-black/[0.06]">
         <div className="flex items-center gap-2.5">
-          <span className="w-6 h-6 rounded-lg bg-[#00B4D8]/10 border border-[#00B4D8]/20 text-[#007E93] font-mono text-xs font-bold flex items-center justify-center">
+          <span className="w-6 h-6 rounded-lg bg-[var(--primary)]/10 border border-[var(--primary)]/20 text-[var(--primary)] font-mono text-xs font-bold flex items-center justify-center">
             {index + 1}
           </span>
           <div className="flex items-center gap-2">
@@ -139,7 +139,7 @@ export const DeliverableBuilderCard: React.FC<DeliverableBuilderCardProps> = ({
                   onClick={() => onUpdate({ ...deliverable, type })}
                   className={`min-h-[36px] px-3 py-1.5 rounded-xl text-xs font-medium transition-all cursor-pointer ${
                     deliverable.type === type
-                      ? 'bg-[#007E93] text-white font-semibold shadow-xs'
+                      ? 'bg-[var(--primary)] text-white font-semibold shadow-xs'
                       : 'bg-zinc-100 text-[var(--text-secondary)] hover:bg-zinc-200 hover:text-[var(--text-primary)] border border-[var(--border)]'
                   }`}
                 >
@@ -161,7 +161,7 @@ export const DeliverableBuilderCard: React.FC<DeliverableBuilderCardProps> = ({
                 onChange={(e) =>
                   onUpdate({ ...deliverable, quantity: Math.max(1, parseInt(e.target.value) || 1) })
                 }
-                className="w-full min-h-[44px] px-3 py-2 rounded-xl bg-[var(--input)] border border-[var(--border)] text-[var(--text-primary)] text-xs focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] font-mono shadow-xs"
+                className="w-full min-h-[44px] px-3 py-2 rounded-xl bg-[var(--input)] border border-[var(--border)] text-[var(--text-primary)] text-xs focus:outline-none focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] font-mono shadow-xs"
               />
               {errors.quantity && (
                 <span className="text-[10px] text-rose-600 mt-1 block flex items-center gap-1 font-medium">
@@ -175,7 +175,7 @@ export const DeliverableBuilderCard: React.FC<DeliverableBuilderCardProps> = ({
               <select
                 value={deliverable.format}
                 onChange={(e) => onUpdate({ ...deliverable, format: e.target.value as DeliverableFormat })}
-                className="w-full min-h-[44px] px-3 py-2 rounded-xl bg-[var(--input)] border border-[var(--border)] text-[var(--text-primary)] text-xs focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] shadow-xs"
+                className="w-full min-h-[44px] px-3 py-2 rounded-xl bg-[var(--input)] border border-[var(--border)] text-[var(--text-primary)] text-xs focus:outline-none focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] shadow-xs"
               >
                 {formatOptions.map((f) => (
                   <option key={f} value={f}>
@@ -194,7 +194,7 @@ export const DeliverableBuilderCard: React.FC<DeliverableBuilderCardProps> = ({
                 placeholder="e.g. 30–60s, 4K"
                 value={deliverable.duration || ''}
                 onChange={(e) => onUpdate({ ...deliverable, duration: e.target.value })}
-                className="w-full min-h-[44px] px-3 py-2 rounded-xl bg-[var(--input)] border border-[var(--border)] text-[var(--text-primary)] text-xs focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] shadow-xs"
+                className="w-full min-h-[44px] px-3 py-2 rounded-xl bg-[var(--input)] border border-[var(--border)] text-[var(--text-primary)] text-xs focus:outline-none focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] shadow-xs"
               />
             </div>
 
@@ -204,7 +204,7 @@ export const DeliverableBuilderCard: React.FC<DeliverableBuilderCardProps> = ({
                 type="date"
                 value={deliverable.dueDate || ''}
                 onChange={(e) => onUpdate({ ...deliverable, dueDate: e.target.value })}
-                className="w-full min-h-[44px] px-3 py-2 rounded-xl bg-[var(--input)] border border-[var(--border)] text-[var(--text-primary)] text-xs focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] shadow-xs"
+                className="w-full min-h-[44px] px-3 py-2 rounded-xl bg-[var(--input)] border border-[var(--border)] text-[var(--text-primary)] text-xs focus:outline-none focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] shadow-xs"
               />
               {errors.dueDate && (
                 <span className="text-[10px] text-rose-600 mt-1 block flex items-center gap-1 font-medium">
@@ -224,7 +224,7 @@ export const DeliverableBuilderCard: React.FC<DeliverableBuilderCardProps> = ({
               placeholder="e.g. Product must appear in first 5 seconds. Must clearly show logo and include swipe-up promo link."
               value={deliverable.specifications}
               onChange={(e) => onUpdate({ ...deliverable, specifications: e.target.value })}
-              className="w-full p-3 rounded-xl bg-[var(--input)] border border-[var(--border)] text-[var(--text-primary)] text-xs focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] leading-relaxed resize-none shadow-xs"
+              className="w-full p-3 rounded-xl bg-[var(--input)] border border-[var(--border)] text-[var(--text-primary)] text-xs focus:outline-none focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] leading-relaxed resize-none shadow-xs"
             />
             {errors.specifications && (
               <span className="text-[10px] text-rose-600 mt-0.5 block flex items-center gap-1 font-medium">

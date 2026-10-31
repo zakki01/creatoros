@@ -25,10 +25,10 @@ export const Progress: React.FC<ProgressProps> = ({
   };
 
   const colorStyles = {
-    brand: 'bg-[#007E93]',
+    brand: 'bg-[var(--primary)]',
     emerald: 'bg-emerald-500',
     amber: 'bg-amber-500',
-    gradient: 'bg-gradient-to-r from-[#007E93] via-[#16A4B8] to-[#66D5E3]',
+    gradient: 'bg-gradient-to-r from-[var(--primary)] to-[var(--accent)]',
   };
 
   return (

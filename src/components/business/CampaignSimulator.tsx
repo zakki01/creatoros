@@ -72,7 +72,7 @@ export const CampaignSimulator: React.FC<CampaignSimulatorProps> = ({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <label className="text-xs font-semibold text-[var(--text-primary)] flex items-center gap-2">
-              <Sliders className="w-4 h-4 text-[#00B4D8]" />
+              <Sliders className="w-4 h-4 text-[var(--primary)]" />
               <span>Simulated Budget Variable</span>
             </label>
             <p className="text-xs text-[var(--text-secondary)] mt-0.5">
@@ -123,7 +123,7 @@ export const CampaignSimulator: React.FC<CampaignSimulatorProps> = ({
               onClick={() => setSelectedScenarioId(scen.id)}
               className={`rounded-3xl p-6 border transition-all cursor-pointer flex flex-col justify-between ${
                 isSelected
-                  ? 'bg-[var(--surface-elevated)] border-[#00B4D8] shadow-2xl ring-1 ring-[#007E93]'
+                  ? 'bg-[var(--surface-elevated)] border-[var(--primary)] shadow-2xl ring-1 ring-[var(--primary)]'
                   : 'bg-[var(--surface)] shadow-xs border-[var(--border)] hover:border-[var(--border-strong)] hover:bg-[var(--surface-subtle)]'
               }`}
             >
@@ -131,7 +131,7 @@ export const CampaignSimulator: React.FC<CampaignSimulatorProps> = ({
                 {/* Header */}
                 <div>
                   <div className="flex items-center justify-between gap-2 mb-2">
-                    <span className="text-[11px] font-mono text-[#00B4D8] font-semibold uppercase tracking-wider">
+                    <span className="text-[11px] font-mono text-[var(--primary)] font-semibold uppercase tracking-wider">
                       {scen.name.split(':')[0]}
                     </span>
                     <Badge
@@ -187,7 +187,7 @@ export const CampaignSimulator: React.FC<CampaignSimulatorProps> = ({
                       <TrendingUp className="w-3.5 h-3.5 text-[var(--text-muted)]" />
                       <span>Engagement Rate</span>
                     </span>
-                    <span className="font-mono text-[#00B4D8] font-semibold">
+                    <span className="font-mono text-[var(--primary)] font-semibold">
                       {scen.projectedEngagement}
                     </span>
                   </div>
@@ -222,7 +222,7 @@ export const CampaignSimulator: React.FC<CampaignSimulatorProps> = ({
                 </div>
 
                 {/* Strategy Tag */}
-                <div className="p-2.5 rounded-xl bg-[#00B4D8]/10 border border-[#00B4D8]/20 text-[11px] text-[#00B4D8] text-center font-medium">
+                <div className="p-2.5 rounded-xl bg-[var(--primary)]/10 border border-[var(--primary)]/20 text-[11px] text-[var(--primary)] text-center font-medium">
                   {scen.recommendationTag}
                 </div>
               </div>

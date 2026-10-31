@@ -121,8 +121,8 @@ const ToastCard: React.FC<{ toast: ToastItem; onDismiss: () => void }> = ({
       color: 'border-amber-500/30 bg-amber-50',
     },
     info: {
-      icon: <Info className="w-5 h-5 text-[#007E93]" />,
-      color: 'border-[#007E93]/25 bg-[#E9FAFC]',
+      icon: <Info className="w-5 h-5 text-[var(--primary)]" />,
+      color: 'border-[var(--primary)]/25 bg-[var(--primary-soft)]',
     },
   };
 

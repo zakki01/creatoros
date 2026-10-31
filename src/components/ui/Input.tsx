@@ -27,7 +27,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           <input
             ref={ref}
             className={clsx(
-              'w-full bg-[var(--surface)] text-[var(--text-primary)] placeholder-[var(--text-muted)] text-sm rounded-xl border border-[var(--border)] shadow-xs focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] focus:outline-none transition-colors duration-150 py-2.5 px-3.5',
+              'w-full bg-[var(--surface)] text-[var(--text-primary)] placeholder-[var(--text-muted)] text-sm rounded-xl border border-[var(--border)] shadow-xs focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] focus:outline-none transition-colors duration-150 py-2.5 px-3.5',
               leftIcon && 'pl-10',
               rightIcon && 'pr-10',
               error && 'border-rose-500 focus:border-rose-500 focus:ring-rose-500',

@@ -95,7 +95,7 @@ export const ContractRiskScanner: React.FC<ContractRiskScannerProps> = ({
                 <button
                   type="button"
                   onClick={() => onFixRisk(risk.stepIndex)}
-                  className="min-h-[44px] px-3 py-1.5 rounded-xl bg-[#007E93] hover:bg-[#006779] text-white text-xs font-semibold flex items-center gap-1 transition-all cursor-pointer shadow-sm shadow-teal-900/20 active:scale-95"
+                  className="min-h-[44px] px-3 py-1.5 rounded-xl bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white text-xs font-semibold flex items-center gap-1 transition-all cursor-pointer shadow-sm shadow-teal-900/20 active:scale-95"
                 >
                   <span>Fix</span>
                   <ArrowRight className="w-3 h-3" />

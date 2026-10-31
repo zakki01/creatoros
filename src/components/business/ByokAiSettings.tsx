@@ -84,14 +84,14 @@ export const ByokAiSettings: React.FC = () => {
               onClick={() => handleProviderSelect(p.id)}
               className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer ${
                 isSelected
-                  ? 'bg-[var(--surface-elevated)] border-[#00B4D8] ring-1 ring-[#007E93]/25'
+                  ? 'bg-[var(--surface-elevated)] border-[var(--primary)] ring-1 ring-[var(--primary)]/25'
                   : 'bg-[var(--surface)] border-[var(--border)] hover:border-[var(--border-strong)]'
               }`}
             >
               <div className="flex items-center justify-between mb-1.5">
                 <span className="text-xs font-bold text-[var(--text-primary)]">{p.name}</span>
                 <span className={`text-[10px] px-1.5 py-0.2 rounded font-mono ${
-                  isSelected ? 'bg-[#007E93]/20 text-[#00B4D8]' : 'bg-[var(--surface-subtle)] text-[var(--text-secondary)]'
+                  isSelected ? 'bg-[var(--primary)]/20 text-[var(--primary)]' : 'bg-[var(--surface-subtle)] text-[var(--text-secondary)]'
                 }`}>
                   {p.badge}
                 </span>
@@ -107,7 +107,7 @@ export const ByokAiSettings: React.FC = () => {
         <div className="p-4 rounded-xl bg-[var(--surface)] shadow-xs border border-[var(--border)] space-y-3 animate-fade-in">
           <div className="flex items-center justify-between">
             <label className="text-xs font-semibold text-[var(--text-primary)] flex items-center gap-1.5">
-              <Key className="w-3.5 h-3.5 text-[#00B4D8]" />
+              <Key className="w-3.5 h-3.5 text-[var(--primary)]" />
               <span>{selectedProvider.toUpperCase()} Secret Key</span>
             </label>
             <span className="text-[11px] text-[var(--text-muted)] font-mono">
@@ -122,7 +122,7 @@ export const ByokAiSettings: React.FC = () => {
                 value={apiKeyInput}
                 onChange={(e) => setApiKeyInput(e.target.value)}
                 placeholder={`Paste your ${selectedProvider} API key...`}
-                className="w-full bg-[var(--input)] border border-[var(--border)] rounded-lg px-3 py-2 text-xs text-[var(--text-primary)] placeholder:text-[var(--text-muted)] font-mono focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] pr-9"
+                className="w-full bg-[var(--input)] border border-[var(--border)] rounded-lg px-3 py-2 text-xs text-[var(--text-primary)] placeholder:text-[var(--text-muted)] font-mono focus:outline-none focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] pr-9"
               />
               <button
                 type="button"
@@ -136,7 +136,7 @@ export const ByokAiSettings: React.FC = () => {
               type="button"
               onClick={handleSaveKey}
               disabled={!apiKeyInput.trim()}
-              className="px-3.5 py-2 rounded-lg bg-[#007E93] hover:bg-[#006779] disabled:opacity-40 text-white text-xs font-medium transition-colors cursor-pointer"
+              className="px-3.5 py-2 rounded-lg bg-[var(--primary)] hover:bg-[var(--primary-hover)] disabled:opacity-40 text-white text-xs font-medium transition-colors cursor-pointer"
             >
               Save Key
             </button>

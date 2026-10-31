@@ -66,8 +66,8 @@ export const CreatorDeliverables: React.FC<{
               variant="outline"
               size="sm"
               onClick={() => onNavigate('live')}
-              leftIcon={<Video className="w-3.5 h-3.5 text-[#007E93]" />}
-              className="border-[#00B4D8]/30 hover:border-[#007E93]/40 text-zinc-800"
+              leftIcon={<Video className="w-3.5 h-3.5 text-[var(--primary)]" />}
+              className="border-[var(--primary)]/30 hover:border-[var(--primary)]/40 text-zinc-800"
             >
               Live Studio
             </Button>

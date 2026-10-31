@@ -108,7 +108,7 @@ export const CreatorSubmissionModal: React.FC<CreatorSubmissionModalProps> = ({
             size="sm"
             onClick={handleRunPreCheck}
             isLoading={isPreChecking}
-            leftIcon={<Sparkles className="w-4 h-4 text-[#007E93]" />}
+            leftIcon={<Sparkles className="w-4 h-4 text-[var(--primary)]" />}
             className="text-xs"
           >
             Pre-Check
@@ -204,11 +204,11 @@ export const CreatorSubmissionModal: React.FC<CreatorSubmissionModalProps> = ({
 
         {/* LIVE AI PRE-CHECK PANEL */}
         {aiPreCheck && (
-          <div className="p-4 rounded-2xl bg-[#F0FAFB] border border-[#007E93]/20 space-y-3 animate-fade-in">
+          <div className="p-4 rounded-2xl bg-[#F0FAFB] border border-[var(--primary)]/20 space-y-3 animate-fade-in">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-[#007E93]" />
-                <h4 className="text-xs font-semibold text-[#007E93] uppercase tracking-wider">
+                <Sparkles className="w-4 h-4 text-[var(--primary)]" />
+                <h4 className="text-xs font-semibold text-[var(--primary)] uppercase tracking-wider">
                   Live AI Pre-Check Verification
                 </h4>
               </div>

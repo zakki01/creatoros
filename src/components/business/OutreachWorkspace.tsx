@@ -106,7 +106,7 @@ export const OutreachWorkspace: React.FC = () => {
             onClick={() => setViewMode('kanban')}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition-all ${
               viewMode === 'kanban'
-                ? 'bg-[var(--surface-elevated)] text-[#00B4D8] border border-[var(--border)] shadow-sm font-semibold'
+                ? 'bg-[var(--surface-elevated)] text-[var(--primary)] border border-[var(--border)] shadow-sm font-semibold'
                 : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
             }`}
           >
@@ -117,7 +117,7 @@ export const OutreachWorkspace: React.FC = () => {
             onClick={() => setViewMode('list')}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition-all ${
               viewMode === 'list'
-                ? 'bg-[var(--surface-elevated)] text-[#00B4D8] border border-[var(--border)] shadow-sm font-semibold'
+                ? 'bg-[var(--surface-elevated)] text-[var(--primary)] border border-[var(--border)] shadow-sm font-semibold'
                 : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
             }`}
           >
@@ -168,7 +168,7 @@ export const OutreachWorkspace: React.FC = () => {
                               className="w-7 h-7 rounded-xl object-cover ring-1 ring-[var(--border)] shrink-0"
                             />
                             <div>
-                              <p className="text-xs font-semibold text-[var(--text-primary)] group-hover:text-[#00B4D8] transition-colors">
+                              <p className="text-xs font-semibold text-[var(--text-primary)] group-hover:text-[var(--primary)] transition-colors">
                                 {item.creator.name}
                               </p>
                               <p className="text-[10px] text-[var(--text-muted)] font-mono">
@@ -187,7 +187,7 @@ export const OutreachWorkspace: React.FC = () => {
 
                         <div className="flex items-center justify-between text-[10px] text-[var(--text-muted)] pt-1 border-t border-[var(--border)]">
                           <span>Last: {item.lastContactDate}</span>
-                          <span className="text-[#00B4D8] flex items-center gap-0.5">
+                          <span className="text-[var(--primary)] flex items-center gap-0.5">
                             <MessageSquare className="w-3 h-3" />
                             <span>{item.messages.length}</span>
                           </span>
@@ -253,7 +253,7 @@ export const OutreachWorkspace: React.FC = () => {
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="text-xs text-[#007E93]"
+                        className="text-xs text-[var(--primary)]"
                         onClick={(e) => {
                           e.stopPropagation();
                           handleOpenItem(item);
@@ -336,7 +336,7 @@ export const OutreachWorkspace: React.FC = () => {
                     <div
                       className={`max-w-md p-3.5 rounded-2xl text-xs leading-relaxed ${
                         m.sender === 'brand'
-                          ? 'bg-[#007E93] text-white rounded-br-none'
+                          ? 'bg-[var(--primary)] text-white rounded-br-none'
                           : 'bg-[var(--surface)] text-[var(--text-primary)] border border-[var(--border)] rounded-bl-none'
                       }`}
                     >
@@ -355,7 +355,7 @@ export const OutreachWorkspace: React.FC = () => {
                 <Button
                   variant="outline"
                   size="sm"
-                  leftIcon={<Sparkles className="w-3.5 h-3.5 text-[#00B4D8]" />}
+                  leftIcon={<Sparkles className="w-3.5 h-3.5 text-[var(--primary)]" />}
                   onClick={handleGenerateAiMessage}
                   className="text-xs"
                 >
@@ -368,7 +368,7 @@ export const OutreachWorkspace: React.FC = () => {
                 value={composerMessage}
                 onChange={(e) => setComposerMessage(e.target.value)}
                 placeholder="Type your message or generate an AI draft tailored to this creator..."
-                className="w-full bg-[var(--input)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)] p-3.5 text-xs rounded-2xl border border-[var(--border)] focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8] focus:outline-none leading-relaxed"
+                className="w-full bg-[var(--input)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)] p-3.5 text-xs rounded-2xl border border-[var(--border)] focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] focus:outline-none leading-relaxed"
               />
 
               <div className="flex items-center justify-between pt-1">

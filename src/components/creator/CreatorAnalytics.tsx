@@ -63,7 +63,7 @@ export const CreatorAnalytics: React.FC = () => {
             <SpatialCard key={idx} surface={2} interactive className="p-4 space-y-2">
               <div className="flex items-center justify-between text-zinc-600">
                 <span className="text-[11px] font-medium truncate">{m.label}</span>
-                <Icon className="w-3.5 h-3.5 text-[#007E93]" />
+                <Icon className="w-3.5 h-3.5 text-[var(--primary)]" />
               </div>
               <div>
                 <p className="text-xl font-bold text-zinc-900 font-mono tracking-tight">
@@ -102,12 +102,12 @@ export const CreatorAnalytics: React.FC = () => {
           >
             <defs>
               <linearGradient id="spatialChartFill" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#007E93" stopOpacity="0.38" />
+                <stop offset="0%" stopColor="var(--primary)" stopOpacity="0.38" />
                 <stop offset="65%" stopColor="#8EDCE5" stopOpacity="0.1" />
                 <stop offset="100%" stopColor="#EDF3F6" stopOpacity="0" />
               </linearGradient>
               <linearGradient id="spatialChartStroke" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0%" stopColor="#007E93" />
+                <stop offset="0%" stopColor="var(--primary)" />
                 <stop offset="55%" stopColor="#8EDCE5" />
                 <stop offset="100%" stopColor="#10B981" />
               </linearGradient>

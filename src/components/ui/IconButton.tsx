@@ -48,13 +48,13 @@ export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
       outline:
         'bg-[var(--surface)] hover:bg-[var(--surface-muted)] active:bg-[var(--surface-recessed)] text-[var(--text-primary)] border border-[var(--border)]',
       primary:
-        'bg-[#007E93] hover:bg-[#006779] active:bg-[#005564] text-white shadow-sm shadow-teal-900/15 border border-[#006779]/25',
+        'bg-[var(--primary)] hover:opacity-90 active:scale-95 text-white shadow-sm border border-[var(--primary)]/25',
       danger:
         'bg-rose-500/10 hover:bg-rose-500/20 active:bg-rose-500/25 text-rose-600 dark:text-rose-400 border border-rose-500/25',
     };
 
     const badgeColorStyles = {
-      primary: 'bg-[#007E93] text-white',
+      primary: 'bg-[var(--primary)] text-white',
       danger: 'bg-rose-500 text-white',
       success: 'bg-emerald-500 text-white',
     };
@@ -69,7 +69,7 @@ export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
           // Guaranteed touch target wrapper: 44px minimum touch hit area
           'relative inline-flex items-center justify-center shrink-0 min-w-[44px] min-h-[44px] p-0 select-none cursor-pointer',
           // Reset default button styling
-          'focus:outline-none focus-visible:ring-2 focus-visible:ring-[#007E93] focus-visible:ring-offset-2 focus-visible:ring-offset-white',
+          'focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2',
           'disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none',
           'transition-transform duration-150 active:scale-95',
           className

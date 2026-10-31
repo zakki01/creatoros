@@ -470,7 +470,7 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
             aria-label="AR Effects"
             className={`w-11 h-11 rounded-full backdrop-blur-md border flex items-center justify-center active:scale-90 transition-transform shadow-md cursor-pointer ${
               mobileDrawer === 'effects' || activeEffect.id !== 'eff-none'
-                ? 'bg-[#007E93] border-[#00B4D8] text-white'
+                ? 'bg-[var(--primary)] border-[var(--primary)] text-white'
                 : 'bg-black/50 border-white/15 text-white'
             }`}
           >
@@ -530,12 +530,12 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
                 value={newCommentText}
                 onChange={(e) => setNewCommentText(e.target.value)}
                 placeholder="Say something nice..."
-                className="flex-1 px-4 py-2.5 rounded-full bg-black/50 backdrop-blur-md border border-white/20 text-white placeholder-white/50 text-xs focus:outline-none focus:border-[#00B4D8]"
+                className="flex-1 px-4 py-2.5 rounded-full bg-black/50 backdrop-blur-md border border-white/20 text-white placeholder-white/50 text-xs focus:outline-none focus:border-[var(--primary)]"
               />
               <button
                 type="submit"
                 aria-label="Send message"
-                className="w-10 h-10 rounded-full bg-[#007E93] border border-[#00B4D8] flex items-center justify-center text-white active:scale-90 transition-transform shrink-0 cursor-pointer"
+                className="w-10 h-10 rounded-full bg-[var(--primary)] border border-[var(--primary)] flex items-center justify-center text-white active:scale-90 transition-transform shrink-0 cursor-pointer"
               >
                 <Send className="w-4 h-4" />
               </button>
@@ -563,7 +563,7 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
           <div className="absolute inset-x-0 bottom-0 z-30 bg-zinc-950/95 backdrop-blur-xl border-t border-white/15 rounded-t-3xl p-4 flex flex-col gap-3 animate-slide-up max-h-[50vh] overflow-y-auto">
             <div className="flex items-center justify-between pb-2 border-b border-white/10">
               <div className="flex items-center gap-2">
-                <Wand2 className="w-4 h-4 text-[#00B4D8]" />
+                <Wand2 className="w-4 h-4 text-[var(--primary)]" />
                 <span className="text-sm font-bold">MediaPipe AR Effects</span>
               </div>
               <button
@@ -585,7 +585,7 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
                     onClick={() => handleSelectEffect(eff)}
                     className={`p-2.5 rounded-2xl flex flex-col items-center gap-1.5 text-center border transition-all cursor-pointer ${
                       isSelected
-                        ? 'bg-[#007E93]/30 border-[#00B4D8] text-white shadow-sm'
+                        ? 'bg-[var(--primary)]/30 border-[var(--primary)] text-white shadow-sm'
                         : 'bg-white/5 border-white/10 text-zinc-300 hover:bg-white/10'
                     }`}
                   >
@@ -620,7 +620,7 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
                   max="100"
                   value={beautyLevel}
                   onChange={(e) => handleUpdateBeauty(Number(e.target.value))}
-                  className="w-full accent-[#00B4D8]"
+                  className="w-full accent-[var(--primary)]"
                 />
               </div>
             )}
@@ -649,8 +649,8 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
               <h1 className="text-xl font-bold text-[var(--text-primary)] font-display tracking-tight">
                 Live Studio
               </h1>
-              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-mono uppercase bg-[#007E93]/10 text-[#006779] dark:text-[#00B4D8] border border-[#007E93]/25">
-                <Sparkles className="w-3 h-3 text-[#007E93]" />
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-mono uppercase bg-[var(--primary)]/10 text-[var(--primary-hover)] dark:text-[var(--primary)] border border-[var(--primary)]/25">
+                <Sparkles className="w-3 h-3 text-[var(--primary)]" />
                 Broadcasting Workspace
               </span>
             </div>
@@ -739,7 +739,7 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
                           : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
                       }`}
                     >
-                      <Wand2 className="w-3.5 h-3.5 text-[#007E93]" />
+                      <Wand2 className="w-3.5 h-3.5 text-[var(--primary)]" />
                       <span>AR Effects &amp; Beauty</span>
                     </button>
                     <button
@@ -751,7 +751,7 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
                           : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
                       }`}
                     >
-                      <Sparkles className="w-3.5 h-3.5 text-[#007E93]" />
+                      <Sparkles className="w-3.5 h-3.5 text-[var(--primary)]" />
                       <span>Scene Lighting</span>
                     </button>
                     <button
@@ -763,7 +763,7 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
                           : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
                       }`}
                     >
-                      <Sliders className="w-3.5 h-3.5 text-[#007E93]" />
+                      <Sliders className="w-3.5 h-3.5 text-[var(--primary)]" />
                       <span>Reference</span>
                     </button>
                   </div>
@@ -782,7 +782,7 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
                             onClick={() => handleSelectEffect(eff)}
                             className={`p-2 rounded-xl flex flex-col items-center gap-1 text-center border transition-all cursor-pointer ${
                               isSelected
-                                ? 'bg-[#007E93]/15 border-[#007E93] text-[var(--text-primary)] shadow-xs font-semibold'
+                                ? 'bg-[var(--primary)]/15 border-[var(--primary)] text-[var(--text-primary)] shadow-xs font-semibold'
                                 : 'bg-[var(--surface-muted)] border-[var(--border)] text-[var(--text-secondary)] hover:bg-[var(--surface)]'
                             }`}
                           >
@@ -814,7 +814,7 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
                           max="100"
                           value={beautyLevel}
                           onChange={(e) => handleUpdateBeauty(Number(e.target.value))}
-                          className="flex-1 accent-[#007E93]"
+                          className="flex-1 accent-[var(--primary)]"
                         />
                         <span className="text-xs font-mono font-bold text-[var(--text-primary)] w-8 text-right">
                           {beautyLevel}%

@@ -78,7 +78,7 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({
                 : 'text-zinc-600 hover:text-zinc-900'
             }`}
           >
-            <Building2 className={`w-3.5 h-3.5 ${role === 'business' ? 'text-zinc-950' : 'text-[#007E93]'}`} />
+            <Building2 className={`w-3.5 h-3.5 ${role === 'business' ? 'text-zinc-950' : 'text-[var(--primary)]'}`} />
             <span>Brand / Agency</span>
           </button>
         </div>

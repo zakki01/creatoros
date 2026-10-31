@@ -91,7 +91,7 @@ export const SettingsWorkspace: React.FC = () => {
             type="button"
             onClick={() => setAiEnabled(!aiEnabled)}
             className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-              aiEnabled ? 'bg-[#00B4D8]' : 'bg-[var(--surface-subtle)] border border-[var(--border)]'
+              aiEnabled ? 'bg-[var(--primary)]' : 'bg-[var(--surface-subtle)] border border-[var(--border)]'
             }`}
           >
             <span
@@ -167,7 +167,7 @@ export const SettingsWorkspace: React.FC = () => {
               <h2 className="text-sm font-semibold text-[var(--text-primary)]">
                 Live Creator Engine (Decart Realtime)
               </h2>
-              <span className="px-2 py-0.2 rounded-full text-[10px] font-mono bg-[#007E93]/10 text-[#00B4D8] border border-[#00B4D8]/30">
+              <span className="px-2 py-0.2 rounded-full text-[10px] font-mono bg-[var(--primary)]/10 text-[var(--primary)] border border-[var(--primary)]/30">
                 Self-Hosted / Optional
               </span>
             </div>
@@ -185,7 +185,7 @@ export const SettingsWorkspace: React.FC = () => {
               saveStoredLiveEngineConfig(updated);
             }}
             className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-              liveConfig.enabled ? 'bg-[#00B4D8]' : 'bg-[var(--surface-subtle)] border border-[var(--border)]'
+              liveConfig.enabled ? 'bg-[var(--primary)]' : 'bg-[var(--surface-subtle)] border border-[var(--border)]'
             }`}
           >
             <span
@@ -203,7 +203,7 @@ export const SettingsWorkspace: React.FC = () => {
               <div className="space-y-1.5 sm:col-span-2">
                 <label className="text-xs font-medium text-[var(--text-primary)] flex items-center justify-between">
                   <span className="flex items-center gap-1.5">
-                    <Key className="w-3.5 h-3.5 text-[#00B4D8]" />
+                    <Key className="w-3.5 h-3.5 text-[var(--primary)]" />
                     <span>Decart API Key</span>
                   </span>
                   <span className="text-[11px] text-[var(--text-muted)] font-normal">
@@ -218,7 +218,7 @@ export const SettingsWorkspace: React.FC = () => {
                       setLiveConfig({ ...liveConfig, apiKey: e.target.value })
                     }
                     placeholder="sk_decart_..."
-                    className="w-full px-3 py-2 pr-10 rounded-lg bg-[var(--input)] border border-[var(--border)] text-xs text-[var(--text-primary)] placeholder:text-[var(--text-muted)] font-mono focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]"
+                    className="w-full px-3 py-2 pr-10 rounded-lg bg-[var(--input)] border border-[var(--border)] text-xs text-[var(--text-primary)] placeholder:text-[var(--text-muted)] font-mono focus:outline-none focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)]"
                   />
                   <button
                     type="button"
@@ -244,7 +244,7 @@ export const SettingsWorkspace: React.FC = () => {
                   onChange={(e) =>
                     setLiveConfig({ ...liveConfig, defaultModel: e.target.value })
                   }
-                  className="w-full px-3 py-2 rounded-lg bg-[var(--input)] border border-[var(--border)] text-xs text-[var(--text-primary)] focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]"
+                  className="w-full px-3 py-2 rounded-lg bg-[var(--input)] border border-[var(--border)] text-xs text-[var(--text-primary)] focus:outline-none focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)]"
                 >
                   <option value="mirage-realtime-v1">
                     mirage-realtime-v1 (Low Latency)
@@ -274,7 +274,7 @@ export const SettingsWorkspace: React.FC = () => {
                       maxSessionDurationSec: Number(e.target.value),
                     })
                   }
-                  className="w-full px-3 py-2 rounded-lg bg-[var(--input)] border border-[var(--border)] text-xs text-[var(--text-primary)] focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]"
+                  className="w-full px-3 py-2 rounded-lg bg-[var(--input)] border border-[var(--border)] text-xs text-[var(--text-primary)] focus:outline-none focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)]"
                 >
                   <option value={15}>15 Seconds (Budget Friendly)</option>
                   <option value={30}>30 Seconds (Default Recommended)</option>
@@ -321,7 +321,7 @@ export const SettingsWorkspace: React.FC = () => {
                   variant="primary"
                   size="sm"
                   onClick={handleSaveLiveConfig}
-                  className="text-xs bg-[#007E93] hover:bg-[#006779] shadow-teal-900/15"
+                  className="text-xs bg-[var(--primary)] hover:bg-[var(--primary-hover)] shadow-teal-900/15"
                 >
                   Save Live Engine Settings
                 </Button>
@@ -379,7 +379,7 @@ export const SettingsWorkspace: React.FC = () => {
             onClick={() => setTheme('light')}
             className={`p-3.5 rounded-2xl border cursor-pointer flex items-center justify-between transition-all ${
               themePreference === 'light'
-                ? 'bg-[#007E93]/15 border-[#00B4D8] shadow-xs'
+                ? 'bg-[var(--primary)]/15 border-[var(--primary)] shadow-xs'
                 : 'bg-[var(--surface)] border-[var(--border)] hover:border-[var(--border-strong)]'
             }`}
           >
@@ -390,14 +390,14 @@ export const SettingsWorkspace: React.FC = () => {
                 <p className="text-[10px] text-[var(--text-secondary)]">Pristine light</p>
               </div>
             </div>
-            {themePreference === 'light' && <Check className="w-4 h-4 text-[#007E93]" />}
+            {themePreference === 'light' && <Check className="w-4 h-4 text-[var(--primary)]" />}
           </div>
 
           <div
             onClick={() => setTheme('dark')}
             className={`p-3.5 rounded-2xl border cursor-pointer flex items-center justify-between transition-all ${
               themePreference === 'dark'
-                ? 'bg-[#007E93]/15 border-[#00B4D8] shadow-xs'
+                ? 'bg-[var(--primary)]/15 border-[var(--primary)] shadow-xs'
                 : 'bg-[var(--surface)] border-[var(--border)] hover:border-[var(--border-strong)]'
             }`}
           >
@@ -408,14 +408,14 @@ export const SettingsWorkspace: React.FC = () => {
                 <p className="text-[10px] text-[var(--text-secondary)]">Near-black contrast</p>
               </div>
             </div>
-            {themePreference === 'dark' && <Check className="w-4 h-4 text-[#007E93]" />}
+            {themePreference === 'dark' && <Check className="w-4 h-4 text-[var(--primary)]" />}
           </div>
 
           <div
             onClick={() => setTheme('system')}
             className={`p-3.5 rounded-2xl border cursor-pointer flex items-center justify-between transition-all ${
               themePreference === 'system'
-                ? 'bg-[#007E93]/15 border-[#00B4D8] shadow-xs'
+                ? 'bg-[var(--primary)]/15 border-[var(--primary)] shadow-xs'
                 : 'bg-[var(--surface)] border-[var(--border)] hover:border-[var(--border-strong)]'
             }`}
           >
@@ -426,7 +426,7 @@ export const SettingsWorkspace: React.FC = () => {
                 <p className="text-[10px] text-[var(--text-secondary)]">Follows device OS</p>
               </div>
             </div>
-            {themePreference === 'system' && <Check className="w-4 h-4 text-[#007E93]" />}
+            {themePreference === 'system' && <Check className="w-4 h-4 text-[var(--primary)]" />}
           </div>
         </div>
       </div>

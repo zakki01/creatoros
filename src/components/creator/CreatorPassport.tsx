@@ -386,7 +386,7 @@ export const CreatorPassport: React.FC<CreatorPassportProps> = ({ onBack }) => {
                 type="button"
                 onClick={() => setBioExpanded(!bioExpanded)}
                 data-testid="passport-bio-more-btn"
-                className="mt-1.5 inline-flex items-center gap-1 text-xs font-semibold text-[#007E93] hover:text-[#006779] cursor-pointer"
+                className="mt-1.5 inline-flex items-center gap-1 text-xs font-semibold text-[var(--primary)] hover:text-[var(--primary-hover)] cursor-pointer"
               >
                 <span>{bioExpanded ? 'Less' : 'More'}</span>
                 {bioExpanded ? (
@@ -542,7 +542,7 @@ export const CreatorPassport: React.FC<CreatorPassportProps> = ({ onBack }) => {
                     </div>
                     <div className="w-full bg-zinc-200 h-1.5 rounded-full overflow-hidden">
                       <div
-                        className="bg-[#007E93] h-full rounded-full"
+                        className="bg-[var(--primary)] h-full rounded-full"
                         style={{ width: `${a.pct}%` }}
                       />
                     </div>

@@ -126,8 +126,8 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
         }`}
         style={{
           boxShadow: isLight
-            ? '0 2px 8px -2px rgba(0, 180, 216, 0.25)'
-            : '0 2px 8px -2px rgba(0, 168, 255, 0.20)',
+            ? '0 2px 8px -2px rgba(16, 91, 255, 0.25)'
+            : '0 2px 8px -2px rgba(2, 151, 222, 0.25)',
         }}
       >
         <img
@@ -153,7 +153,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
               } ${conf.textSize} ${textClassName}`}
             >
               Creator
-              <span className="text-[#00B4D8] font-extrabold ml-0.5">OS</span>
+              <span className="text-[var(--primary)] font-extrabold ml-0.5">OS</span>
             </span>
 
             {badgeText && (

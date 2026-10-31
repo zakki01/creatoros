@@ -408,7 +408,7 @@ export const DirectMessagesView: React.FC = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search conversations..."
-              className="w-full bg-[var(--surface)] border border-[var(--border)] rounded-xl pl-9 pr-3 py-2 text-xs text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:border-[#007E93] focus:ring-1 focus:ring-[#00B4D8]/60 transition-colors"
+              className="w-full bg-[var(--surface)] border border-[var(--border)] rounded-xl pl-9 pr-3 py-2 text-xs text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)]/60 transition-colors"
             />
           </div>
         </div>
@@ -431,7 +431,7 @@ export const DirectMessagesView: React.FC = () => {
                   }}
                   className={`w-full p-3.5 flex items-start gap-3 text-left transition-colors cursor-pointer ${
                     isSelected
-                      ? 'bg-[var(--surface)] shadow-xs border-l-2 border-[#00B4D8]'
+                      ? 'bg-[var(--surface)] shadow-xs border-l-2 border-[var(--primary)]'
                       : 'hover:bg-black/5 dark:hover:bg-white/5'
                   }`}
                 >
@@ -458,7 +458,7 @@ export const DirectMessagesView: React.FC = () => {
                     </p>
 
                     {conv.campaignContext && (
-                      <div className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-[#00B4D8]/10 text-[10px] text-[#007E93] font-mono truncate max-w-full border border-[#00B4D8]/20">
+                      <div className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-[var(--primary)]/10 text-[10px] text-[var(--primary)] font-mono truncate max-w-full border border-[var(--primary)]/20">
                         <Layers className="w-2.5 h-2.5 shrink-0" />
                         <span className="truncate">{conv.campaignContext.name}</span>
                       </div>
@@ -466,7 +466,7 @@ export const DirectMessagesView: React.FC = () => {
                   </div>
 
                   {conv.unreadCount > 0 && (
-                    <span className="w-4 h-4 rounded-full bg-[#007E93] text-white text-[9px] font-bold flex items-center justify-center shrink-0 mt-1 shadow-sm shadow-xs">
+                    <span className="w-4 h-4 rounded-full bg-[var(--primary)] text-white text-[9px] font-bold flex items-center justify-center shrink-0 mt-1 shadow-sm shadow-xs">
                       {conv.unreadCount}
                     </span>
                   )}
@@ -517,7 +517,7 @@ export const DirectMessagesView: React.FC = () => {
                     {activeConv.participantName}
                   </h3>
                   {activeConv.participantBadge && (
-                    <span className="hidden sm:inline-flex text-[10px] px-2 py-0.5 rounded-full bg-[#00B4D8]/10 text-[#007E93] border border-[#00B4D8]/30 font-medium shrink-0">
+                    <span className="hidden sm:inline-flex text-[10px] px-2 py-0.5 rounded-full bg-[var(--primary)]/10 text-[var(--primary)] border border-[var(--primary)]/30 font-medium shrink-0">
                       {activeConv.participantBadge}
                     </span>
                   )}
@@ -539,8 +539,8 @@ export const DirectMessagesView: React.FC = () => {
 
             {/* Contract Context & Campaign Context Pill */}
             <div className="flex items-center gap-1 sm:gap-2 shrink-0">
-              <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-[#00B4D8]/10 border border-[#00B4D8]/20 text-xs">
-                <FileText className="w-3.5 h-3.5 text-[#007E93] shrink-0" />
+              <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-[var(--primary)]/10 border border-[var(--primary)]/20 text-xs">
+                <FileText className="w-3.5 h-3.5 text-[var(--primary)] shrink-0" />
                 <span className="font-mono text-[var(--text-secondary)] font-semibold text-[11px]">
                   #CR-2026-8491
                 </span>
@@ -550,7 +550,7 @@ export const DirectMessagesView: React.FC = () => {
                     window.history.pushState({}, '', '/brand/contracts');
                     window.dispatchEvent(new PopStateEvent('popstate'));
                   }}
-                  className="text-[10px] text-[#007E93] hover:text-[#007E93] font-semibold underline ml-0.5 cursor-pointer"
+                  className="text-[10px] text-[var(--primary)] hover:text-[var(--primary)] font-semibold underline ml-0.5 cursor-pointer"
                 >
                   Open Contract
                 </button>
@@ -559,7 +559,7 @@ export const DirectMessagesView: React.FC = () => {
               {activeConv.campaignContext && (
                 <div className="hidden 2xl:flex items-center gap-2 px-2.5 py-1 rounded-xl bg-[var(--surface)] border border-[var(--border)] text-xs text-[var(--text-primary)]">
                   <div className="flex items-center gap-1 text-[var(--text-primary)] font-medium max-w-[140px] truncate">
-                    <Layers className="w-3.5 h-3.5 text-[#007E93] shrink-0" />
+                    <Layers className="w-3.5 h-3.5 text-[var(--primary)] shrink-0" />
                     <span className="truncate">{activeConv.campaignContext.name}</span>
                   </div>
                   <span className="text-[var(--text-secondary)]">|</span>
@@ -662,7 +662,7 @@ export const DirectMessagesView: React.FC = () => {
           <div className="flex-1 overflow-y-auto p-4 space-y-4 overscroll-contain">
             {activeMessages.length === 0 ? (
               <div className="h-full flex flex-col items-center justify-center text-center p-8 space-y-3">
-                <div className="w-12 h-12 rounded-2xl bg-[#00B4D8]/10 border border-[#00B4D8]/20 text-[#007E93] flex items-center justify-center shadow-lg">
+                <div className="w-12 h-12 rounded-2xl bg-[var(--primary)]/10 border border-[var(--primary)]/20 text-[var(--primary)] flex items-center justify-center shadow-lg">
                   <MessageSquare className="w-6 h-6" />
                 </div>
                 <h4 className="text-sm font-semibold text-[var(--text-primary)]">Start a conversation</h4>
@@ -716,7 +716,7 @@ export const DirectMessagesView: React.FC = () => {
                         <button
                           type="button"
                           onClick={() => setReplyingTo(msg)}
-                          className="p-1 hover:text-[#007E93] text-[var(--text-muted)] rounded transition-colors cursor-pointer"
+                          className="p-1 hover:text-[var(--primary)] text-[var(--text-muted)] rounded transition-colors cursor-pointer"
                           title="Reply quote"
                         >
                           <Reply className="w-3.5 h-3.5" />
@@ -767,7 +767,7 @@ export const DirectMessagesView: React.FC = () => {
                         onDoubleClick={() => handleToggleReaction(msg.id, '❤️')}
                         className={`rounded-2xl p-3 sm:p-3.5 text-xs space-y-1.5 cursor-pointer select-none transition-transform active:scale-[0.99] ${
                           isMine
-                            ? 'bg-[#007E93] text-white rounded-br-none shadow-md shadow-slate-900/10'
+                            ? 'bg-[var(--primary)] text-white rounded-br-none shadow-md shadow-slate-900/10'
                             : 'bg-[var(--surface)] text-[var(--text-primary)] border border-[var(--border)] rounded-bl-none shadow-sm'
                         }`}
                       >
@@ -789,14 +789,14 @@ export const DirectMessagesView: React.FC = () => {
                               <img
                                 src={msg.profileCardData?.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80'}
                                 alt={msg.profileCardData?.name || 'Shared Profile'}
-                                className="w-12 h-12 rounded-2xl object-cover ring-1 ring-[#007E93]/20 shrink-0"
+                                className="w-12 h-12 rounded-2xl object-cover ring-1 ring-[var(--primary)]/20 shrink-0"
                               />
                               <div className="min-w-0 flex-1">
                                 <div className="flex items-center gap-1.5">
                                   <h4 className="text-xs font-bold text-[var(--text-primary)] truncate">
                                     {msg.profileCardData?.name || 'Rohan Sharma'}
                                   </h4>
-                                  <ShieldCheck className="w-3.5 h-3.5 text-[#007E93] shrink-0" />
+                                  <ShieldCheck className="w-3.5 h-3.5 text-[var(--primary)] shrink-0" />
                                 </div>
                                 <p className="text-[11px] text-[var(--text-muted)] font-mono truncate">
                                   {msg.profileCardData?.handle || '@rohan.kicks'}
@@ -812,7 +812,7 @@ export const DirectMessagesView: React.FC = () => {
 
                             <div className="pt-2 border-t border-zinc-100 flex items-center justify-between text-[11px]">
                               <span className="text-[var(--text-muted)] font-mono text-[10px]">CreatorOS Verified</span>
-                              <span className="text-[#007E93] font-semibold flex items-center gap-1">
+                              <span className="text-[var(--primary)] font-semibold flex items-center gap-1">
                                 <span>Profile Attached</span>
                                 <ExternalLink className="w-3 h-3" />
                               </span>
@@ -847,7 +847,7 @@ export const DirectMessagesView: React.FC = () => {
                             {/* Uploading progress overlay */}
                             {msg.uploadStatus === 'uploading' && (
                               <div className="absolute inset-0 bg-black/75 backdrop-blur-sm flex flex-col items-center justify-center p-3 text-center z-10">
-                                <div className="w-7 h-7 border-2 border-[#00B4D8] border-t-transparent rounded-full animate-spin mb-2" />
+                                <div className="w-7 h-7 border-2 border-[var(--primary)] border-t-transparent rounded-full animate-spin mb-2" />
                                 <span className="text-[11px] font-medium text-white mb-1.5 font-sans">
                                   Uploading GIF...
                                 </span>
@@ -968,11 +968,11 @@ export const DirectMessagesView: React.FC = () => {
           <div className="p-3 sm:p-3.5 border-t border-[var(--border)] bg-[var(--surface-muted)] space-y-2 pb-safe">
             {/* Quoted Reply Preview Bar */}
             {replyingTo && (
-              <div className="flex items-center justify-between p-2.5 rounded-xl bg-[var(--surface)] border border-[#00B4D8]/40 text-xs animate-slide-up">
+              <div className="flex items-center justify-between p-2.5 rounded-xl bg-[var(--surface)] border border-[var(--primary)]/40 text-xs animate-slide-up">
                 <div className="flex items-center gap-2.5 truncate">
                   <div className="w-1 h-6 bg-indigo-500 rounded-full shrink-0" />
                   <div className="truncate">
-                    <span className="font-semibold text-[#007E93] block text-[11px]">
+                    <span className="font-semibold text-[var(--primary)] block text-[11px]">
                       Replying to {replyingTo.senderName}
                     </span>
                     <span className="text-[var(--text-muted)] text-[11px] truncate block">
@@ -998,7 +998,7 @@ export const DirectMessagesView: React.FC = () => {
                   key={chip.id}
                   type="button"
                   onClick={() => handleQuickPrompt(chip.prompt)}
-                  className="px-3 py-1.5 rounded-full bg-[var(--surface)] hover:bg-[var(--surface-muted)] active:scale-95 border border-[var(--border)] text-[var(--text-primary)] shrink-0 transition-colors cursor-pointer text-xs flex items-center gap-1.5 focus:outline-none focus:ring-1 focus:ring-[#007E93]/30"
+                  className="px-3 py-1.5 rounded-full bg-[var(--surface)] hover:bg-[var(--surface-muted)] active:scale-95 border border-[var(--border)] text-[var(--text-primary)] shrink-0 transition-colors cursor-pointer text-xs flex items-center gap-1.5 focus:outline-none focus:ring-1 focus:ring-[var(--primary)]/30"
                 >
                   <span>{chip.label}</span>
                 </button>
@@ -1015,7 +1015,7 @@ export const DirectMessagesView: React.FC = () => {
                       alt="GIF Preview"
                       className="w-full h-full object-contain"
                     />
-                    <span className="absolute bottom-0.5 right-0.5 px-1 rounded bg-black/80 text-[8px] font-black text-[#007E93] font-mono">
+                    <span className="absolute bottom-0.5 right-0.5 px-1 rounded bg-black/80 text-[8px] font-black text-[var(--primary)] font-mono">
                       GIF
                     </span>
                   </div>
@@ -1068,7 +1068,7 @@ export const DirectMessagesView: React.FC = () => {
                 onClick={triggerAttachment}
                 className={`min-w-[44px] min-h-[44px] rounded-xl border flex items-center justify-center transition-colors cursor-pointer shrink-0 ${
                   attachedImage
-                    ? 'bg-[#00B4D8]/20 border-[#00B4D8]/40 text-[#007E93]'
+                    ? 'bg-[var(--primary)]/20 border-[var(--primary)]/40 text-[var(--primary)]'
                     : 'bg-[var(--surface)] hover:bg-[var(--surface-muted)] active:scale-95 border border-[var(--border)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
                 }`}
                 aria-label="Attach file"
@@ -1085,7 +1085,7 @@ export const DirectMessagesView: React.FC = () => {
                   data-testid="dm-emoji-gif-btn"
                   className={`min-w-[44px] min-h-[44px] rounded-xl border flex items-center justify-center transition-colors cursor-pointer ${
                     isEmojiPickerOpen || pendingGif
-                      ? 'bg-[#00B4D8]/20 border-[#00B4D8]/50 text-[#007E93]'
+                      ? 'bg-[var(--primary)]/20 border-[var(--primary)]/50 text-[var(--primary)]'
                       : 'bg-[var(--surface)] hover:bg-[var(--surface-muted)] active:scale-95 border border-[var(--border)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
                   }`}
                   aria-label="Emoji & GIF"
@@ -1131,7 +1131,7 @@ export const DirectMessagesView: React.FC = () => {
                     ? `Reply to ${replyingTo.senderName}...`
                     : 'Type your message...'
                 }
-                className="flex-1 min-h-[44px] bg-[var(--surface)] border border-[var(--border)] rounded-xl px-4 py-2 text-xs sm:text-sm text-[var(--text-primary)] placeholder-zinc-500 focus:outline-none focus:border-[#007E93] focus:ring-2 focus:ring-[#007E93]/20 transition-colors"
+                className="flex-1 min-h-[44px] bg-[var(--surface)] border border-[var(--border)] rounded-xl px-4 py-2 text-xs sm:text-sm text-[var(--text-primary)] placeholder-zinc-500 focus:outline-none focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary)]/20 transition-colors"
                 aria-label="Message text"
               />
 
@@ -1139,7 +1139,7 @@ export const DirectMessagesView: React.FC = () => {
               <button
                 type="submit"
                 disabled={!messageInput.trim() && !attachedImage && !pendingGif}
-                className="min-w-[44px] min-h-[44px] px-4 py-2.5 rounded-xl bg-[#007E93] hover:bg-[#006779] disabled:opacity-40 text-white text-xs sm:text-sm font-semibold flex items-center justify-center gap-1.5 transition-all shadow-md shadow-xs cursor-pointer active:scale-95 shrink-0"
+                className="min-w-[44px] min-h-[44px] px-4 py-2.5 rounded-xl bg-[var(--primary)] hover:bg-[var(--primary-hover)] disabled:opacity-40 text-white text-xs sm:text-sm font-semibold flex items-center justify-center gap-1.5 transition-all shadow-md shadow-xs cursor-pointer active:scale-95 shrink-0"
                 aria-label="Send message"
               >
                 <Send className="w-4 h-4" />
@@ -1183,7 +1183,7 @@ export const DirectMessagesView: React.FC = () => {
                         <span className="text-[10px] text-[var(--text-muted)] font-mono">{conv.participantHandle}</span>
                       </div>
                     </div>
-                    <span className="text-xs text-[#007E93] font-medium">Forward →</span>
+                    <span className="text-xs text-[var(--primary)] font-medium">Forward →</span>
                   </button>
                 ))}
             </div>
@@ -1240,7 +1240,7 @@ export const DirectMessagesView: React.FC = () => {
               <select
                 value={reportReason}
                 onChange={(e) => setReportReason(e.target.value)}
-                className="w-full bg-[var(--surface)] border border-[var(--border)] rounded-xl px-3 py-2 text-xs text-[var(--text-primary)] focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]"
+                className="w-full bg-[var(--surface)] border border-[var(--border)] rounded-xl px-3 py-2 text-xs text-[var(--text-primary)] focus:outline-none focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)]"
               >
                 <option value="deliverable_breach">Deliverable Breach / Non-Delivery</option>
                 <option value="harassment">Unprofessional Conduct / Harassment</option>

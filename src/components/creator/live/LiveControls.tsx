@@ -55,7 +55,7 @@ export const LiveControls: React.FC<LiveControlsProps> = ({
             disabled={isLive || isRecording}
             className={`px-2.5 py-1.5 rounded-lg text-xs font-mono font-medium transition-all ${
               aspectRatio === aspect
-                ? 'bg-[#007E93] text-white shadow-xs'
+                ? 'bg-[var(--primary)] text-white shadow-xs'
                 : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface)]'
             } ${isLive || isRecording ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'}`}
           >
@@ -111,7 +111,7 @@ export const LiveControls: React.FC<LiveControlsProps> = ({
             title="AR Effects & Scenes"
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border transition-all cursor-pointer text-xs font-semibold ${
               isDrawerOpen
-                ? 'bg-[#007E93] text-white border-[#007E93] shadow-xs'
+                ? 'bg-[var(--primary)] text-white border-[var(--primary)] shadow-xs'
                 : 'bg-[var(--surface-muted)] hover:bg-[var(--surface)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] border-[var(--border)]'
             }`}
           >
@@ -183,7 +183,7 @@ export const LiveControls: React.FC<LiveControlsProps> = ({
           >
             {isConnecting ? (
               <>
-                <RefreshCw className="w-3.5 h-3.5 animate-spin text-[#007E93]" />
+                <RefreshCw className="w-3.5 h-3.5 animate-spin text-[var(--primary)]" />
                 <span>Connecting...</span>
               </>
             ) : isLive ? (

@@ -113,7 +113,7 @@ export const CampaignTimeline: React.FC = () => {
               onClick={() => setActiveCampaignId(c.id)}
               className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-all cursor-pointer ${
                 c.id === activeCampaign.id
-                  ? 'bg-[#007E93] text-white shadow-sm'
+                  ? 'bg-[var(--primary)] text-white shadow-sm'
                   : 'bg-[var(--surface)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] border border-[var(--border)]'
               }`}
             >
@@ -149,7 +149,7 @@ export const CampaignTimeline: React.FC = () => {
                   isDone
                     ? 'bg-emerald-500 border-emerald-400 text-white'
                     : isActive
-                    ? 'bg-[#00B4D8] border-indigo-400 text-white ring-4 ring-[#007E93]/20 animate-pulse-subtle'
+                    ? 'bg-[var(--primary)] border-indigo-400 text-white ring-4 ring-[var(--primary)]/20 animate-pulse-subtle'
                     : 'bg-[var(--surface)] border-[var(--border)] text-[var(--text-muted)]'
                 }`}
               >
@@ -164,7 +164,7 @@ export const CampaignTimeline: React.FC = () => {
               <Card
                 className={`p-5 space-y-3 transition-all ${
                   isActive
-                    ? 'bg-[var(--surface-elevated)] border-[#00B4D8]/60 shadow-lg'
+                    ? 'bg-[var(--surface-elevated)] border-[var(--primary)]/60 shadow-lg'
                     : 'bg-[var(--surface)] border-[var(--border)] opacity-80 group-hover:opacity-100'
                 }`}
               >

@@ -125,15 +125,15 @@ export const PostCard: React.FC<PostCardProps> = ({
           <img
             src={post.authorAvatar}
             alt={post.authorName}
-            className="w-10 h-10 rounded-full object-cover ring-1 ring-white/10 group-hover:ring-[#007E93]/35 transition-all shrink-0"
+            className="w-10 h-10 rounded-full object-cover ring-1 ring-white/10 group-hover:ring-[var(--primary)]/35 transition-all shrink-0"
           />
           <div className="min-w-0">
             <div className="flex items-center gap-1.5 flex-wrap">
-              <span className="font-bold text-xs text-zinc-900 group-hover:text-[#007E93] transition-colors truncate">
+              <span className="font-bold text-xs text-zinc-900 group-hover:text-[var(--primary)] transition-colors truncate">
                 {post.authorName}
               </span>
               {post.authorVerified && (
-                <ShieldCheck className="w-3.5 h-3.5 text-[#007E93] shrink-0" />
+                <ShieldCheck className="w-3.5 h-3.5 text-[var(--primary)] shrink-0" />
               )}
               <span className="text-[11px] text-zinc-500 font-mono truncate">
                 {post.authorHandle}
@@ -291,7 +291,7 @@ export const PostCard: React.FC<PostCardProps> = ({
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
             <div className="absolute bottom-3 left-4 right-4">
-              <span className="text-[10px] font-mono text-[#007E93] uppercase tracking-wider block mb-1">
+              <span className="text-[10px] font-mono text-[var(--primary)] uppercase tracking-wider block mb-1">
                 {post.blogReadingTime || '4 min read'}
               </span>
               <h3 className="text-sm sm:text-base font-bold text-white line-clamp-1 font-display">
@@ -385,7 +385,7 @@ export const PostCard: React.FC<PostCardProps> = ({
         <button
           onClick={() => togglePostSave(post.id)}
           className={`min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl transition-all active:scale-90 cursor-pointer ${
-            post.savedByMe ? 'text-[#007E93]' : 'text-zinc-500 hover:text-zinc-900'
+            post.savedByMe ? 'text-[var(--primary)]' : 'text-zinc-500 hover:text-zinc-900'
           }`}
           title={post.savedByMe ? 'Remove from saved' : 'Save drop'}
           aria-label="Save post"
@@ -421,7 +421,7 @@ export const PostCard: React.FC<PostCardProps> = ({
             {post.tags.slice(0, 3).map((tag, idx) => (
               <span
                 key={idx}
-                className="text-[11px] font-mono text-[#007E93] hover:text-[#007E93] cursor-pointer"
+                className="text-[11px] font-mono text-[var(--primary)] hover:text-[var(--primary)] cursor-pointer"
               >
                 {tag}
               </span>

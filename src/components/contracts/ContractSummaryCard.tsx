@@ -55,7 +55,7 @@ export const ContractSummaryCard: React.FC<ContractSummaryCardProps> = ({
           </div>
           <div className="min-w-0">
             <div className="flex items-center gap-1.5">
-              <h4 className="text-sm font-semibold text-[var(--text-primary)] truncate group-hover:text-[#007E93] transition-colors">
+              <h4 className="text-sm font-semibold text-[var(--text-primary)] truncate group-hover:text-[var(--primary)] transition-colors">
                 {contract.creatorName || 'Unassigned Creator'}
               </h4>
             </div>
@@ -101,7 +101,7 @@ export const ContractSummaryCard: React.FC<ContractSummaryCardProps> = ({
             e.stopPropagation();
             onOpen(contract.id);
           }}
-          className="min-h-[44px] min-w-[70px] px-3.5 py-2 rounded-xl bg-zinc-100 hover:bg-[#007E93] text-zinc-800 hover:text-white text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer border border-[var(--border)] hover:border-[#007E93]"
+          className="min-h-[44px] min-w-[70px] px-3.5 py-2 rounded-xl bg-zinc-100 hover:bg-[var(--primary)] text-zinc-800 hover:text-white text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer border border-[var(--border)] hover:border-[var(--primary)]"
         >
           <span>Open</span>
           <ArrowRight className="w-3.5 h-3.5" />

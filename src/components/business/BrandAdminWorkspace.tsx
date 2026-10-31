@@ -79,7 +79,7 @@ export const BrandAdminWorkspace: React.FC = () => {
               onClick={() => setActiveTab(tab.id as any)}
               className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-medium whitespace-nowrap transition-all cursor-pointer ${
                 isActive
-                  ? 'bg-[#007E93] text-white font-semibold border border-[var(--border)] shadow-sm'
+                  ? 'bg-[var(--primary)] text-white font-semibold border border-[var(--border)] shadow-sm'
                   : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-elevated)]'
               }`}
             >
@@ -102,7 +102,7 @@ export const BrandAdminWorkspace: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Card className="p-5 space-y-4">
             <h3 className="text-sm font-bold text-[var(--text-primary)] font-display flex items-center gap-2">
-              <Sliders className="w-4 h-4 text-[#00B4D8]" />
+              <Sliders className="w-4 h-4 text-[var(--primary)]" />
               <span>Spend & Approval Delegation</span>
             </h3>
 
@@ -130,7 +130,7 @@ export const BrandAdminWorkspace: React.FC = () => {
                   type="checkbox"
                   checked={policies.requireTwoSignOffsForDrafts}
                   onChange={(e) => setPolicies({ ...policies, requireTwoSignOffsForDrafts: e.target.checked })}
-                  className="rounded text-[#007E93] focus:ring-0 cursor-pointer w-4 h-4"
+                  className="rounded text-[var(--primary)] focus:ring-0 cursor-pointer w-4 h-4"
                 />
               </div>
             </div>
@@ -177,7 +177,7 @@ export const BrandAdminWorkspace: React.FC = () => {
                   type="checkbox"
                   checked={policies.autoReleaseEscrowOnDeliverableApproval}
                   onChange={(e) => setPolicies({ ...policies, autoReleaseEscrowOnDeliverableApproval: e.target.checked })}
-                  className="rounded text-[#007E93] focus:ring-0 cursor-pointer w-4 h-4"
+                  className="rounded text-[var(--primary)] focus:ring-0 cursor-pointer w-4 h-4"
                 />
               </div>
 
@@ -191,7 +191,7 @@ export const BrandAdminWorkspace: React.FC = () => {
 
           <Card className="p-5 space-y-4">
             <h3 className="text-sm font-bold text-[var(--text-primary)] font-display flex items-center gap-2">
-              <FileCheck2 className="w-4 h-4 text-[#00B4D8]" />
+              <FileCheck2 className="w-4 h-4 text-[var(--primary)]" />
               <span>Corporate Tax & Invoicing Entity</span>
             </h3>
 
@@ -229,7 +229,7 @@ export const BrandAdminWorkspace: React.FC = () => {
                   type="checkbox"
                   checked={policies.enforceMfaForAllAdmins}
                   onChange={(e) => setPolicies({ ...policies, enforceMfaForAllAdmins: e.target.checked })}
-                  className="rounded text-[#007E93] focus:ring-0 cursor-pointer w-4 h-4"
+                  className="rounded text-[var(--primary)] focus:ring-0 cursor-pointer w-4 h-4"
                 />
               </div>
 

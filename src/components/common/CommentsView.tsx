@@ -354,7 +354,7 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
                                       alt="Reply GIF"
                                       className="max-h-32 w-auto object-contain block"
                                     />
-                                    <span className="absolute bottom-1 right-1 px-1 py-0.2 rounded bg-black/75 text-[8px] font-bold text-[#007E93]">
+                                    <span className="absolute bottom-1 right-1 px-1 py-0.2 rounded bg-black/75 text-[8px] font-bold text-[var(--primary)]">
                                       GIF
                                     </span>
                                   </div>
@@ -398,9 +398,9 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
 
         {/* Replying To Bar */}
         {replyingTo && (
-          <div className="px-4 py-1.5 bg-[#E9FAFC] border-t border-[#007E93]/20 text-[11px] text-[#007E93] flex items-center justify-between shrink-0">
+          <div className="px-4 py-1.5 bg-[#E9FAFC] border-t border-[var(--primary)]/20 text-[11px] text-[var(--primary)] flex items-center justify-between shrink-0">
             <span className="flex items-center gap-1.5 truncate">
-              <CornerDownRight className="w-3 h-3 text-[#007E93] shrink-0" />
+              <CornerDownRight className="w-3 h-3 text-[var(--primary)] shrink-0" />
               Replying to <strong className="text-zinc-900">{replyingTo.authorName}</strong>
             </span>
             <button
@@ -508,7 +508,7 @@ export const CommentsView: React.FC<CommentsViewProps> = ({ post, onClose }) => 
               type="submit"
               disabled={!commentText.trim() && !pendingGif}
               data-testid="comment-send-btn"
-              className="min-w-[40px] min-h-[40px] px-3 rounded-xl bg-[#007E93] hover:bg-[#006779] disabled:opacity-40 text-white text-xs font-semibold transition-all cursor-pointer flex items-center justify-center shrink-0 active:scale-95"
+              className="min-w-[40px] min-h-[40px] px-3 rounded-xl bg-[var(--primary)] hover:bg-[var(--primary-hover)] disabled:opacity-40 text-white text-xs font-semibold transition-all cursor-pointer flex items-center justify-center shrink-0 active:scale-95"
               aria-label="Send comment"
             >
               <Send className="w-3.5 h-3.5" />

@@ -244,7 +244,7 @@ export const DiscoverView: React.FC = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search..."
-              className="w-full pl-8 pr-3 py-2 rounded-xl surface-2 text-xs text-zinc-900 placeholder-zinc-500 focus:outline-none focus:border-[#00B4D8] focus:ring-1 focus:ring-[#00B4D8]/60"
+              className="w-full pl-8 pr-3 py-2 rounded-xl surface-2 text-xs text-zinc-900 placeholder-zinc-500 focus:outline-none focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)]/60"
             />
             {searchQuery && (
               <button
@@ -261,7 +261,7 @@ export const DiscoverView: React.FC = () => {
             aria-label="Filters"
             className={`min-h-[38px] px-3 py-2 rounded-xl text-xs font-medium flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
               showFilterDrawer || selectedLocation !== 'All' || verifiedOnly || selectedContentType !== 'All'
-                ? 'surface-3 border-[#00B4D8]/50 text-[#007E93]'
+                ? 'surface-3 border-[var(--primary)]/50 text-[var(--primary)]'
                 : 'surface-2 text-zinc-700 hover:text-zinc-900'
             }`}
             title="Filters"
@@ -346,7 +346,7 @@ export const DiscoverView: React.FC = () => {
         <div className="p-4 rounded-2xl surface-3 space-y-3 animate-fade-in">
           <div className="flex items-center justify-between pb-2 border-b border-black/[0.06]">
             <span className="text-xs font-bold text-zinc-900 flex items-center gap-1.5">
-              <Filter className="w-3.5 h-3.5 text-[#007E93]" />
+              <Filter className="w-3.5 h-3.5 text-[var(--primary)]" />
               <span>Filters</span>
             </span>
             <button
@@ -357,7 +357,7 @@ export const DiscoverView: React.FC = () => {
                 setSelectedEngagement('All');
                 setVerifiedOnly(false);
               }}
-              className="text-[11px] text-zinc-500 hover:text-[#007E93]"
+              className="text-[11px] text-zinc-500 hover:text-[var(--primary)]"
             >
               Reset
             </button>
@@ -477,7 +477,7 @@ export const DiscoverView: React.FC = () => {
                         verified
                       />
                       <div>
-                        <h3 className="text-sm font-bold text-zinc-900 group-hover:text-[#007E93] transition-colors">
+                        <h3 className="text-sm font-bold text-zinc-900 group-hover:text-[var(--primary)] transition-colors">
                           {c.name}
                         </h3>
                         <p className="text-xs text-zinc-500 mt-0.5">
@@ -613,7 +613,7 @@ export const DiscoverView: React.FC = () => {
                         verified
                       />
                       <div>
-                        <h3 className="text-sm font-bold text-zinc-900 group-hover:text-[#007E93] transition-colors">
+                        <h3 className="text-sm font-bold text-zinc-900 group-hover:text-[var(--primary)] transition-colors">
                           {b.name}
                         </h3>
                         <p className="text-xs text-zinc-500 mt-0.5">
@@ -622,7 +622,7 @@ export const DiscoverView: React.FC = () => {
                       </div>
                     </div>
 
-                    <span className="text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-[#00B4D8]/10 text-[#007E93] border border-[#00B4D8]/30">
+                    <span className="text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-[var(--primary)]/10 text-[var(--primary)] border border-[var(--primary)]/30">
                       {b.badge}
                     </span>
                   </div>
@@ -666,7 +666,7 @@ export const DiscoverView: React.FC = () => {
                     {brandActions.primaryAction === 'pitch' && (
                       <button
                         onClick={() => setPitchTargetBrand(b)}
-                        className="px-4 py-1.5 rounded-xl bg-[#007E93] hover:bg-[#006779] text-white text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer shadow-sm active:scale-95"
+                        className="px-4 py-1.5 rounded-xl bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer shadow-sm active:scale-95"
                       >
                         <Send className="w-3.5 h-3.5" />
                         <span>Pitch to Brand</span>
@@ -847,7 +847,7 @@ export const DiscoverView: React.FC = () => {
                         </p>
 
                         <div className="flex items-center gap-1.5 text-[10px] font-mono text-zinc-500 bg-black/55 text-white/90 px-2 py-1 rounded-md backdrop-blur-sm w-fit max-w-full truncate">
-                          <Volume2 className="w-3 h-3 shrink-0 text-[#007E93]" />
+                          <Volume2 className="w-3 h-3 shrink-0 text-[var(--primary)]" />
                           <span className="truncate">Original Sound • Anamorphic Master</span>
                         </div>
                       </div>
@@ -901,7 +901,7 @@ export const DiscoverView: React.FC = () => {
                           <div
                             className={`w-9 h-9 rounded-full flex items-center justify-center backdrop-blur-md transition-all ${
                               reel.savedByMe
-                                ? 'bg-[#007E93] text-white'
+                                ? 'bg-[var(--primary)] text-white'
                                 : 'bg-black/60 text-white hover:bg-black/90'
                             }`}
                           >
@@ -924,7 +924,7 @@ export const DiscoverView: React.FC = () => {
                                 role: reel.authorType,
                               })
                             }
-                            className="w-9 h-9 rounded-full bg-[#007E93] hover:bg-[#006779] text-white flex items-center justify-center shadow-lg shadow-teal-900/20 cursor-pointer"
+                            className="w-9 h-9 rounded-full bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white flex items-center justify-center shadow-lg shadow-teal-900/20 cursor-pointer"
                             title="Connect"
                           >
                             <UserPlus className="w-4 h-4" />
@@ -988,7 +988,7 @@ export const DiscoverView: React.FC = () => {
       {featureFlags.posting && (
         <button
           onClick={() => setIsCreatePostOpen(true)}
-          className="sm:hidden fixed bottom-6 right-6 z-40 w-13 h-13 rounded-full bg-[#007E93] text-white shadow-xl shadow-teal-900/20 flex items-center justify-center hover:bg-[#007E93] active:scale-95 transition-all border border-[#007E93]/30 cursor-pointer"
+          className="sm:hidden fixed bottom-6 right-6 z-40 w-13 h-13 rounded-full bg-[var(--primary)] text-white shadow-xl shadow-teal-900/20 flex items-center justify-center hover:bg-[var(--primary)] active:scale-95 transition-all border border-[var(--primary)]/30 cursor-pointer"
           title="Create Post"
         >
           <Plus className="w-6 h-6" />

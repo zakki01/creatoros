@@ -97,7 +97,7 @@ export const CreatorReputation: React.FC = () => {
 
             <div className="w-full bg-zinc-100 h-2 rounded-full overflow-hidden">
               <div
-                className="bg-gradient-to-r from-[#007E93] to-[#4CC6D7] h-full rounded-full"
+                className="bg-gradient-to-r from-[var(--primary)] to-[#4CC6D7] h-full rounded-full"
                 style={{ width: `${m.score}%` }}
               />
             </div>

@@ -109,7 +109,7 @@ export const DesignSystemDemo: React.FC<{ onBack?: () => void }> = ({ onBack }) 
             <h2 className="text-base font-semibold tracking-wide text-zinc-800 uppercase text-xs">
               2. Accessible IconButtons (Strict 44px Minimum Touch Targets)
             </h2>
-            <span className="text-xs text-[#007E93] font-mono">Fitts's Law ✓</span>
+            <span className="text-xs text-[var(--primary)] font-mono">Fitts's Law ✓</span>
           </div>
 
           <Card variant="glass" className="p-4 sm:p-6 space-y-4">
@@ -155,7 +155,7 @@ export const DesignSystemDemo: React.FC<{ onBack?: () => void }> = ({ onBack }) 
                   toast.success(saved ? 'Removed from saved' : 'Saved to collection!');
                 }}
               >
-                <Bookmark className={`w-5 h-5 ${saved ? 'fill-current text-[#007E93]' : ''}`} />
+                <Bookmark className={`w-5 h-5 ${saved ? 'fill-current text-[var(--primary)]' : ''}`} />
               </IconButton>
 
               <IconButton

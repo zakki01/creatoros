@@ -17,11 +17,11 @@ export const SocialLoginButtons: React.FC<SocialLoginButtonsProps> = ({
         type="button"
         disabled={disabled}
         onClick={() => onSelectProvider('auth0')}
-        className={`w-full h-10 px-3 rounded-xl flex items-center justify-center gap-2 text-xs font-semibold bg-[#007E93]/10 hover:bg-[#007E93]/20 text-[#006779] border border-[#00B4D8]/30 transition-all focus:outline-none focus:ring-1 focus:ring-sky-400 active:scale-98 cursor-pointer ${
+        className={`w-full h-10 px-3 rounded-xl flex items-center justify-center gap-2 text-xs font-semibold bg-[var(--primary)]/10 hover:bg-[var(--primary)]/20 text-[var(--primary-hover)] border border-[var(--primary)]/30 transition-all focus:outline-none focus:ring-1 focus:ring-sky-400 active:scale-98 cursor-pointer ${
           disabled ? 'opacity-50 cursor-not-allowed' : ''
         }`}
       >
-        <ShieldCheck className="w-4 h-4 text-[#007E93]" />
+        <ShieldCheck className="w-4 h-4 text-[var(--primary)]" />
         <span>Continue with Auth0 Enterprise SSO</span>
       </button>
 

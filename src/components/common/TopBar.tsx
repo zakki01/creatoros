@@ -138,7 +138,7 @@ export const TopBar: React.FC<TopBarProps> = ({
           align="end"
           trigger={
             <div
-              className="p-0.5 rounded-full hover:ring-2 hover:ring-[#00B4D8]/50 transition-all cursor-pointer"
+              className="p-0.5 rounded-full hover:ring-2 hover:ring-[var(--primary)]/50 transition-all cursor-pointer"
               aria-label="Open user profile menu"
               title="Account & Workspace"
             >

@@ -1,63 +1,83 @@
 /**
  * CreatorOS Theme Tokens CSS Custom Properties
  * Provides semantic color tokens for both Light Studio and Dark Studio themes.
+ *
+ * OFFICIAL CREATOROS PALETTE:
+ * LIGHT THEME:
+ *   --background: #F0F0F0
+ *   --primary / primary accent: #105BFF
+ *   --accent: #FF77BC
+ *
+ * DARK THEME:
+ *   --background: #02070A
+ *   --primary / primary accent: #0297DE
+ *   --accent: #FC734D
  */
 
 :root,
 [data-theme="light"] {
   /* Semantic Design Tokens (Light Studio) */
-  --background: #EDF0F4;
+  --background: #F0F0F0;
   --sidebar: #FFFFFF;
   --surface: #FFFFFF;
-  --surface-elevated: #F7F9FC;
-  --surface-muted: #F1F4F8;
-  --surface-subtle: #F1F4F8;
-  --surface-recessed: #E2E7ED;
+  --surface-elevated: #F8F9FA;
+  --surface-muted: #E8E8E8;
+  --surface-subtle: #EBEBEB;
+  --surface-recessed: #E4E4E6;
   --input: #FFFFFF;
-  --header: rgba(255, 255, 255, 0.88);
+  --header: rgba(240, 240, 240, 0.88);
 
-  --text-primary: #0F172A;
+  --text-primary: #0A0F1D;
   --text-secondary: #475569;
   --text-tertiary: #64748B;
-  --text-muted: #64748B;
-  --text-disabled: #94A3B8;
+  --text-muted: #71717A;
+  --text-disabled: #A1A1AA;
   --text-inverse: #FFFFFF;
 
-  --border: #D5DDE6;
-  --border-subtle: rgba(0, 0, 0, 0.06);
-  --border-strong: #94A3B8;
+  --border: #D8D8DC;
+  --border-subtle: rgba(0, 0, 0, 0.05);
+  --border-strong: #A0A0A8;
 
-  --accent: #00869B;
-  --accent-hover: #006C80;
-  --accent-soft: rgba(0, 134, 155, 0.12);
+  /* Primary Interactive CTA (#105BFF) */
+  --primary: #105BFF;
+  --primary-hover: #0D4BD9;
+  --primary-active: #093EB8;
+  --primary-soft: rgba(16, 91, 255, 0.12);
+  --primary-foreground: #FFFFFF;
+
+  /* Accent Creative Highlights (#FF77BC) */
+  --accent: #FF77BC;
+  --accent-hover: #F062AA;
+  --accent-active: #DF5097;
+  --accent-soft: rgba(255, 119, 188, 0.15);
   --accent-foreground: #FFFFFF;
 
   --success: #047857;
   --warning: #92400E;
   --danger: #B4233C;
-  --info: #00869B;
+  --info: #105BFF;
 
   --live-canvas: #090C10;
 
   /* Brand and Palette Tokens */
-  --color-brand-primary: #123047;
-  --color-brand-secondary: #365267;
-  --color-brand-accent: #00869B;
-  --color-brand-accent-hover: #006C80;
-  --color-brand-accent-light: rgba(0, 134, 155, 0.11);
+  --color-brand-primary: #105BFF;
+  --color-brand-secondary: #475569;
+  --color-brand-accent: #FF77BC;
+  --color-brand-accent-hover: #F062AA;
+  --color-brand-accent-light: rgba(255, 119, 188, 0.15);
 
-  --color-brand-text: #0F172A;
-  --color-brand-muted: #596A7D;
+  --color-brand-text: #0A0F1D;
+  --color-brand-muted: #71717A;
   --color-brand-text-inverse: #FFFFFF;
 
-  --color-surface: #EDF0F4;
+  --color-surface: #F0F0F0;
   --color-surface-card: #FFFFFF;
-  --color-surface-glass: rgba(255, 255, 255, 0.82);
-  --color-surface-recessed: #E2E7ED;
+  --color-surface-glass: rgba(255, 255, 255, 0.85);
+  --color-surface-recessed: #E4E4E6;
   --color-surface-input: #FFFFFF;
 
-  --color-border: #D5DDE6;
-  --color-border-highlight: rgba(255, 255, 255, 0.9);
+  --color-border: #D8D8DC;
+  --color-border-highlight: rgba(255, 255, 255, 0.95);
 
   --color-success: #047857;
   --color-warning: #92400E;
@@ -68,59 +88,68 @@
 
 [data-theme="dark"],
 .dark {
-  /* Semantic Design Tokens (True Dark Surface Hierarchy) */
-  --background: #0B0D11;
-  --sidebar: #10131A;
-  --surface: #151922;
-  --surface-elevated: #1A1F29;
-  --surface-muted: #1E232E;
-  --surface-subtle: #1E232E;
-  --surface-recessed: #11151C;
-  --input: #11151C;
-  --header: rgba(16, 19, 26, 0.88);
+  /* Semantic Design Tokens (True Dark Surface Hierarchy based on #02070A) */
+  --background: #02070A;
+  --sidebar: #050D13;
+  --surface: #08121A;
+  --surface-elevated: #0E1C27;
+  --surface-muted: #132432;
+  --surface-subtle: #101F2B;
+  --surface-recessed: #040A0F;
+  --input: #060E14;
+  --header: rgba(2, 7, 10, 0.88);
 
   --text-primary: #F4F7FA;
-  --text-secondary: #A9B2C0;
-  --text-tertiary: #737D8C;
-  --text-muted: #737D8C;
-  --text-disabled: #4A5260;
-  --text-inverse: #0B0D11;
+  --text-secondary: #A0B0BF;
+  --text-tertiary: #6E7F8E;
+  --text-muted: #6E7F8E;
+  --text-disabled: #42505C;
+  --text-inverse: #02070A;
 
   --border: rgba(255, 255, 255, 0.08);
   --border-subtle: rgba(255, 255, 255, 0.04);
   --border-strong: rgba(255, 255, 255, 0.16);
 
-  --accent: #00B4D8;
-  --accent-hover: #0096B4;
-  --accent-soft: rgba(0, 180, 216, 0.15);
-  --accent-foreground: #0B0D11;
+  /* Primary Interactive CTA (#0297DE) */
+  --primary: #0297DE;
+  --primary-hover: #0283C2;
+  --primary-active: #0170A4;
+  --primary-soft: rgba(2, 151, 222, 0.15);
+  --primary-foreground: #FFFFFF;
+
+  /* Accent Creative Highlights (#FC734D) */
+  --accent: #FC734D;
+  --accent-hover: #EB633D;
+  --accent-active: #D65530;
+  --accent-soft: rgba(252, 115, 77, 0.15);
+  --accent-foreground: #02070A;
 
   --success: #10B981;
   --warning: #F59E0B;
   --danger: #EF4444;
-  --info: #00B4D8;
+  --info: #0297DE;
 
-  --live-canvas: #06080C;
+  --live-canvas: #010406;
 
   /* Brand and Palette Tokens */
-  --color-brand-primary: #00B4D8;
-  --color-brand-secondary: #94A3B8;
-  --color-brand-accent: #00B4D8;
-  --color-brand-accent-hover: #0096B4;
-  --color-brand-accent-light: rgba(0, 180, 216, 0.15);
+  --color-brand-primary: #0297DE;
+  --color-brand-secondary: #A0B0BF;
+  --color-brand-accent: #FC734D;
+  --color-brand-accent-hover: #EB633D;
+  --color-brand-accent-light: rgba(252, 115, 77, 0.15);
 
-  --color-brand-text: #F8FAFC;
-  --color-brand-muted: #94A3B8;
-  --color-brand-text-inverse: #0B0E14;
+  --color-brand-text: #F4F7FA;
+  --color-brand-muted: #6E7F8E;
+  --color-brand-text-inverse: #02070A;
 
-  --color-surface: #0B0E14;
-  --color-surface-card: #151921;
-  --color-surface-glass: rgba(21, 25, 33, 0.85);
-  --color-surface-recessed: #1A1F2B;
-  --color-surface-input: #151921;
+  --color-surface: #02070A;
+  --color-surface-card: #08121A;
+  --color-surface-glass: rgba(8, 18, 26, 0.85);
+  --color-surface-recessed: #040A0F;
+  --color-surface-input: #060E14;
 
   --color-border: rgba(255, 255, 255, 0.08);
-  --color-border-highlight: rgba(255, 255, 255, 0.15);
+  --color-border-highlight: rgba(255, 255, 255, 0.14);
 
   --color-success: #10B981;
   --color-warning: #F59E0B;
@@ -133,7 +162,7 @@
 .welcome-studio-bg {
   background-color: var(--color-surface);
   background-image: 
-    linear-gradient(180deg, rgba(243, 246, 249, 0.24) 0%, rgba(224, 230, 237, 0.48) 100%),
+    linear-gradient(180deg, rgba(240, 240, 240, 0.24) 0%, rgba(228, 228, 230, 0.48) 100%),
     url('/assets/images/studio-background.jpg');
   background-size: cover;
   background-position: center bottom;
@@ -143,9 +172,9 @@
 
 [data-theme="dark"] .welcome-studio-bg,
 .dark .welcome-studio-bg {
-  background-color: #0B0E14;
+  background-color: #02070A;
   background-image: 
-    linear-gradient(180deg, rgba(11, 14, 20, 0.85) 0%, rgba(21, 25, 33, 0.95) 100%),
+    linear-gradient(180deg, rgba(2, 7, 10, 0.85) 0%, rgba(8, 18, 26, 0.95) 100%),
     url('/assets/images/studio-background.jpg');
 }
 
@@ -176,25 +205,45 @@
 }
 
 .studio-input-soft:focus {
-  border-color: var(--color-brand-accent) !important;
-  box-shadow: 0 0 0 2px var(--color-brand-accent-light) !important;
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 2px var(--primary-soft) !important;
 }
 
 .studio-btn-primary {
-  background: linear-gradient(180deg, #078FA5 0%, #006C80 100%);
-  border: 1px solid rgba(0, 90, 110, 0.32);
-  border-top-color: rgba(255, 255, 255, 0.45);
-  box-shadow: 0 5px 14px rgba(0, 108, 128, 0.22), inset 0 1px 1px rgba(255, 255, 255, 0.22);
+  background: var(--primary);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 4px 14px -2px rgba(16, 91, 255, 0.25);
   color: #FFFFFF;
   transition: transform 0.14s ease, box-shadow 0.14s ease, filter 0.14s ease;
 }
 
 .studio-btn-primary:hover:not(:disabled) {
-  filter: brightness(1.02);
+  background: var(--primary-hover);
+  filter: brightness(1.04);
   transform: translateY(-1px);
-  box-shadow: 0 8px 18px rgba(0, 108, 128, 0.28), inset 0 1px 1px rgba(255, 255, 255, 0.28);
+  box-shadow: 0 6px 18px -2px rgba(16, 91, 255, 0.35);
 }
 
 .studio-btn-primary:active:not(:disabled) {
+  background: var(--primary-active);
   transform: translateY(0);
+}
+
+[data-theme="dark"] .studio-btn-primary,
+.dark .studio-btn-primary {
+  background: var(--primary);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 14px -2px rgba(2, 151, 222, 0.35);
+  color: #FFFFFF;
+}
+
+[data-theme="dark"] .studio-btn-primary:hover:not(:disabled),
+.dark .studio-btn-primary:hover:not(:disabled) {
+  background: var(--primary-hover);
+  box-shadow: 0 6px 18px -2px rgba(2, 151, 222, 0.45);
+}
+
+[data-theme="dark"] .studio-btn-primary:active:not(:disabled),
+.dark .studio-btn-primary:active:not(:disabled) {
+  background: var(--primary-active);
 }

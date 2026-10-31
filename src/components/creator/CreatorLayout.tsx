@@ -126,7 +126,7 @@ export const CreatorLayout: React.FC = () => {
               >
                 <Icon
                   className={`w-4 h-4 shrink-0 transition-colors ${
-                    isActive ? 'text-[#007E93]' : 'text-zinc-500'
+                    isActive ? 'text-[var(--primary)]' : 'text-zinc-500'
                   }`}
                 />
                 {!isSidebarCollapsed && (
@@ -163,7 +163,7 @@ export const CreatorLayout: React.FC = () => {
               >
                 <Icon
                   className={`w-4 h-4 shrink-0 transition-colors ${
-                    isActive ? 'text-[#007E93]' : 'text-zinc-500'
+                    isActive ? 'text-[var(--primary)]' : 'text-zinc-500'
                   }`}
                 />
                 {!isSidebarCollapsed && (
@@ -178,7 +178,7 @@ export const CreatorLayout: React.FC = () => {
         {!isSidebarCollapsed && (
           <div className="p-3 border-t border-[var(--border)] text-[11px] text-[var(--text-secondary)] flex items-center justify-between">
             <span>Creator Studio</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-[#00B4D8] animate-pulse" />
+            <span className="w-1.5 h-1.5 rounded-full bg-[var(--primary)] animate-pulse" />
           </div>
         )}
       </aside>
@@ -253,7 +253,7 @@ export const CreatorLayout: React.FC = () => {
             <React.Suspense
               fallback={
                 <div className="h-full w-full flex flex-col items-center justify-center space-y-3 bg-[var(--background)] text-[var(--text-primary)]">
-                  <div className="w-9 h-9 rounded-xl bg-[#007E93]/20 text-[#007E93] flex items-center justify-center animate-pulse">
+                  <div className="w-9 h-9 rounded-xl bg-[var(--primary)]/20 text-[var(--primary)] flex items-center justify-center animate-pulse">
                     <Video className="w-4 h-4" />
                   </div>
                   <span className="text-xs font-mono text-zinc-400">Loading Live Studio...</span>

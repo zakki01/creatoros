@@ -5,14 +5,14 @@
 
 @layer base {
   :root {
-    --ring: var(--accent);
+    --ring: var(--primary);
     --radius: 0.875rem;
 
     /* Centralized Spatial 3D Light Studio Surface System */
-    --surface-0: #EDF0F4;
+    --surface-0: #F0F0F0;
     --surface-1: #FFFFFF;
-    --surface-2: #F7F9FC;
-    --surface-3: #E5EAF0;
+    --surface-2: #F8F9FA;
+    --surface-3: #E8E8E8;
     --surface-4: #FFFFFF;
 
     /* Depth & Elevation Tokens (Physical Light Studio) */
@@ -50,14 +50,14 @@
 
   [data-theme="dark"],
   .dark {
-    --ring: var(--accent);
+    --ring: var(--primary);
 
-    /* Spatial 3D Dark Studio System */
-    --surface-0: #0B0E14;
-    --surface-1: #151921;
-    --surface-2: #1A1F2C;
-    --surface-3: #222938;
-    --surface-4: #151921;
+    /* Spatial 3D Dark Studio System (based on #02070A) */
+    --surface-0: #02070A;
+    --surface-1: #08121A;
+    --surface-2: #0E1C27;
+    --surface-3: #132432;
+    --surface-4: #08121A;
 
     --depth-1: inset 0 1px 0 0 rgba(255, 255, 255, 0.12), 0 2px 8px -2px rgba(0, 0, 0, 0.5), 0 1px 3px 0 rgba(0, 0, 0, 0.3);
     --depth-2: inset 0 1px 0 0 rgba(255, 255, 255, 0.15), 0 10px 25px -5px rgba(0, 0, 0, 0.6), 0 4px 10px -2px rgba(0, 0, 0, 0.4);
@@ -119,8 +119,8 @@
     color: var(--text-primary);
     background-image:
       radial-gradient(ellipse 90% 60% at 50% -10%, rgba(255, 255, 255, 0.75), transparent 75%),
-      radial-gradient(ellipse 60% 45% at 85% 15%, rgba(0, 134, 155, 0.035), transparent 65%),
-      radial-gradient(ellipse 55% 50% at 15% 85%, rgba(100, 116, 139, 0.05), transparent 65%);
+      radial-gradient(ellipse 60% 45% at 85% 15%, rgba(16, 91, 255, 0.035), transparent 65%),
+      radial-gradient(ellipse 55% 50% at 15% 85%, rgba(255, 119, 188, 0.035), transparent 65%);
     background-attachment: fixed;
     @apply font-sans antialiased;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11", "tnum";
@@ -132,8 +132,8 @@
   .dark body {
     background-color: var(--background);
     background-image:
-      radial-gradient(ellipse 90% 60% at 50% -10%, rgba(0, 180, 216, 0.04), transparent 75%),
-      radial-gradient(ellipse 60% 45% at 85% 15%, rgba(124, 92, 255, 0.03), transparent 65%);
+      radial-gradient(ellipse 90% 60% at 50% -10%, rgba(2, 151, 222, 0.04), transparent 75%),
+      radial-gradient(ellipse 60% 45% at 85% 15%, rgba(252, 115, 77, 0.03), transparent 65%);
     color: var(--text-primary);
   }
 
@@ -346,8 +346,8 @@
 
 .input-soft-recessed:focus {
   background: #FFFFFF !important;
-  border-color: #00B4D8 !important;
-  box-shadow: inset 0 1px 3px 0 rgba(15, 23, 42, 0.05), 0 0 0 2px rgba(0, 180, 216, 0.25) !important;
+  border-color: var(--primary) !important;
+  box-shadow: inset 0 1px 3px 0 rgba(15, 23, 42, 0.05), 0 0 0 2px var(--primary-soft) !important;
 }
 
 [data-theme="dark"] .input-soft-recessed,
@@ -402,16 +402,29 @@
 }
 
 .btn-soft-primary {
-  background: linear-gradient(180deg, #078FA5 0%, #006C80 100%);
+  background: var(--primary);
   color: #FFFFFF;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 14px rgba(16, 91, 255, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.3);
   transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.18s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .btn-soft-primary:hover:not(:disabled) {
+  background: var(--primary-hover);
   transform: translateY(-1px);
-  box-shadow: 0 8px 20px rgba(0, 108, 128, 0.28), inset 0 1px 1px rgba(255, 255, 255, 0.32);
+  box-shadow: 0 8px 20px rgba(16, 91, 255, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.32);
+}
+
+[data-theme="dark"] .btn-soft-primary,
+.dark .btn-soft-primary {
+  background: var(--primary);
+  box-shadow: 0 4px 14px rgba(2, 151, 222, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="dark"] .btn-soft-primary:hover:not(:disabled),
+.dark .btn-soft-primary:hover:not(:disabled) {
+  background: var(--primary-hover);
+  box-shadow: 0 8px 20px rgba(2, 151, 222, 0.45);
 }
 
 .btn-soft-primary:active:not(:disabled) {
@@ -457,20 +470,32 @@
   color: #FFFFFF;
 }
 
-/* Tactile Depth Button utility (CreatorOS Cyan Primary CTA) */
+/* Tactile Depth Button utility (CreatorOS Primary CTA) */
 .depth-btn-primary {
-  background: linear-gradient(180deg, #078FA5 0%, #006C80 100%);
-  color: #FFFFFF;
+  background: var(--primary);
+  color: var(--primary-foreground, #FFFFFF);
   font-weight: 600;
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  border-bottom-color: rgba(0, 50, 65, 0.45);
-  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.8), 0 4px 12px -2px rgba(0, 108, 128, 0.24), 0 1px 3px 0 rgba(15, 23, 42, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.4), 0 4px 12px -2px rgba(16, 91, 255, 0.25), 0 1px 3px 0 rgba(15, 23, 42, 0.08);
+  transition: all 0.15s ease;
 }
 
 .depth-btn-primary:hover:not(:disabled) {
-  background: linear-gradient(180deg, #0798AF 0%, #007C91 100%);
-  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.95), 0 8px 20px -3px rgba(0, 108, 128, 0.3), 0 2px 6px -1px rgba(15, 23, 42, 0.12);
+  background: var(--primary-hover);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.6), 0 8px 20px -3px rgba(16, 91, 255, 0.35), 0 2px 6px -1px rgba(15, 23, 42, 0.12);
   transform: translateY(-1px);
+}
+
+[data-theme="dark"] .depth-btn-primary,
+.dark .depth-btn-primary {
+  background: var(--primary);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 4px 12px -2px rgba(2, 151, 222, 0.35);
+}
+
+[data-theme="dark"] .depth-btn-primary:hover:not(:disabled),
+.dark .depth-btn-primary:hover:not(:disabled) {
+  background: var(--primary-hover);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.3), 0 8px 20px -3px rgba(2, 151, 222, 0.45);
 }
 
 .depth-btn-secondary {
@@ -677,12 +702,19 @@ button:not(:disabled):active,
 }
 
 .auth-pdf-role-active {
-  background: linear-gradient(180deg, #00D2DE 0%, #00B4D8 100%);
+  background: var(--primary);
   border: 1px solid rgba(255, 255, 255, 0.4);
   box-shadow: 
-    0 3px 10px rgba(0, 210, 222, 0.35),
+    0 3px 10px rgba(16, 91, 255, 0.35),
     inset 0 1px 1px rgba(255, 255, 255, 0.6);
-  color: #09090B;
+  color: #FFFFFF;
+}
+
+[data-theme="dark"] .auth-pdf-role-active,
+.dark .auth-pdf-role-active {
+  background: var(--primary);
+  box-shadow: 0 3px 10px rgba(2, 151, 222, 0.4);
+  color: #FFFFFF;
 }
 
 .auth-pdf-role-inactive {
@@ -696,7 +728,7 @@ button:not(:disabled):active,
 
 [data-theme="dark"] .auth-pdf-role-inactive,
 .dark .auth-pdf-role-inactive {
-  background: linear-gradient(180deg, #222938 0%, #171C26 100%);
+  background: linear-gradient(180deg, #132432 0%, #08121A 100%);
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   color: #CBD5E1;
@@ -710,16 +742,16 @@ button:not(:disabled):active,
 
 [data-theme="dark"] .auth-pdf-input-box,
 .dark .auth-pdf-input-box {
-  background: #151921;
+  background: #08121A;
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 .auth-pdf-input-box:focus-within {
-  border-color: #00B4D8;
+  border-color: var(--primary);
   box-shadow: 
     inset 0 1px 3px rgba(0, 0, 0, 0.08),
-    0 0 0 2px rgba(0, 180, 216, 0.25);
+    0 0 0 2px var(--primary-soft);
 }
 
 .auth-pdf-submit-btn {
@@ -750,10 +782,10 @@ button:not(:disabled):active,
 
 [data-theme="dark"] .auth-pdf-submit-btn,
 .dark .auth-pdf-submit-btn {
-  background: linear-gradient(180deg, #00869B 0%, #006C80 100%);
+  background: var(--primary);
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: #FFFFFF;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 14px rgba(2, 151, 222, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.3);
 }
 
 /* ========================================================================
@@ -763,16 +795,16 @@ button:not(:disabled):active,
 :root:not([data-theme="dark"]):not(.dark),
 [data-theme="light"] {
   color-scheme: light;
-  --cos-canvas: #EDF0F4;
+  --cos-canvas: #F0F0F0;
   --cos-surface: #FFFFFF;
-  --cos-surface-raised: #FAFBFD;
-  --cos-surface-recessed: #E4E9EF;
-  --cos-border: #D6DEE7;
-  --cos-text: #172536;
-  --cos-text-secondary: #4E5F72;
-  --cos-text-muted: #64758A;
-  --cos-accent: #007E93;
-  --cos-accent-hover: #006779;
+  --cos-surface-raised: #F8F9FA;
+  --cos-surface-recessed: #E4E4E6;
+  --cos-border: #D8D8DC;
+  --cos-text: #0A0F1D;
+  --cos-text-secondary: #475569;
+  --cos-text-muted: #71717A;
+  --cos-accent: #105BFF;
+  --cos-accent-hover: #0D4BD9;
 }
 
 [data-theme="light"] select,
@@ -888,16 +920,16 @@ button:not(:disabled):active,
 [data-theme="dark"],
 .dark {
   color-scheme: dark;
-  --cos-canvas: #0B0E14;
-  --cos-surface: #151921;
-  --cos-surface-raised: #1A1F2C;
-  --cos-surface-recessed: #1A1F2B;
+  --cos-canvas: #02070A;
+  --cos-surface: #08121A;
+  --cos-surface-raised: #0E1C27;
+  --cos-surface-recessed: #040A0F;
   --cos-border: rgba(255, 255, 255, 0.08);
-  --cos-text: #F8FAFC;
-  --cos-text-secondary: #CBD5E1;
-  --cos-text-muted: #94A3B8;
-  --cos-accent: #00B4D8;
-  --cos-accent-hover: #0096B4;
+  --cos-text: #F4F7FA;
+  --cos-text-secondary: #A0B0BF;
+  --cos-text-muted: #6E7F8E;
+  --cos-accent: #0297DE;
+  --cos-accent-hover: #0283C2;
 }
 
 /* Automatic Dark Mode Contrast Remapping for Text */

@@ -35,7 +35,7 @@ export const Tabs: React.FC<TabsProps> = ({
               className={clsx(
                 'flex items-center gap-2 py-3 px-1 text-sm font-medium border-b-2 transition-all duration-150',
                 isActive
-                  ? 'border-[#00B4D8] text-[var(--text-primary)] font-semibold'
+                  ? 'border-[var(--primary)] text-[var(--text-primary)] font-semibold'
                   : 'border-transparent text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:border-[var(--border-strong)]'
               )}
             >

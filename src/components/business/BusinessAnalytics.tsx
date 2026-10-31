@@ -214,7 +214,7 @@ export const BusinessAnalytics: React.FC = () => {
                       ₹{(c.revenue / 100000).toFixed(1)}L
                     </td>
                     <td className="py-3.5 px-4">
-                      <span className="font-mono font-bold text-[#007E93] text-sm">
+                      <span className="font-mono font-bold text-[var(--primary)] text-sm">
                         {c.roas.toFixed(1)}x
                       </span>
                     </td>

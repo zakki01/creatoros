@@ -108,7 +108,7 @@ export const CreatorProfileModal: React.FC<CreatorProfileModalProps> = ({
                 {creator.name}
               </h2>
               {creator.verified && (
-                <ShieldCheck className="w-4 h-4 text-[#007E93]" />
+                <ShieldCheck className="w-4 h-4 text-[var(--primary)]" />
               )}
               <span className="text-xs text-[var(--text-muted)] font-mono">@{creator.handle}</span>
             </div>
@@ -211,11 +211,11 @@ export const CreatorProfileModal: React.FC<CreatorProfileModalProps> = ({
 
             {/* AI Fit Analysis Box (Explainable Intelligence) */}
             {creator.aiMatchFactors && (
-              <div className="p-4 rounded-2xl bg-[#00B4D8]/10 border border-[#00B4D8]/30 space-y-3">
+              <div className="p-4 rounded-2xl bg-[var(--primary)]/10 border border-[var(--primary)]/30 space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <Sparkles className="w-4 h-4 text-[#007E93]" />
-                    <h4 className="text-xs font-semibold text-[#007E93] uppercase tracking-wider">
+                    <Sparkles className="w-4 h-4 text-[var(--primary)]" />
+                    <h4 className="text-xs font-semibold text-[var(--primary)] uppercase tracking-wider">
                       Why This Creator Matches ({creator.aiMatchScore}% Campaign Fit)
                     </h4>
                   </div>
@@ -255,7 +255,7 @@ export const CreatorProfileModal: React.FC<CreatorProfileModalProps> = ({
               </div>
               <div className="p-3.5 rounded-2xl bg-[var(--surface)] border border-[var(--border)] text-center">
                 <p className="text-[10px] text-[var(--text-muted)] uppercase font-medium">Avg Engagement</p>
-                <p className="text-lg font-bold text-[#007E93] font-mono mt-0.5">
+                <p className="text-lg font-bold text-[var(--primary)] font-mono mt-0.5">
                   {creator.avgEngagement}%
                 </p>
               </div>
@@ -407,7 +407,7 @@ export const CreatorProfileModal: React.FC<CreatorProfileModalProps> = ({
                         <span className="font-semibold text-[var(--text-secondary)]">{item.label}</span>
                         <span className="text-[10px] text-[var(--text-muted)] ml-2 hidden sm:inline">{item.desc}</span>
                       </div>
-                      <span className="font-mono font-bold text-[#007E93]">{item.score}%</span>
+                      <span className="font-mono font-bold text-[var(--primary)]">{item.score}%</span>
                     </div>
                     <div className="w-full bg-[var(--surface-muted)] h-2 rounded-full overflow-hidden">
                       <div

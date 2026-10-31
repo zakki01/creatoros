@@ -76,7 +76,7 @@ export const LiveAudienceModerationPanel: React.FC<LiveAudienceModerationPanelPr
               onClick={() => setActiveTab('chat')}
               className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                 activeTab === 'chat'
-                  ? 'bg-[#007E93] text-white shadow-xs'
+                  ? 'bg-[var(--primary)] text-white shadow-xs'
                   : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
               }`}
             >
@@ -88,7 +88,7 @@ export const LiveAudienceModerationPanel: React.FC<LiveAudienceModerationPanelPr
               onClick={() => setActiveTab('participants')}
               className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                 activeTab === 'participants'
-                  ? 'bg-[#007E93] text-white shadow-xs'
+                  ? 'bg-[var(--primary)] text-white shadow-xs'
                   : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
               }`}
             >
@@ -100,7 +100,7 @@ export const LiveAudienceModerationPanel: React.FC<LiveAudienceModerationPanelPr
               onClick={() => setActiveTab('moderation')}
               className={`flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                 activeTab === 'moderation'
-                  ? 'bg-[#007E93] text-white shadow-xs'
+                  ? 'bg-[var(--primary)] text-white shadow-xs'
                   : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
               }`}
               title="Moderation Center"
@@ -113,7 +113,7 @@ export const LiveAudienceModerationPanel: React.FC<LiveAudienceModerationPanelPr
               onClick={() => setActiveTab('gifts')}
               className={`flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                 activeTab === 'gifts'
-                  ? 'bg-[#007E93] text-white shadow-xs'
+                  ? 'bg-[var(--primary)] text-white shadow-xs'
                   : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
               }`}
               title="Gifts Stream"
@@ -207,7 +207,7 @@ export const LiveAudienceModerationPanel: React.FC<LiveAudienceModerationPanelPr
                   <div
                     className={`px-3 py-1.5 rounded-2xl max-w-[85%] break-words ${
                       isMe
-                        ? 'bg-[#00869B] text-white rounded-tr-xs shadow-xs'
+                        ? 'bg-[var(--primary)] text-white rounded-tr-xs shadow-xs'
                         : 'bg-[var(--surface-muted)] text-[var(--text-primary)] border border-[var(--border)] rounded-tl-xs'
                     }`}
                   >
@@ -242,7 +242,7 @@ export const LiveAudienceModerationPanel: React.FC<LiveAudienceModerationPanelPr
                     <div className="text-xs font-bold text-[var(--text-primary)] flex items-center gap-1.5">
                       <span>{p.name}</span>
                       {p.role === 'moderator' && (
-                        <span className="px-1.5 py-0.2 rounded-md bg-[#00869B]/15 text-[#00869B] text-[10px] font-semibold">
+                        <span className="px-1.5 py-0.2 rounded-md bg-[var(--primary)]/15 text-[var(--primary)] text-[10px] font-semibold">
                           Mod
                         </span>
                       )}
@@ -289,7 +289,7 @@ export const LiveAudienceModerationPanel: React.FC<LiveAudienceModerationPanelPr
             <div className="p-3 rounded-2xl bg-[var(--surface-muted)] border border-[var(--border)] space-y-2.5">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-semibold text-[var(--text-primary)]">Host Role</span>
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#00869B]/10 text-[#00869B] border border-[#00869B]/20">
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[var(--primary)]/10 text-[var(--primary)] border border-[var(--primary)]/20">
                   Active Host
                 </span>
               </div>
@@ -336,7 +336,7 @@ export const LiveAudienceModerationPanel: React.FC<LiveAudienceModerationPanelPr
               <button
                 type="button"
                 onClick={() => setIsGiftTrayOpen(true)}
-                className="text-xs text-[#007E93] font-bold hover:underline cursor-pointer"
+                className="text-xs text-[var(--primary)] font-bold hover:underline cursor-pointer"
               >
                 Open Tray →
               </button>
@@ -381,12 +381,12 @@ export const LiveAudienceModerationPanel: React.FC<LiveAudienceModerationPanelPr
             value={chatInput}
             onChange={(e) => setChatInput(e.target.value)}
             placeholder="Type a friendly message..."
-            className="flex-1 px-3.5 py-2 rounded-xl bg-[var(--input)] border border-[var(--border)] text-xs text-[var(--text-primary)] focus:outline-none focus:border-[#00869B] shadow-inner"
+            className="flex-1 px-3.5 py-2 rounded-xl bg-[var(--input)] border border-[var(--border)] text-xs text-[var(--text-primary)] focus:outline-none focus:border-[var(--primary)] shadow-inner"
           />
           <button
             type="submit"
             disabled={!chatInput.trim()}
-            className="p-2 rounded-xl bg-[#00869B] text-white hover:bg-[#006C80] disabled:opacity-40 transition-colors cursor-pointer"
+            className="p-2 rounded-xl bg-[var(--primary)] text-white hover:bg-[var(--primary-hover)] disabled:opacity-40 transition-colors cursor-pointer"
           >
             <Send className="w-4 h-4" />
           </button>
