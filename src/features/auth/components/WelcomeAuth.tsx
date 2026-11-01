@@ -7,6 +7,10 @@ import {
   EyeOff,
   Loader2,
   AlertCircle,
+  CheckCircle2,
+  User,
+  ArrowRight,
+  ShieldCheck,
 } from 'lucide-react';
 import { AuthService } from '../services/authService';
 import { OAuthNoticeModal } from './OAuthNoticeModal';
@@ -27,22 +31,27 @@ export const WelcomeAuth: React.FC<WelcomeAuthProps> = ({
   onAuthSuccess,
   className = '',
 }) => {
-  const { setRole, triggerCelebration } = useAppState();
+  const { setRole, triggerCelebration, login } = useAppState();
 
   const [mode, setMode] = useState<AuthPanelMode>(initialMode);
   const [selectedRole, setSelectedRole] = useState<UserRole>('creator');
 
-  // Form Fields
-  const [email, setEmail] = useState('creator@demo.creatoros.ai');
-  const [password, setPassword] = useState('password123');
+  // Form Fields - Clean initial values (ZERO DEMO PREFILL)
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
   // States
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [verificationPendingEmail, setVerificationPendingEmail] = useState<string | null>(null);
 
   // Modals
-  const [oauthNoticeProvider, setOauthNoticeProvider] = useState<'google' | 'apple' | 'facebook' | null>(null);
+  const [oauthNoticeProvider, setOauthNoticeProvider] = useState<
+    'google' | 'apple' | 'facebook' | null
+  >(null);
   const [isForgotModalOpen, setIsForgotModalOpen] = useState(false);
 
   // Synchronize when initialMode changes externally
@@ -55,36 +64,50 @@ export const WelcomeAuth: React.FC<WelcomeAuthProps> = ({
     e.preventDefault();
     setErrorMessage(null);
 
-    if (!email || !password) {
-      setErrorMessage('Please enter both email and password.');
+    const trimmedEmail = email.trim().toLowerCase();
+    if (!trimmedEmail || !password) {
+      setErrorMessage('Please enter both your email address and password.');
       return;
     }
+
     if (password.length < 6) {
-      setErrorMessage('Password must be at least 6 characters.');
+      setErrorMessage('Password must be at least 6 characters long.');
       return;
+    }
+
+    if (mode === 'register') {
+      if (!name.trim()) {
+        setErrorMessage('Please enter your full name or company name.');
+        return;
+      }
+      if (password !== confirmPassword) {
+        setErrorMessage('Passwords do not match. Please re-enter your password.');
+        return;
+      }
     }
 
     setIsLoading(true);
     try {
       if (mode === 'signin') {
-        const user = await AuthService.loginWithEmail({ email, password });
-        setRole(user.role);
+        const user = await AuthService.loginWithEmail({ email: trimmedEmail, password });
+        login(user);
         triggerCelebration();
         onAuthSuccess?.(user.role);
       } else {
-        // Derive name if not explicitly prompted in the minimal PDF layout
-        const derivedName = email.split('@')[0] || 'Creator';
-        const formattedName = derivedName.charAt(0).toUpperCase() + derivedName.slice(1);
-
-        const user = await AuthService.signUpWithEmail({
-          name: formattedName,
-          email,
+        const result = await AuthService.signUpWithEmail({
+          name: name.trim(),
+          email: trimmedEmail,
           password,
           role: selectedRole,
         });
-        setRole(user.role);
-        triggerCelebration();
-        onAuthSuccess?.(user.role);
+
+        if (result.emailConfirmationRequired) {
+          setVerificationPendingEmail(trimmedEmail);
+        } else if (result.user) {
+          login(result.user);
+          triggerCelebration();
+          onAuthSuccess?.(result.user.role);
+        }
       }
     } catch (err: any) {
       setErrorMessage(err.message || `${mode === 'signin' ? 'Sign in' : 'Registration'} failed.`);
@@ -94,44 +117,61 @@ export const WelcomeAuth: React.FC<WelcomeAuthProps> = ({
   };
 
   const handleSocialSelect = (provider: 'google' | 'apple' | 'facebook') => {
-    const configured =
-      provider === 'google'
-        ? Boolean((import.meta as any).env?.VITE_GOOGLE_CLIENT_ID)
-        : provider === 'apple'
-        ? Boolean((import.meta as any).env?.VITE_APPLE_CLIENT_ID)
-        : Boolean((import.meta as any).env?.VITE_FACEBOOK_APP_ID);
-
-    if (!configured) {
-      setOauthNoticeProvider(provider);
-      return;
-    }
-
-    AuthService.loginWithSocial(provider as any).catch((err) => {
-      setErrorMessage(err.message);
-    });
+    setErrorMessage(null);
+    setOauthNoticeProvider(provider);
   };
 
-  const handleDemoFallback = async (demoRole: UserRole) => {
-    setIsLoading(true);
-    try {
-      const user = await AuthService.loginAsDemo(demoRole);
-      setRole(user.role);
-      triggerCelebration();
-      onAuthSuccess?.(user.role);
-    } catch (err: any) {
-      setErrorMessage(err.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  // Dedicated Screen: Email Verification Required
+  if (verificationPendingEmail) {
+    return (
+      <div
+        className={`studio-card-soft rounded-[28px] p-6 sm:p-8 lg:p-9 w-full max-w-[430px] mx-auto select-none transition-all text-center space-y-5 animate-fade-in ${className}`}
+      >
+        <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 flex items-center justify-center mx-auto shadow-sm">
+          <Mail className="w-7 h-7" />
+        </div>
+
+        <div className="space-y-2">
+          <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100 font-display">
+            Check your email
+          </h2>
+          <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
+            We have sent a verification link to:
+          </p>
+          <p className="text-xs font-mono font-bold text-[var(--primary)] bg-[var(--surface-muted)] py-1.5 px-3 rounded-lg inline-block border border-[var(--border)]">
+            {verificationPendingEmail}
+          </p>
+          <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed pt-1">
+            Click the link in the message to activate your CreatorOS account, then return here to sign in.
+          </p>
+        </div>
+
+        <div className="pt-3">
+          <button
+            type="button"
+            onClick={() => {
+              setVerificationPendingEmail(null);
+              setMode('signin');
+              setPassword('');
+              setConfirmPassword('');
+            }}
+            className="w-full py-3 rounded-full bg-[var(--primary)] text-white text-xs sm:text-sm font-bold flex items-center justify-center gap-2 cursor-pointer transition-all hover:bg-[var(--primary)]/90 shadow-sm"
+          >
+            <span>Return to Sign In</span>
+            <ArrowRight className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
       className={`studio-card-soft rounded-[28px] p-6 sm:p-8 lg:p-9 w-full max-w-[430px] mx-auto select-none transition-all ${className}`}
     >
-      {/* ======================================================================= */}
-      {/* 1. TOP SEGMENTED SWITCHER: [ Sign in ] | [ Register <UserPlus /> ]      */}
-      {/* ======================================================================= */}
+      {/* ─────────────────────────────────────────────────────────────
+          1. TOP SEGMENTED SWITCHER: [ Sign in ] | [ Register <UserPlus /> ]
+         ───────────────────────────────────────────────────────────── */}
       <div className="auth-pdf-tab-track rounded-full p-1.5 flex items-center justify-between mb-6">
         <button
           type="button"
@@ -142,7 +182,7 @@ export const WelcomeAuth: React.FC<WelcomeAuthProps> = ({
           className={`flex-1 py-2.5 rounded-full text-xs sm:text-sm font-semibold tracking-wide transition-all cursor-pointer text-center ${
             mode === 'signin'
               ? 'auth-pdf-pill-active'
-              : 'text-zinc-700 hover:text-zinc-950'
+              : 'text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white'
           }`}
         >
           Sign in
@@ -157,7 +197,7 @@ export const WelcomeAuth: React.FC<WelcomeAuthProps> = ({
           className={`flex-1 py-2.5 rounded-full text-xs sm:text-sm font-semibold tracking-wide transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
             mode === 'register'
               ? 'auth-pdf-pill-active'
-              : 'text-zinc-700 hover:text-zinc-950'
+              : 'text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white'
           }`}
         >
           <span>Register</span>
@@ -165,9 +205,9 @@ export const WelcomeAuth: React.FC<WelcomeAuthProps> = ({
         </button>
       </div>
 
-      {/* ======================================================================= */}
-      {/* 2. ROLE TOGGLE: CREATOR | BRAND (ONLY SHOWN IN REGISTER MODE)           */}
-      {/* ======================================================================= */}
+      {/* ─────────────────────────────────────────────────────────────
+          2. ROLE TOGGLE: CREATOR | BRAND (ONLY SHOWN IN REGISTER MODE)
+         ───────────────────────────────────────────────────────────── */}
       {mode === 'register' && (
         <div className="flex items-center gap-2.5 mb-5 animate-fade-in">
           <button
@@ -197,19 +237,41 @@ export const WelcomeAuth: React.FC<WelcomeAuthProps> = ({
 
       {/* Error Notice */}
       {errorMessage && (
-        <div className="flex items-center gap-2 p-3 mb-4 rounded-xl bg-rose-50 border border-rose-200 text-xs text-rose-700 animate-fade-in">
+        <div className="flex items-center gap-2 p-3 mb-4 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900 text-xs text-rose-700 dark:text-rose-300 animate-fade-in">
           <AlertCircle className="w-4 h-4 text-rose-500 shrink-0" />
           <span className="flex-1 font-medium">{errorMessage}</span>
         </div>
       )}
 
-      {/* ======================================================================= */}
-      {/* 3. INPUT FORM                                                           */}
-      {/* ======================================================================= */}
+      {/* ─────────────────────────────────────────────────────────────
+          3. INPUT FORM
+         ───────────────────────────────────────────────────────────── */}
       <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Name Field (Register Mode Only) */}
+        {mode === 'register' && (
+          <div className="space-y-1.5 text-left animate-fade-in">
+            <label className="text-xs sm:text-sm font-bold text-zinc-900 dark:text-zinc-100 block font-sans">
+              {selectedRole === 'business' ? 'Brand / Company Name' : 'Full Name'}
+            </label>
+            <div className="studio-input-soft rounded-lg flex items-center px-3.5 py-2.5">
+              <User className="w-4 h-4 text-zinc-500 mr-2.5 shrink-0" />
+              <input
+                type="text"
+                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder={selectedRole === 'business' ? 'Acme Studios' : 'Jane Doe'}
+                disabled={isLoading}
+                autoComplete="name"
+                className="w-full text-xs sm:text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 bg-transparent outline-none font-sans"
+              />
+            </div>
+          </div>
+        )}
+
         {/* Email Field */}
         <div className="space-y-1.5 text-left">
-          <label className="text-xs sm:text-sm font-bold text-zinc-900 block font-sans">
+          <label className="text-xs sm:text-sm font-bold text-zinc-900 dark:text-zinc-100 block font-sans">
             Email
           </label>
           <div className="studio-input-soft rounded-lg flex items-center px-3.5 py-2.5">
@@ -219,21 +281,20 @@ export const WelcomeAuth: React.FC<WelcomeAuthProps> = ({
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="creator@demo.creatoros.ai"
+              placeholder="you@example.com"
               disabled={isLoading}
               autoComplete="email"
-              className="w-full text-xs sm:text-sm text-zinc-900 placeholder:text-zinc-500 bg-transparent outline-none font-sans"
+              className="w-full text-xs sm:text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 bg-transparent outline-none font-sans"
             />
           </div>
         </div>
 
         {/* Password Field */}
         <div className="space-y-1.5 text-left">
-          <label className="text-xs sm:text-sm font-bold text-zinc-900 block font-sans">
+          <label className="text-xs sm:text-sm font-bold text-zinc-900 dark:text-zinc-100 block font-sans">
             Password
           </label>
           <div className="studio-input-soft rounded-lg flex items-center px-3 py-2">
-            {/* Key icon badge matching PDF reference */}
             <span className="w-6 h-6 rounded bg-[#7A828F] text-white flex items-center justify-center mr-2.5 shrink-0 shadow-sm">
               <KeyRound className="w-3.5 h-3.5" />
             </span>
@@ -245,7 +306,7 @@ export const WelcomeAuth: React.FC<WelcomeAuthProps> = ({
               placeholder="••••••••"
               disabled={isLoading}
               autoComplete={mode === 'signin' ? 'current-password' : 'new-password'}
-              className="w-full text-xs sm:text-sm text-zinc-900 placeholder:text-zinc-500 bg-transparent outline-none font-sans"
+              className="w-full text-xs sm:text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 bg-transparent outline-none font-sans"
             />
             <button
               type="button"
@@ -255,29 +316,51 @@ export const WelcomeAuth: React.FC<WelcomeAuthProps> = ({
               tabIndex={-1}
               aria-label={showPassword ? 'Hide password' : 'Show password'}
             >
-              {showPassword ? (
-                <EyeOff className="w-4 h-4" />
-              ) : (
-                <Eye className="w-4 h-4" />
-              )}
+              {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
             </button>
           </div>
 
-          {/* Forgot password link */}
-          <div className="flex justify-end pt-0.5">
-            <button
-              type="button"
-              onClick={() => setIsForgotModalOpen(true)}
-              className="text-[11px] sm:text-xs text-[#1E7BB8] hover:text-[#0F5A8F] italic font-semibold cursor-pointer transition-colors focus:outline-none"
-            >
-              Forgot password
-            </button>
-          </div>
+          {/* Forgot password link (Sign in mode only) */}
+          {mode === 'signin' && (
+            <div className="flex justify-end pt-0.5">
+              <button
+                type="button"
+                onClick={() => setIsForgotModalOpen(true)}
+                className="text-[11px] sm:text-xs text-[var(--primary)] hover:underline italic font-semibold cursor-pointer transition-colors focus:outline-none"
+              >
+                Forgot password
+              </button>
+            </div>
+          )}
         </div>
 
-        {/* ===================================================================== */}
-        {/* 4. PRIMARY ACTION BUTTON (Sign in / Register)                         */}
-        {/* ===================================================================== */}
+        {/* Confirm Password Field (Register Mode Only) */}
+        {mode === 'register' && (
+          <div className="space-y-1.5 text-left animate-fade-in">
+            <label className="text-xs sm:text-sm font-bold text-zinc-900 dark:text-zinc-100 block font-sans">
+              Confirm Password
+            </label>
+            <div className="studio-input-soft rounded-lg flex items-center px-3 py-2">
+              <span className="w-6 h-6 rounded bg-[#7A828F] text-white flex items-center justify-center mr-2.5 shrink-0 shadow-sm">
+                <ShieldCheck className="w-3.5 h-3.5" />
+              </span>
+              <input
+                type={showPassword ? 'text' : 'password'}
+                required
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="••••••••"
+                disabled={isLoading}
+                autoComplete="new-password"
+                className="w-full text-xs sm:text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 bg-transparent outline-none font-sans"
+              />
+            </div>
+          </div>
+        )}
+
+        {/* ─────────────────────────────────────────────────────────────
+            4. PRIMARY ACTION BUTTON (Sign in / Register)
+           ───────────────────────────────────────────────────────────── */}
         <div className="pt-2">
           <button
             type="submit"
@@ -292,16 +375,16 @@ export const WelcomeAuth: React.FC<WelcomeAuthProps> = ({
                 <span>Processing...</span>
               </div>
             ) : (
-              <span>{mode === 'signin' ? 'Sign in' : 'Register'}</span>
+              <span>{mode === 'signin' ? 'Sign in' : 'Create Account'}</span>
             )}
           </button>
         </div>
 
-        {/* ===================================================================== */}
-        {/* 5. SOCIAL LOGIN SQUIRCLES (Google, Facebook, Apple)                   */}
-        {/* ===================================================================== */}
+        {/* ─────────────────────────────────────────────────────────────
+            5. SOCIAL LOGIN SQUIRCLES (Google, Facebook, Apple)
+           ───────────────────────────────────────────────────────────── */}
         <div className="pt-3 flex items-center justify-center gap-4">
-          {/* Google Squircle */}
+          {/* Google */}
           <button
             type="button"
             disabled={isLoading}
@@ -330,7 +413,7 @@ export const WelcomeAuth: React.FC<WelcomeAuthProps> = ({
             </svg>
           </button>
 
-          {/* Facebook Squircle */}
+          {/* Facebook */}
           <button
             type="button"
             disabled={isLoading}
@@ -344,7 +427,7 @@ export const WelcomeAuth: React.FC<WelcomeAuthProps> = ({
             </svg>
           </button>
 
-          {/* Apple Squircle */}
+          {/* Apple */}
           <button
             type="button"
             disabled={isLoading}
@@ -365,13 +448,6 @@ export const WelcomeAuth: React.FC<WelcomeAuthProps> = ({
         provider={oauthNoticeProvider}
         isOpen={Boolean(oauthNoticeProvider)}
         onClose={() => setOauthNoticeProvider(null)}
-        onContinueAsDemo={() => {
-          const provider = oauthNoticeProvider;
-          setOauthNoticeProvider(null);
-          if (provider) {
-            handleDemoFallback(selectedRole);
-          }
-        }}
       />
 
       {/* Forgot Password Modal */}

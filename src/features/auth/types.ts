@@ -30,6 +30,12 @@ export interface SignUpCredentials {
   handle?: string;
 }
 
+export interface SignUpResult {
+  user: AuthUser | null;
+  emailConfirmationRequired: boolean;
+  message?: string;
+}
+
 export interface OAuthProviderStatus {
   provider: 'google' | 'apple' | 'facebook';
   configured: boolean;

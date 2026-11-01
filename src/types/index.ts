@@ -21,6 +21,13 @@ export interface UserProfile {
   avatarUrl: string;
   title?: string;
   handle?: string;
+  bio?: string;
+  coverUrl?: string;
+  location?: string;
+  website?: string;
+  industry?: string;
+  category?: string;
+  notificationsCount?: number;
 }
 
 export type CampaignObjective =
@@ -66,6 +73,8 @@ export interface AiPlanRecommendation {
 export interface Campaign {
   id: string;
   name: string;
+  title?: string;
+  brandId?: string;
   brandName: string;
   brandLogo: string;
   objective: CampaignObjective;
@@ -136,6 +145,7 @@ export interface Creator {
   name: string;
   handle: string;
   avatar: string;
+  coverUrl?: string;
   category: string;
   niche?: string;
   followers?: string;
@@ -154,6 +164,7 @@ export interface Creator {
   avgEngagement: number;
   estimatedRate: number;
   rateCard: Partial<Record<DeliverableType, number>>;
+  pricing?: { reel?: number; post?: number; story?: number; live?: number; shot?: number };
   verified: boolean;
   verifiedBadges: string[];
   reliabilityMetrics: ReliabilityMetrics;

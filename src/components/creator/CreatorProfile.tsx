@@ -45,6 +45,7 @@ import { ConnectModal } from '../common/ConnectModal';
 import { BlogPostModal } from '../common/BlogPostModal';
 import { ShareProfileModal } from '../common/ShareProfileModal';
 import { ApproachCreatorModal } from '../business/ApproachCreatorModal';
+import { EditCreatorProfileModal } from './EditCreatorProfileModal';
 import { ShowcaseModal } from './ShowcaseModal';
 import { ShowcaseMediaViewerModal } from './ShowcaseMediaViewerModal';
 import { ShowcaseProject, ShowcaseStorage } from '../../services/showcaseMediaService';
@@ -84,6 +85,7 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
   const [activeTab, setActiveTab] = useState<'showcase' | 'reels' | 'shots' | 'blogs' | 'campaigns' | 'about' | 'analytics'>('showcase');
   const [copied, setCopied] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [isEditProfileModalOpen, setIsEditProfileModalOpen] = useState(false);
   const [isEditingAvailability, setIsEditingAvailability] = useState(false);
   const [customAvailabilityStatus, setCustomAvailabilityStatus] = useState<'Available' | 'Limited Availability' | 'Booked'>(
     (creatorData?.availabilityStatus as any) || 'Available'
@@ -244,7 +246,8 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
             {isOwnProfile ? (
               <>
                 <button
-                  onClick={() => setCreatorActiveTab('settings')}
+                  type="button"
+                  onClick={() => setIsEditProfileModalOpen(true)}
                   className="col-span-1 sm:col-auto min-h-[44px] px-3.5 py-2 rounded-xl text-xs font-semibold bg-[var(--surface-elevated)] border border-[var(--border)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-subtle)] flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                 >
                   <Edit3 className="w-3.5 h-3.5 text-[var(--text-tertiary)]" />
@@ -862,6 +865,26 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
         project={selectedShowcaseProject}
         onClose={() => setSelectedShowcaseProject(null)}
       />
+
+      {/* Edit Creator Profile Modal */}
+      {isEditProfileModalOpen && (
+        <EditCreatorProfileModal
+          isOpen={isEditProfileModalOpen}
+          onClose={() => setIsEditProfileModalOpen(false)}
+          initialData={{
+            name: creator.name,
+            handle: creator.handle,
+            category: creator.category,
+            bio: creator.bio,
+            location: creator.location,
+            ratePerReel: creator.pricing?.reel || creator.minimumRate,
+            ratePerShot: creator.pricing?.shot,
+            ratePerBlog: creator.pricing?.post,
+            avatarUrl: creator.avatar,
+            coverUrl: creator.coverUrl,
+          }}
+        />
+      )}
 
       {/* Share Profile Modal */}
       <ShareProfileModal

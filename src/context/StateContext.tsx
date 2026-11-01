@@ -39,6 +39,7 @@ import {
 import { AiCampaignEngine } from '../services/aiService';
 import { AuthUser, AuthMode, AuthTab } from '../features/auth/types';
 import { AuthService } from '../features/auth/services/authService';
+import { supabase } from '../services/supabaseClient';
 import { validateRelationshipAction } from '../services/profileActionResolver';
 import {
   BusinessRole,
@@ -87,6 +88,8 @@ interface StateContextType {
   workspace: Workspace;
   setWorkspace: (ws: Workspace) => void;
   userProfile: UserProfile;
+  refreshUserProfile: () => Promise<void>;
+  updateUserProfile: (updates: Partial<UserProfile>) => Promise<void>;
   automationLevel: AiAutomationLevel;
   setAutomationLevel: (level: AiAutomationLevel) => void;
 
@@ -280,6 +283,144 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const initialSession = AuthService.getStoredSession();
   const isInitialDemo = Boolean(initialSession?.is_demo || initialSession?.isDemo);
+
+  const [dbProfile, setDbProfile] = useState<{
+    profile: any;
+    subProfile: any;
+  } | null>(null);
+
+  const fetchDbProfile = async (userId: string, userRole: UserRole) => {
+    try {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', userId)
+        .maybeSingle();
+
+      let subProfile = null;
+      if (userRole === 'business') {
+        const { data } = await supabase
+          .from('brand_profiles')
+          .select('*')
+          .eq('id', userId)
+          .maybeSingle();
+        subProfile = data;
+      } else if (userRole === 'creator') {
+        const { data } = await supabase
+          .from('creator_profiles')
+          .select('*')
+          .eq('id', userId)
+          .maybeSingle();
+        subProfile = data;
+      }
+
+      setDbProfile({ profile, subProfile });
+      return { profile, subProfile };
+    } catch (err) {
+      console.warn('Failed to load DB profile from Supabase:', err);
+      return null;
+    }
+  };
+
+  const refreshUserProfile = async () => {
+    if (authUser && !authUser.is_demo && !authUser.isDemo) {
+      await fetchDbProfile(authUser.id, authUser.role);
+    }
+  };
+
+  const updateUserProfile = async (updates: Partial<UserProfile>) => {
+    if (!authUser) return;
+    const isDemo = Boolean(authUser.is_demo || authUser.isDemo);
+    if (isDemo) {
+      const updated = { ...authUser, ...updates };
+      setAuthUser(updated as any);
+      AuthService.saveSession(updated as any);
+      return;
+    }
+
+    try {
+      const profileUpdates: any = { updated_at: new Date().toISOString() };
+      if (updates.name !== undefined) profileUpdates.display_name = updates.name;
+      if (updates.avatarUrl !== undefined) profileUpdates.avatar_url = updates.avatarUrl;
+      if (updates.coverUrl !== undefined) profileUpdates.cover_url = updates.coverUrl;
+
+      await supabase.from('profiles').update(profileUpdates).eq('id', authUser.id);
+
+      if (role === 'business') {
+        const brandUpdates: any = { updated_at: new Date().toISOString() };
+        if (updates.name !== undefined) brandUpdates.company_name = updates.name;
+        if (updates.handle !== undefined) brandUpdates.handle = updates.handle;
+        if (updates.bio !== undefined) brandUpdates.bio = updates.bio;
+        if (updates.location !== undefined) brandUpdates.location = updates.location;
+        if (updates.website !== undefined) brandUpdates.website = updates.website;
+        if (updates.industry !== undefined) brandUpdates.industry = updates.industry;
+        if (updates.coverUrl !== undefined) brandUpdates.cover_url = updates.coverUrl;
+
+        await supabase.from('brand_profiles').update(brandUpdates).eq('id', authUser.id);
+      } else if (role === 'creator') {
+        const creatorUpdates: any = { updated_at: new Date().toISOString() };
+        if (updates.handle !== undefined) creatorUpdates.handle = updates.handle;
+        if (updates.bio !== undefined) creatorUpdates.bio = updates.bio;
+        if (updates.location !== undefined) creatorUpdates.location = updates.location;
+        if (updates.category !== undefined) creatorUpdates.category = updates.category;
+        if (updates.coverUrl !== undefined) creatorUpdates.cover_url = updates.coverUrl;
+
+        await supabase.from('creator_profiles').update(creatorUpdates).eq('id', authUser.id);
+      }
+
+      await refreshUserProfile();
+    } catch (err) {
+      console.error('Failed to update user profile in Supabase:', err);
+      throw err;
+    }
+  };
+
+  useEffect(() => {
+    if (authUser && !authUser.is_demo && !authUser.isDemo) {
+      fetchDbProfile(authUser.id, authUser.role);
+    }
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED' || event === 'USER_UPDATED') {
+        if (session?.user) {
+          const userMeta = session.user.user_metadata || {};
+          const userRole: UserRole = (userMeta.role === 'business' || userMeta.role === 'brand') ? 'business' : 'creator';
+          const dbData = await fetchDbProfile(session.user.id, userRole);
+          const name = dbData?.profile?.display_name || userMeta.display_name || userMeta.name || session.user.email?.split('@')[0] || 'User';
+          const handle = dbData?.subProfile?.handle || (userMeta.handle ? (userMeta.handle.startsWith('@') ? userMeta.handle : `@${userMeta.handle}`) : `@${name.toLowerCase().replace(/\s+/g, '')}`);
+          const syncedUser: AuthUser = {
+            id: session.user.id,
+            email: session.user.email || '',
+            name,
+            role: userRole,
+            handle,
+            avatarUrl: dbData?.profile?.avatar_url || userMeta.avatar_url || '',
+            is_demo: false,
+            isDemo: false,
+            account_type: 'standard',
+            provider: 'email',
+          };
+          setAuthUser(syncedUser);
+          setIsAuthenticated(true);
+          setRoleState(userRole);
+          setViewMode('app');
+          AuthService.saveSession(syncedUser);
+        }
+      } else if (event === 'SIGNED_OUT') {
+        const stored = AuthService.getStoredSession();
+        if (stored && !stored.is_demo && !stored.isDemo) {
+          setAuthUser(null);
+          setIsAuthenticated(false);
+          setViewMode('welcome');
+          AuthService.clearSession();
+        }
+      }
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
 
   const [campaigns, setCampaigns] = useState<Campaign[]>(() => {
     if (!initialSession) return [];
@@ -528,7 +669,7 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     localStorage.setItem(`${STORAGE_KEY}_suspended_users`, JSON.stringify(suspendedUserIds));
   }, [suspendedUserIds]);
 
-  const workspace =
+  const workspace: Workspace =
     role === 'super_admin'
       ? {
           id: 'ws-admin',
@@ -541,34 +682,56 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       : role === 'business'
       ? {
           id: authUser?.id || 'ws-brand',
-          name: authUser?.name || 'Brand Workspace',
+          name: dbProfile?.subProfile?.company_name || authUser?.name || 'Brand Workspace',
           type: 'business',
-          avatarUrl: authUser?.avatarUrl || 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=150&auto=format&fit=crop&q=80',
+          avatarUrl: dbProfile?.profile?.avatar_url || authUser?.avatarUrl || '',
           currency: '₹',
-          handle: authUser?.handle || '@brand',
+          handle: dbProfile?.subProfile?.handle || authUser?.handle || '@brand',
         }
       : {
           id: authUser?.id || 'ws-creator',
-          name: authUser?.name || 'Creator Studio',
+          name: dbProfile?.profile?.display_name || authUser?.name || 'Creator Studio',
           type: 'creator',
-          avatarUrl: authUser?.avatarUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80',
+          avatarUrl: dbProfile?.profile?.avatar_url || authUser?.avatarUrl || '',
           currency: '₹',
-          handle: authUser?.handle || '@creator',
+          handle: dbProfile?.subProfile?.handle || authUser?.handle || '@creator',
         };
 
-  const userProfile = authUser
-    ? {
-        ...INITIAL_USER_PROFILES[role],
-        id: authUser.id,
-        name: authUser.name || 'User',
-        email: authUser.email || '',
-        role: authUser.role || role,
-        handle:
-          authUser.handle ||
-          (authUser.name ? `@${authUser.name.toLowerCase().replace(/\s+/g, '')}` : '@user'),
-        avatarUrl: authUser.avatarUrl || '',
-        notificationsCount: notifications.filter((n) => !n.read).length,
-      }
+  const userProfile: UserProfile = authUser
+    ? isInitialDemo
+      ? {
+          ...INITIAL_USER_PROFILES[role],
+          id: authUser.id,
+          name: authUser.name || 'Demo User',
+          email: authUser.email || '',
+          role: authUser.role || role,
+          handle: authUser.handle || (role === 'business' ? '@demobrand' : '@democreator'),
+          avatarUrl: authUser.avatarUrl || '',
+          notificationsCount: notifications.filter((n) => !n.read).length,
+        }
+      : {
+          id: authUser.id,
+          name: dbProfile?.profile?.display_name || authUser.name || 'User',
+          email: authUser.email || '',
+          role: (dbProfile?.profile?.role as UserRole) || authUser.role || role,
+          workspaceId: authUser.id,
+          avatarUrl: dbProfile?.profile?.avatar_url || authUser.avatarUrl || '',
+          handle:
+            dbProfile?.subProfile?.handle ||
+            authUser.handle ||
+            (authUser.name ? `@${authUser.name.toLowerCase().replace(/\s+/g, '')}` : '@user'),
+          title:
+            role === 'business'
+              ? dbProfile?.subProfile?.company_name || 'Brand Workspace'
+              : dbProfile?.subProfile?.category || 'Creator Studio',
+          bio: dbProfile?.subProfile?.bio || '',
+          coverUrl: dbProfile?.subProfile?.cover_url || dbProfile?.profile?.cover_url || '',
+          location: dbProfile?.subProfile?.location || '',
+          website: dbProfile?.subProfile?.website || '',
+          industry: dbProfile?.subProfile?.industry || '',
+          category: dbProfile?.subProfile?.category || '',
+          notificationsCount: notifications.filter((n) => !n.read).length,
+        }
     : INITIAL_USER_PROFILES[role];
 
   const login = (user: AuthUser, initialCreatorTab?: string) => {
@@ -1789,6 +1952,8 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         workspace,
         setWorkspace,
         userProfile,
+        refreshUserProfile,
+        updateUserProfile,
         automationLevel,
         setAutomationLevel,
         businessRole,

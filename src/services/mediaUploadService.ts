@@ -12,6 +12,8 @@
  * - Pitch Decks & Campaign Deliverables
  */
 
+import { supabase } from './supabaseClient';
+
 export type MediaType = 'video' | 'image' | 'document';
 
 export type UploadStage = 'idle' | 'validating' | 'uploading' | 'processing' | 'ready' | 'error';
@@ -492,8 +494,6 @@ export async function uploadDirectToStorage(
   onProgress?: (progress: UploadProgress) => void,
   userId?: string
 ): Promise<string> {
-  const supabaseUrl = (import.meta as any).env?.VITE_SUPABASE_URL;
-  const supabaseAnonKey = (import.meta as any).env?.VITE_SUPABASE_ANON_KEY;
   const sanitized = sanitizeFileName(file.name);
 
   // Resolve authenticated user ID
@@ -508,6 +508,16 @@ export async function uploadDirectToStorage(
     } catch {}
   }
 
+  // Fallback to active Supabase session user if available
+  if (!resolvedUserId && supabase) {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user?.id) {
+        resolvedUserId = session.user.id;
+      }
+    } catch {}
+  }
+
   // Enforce authentication: anonymous writes are strictly rejected
   if (!resolvedUserId) {
     throw new Error('Authentication required: anonymous storage uploads are strictly prohibited');
@@ -516,25 +526,25 @@ export async function uploadDirectToStorage(
   // Enforce path-based user ownership matching hardened Supabase Storage RLS: {userId}/{fileName}
   const storagePath = `${resolvedUserId}/${Date.now()}-${sanitized}`;
 
-  if (supabaseUrl && supabaseAnonKey) {
+  if (supabase) {
     try {
-      const endpoint = `${supabaseUrl}/storage/v1/object/${bucket}/${storagePath}`;
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${supabaseAnonKey}`,
-          'apikey': supabaseAnonKey,
-          'Content-Type': file.type || 'application/octet-stream',
-          'x-upsert': 'true',
-        },
-        body: file,
-      });
+      const { data, error } = await supabase.storage
+        .from(bucket)
+        .upload(storagePath, file, {
+          upsert: true,
+          contentType: file.type || 'application/octet-stream',
+        });
 
-      if (response.ok) {
-        return `${supabaseUrl}/storage/v1/object/public/${bucket}/${storagePath}`;
+      if (!error && data) {
+        const { data: { publicUrl } } = supabase.storage
+          .from(bucket)
+          .getPublicUrl(storagePath);
+        return publicUrl;
+      } else if (error) {
+        console.warn('Supabase storage upload error:', error.message);
       }
     } catch (err) {
-      console.warn('Direct Supabase storage upload failed, falling back to local object stream:', err);
+      console.warn('Direct Supabase storage upload exception:', err);
     }
   }
 

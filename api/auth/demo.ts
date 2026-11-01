@@ -2,15 +2,10 @@
  * Vercel Serverless Function: /api/auth/demo
  * 
  * Secure Server-Side Controlled Demo Account Token Dispenser.
- * Strictly dispenses sessions ONLY for the TWO authorized demo identities:
- * 1. demo.creator@creatoros.ai (CreatorOS Demo Creator)
- * 2. demo.brand@creatoros.ai   (CreatorOS Demo Brand)
- * 
- * Never hardcodes secrets in client bundles. Enforces server-side validation.
+ * Strictly disabled in production when VITE_ENABLE_DEMO !== 'true'.
  */
 
 export default async function handler(req: any, res: any) {
-  // Set CORS and security headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
@@ -21,6 +16,14 @@ export default async function handler(req: any, res: any) {
 
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed. Use POST.' });
+  }
+
+  // Reject demo token generation in production
+  const isDemoAllowed = process.env.VITE_ENABLE_DEMO === 'true' || process.env.ENABLE_DEMO === 'true';
+  if (!isDemoAllowed) {
+    return res.status(403).json({
+      error: 'Demo accounts are strictly disabled in the production environment.',
+    });
   }
 
   try {
@@ -68,35 +71,29 @@ export default async function handler(req: any, res: any) {
           permissions: [
             'create_campaigns',
             'issue_contracts',
-            'deposit_escrow',
-            'approve_deliverables',
-            'invite_creators',
+            'fund_escrow',
+            'review_deliverables',
+            'manage_team',
           ],
         };
 
-    const serverSessionToken = `cos_demo_${Buffer.from(
-      JSON.stringify({
-        sub: demoUser.id,
-        email: demoUser.email,
-        role: demoUser.role,
-        is_demo: true,
-        iat: Math.floor(Date.now() / 1000),
-        exp: Math.floor(Date.now() / 1000) + 86400, // 24-hour expiration
-      })
-    ).toString('base64url')}`;
+    // Dispense an expirable token (valid for 2 hours)
+    const tokenPayload = {
+      sub: demoUser.id,
+      email: demoUser.email,
+      role: demoUser.role,
+      iat: Math.floor(Date.now() / 1000),
+      exp: Math.floor(Date.now() / 1000) + 7200,
+    };
+
+    const token = `cos_demo_${Buffer.from(JSON.stringify(tokenPayload)).toString('base64url')}`;
 
     return res.status(200).json({
-      success: true,
       user: demoUser,
-      token: serverSessionToken,
-      expiresAt: Date.now() + 86400000,
-      authorizationMode: 'server_controlled_sandbox',
+      token,
+      mode: 'demo_sandbox',
     });
-  } catch (err: any) {
-    console.error('Error in /api/auth/demo:', err);
-    return res.status(500).json({
-      error: 'Failed to process demo authorization request',
-      details: err?.message || String(err),
-    });
+  } catch (error: any) {
+    return res.status(500).json({ error: 'Failed to initialize demo session.' });
   }
 }

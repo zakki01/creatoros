@@ -3,403 +3,392 @@ import {
   LoginCredentials,
   OAuthProviderStatus,
   SignUpCredentials,
+  SignUpResult,
 } from '../types';
 import { UserRole } from '../../../types';
+import { supabase, isSupabaseConfigured } from '../../../services/supabaseClient';
 import {
   DEMO_CREATOR_ACCOUNT,
   DEMO_BRAND_ACCOUNT,
 } from '../../../data/demoFixtures';
 
-const AUTH_STORAGE_KEY = 'creatoros_auth_session_v1';
-const REGISTERED_ACCOUNTS_KEY = 'creatoros_registered_accounts_v1';
-
 export const CANONICAL_CREATOR_ID = 'demo-creator-01';
 export const CANONICAL_BRAND_ID = 'demo-brand-01';
 export const CANONICAL_ADMIN_ID = 'admin-001';
 
-export interface IAuthProvider {
-  readonly id: string;
-  readonly name: string;
-  isConfigured(): boolean;
-  login(credentials?: any): Promise<AuthUser>;
-}
+const AUTH_CACHE_KEY = 'creatoros_user_cache_v1';
 
-export class EmailAuthProvider implements IAuthProvider {
-  readonly id = 'email';
-  readonly name = 'Email & Password';
-
-  isConfigured(): boolean {
-    return true;
+export class AuthServiceSingleton {
+  /**
+   * Helper to check if demo mode is explicitly enabled
+   */
+  isDemoEnabled(): boolean {
+    return import.meta.env.VITE_ENABLE_DEMO === 'true';
   }
 
-  async login(credentials: LoginCredentials): Promise<AuthUser> {
-    if (!credentials.email || !credentials.password) {
-      throw new Error('Please provide both email and password.');
-    }
-    if (credentials.password.length < 6) {
-      throw new Error('Password must be at least 6 characters.');
-    }
-
+  /**
+   * Real Supabase Email Sign-In
+   */
+  async loginWithEmail(credentials: LoginCredentials): Promise<AuthUser> {
     const emailLower = credentials.email.trim().toLowerCase();
+    const password = credentials.password;
 
-    // Check exact controlled demo identities
-    if (emailLower === 'demo.creator@creatoros.ai') {
-      return { ...DEMO_CREATOR_ACCOUNT };
-    }
-    if (emailLower === 'demo.brand@creatoros.ai') {
-      return { ...DEMO_BRAND_ACCOUNT };
+    if (!emailLower || !password) {
+      throw new Error('Please enter both your email address and password.');
     }
 
-    try {
-      const stored = localStorage.getItem(REGISTERED_ACCOUNTS_KEY);
-      if (stored) {
-        const accounts: Array<AuthUser & { password?: string }> = JSON.parse(stored);
-        const match = accounts.find(
-          (a) => a.email.toLowerCase() === emailLower
-        );
-        if (match) {
-          if (match.password && match.password !== credentials.password) {
-            throw new Error('Invalid credentials. Please verify your password.');
-          }
-          const { password: _, ...safeUser } = match;
-          return safeUser;
-        }
+    // Controlled demo login ONLY if explicitly enabled in environment
+    if (this.isDemoEnabled()) {
+      if (emailLower === 'demo.creator@creatoros.ai') {
+        const user = { ...DEMO_CREATOR_ACCOUNT };
+        this.saveUserCache(user);
+        return user;
       }
-    } catch (err: any) {
-      if (err.message && err.message.includes('Invalid credentials')) {
-        throw err;
+      if (emailLower === 'demo.brand@creatoros.ai') {
+        const user = { ...DEMO_BRAND_ACCOUNT };
+        this.saveUserCache(user);
+        return user;
       }
     }
 
-    const name = credentials.email.split('@')[0];
-    const formattedName = name.charAt(0).toUpperCase() + name.slice(1);
-    const uniqueUserId = `usr_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
-
-    if (emailLower.includes('admin')) {
-      return {
-        id: CANONICAL_ADMIN_ID,
-        name: `${formattedName} (Admin)`,
-        email: credentials.email,
-        role: 'super_admin',
-        avatarUrl:
-          'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200&auto=format&fit=crop&q=80',
-        handle: `@${name.toLowerCase()}`,
-        provider: 'email',
-        isDemo: false,
-        is_demo: false,
-        account_type: 'standard',
-      };
+    if (!isSupabaseConfigured()) {
+      throw new Error('Supabase authentication service is not configured.');
     }
 
-    if (
-      emailLower.includes('brand') ||
-      emailLower.includes('business')
-    ) {
-      return {
-        id: uniqueUserId,
-        name: `${formattedName} Co.`,
-        email: credentials.email,
-        role: 'business',
-        avatarUrl:
-          'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=200&auto=format&fit=crop&q=80',
-        handle: `@${name.toLowerCase()}`,
-        provider: 'email',
-        isDemo: false,
-        is_demo: false,
-        account_type: 'standard',
-      };
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: emailLower,
+      password: password,
+    });
+
+    if (error) {
+      throw new Error(error.message || 'Invalid email or password.');
     }
 
-    return {
-      id: uniqueUserId,
-      name: formattedName,
-      email: credentials.email,
-      role: 'creator',
-      avatarUrl:
-        'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80',
-      handle: `@${name.toLowerCase()}`,
-      provider: 'email',
-      isDemo: false,
-      is_demo: false,
-      account_type: 'standard',
-    };
+    if (!data.user) {
+      throw new Error('Authentication succeeded but no user data was returned.');
+    }
+
+    // Hydrate user profile from Supabase database
+    const profile = await this.fetchUserProfile(data.user.id);
+    const user = this.mapSupabaseUserToAuthUser(data.user, profile);
+    this.saveUserCache(user);
+    return user;
   }
 
-  async signUp(credentials: SignUpCredentials): Promise<AuthUser> {
-    if (!credentials.email || !credentials.password || !credentials.name) {
+  /**
+   * Real Supabase Email Registration
+   */
+  async signUpWithEmail(credentials: SignUpCredentials): Promise<SignUpResult> {
+    const emailLower = credentials.email.trim().toLowerCase();
+    const name = credentials.name.trim();
+    const password = credentials.password;
+    const role: UserRole = credentials.role === 'business' ? 'business' : 'creator';
+
+    if (!emailLower || !password || !name) {
       throw new Error('Please fill in all required fields.');
     }
-    if (credentials.password.length < 6) {
-      throw new Error('Password must be at least 6 characters.');
+    if (password.length < 6) {
+      throw new Error('Password must be at least 6 characters long.');
     }
 
-    const uniqueUserId = `usr_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
-
-    const newUser: AuthUser & { password?: string } = {
-      id: uniqueUserId,
-      name: credentials.name.trim(),
-      email: credentials.email.trim(),
-      role: credentials.role,
-      avatarUrl:
-        credentials.role === 'creator'
-          ? 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80'
-          : 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=200&auto=format&fit=crop&q=80',
-      handle: credentials.handle || `@${credentials.name.toLowerCase().replace(/\s+/g, '')}`,
-      provider: 'email',
-      isDemo: false,
-      is_demo: false,
-      account_type: 'standard',
-      password: credentials.password,
-    };
-
-    try {
-      const stored = localStorage.getItem(REGISTERED_ACCOUNTS_KEY);
-      const accounts: any[] = stored ? JSON.parse(stored) : [];
-      const filtered = accounts.filter(
-        (a) => a.email.toLowerCase() !== credentials.email.trim().toLowerCase()
-      );
-      filtered.push(newUser);
-      localStorage.setItem(REGISTERED_ACCOUNTS_KEY, JSON.stringify(filtered));
-    } catch (err) {
-      console.warn('Could not persist registered account to storage:', err);
+    if (!isSupabaseConfigured()) {
+      throw new Error('Supabase authentication service is not configured.');
     }
 
-    const { password: _, ...safeUser } = newUser;
-    return safeUser;
-  }
-}
+    const handle =
+      credentials.handle ||
+      `@${name.toLowerCase().replace(/[^a-z0-9_]/g, '') || 'user'}`;
 
-export class GoogleAuthProvider implements IAuthProvider {
-  readonly id = 'google';
-  readonly name = 'Google OAuth';
+    const { data, error } = await supabase.auth.signUp({
+      email: emailLower,
+      password: password,
+      options: {
+        data: {
+          display_name: name,
+          name: name,
+          role: role,
+          handle: handle,
+        },
+      },
+    });
 
-  isConfigured(): boolean {
-    const clientId = (import.meta as any).env?.VITE_GOOGLE_CLIENT_ID;
-    return Boolean(clientId && clientId.trim().length > 0);
-  }
-
-  async login(): Promise<AuthUser> {
-    if (!this.isConfigured()) {
-      throw new Error(
-        'Google OAuth is not configured. Please supply VITE_GOOGLE_CLIENT_ID in your environment, or continue using Demo Creator mode.'
-      );
-    }
-    throw new Error('Redirecting to Google OAuth endpoint...');
-  }
-}
-
-export class AppleAuthProvider implements IAuthProvider {
-  readonly id = 'apple';
-  readonly name = 'Apple Sign In';
-
-  isConfigured(): boolean {
-    const clientId = (import.meta as any).env?.VITE_APPLE_CLIENT_ID;
-    return Boolean(clientId && clientId.trim().length > 0);
-  }
-
-  async login(): Promise<AuthUser> {
-    if (!this.isConfigured()) {
-      throw new Error(
-        'Apple Sign In is not configured. Please supply VITE_APPLE_CLIENT_ID in your environment, or continue using Demo Creator mode.'
-      );
-    }
-    throw new Error('Redirecting to Apple ID endpoint...');
-  }
-}
-
-export class FacebookAuthProvider implements IAuthProvider {
-  readonly id = 'facebook';
-  readonly name = 'Facebook Login';
-
-  isConfigured(): boolean {
-    const appId = (import.meta as any).env?.VITE_FACEBOOK_APP_ID;
-    return Boolean(appId && appId.trim().length > 0);
-  }
-
-  async login(): Promise<AuthUser> {
-    if (!this.isConfigured()) {
-      throw new Error(
-        'Facebook Login is not configured. Please supply VITE_FACEBOOK_APP_ID in your environment, or continue using Demo Creator mode.'
-      );
-    }
-    throw new Error('Redirecting to Facebook Login endpoint...');
-  }
-}
-
-export class Auth0Provider implements IAuthProvider {
-  readonly id = 'auth0';
-  readonly name = 'Auth0 Universal Login';
-
-  isConfigured(): boolean {
-    const domain = (import.meta as any).env?.VITE_AUTH0_DOMAIN || (import.meta as any).env?.AUTH0_DOMAIN;
-    const clientId = (import.meta as any).env?.VITE_AUTH0_CLIENT_ID || (import.meta as any).env?.AUTH0_CLIENT_ID;
-    return Boolean(domain && clientId && domain.trim().length > 0 && clientId.trim().length > 0);
-  }
-
-  async login(): Promise<AuthUser> {
-    const domain = (import.meta as any).env?.VITE_AUTH0_DOMAIN || (import.meta as any).env?.AUTH0_DOMAIN;
-    const clientId = (import.meta as any).env?.VITE_AUTH0_CLIENT_ID || (import.meta as any).env?.AUTH0_CLIENT_ID;
-
-    if (!domain || !clientId) {
-      throw new Error(
-        'Auth0 is not configured. Please configure VITE_AUTH0_DOMAIN and VITE_AUTH0_CLIENT_ID in environment variables.'
-      );
+    if (error) {
+      throw new Error(error.message || 'Account registration failed.');
     }
 
-    const redirectUri = encodeURIComponent(window.location.origin);
-    const audience = (import.meta as any).env?.VITE_AUTH0_AUDIENCE || '';
-    const audienceParam = audience ? `&audience=${encodeURIComponent(audience)}` : '';
-    window.location.href = `https://${domain}/authorize?client_id=${clientId}&response_type=code&redirect_uri=${redirectUri}&scope=openid%20profile%20email${audienceParam}`;
-    throw new Error('Redirecting to Auth0 Universal Login...');
-  }
-}
-
-export class DemoAuthProvider implements IAuthProvider {
-  readonly id = 'demo';
-  readonly name = 'Demo Sandbox';
-
-  isConfigured(): boolean {
-    return true;
-  }
-
-  async login(role: UserRole = 'creator'): Promise<AuthUser> {
-    if (role === 'super_admin') {
+    // Check if email confirmation is required (session will be null)
+    if (data.user && !data.session) {
       return {
-        id: CANONICAL_ADMIN_ID,
-        name: 'Alex Vance (Super Admin)',
-        email: 'alex.admin@creatoros.ai',
-        role: 'super_admin',
-        avatarUrl:
-          'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200&auto=format&fit=crop&q=80',
-        handle: '@alex.vance',
-        provider: 'demo',
-        isDemo: true,
-        is_demo: true,
-        account_type: 'demo',
+        user: null,
+        emailConfirmationRequired: true,
+        message: 'Account created! Please check your email to verify your address.',
       };
     }
 
-    if (role === 'creator') {
-      return { ...DEMO_CREATOR_ACCOUNT };
+    if (data.user && data.session) {
+      // Auto-confirmed or session active
+      const profile = await this.fetchUserProfile(data.user.id);
+      const user = this.mapSupabaseUserToAuthUser(data.user, profile);
+      this.saveUserCache(user);
+      return {
+        user: user,
+        emailConfirmationRequired: false,
+      };
     }
 
-    return { ...DEMO_BRAND_ACCOUNT };
+    throw new Error('Registration failed. Please try again.');
   }
-}
 
-class AuthServiceSingleton {
-  private emailProvider = new EmailAuthProvider();
-  private googleProvider = new GoogleAuthProvider();
-  private appleProvider = new AppleAuthProvider();
-  private facebookProvider = new FacebookAuthProvider();
-  private auth0Provider = new Auth0Provider();
-  private demoProvider = new DemoAuthProvider();
+  /**
+   * Real Password Reset via Supabase
+   */
+  async resetPassword(email: string): Promise<void> {
+    const emailTrimmed = email.trim().toLowerCase();
+    if (!emailTrimmed) {
+      throw new Error('Please enter your email address.');
+    }
 
-  getStoredSession(): AuthUser | null {
+    if (!isSupabaseConfigured()) {
+      throw new Error('Supabase authentication service is not configured.');
+    }
+
+    const { error } = await supabase.auth.resetPasswordForEmail(emailTrimmed, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+
+    if (error) {
+      throw new Error(error.message || 'Failed to send password reset email.');
+    }
+  }
+
+  /**
+   * Real Sign Out
+   */
+  async signOut(): Promise<void> {
     try {
-      const raw = localStorage.getItem(AUTH_STORAGE_KEY);
-      if (!raw) return null;
-      const parsed = JSON.parse(raw);
-      if (!parsed) return null;
-      // Handle nested session object format { user: { ... }, token, role }
-      if (parsed.user && typeof parsed.user === 'object') {
-        const u = parsed.user;
-        const role = (parsed.role || u.role || 'creator') as any;
-        const isDemo = Boolean(
-          parsed.is_demo ||
-            parsed.isDemo ||
-            u.is_demo ||
-            u.isDemo ||
-            u.id === 'demo-creator-01' ||
-            u.id === 'demo-brand-01' ||
-            u.email?.includes('demo')
-        );
-        return {
-          id: u.id || (role === 'business' ? 'demo-brand-01' : 'demo-creator-01'),
-          name: u.name || (role === 'business' ? 'CreatorOS Demo Brand' : 'CreatorOS Demo Creator'),
-          email: u.email || (role === 'business' ? 'demo.brand@creatoros.ai' : 'demo.creator@creatoros.ai'),
-          role,
-          avatarUrl: u.avatarUrl || u.avatar || '',
-          handle: u.handle || `@${(u.name || 'user').toLowerCase().replace(/\s+/g, '')}`,
-          isDemo,
-          is_demo: isDemo,
-          account_type: isDemo ? 'demo' : 'standard',
-          provider: parsed.provider || u.provider || (isDemo ? 'demo' : 'email'),
-        };
+      if (isSupabaseConfigured()) {
+        await supabase.auth.signOut();
       }
-      return parsed;
+    } catch (err) {
+      console.warn('Error during Supabase signOut:', err);
+    } finally {
+      this.clearUserCache();
+    }
+  }
+
+  /**
+   * Get Current Authenticated Session (Synchronous from local storage)
+   */
+  getStoredSession(): AuthUser | null {
+    return this.getCachedUser();
+  }
+
+  saveSession(user: AuthUser): void {
+    this.saveUserCache(user);
+  }
+
+  clearSession(): void {
+    this.clearUserCache();
+  }
+
+  /**
+   * Get Current Authenticated Session Async from Supabase
+   */
+  async getSessionAsync(): Promise<AuthUser | null> {
+    if (!isSupabaseConfigured()) {
+      return this.getCachedUser();
+    }
+
+    try {
+      const {
+        data: { session },
+        error,
+      } = await supabase.auth.getSession();
+
+      if (error || !session?.user) {
+        if (this.isDemoEnabled()) {
+          const cached = this.getCachedUser();
+          if (cached && (cached.isDemo || cached.is_demo)) {
+            return cached;
+          }
+        }
+        this.clearUserCache();
+        return null;
+      }
+
+      const profile = await this.fetchUserProfile(session.user.id);
+      const user = this.mapSupabaseUserToAuthUser(session.user, profile);
+      this.saveUserCache(user);
+      return user;
+    } catch (err) {
+      console.warn('Failed to recover Supabase session:', err);
+      return null;
+    }
+  }
+
+  /**
+   * Controlled Demo Mode (Restricted)
+   */
+  async loginAsDemo(role: UserRole = 'creator'): Promise<AuthUser> {
+    if (!this.isDemoEnabled()) {
+      throw new Error('Demo mode is disabled in production.');
+    }
+
+    const demoUser =
+      role === 'business' ? { ...DEMO_BRAND_ACCOUNT } : { ...DEMO_CREATOR_ACCOUNT };
+    this.saveUserCache(demoUser);
+    return demoUser;
+  }
+
+  /**
+   * Social OAuth
+   */
+  async loginWithSocial(provider: 'google' | 'apple' | 'facebook'): Promise<void> {
+    if (!isSupabaseConfigured()) {
+      throw new Error('Supabase authentication service is not configured.');
+    }
+
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: provider as any,
+      options: {
+        redirectTo: window.location.origin,
+      },
+    });
+
+    if (error) {
+      throw new Error(error.message || `${provider} authentication failed.`);
+    }
+  }
+
+  /**
+   * Social Provider Configuration Status
+   */
+  getOAuthStatus(): OAuthProviderStatus[] {
+    return [
+      {
+        provider: 'google',
+        configured: Boolean(import.meta.env.VITE_GOOGLE_CLIENT_ID),
+      },
+      {
+        provider: 'facebook',
+        configured: Boolean(import.meta.env.VITE_FACEBOOK_APP_ID),
+      },
+      {
+        provider: 'apple',
+        configured: Boolean(import.meta.env.VITE_APPLE_CLIENT_ID),
+      },
+    ];
+  }
+
+  /**
+   * Database Profile Fetcher
+   */
+  private async fetchUserProfile(userId: string): Promise<any> {
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', userId)
+        .maybeSingle();
+
+      if (error) {
+        console.warn('Could not fetch user profile from Supabase:', error.message);
+        return null;
+      }
+
+      if (data) {
+        if (data.role === 'business') {
+          const { data: brandData } = await supabase
+            .from('brand_profiles')
+            .select('*')
+            .eq('id', userId)
+            .maybeSingle();
+          return { ...data, ...brandData };
+        } else {
+          const { data: creatorData } = await supabase
+            .from('creator_profiles')
+            .select('*')
+            .eq('id', userId)
+            .maybeSingle();
+          return { ...data, ...creatorData };
+        }
+      }
+
+      return null;
+    } catch (err) {
+      console.warn('Error reading profile from database:', err);
+      return null;
+    }
+  }
+
+  /**
+   * Map Supabase User & DB Profile to AuthUser
+   */
+  private mapSupabaseUserToAuthUser(sbUser: any, profile: any): AuthUser {
+    const rawRole = profile?.role || sbUser.user_metadata?.role || 'creator';
+    const role: UserRole =
+      rawRole === 'business' || rawRole === 'brand' ? 'business' : 'creator';
+
+    const name =
+      profile?.display_name ||
+      profile?.company_name ||
+      sbUser.user_metadata?.display_name ||
+      sbUser.user_metadata?.name ||
+      sbUser.email?.split('@')[0] ||
+      'CreatorOS Member';
+
+    const handle =
+      profile?.handle ||
+      sbUser.user_metadata?.handle ||
+      `@${name.toLowerCase().replace(/[^a-z0-9_]/g, '')}`;
+
+    const avatarUrl =
+      profile?.avatar_url ||
+      profile?.logo ||
+      sbUser.user_metadata?.avatar_url ||
+      '';
+
+    return {
+      id: sbUser.id,
+      name: name,
+      email: sbUser.email || '',
+      role: role,
+      avatarUrl: avatarUrl,
+      handle: handle,
+      isDemo: false,
+      is_demo: false,
+      account_type: 'standard',
+      provider: 'email',
+    };
+  }
+
+  private saveUserCache(user: AuthUser): void {
+    try {
+      sessionStorage.setItem(AUTH_CACHE_KEY, JSON.stringify(user));
+      localStorage.setItem('creatoros_auth_session_v1', JSON.stringify(user));
+    } catch {
+      // Ignore sessionStorage errors
+    }
+  }
+
+  private getCachedUser(): AuthUser | null {
+    try {
+      const raw =
+        sessionStorage.getItem(AUTH_CACHE_KEY) ||
+        localStorage.getItem('creatoros_auth_session_v1');
+      return raw ? JSON.parse(raw) : null;
     } catch {
       return null;
     }
   }
 
-  saveSession(user: AuthUser): void {
+  private clearUserCache(): void {
     try {
-      localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(user));
-    } catch (err) {
-      console.error('Failed to store auth session:', err);
+      sessionStorage.removeItem(AUTH_CACHE_KEY);
+      localStorage.removeItem('creatoros_auth_session_v1');
+    } catch {
+      // Ignore errors
     }
-  }
-
-  clearSession(): void {
-    try {
-      localStorage.removeItem(AUTH_STORAGE_KEY);
-    } catch (err) {
-      console.error('Failed to clear auth session:', err);
-    }
-  }
-
-  getOAuthStatus(): OAuthProviderStatus[] {
-    return [
-      {
-        provider: 'google',
-        configured: this.googleProvider.isConfigured(),
-      },
-      {
-        provider: 'facebook',
-        configured: this.facebookProvider.isConfigured(),
-      },
-      {
-        provider: 'apple',
-        configured: this.appleProvider.isConfigured(),
-      },
-    ];
-  }
-
-  isAuth0Configured(): boolean {
-    return this.auth0Provider.isConfigured();
-  }
-
-  async loginWithEmail(credentials: LoginCredentials): Promise<AuthUser> {
-    const user = await this.emailProvider.login(credentials);
-    this.saveSession(user);
-    return user;
-  }
-
-  async signUpWithEmail(credentials: SignUpCredentials): Promise<AuthUser> {
-    const user = await this.emailProvider.signUp(credentials);
-    this.saveSession(user);
-    return user;
-  }
-
-  async loginAsDemo(role: UserRole = 'creator'): Promise<AuthUser> {
-    const user = await this.demoProvider.login(role);
-    this.saveSession(user);
-    return user;
-  }
-
-  async loginWithAuth0(): Promise<AuthUser> {
-    return this.auth0Provider.login();
-  }
-
-  async loginWithSocial(provider: 'google' | 'apple' | 'facebook'): Promise<AuthUser> {
-    if (provider === 'google') {
-      return this.googleProvider.login();
-    }
-    if (provider === 'apple') {
-      return this.appleProvider.login();
-    }
-    return this.facebookProvider.login();
   }
 }
 
@@ -473,21 +462,15 @@ class AdminAuthServiceSingleton {
 
     if (!email || !password) {
       this.failedAttempts++;
-      if (this.failedAttempts >= 5) {
-        this.lockoutUntil = Date.now() + 60000;
-      }
-      throw new Error('Please enter both admin email and password.');
+      throw new Error('Please provide both administrator email and passphrase.');
     }
 
-    if (password.length < 6) {
+    if (password.length < 8) {
       this.failedAttempts++;
-      if (this.failedAttempts >= 5) {
-        this.lockoutUntil = Date.now() + 60000;
-      }
-      throw new Error('Invalid credentials. Password too short.');
+      throw new Error('Passphrase does not meet enclave cryptographic complexity requirements.');
     }
 
-    const twoFactorCode = credentials.twoFactorCode?.trim();
+    const twoFactorCode = credentials.twoFactorCode;
     if (twoFactorCode && !/^\d{6}$/.test(twoFactorCode)) {
       this.failedAttempts++;
       throw new Error('2FA verification code must be a 6-digit numeric TOTP token.');

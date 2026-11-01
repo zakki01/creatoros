@@ -287,7 +287,9 @@ const MainApp: React.FC = () => {
       <WelcomePage
         initialAuthMode={authTab === 'signup' ? 'register' : 'signin'}
         onDemoAccess={(demoRole) => {
-          loginAsDemo(demoRole, 'home');
+          if (import.meta.env.VITE_ENABLE_DEMO === 'true') {
+            loginAsDemo(demoRole, 'home');
+          }
         }}
       />
     );

@@ -220,7 +220,7 @@ export const SuperAdminLayout: React.FC<SuperAdminLayoutProps> = ({
               <div className="w-7 h-7 rounded-lg bg-rose-100 text-rose-800 flex items-center justify-center font-bold text-xs shrink-0 font-mono">
                 {(adminSession?.name || 'Alex Vance')
                   .split(' ')
-                  .map((n) => n[0])
+                  .map((n: string) => n[0])
                   .join('')
                   .toUpperCase()
                   .slice(0, 2) || 'AV'}

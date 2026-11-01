@@ -3,7 +3,7 @@
  * 
  * Production Server-Side Authorization & Token Verification Gateway.
  * Enforces role isolation (Creator, Brand/Business, Super Admin),
- * validates RBAC claims, and verifies Supabase / Auth0 Bearer tokens.
+ * validates cryptographically signed tokens against Supabase Auth.
  * 
  * Prevents client-side spoofing, privilege escalation, and anonymous writes.
  */
@@ -31,8 +31,17 @@ export default async function handler(req: any, res: any) {
 
   const token = authHeader.replace('Bearer ', '').trim();
 
-  // 1. Verify Demo Tokens
+  // 1. Verify Demo Tokens (Only when enabled in environment)
+  const isDemoAllowed = process.env.VITE_ENABLE_DEMO === 'true' || process.env.ENABLE_DEMO === 'true';
+
   if (token.startsWith('cos_demo_')) {
+    if (!isDemoAllowed) {
+      return res.status(403).json({
+        authorized: false,
+        error: 'Forbidden: Demo sessions are disabled in production.',
+      });
+    }
+
     try {
       const payloadBase64 = token.replace('cos_demo_', '');
       const payload = JSON.parse(Buffer.from(payloadBase64, 'base64url').toString('utf8'));
@@ -86,46 +95,45 @@ export default async function handler(req: any, res: any) {
     });
   }
 
-  // 3. Supabase / Auth0 OIDC JWT Verification
-  // In production, token is evaluated against Supabase / Auth0 JWKS endpoint
-  try {
-    // Basic JWT structural check (header.payload.signature)
-    const parts = token.split('.');
-    if (parts.length === 3) {
-      const payloadJson = Buffer.from(parts[1], 'base64url').toString('utf8');
-      const claims = JSON.parse(payloadJson);
+  // 3. Supabase Cryptographic User & Token Verification
+  const supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
+  const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
 
-      const exp = claims.exp;
-      if (exp && Date.now() / 1000 > exp) {
-        return res.status(401).json({
-          authorized: false,
-          error: 'Token has expired.',
+  if (supabaseUrl && supabaseAnonKey) {
+    try {
+      const userResp = await fetch(`${supabaseUrl}/auth/v1/user`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'apikey': supabaseAnonKey,
+        },
+      });
+
+      if (userResp.ok) {
+        const user = await userResp.json();
+        const meta = user.user_metadata || {};
+        const role = meta.role === 'business' || meta.role === 'brand' ? 'business' : 'creator';
+
+        return res.status(200).json({
+          authorized: true,
+          user: {
+            id: user.id,
+            email: user.email || '',
+            role,
+            is_demo: false,
+            account_type: 'standard',
+          },
+          mode: 'production_oauth',
+          role,
         });
       }
-
-      const role = claims.app_role || claims.role || claims['https://creatoros.ai/role'] || 'authenticated';
-      const sub = claims.sub;
-
-      return res.status(200).json({
-        authorized: true,
-        user: {
-          id: sub,
-          email: claims.email || '',
-          role,
-          is_demo: false,
-          account_type: 'standard',
-        },
-        mode: 'production_oauth',
-        role,
-      });
+    } catch (err) {
+      console.warn('Supabase token verification error:', err);
     }
-  } catch (err) {
-    console.warn('JWT inspection error:', err);
   }
 
-  // Fallback rejection for untrusted tokens
+  // Fallback rejection for untrusted or forged tokens
   return res.status(401).json({
     authorized: false,
-    error: 'Invalid bearer token.',
+    error: 'Invalid or unverified bearer token.',
   });
 }

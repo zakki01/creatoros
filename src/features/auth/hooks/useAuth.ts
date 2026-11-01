@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useAppState } from '../../../context/StateContext';
 import { AuthService } from '../services/authService';
-import { AuthUser, LoginCredentials, SignUpCredentials } from '../types';
+import { AuthUser, LoginCredentials, SignUpCredentials, SignUpResult } from '../types';
 import { UserRole } from '../../../types';
 
 export function useAuth() {
@@ -33,14 +33,16 @@ export function useAuth() {
     }
   };
 
-  const signUpWithEmail = async (credentials: SignUpCredentials): Promise<AuthUser> => {
+  const signUpWithEmail = async (credentials: SignUpCredentials): Promise<SignUpResult> => {
     setIsLoading(true);
     setError(null);
     try {
-      const user = await AuthService.signUpWithEmail(credentials);
-      setContextLogin(user);
-      triggerCelebration();
-      return user;
+      const result = await AuthService.signUpWithEmail(credentials);
+      if (result.user) {
+        setContextLogin(result.user);
+        triggerCelebration();
+      }
+      return result;
     } catch (err: any) {
       const msg = err.message || 'Failed to create account.';
       setError(msg);

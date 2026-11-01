@@ -35,6 +35,7 @@ export const TopBar: React.FC<TopBarProps> = ({
     creatorRole,
     workspace,
     userProfile,
+    authUser,
     notifications,
     resetDemoData,
     logout,
@@ -196,17 +197,19 @@ export const TopBar: React.FC<TopBarProps> = ({
                   <span>Upgrade to Pro Plan</span>
                 </button>
 
-                <button
-                  type="button"
-                  onClick={() => {
-                    resetDemoData();
-                    close();
-                  }}
-                  className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-muted)] transition-colors cursor-pointer select-none"
-                >
-                  <RotateCcw className="w-3.5 h-3.5 text-zinc-500" />
-                  <span>Reset Demo State</span>
-                </button>
+                {import.meta.env.VITE_ENABLE_DEMO === 'true' && authUser?.is_demo && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      resetDemoData();
+                      close();
+                    }}
+                    className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-muted)] transition-colors cursor-pointer select-none"
+                  >
+                    <RotateCcw className="w-3.5 h-3.5 text-zinc-500" />
+                    <span>Reset Demo State</span>
+                  </button>
+                )}
 
                 <button
                   type="button"

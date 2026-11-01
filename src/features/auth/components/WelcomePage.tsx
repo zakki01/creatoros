@@ -108,51 +108,51 @@ export const WelcomePage: React.FC<WelcomePageProps> = ({
         </div>
 
         {/* ======================================================================= */}
-        {/* 4. COMPACT HORIZONTAL TRUST & TELEMETRY STRIP                           */}
+        {/* 4. COMPACT HORIZONTAL PLATFORM CAPABILITIES STRIP                       */}
         {/* ======================================================================= */}
         <section
-          aria-label="Platform Telemetry"
+          aria-label="Platform Capabilities"
           className="w-full pt-1 sm:pt-2"
         >
-          <div className="w-full rounded-2xl bg-[var(--surface)]/80 backdrop-blur-md border border-[var(--border)] shadow-xs px-4 sm:px-6 py-3.5">
+          <div className="w-full rounded-2xl bg-[var(--surface)]/80 backdrop-blur-md border border-[var(--border)] shadow-xs px-4 sm:px-6 py-4">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 divide-y sm:divide-y-0 sm:divide-x divide-[var(--border)]">
-              {/* Metric 1 */}
+              {/* Feature 1 */}
               <div className="flex flex-col items-center sm:items-start text-center sm:text-left pt-2 sm:pt-0 sm:px-3 first:px-0">
-                <span className="text-base sm:text-lg font-bold font-mono text-[var(--text-primary)] tracking-tight">
-                  4,800+
+                <span className="text-xs sm:text-sm font-bold text-[var(--text-primary)] tracking-tight">
+                  Verified Identity
                 </span>
-                <span className="text-[11px] font-sans text-[var(--text-secondary)] font-medium">
-                  Verified Creators
-                </span>
-              </div>
-
-              {/* Metric 2 */}
-              <div className="flex flex-col items-center sm:items-start text-center sm:text-left pt-2 sm:pt-0 sm:px-3">
-                <span className="text-base sm:text-lg font-bold font-mono text-[var(--accent)] tracking-tight">
-                  ₹4.2 Cr+
-                </span>
-                <span className="text-[11px] font-sans text-[var(--text-secondary)] font-medium">
-                  Escrow Protected
+                <span className="text-[11px] font-sans text-[var(--text-secondary)] mt-0.5">
+                  Direct Creator &amp; Brand onboarding
                 </span>
               </div>
 
-              {/* Metric 3 */}
+              {/* Feature 2 */}
               <div className="flex flex-col items-center sm:items-start text-center sm:text-left pt-2 sm:pt-0 sm:px-3">
-                <span className="text-base sm:text-lg font-bold font-mono text-[var(--text-primary)] tracking-tight">
-                  &lt;120ms
+                <span className="text-xs sm:text-sm font-bold text-[var(--primary)] tracking-tight">
+                  Milestone Escrow
                 </span>
-                <span className="text-[11px] font-sans text-[var(--text-secondary)] font-medium">
-                  Sync Latency SLA
+                <span className="text-[11px] font-sans text-[var(--text-secondary)] mt-0.5">
+                  Clear terms &amp; deliverable approvals
                 </span>
               </div>
 
-              {/* Metric 4 */}
+              {/* Feature 3 */}
               <div className="flex flex-col items-center sm:items-start text-center sm:text-left pt-2 sm:pt-0 sm:px-3">
-                <span className="text-base sm:text-lg font-bold font-mono text-[var(--text-primary)] tracking-tight">
-                  99.4%
+                <span className="text-xs sm:text-sm font-bold text-[var(--text-primary)] tracking-tight">
+                  Live Studio
                 </span>
-                <span className="text-[11px] font-sans text-[var(--text-secondary)] font-medium">
-                  Fulfillment Rate
+                <span className="text-[11px] font-sans text-[var(--text-secondary)] mt-0.5">
+                  AI camera &amp; spatial 3D scenes
+                </span>
+              </div>
+
+              {/* Feature 4 */}
+              <div className="flex flex-col items-center sm:items-start text-center sm:text-left pt-2 sm:pt-0 sm:px-3">
+                <span className="text-xs sm:text-sm font-bold text-[var(--text-primary)] tracking-tight">
+                  Direct Messages
+                </span>
+                <span className="text-[11px] font-sans text-[var(--text-secondary)] mt-0.5">
+                  Real-time briefs &amp; collaboration
                 </span>
               </div>
             </div>

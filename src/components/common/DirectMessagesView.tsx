@@ -42,6 +42,9 @@ import { EmojiPicker, SelectedGifPayload } from './EmojiPicker';
 import { ReactionPicker } from './ReactionPicker';
 import { validateGifFile } from '../../services/gifValidationService';
 import { ChatMediaService } from '../../services/chatMediaService';
+import { messagingService } from '../../services/messagingService';
+import { BrandProfileModal } from './BrandProfileModal';
+import { CreatorProfileModal } from '../business/CreatorProfileModal';
 
 interface PendingGifState {
   file?: File;
@@ -77,6 +80,8 @@ export const DirectMessagesView: React.FC = () => {
     updateDirectMessageStatus,
     deleteDirectMessage,
     role,
+    userProfile,
+    creators,
   } = useAppState();
 
   const toast = useToast();
@@ -93,6 +98,10 @@ export const DirectMessagesView: React.FC = () => {
   // Dedicated Native Device GIF state
   const [pendingGif, setPendingGif] = useState<PendingGifState | null>(null);
   const [viewingMedia, setViewingMedia] = useState<ViewingMediaState | null>(null);
+
+  // Profile modal inspection state
+  const [selectedBrandProfileId, setSelectedBrandProfileId] = useState<string | null>(null);
+  const [selectedCreatorProfile, setSelectedCreatorProfile] = useState<any | null>(null);
 
   // Emoji picker state
   const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
@@ -353,11 +362,41 @@ export const DirectMessagesView: React.FC = () => {
     toast.success('Message forwarded successfully');
   };
 
-  const handleCallAction = (type: 'audio' | 'video') => {
-    if (type === 'audio') {
-      toast.info(`Starting voice call with ${activeConv?.participantName}...`, 'Encrypted Audio');
+  useEffect(() => {
+    if (activeConv?.id && userProfile?.id) {
+      messagingService.getConversationMute(userProfile.id, activeConv.id).then(setIsMuted);
+    }
+  }, [activeConv?.id, userProfile?.id]);
+
+  const handleViewParticipantProfile = () => {
+    if (!activeConv) return;
+    if (activeConv.participantRole === 'business') {
+      setSelectedBrandProfileId(activeConv.participantId);
     } else {
-      toast.info(`Creating video meeting room with ${activeConv?.participantName}...`, 'HD Video Call');
+      const found = creators.find((c) => c.id === activeConv.participantId);
+      if (found) {
+        setSelectedCreatorProfile(found);
+      } else {
+        setSelectedCreatorProfile({
+          id: activeConv.participantId,
+          name: activeConv.participantName,
+          handle: activeConv.participantHandle,
+          avatar: activeConv.participantAvatar,
+          category: 'Creator',
+          bio: '',
+          location: '',
+          verified: true,
+          totalFollowers: 50000,
+          avgEngagement: 4.8,
+          rating: 4.9,
+          reviewsCount: 12,
+          availabilityStatus: 'Available',
+          platforms: ['Instagram', 'YouTube'],
+          topNiches: ['Lifestyle', 'Creative'],
+          featuredIn: [],
+          pricing: { reel: 35000, post: 20000, story: 10000 },
+        });
+      }
     }
   };
 
@@ -539,22 +578,24 @@ export const DirectMessagesView: React.FC = () => {
 
             {/* Contract Context & Campaign Context Pill */}
             <div className="flex items-center gap-1 sm:gap-2 shrink-0">
-              <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-[var(--primary)]/10 border border-[var(--primary)]/20 text-xs">
-                <FileText className="w-3.5 h-3.5 text-[var(--primary)] shrink-0" />
-                <span className="font-mono text-[var(--text-secondary)] font-semibold text-[11px]">
-                  #CR-2026-8491
-                </span>
-                <button
-                  type="button"
-                  onClick={() => {
-                    window.history.pushState({}, '', '/brand/contracts');
-                    window.dispatchEvent(new PopStateEvent('popstate'));
-                  }}
-                  className="text-[10px] text-[var(--primary)] hover:text-[var(--primary)] font-semibold underline ml-0.5 cursor-pointer"
-                >
-                  Open Contract
-                </button>
-              </div>
+              {activeConv.campaignContext?.id && (
+                <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-[var(--primary)]/10 border border-[var(--primary)]/20 text-xs">
+                  <FileText className="w-3.5 h-3.5 text-[var(--primary)] shrink-0" />
+                  <span className="font-mono text-[var(--text-secondary)] font-semibold text-[11px]">
+                    Contract Active
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      window.history.pushState({}, '', role === 'business' ? '/brand/contracts' : '/creator/contracts');
+                      window.dispatchEvent(new PopStateEvent('popstate'));
+                    }}
+                    className="text-[10px] text-[var(--primary)] hover:underline font-semibold ml-0.5 cursor-pointer"
+                  >
+                    View
+                  </button>
+                </div>
+              )}
 
               {activeConv.campaignContext && (
                 <div className="hidden 2xl:flex items-center gap-2 px-2.5 py-1 rounded-xl bg-[var(--surface)] border border-[var(--border)] text-xs text-[var(--text-primary)]">
@@ -575,37 +616,47 @@ export const DirectMessagesView: React.FC = () => {
                 </div>
               )}
 
-              {/* Call Actions (Audio & Video) */}
-              <IconButton
-                aria-label="Start voice call"
-                variant="ghost"
-                size="sm"
-                onClick={() => handleCallAction('audio')}
-                className="hidden sm:inline-flex"
-              >
-                <Phone className="w-4 h-4 text-[var(--text-muted)] hover:text-[var(--text-primary)]" />
-              </IconButton>
+              {/* Honest Disabled Call Actions */}
+              <div className="relative group hidden sm:inline-flex">
+                <IconButton
+                  aria-label="Start voice call (Coming soon)"
+                  variant="ghost"
+                  size="sm"
+                  disabled
+                  className="opacity-40 cursor-not-allowed"
+                >
+                  <Phone className="w-4 h-4 text-[var(--text-muted)]" />
+                </IconButton>
+                <div className="absolute top-10 left-1/2 -translate-x-1/2 hidden group-hover:block z-[210] px-2 py-1 rounded-md bg-[var(--surface-elevated)] border border-[var(--border)] text-[10px] text-[var(--text-muted)] whitespace-nowrap shadow-md pointer-events-none">
+                  Voice calling coming soon
+                </div>
+              </div>
 
-              <IconButton
-                aria-label="Start video call"
-                variant="ghost"
-                size="sm"
-                onClick={() => handleCallAction('video')}
-                className="hidden sm:inline-flex"
-              >
-                <Video className="w-4 h-4 text-[var(--text-muted)] hover:text-[var(--text-primary)]" />
-              </IconButton>
+              <div className="relative group hidden sm:inline-flex">
+                <IconButton
+                  aria-label="Start video call (Coming soon)"
+                  variant="ghost"
+                  size="sm"
+                  disabled
+                  className="opacity-40 cursor-not-allowed"
+                >
+                  <Video className="w-4 h-4 text-[var(--text-muted)]" />
+                </IconButton>
+                <div className="absolute top-10 left-1/2 -translate-x-1/2 hidden group-hover:block z-[210] px-2 py-1 rounded-md bg-[var(--surface-elevated)] border border-[var(--border)] text-[10px] text-[var(--text-muted)] whitespace-nowrap shadow-md pointer-events-none">
+                  Video calling coming soon
+                </div>
+              </div>
 
               <IconButton
                 aria-label={`View ${activeConv.participantName}'s profile`}
                 variant="ghost"
                 size="sm"
-                onClick={() => toast.info(`Viewing ${activeConv.participantName}'s portfolio & brand metrics`)}
+                onClick={handleViewParticipantProfile}
               >
                 <User className="w-4 h-4 text-[var(--text-muted)] hover:text-[var(--text-primary)]" />
               </IconButton>
 
-              {/* Thread Menu */}
+              {/* Thread Menu with z-[200] High Stacking Context */}
               <div className="relative">
                 <IconButton
                   aria-label="More conversation options"
@@ -617,17 +668,21 @@ export const DirectMessagesView: React.FC = () => {
                 </IconButton>
 
                 {isHeaderMenuOpen && (
-                  <div className="absolute right-0 top-10 z-40 w-48 rounded-xl bg-[var(--surface-elevated)] shadow-2xl border border-[var(--border)] py-1 text-xs text-[var(--text-primary)] animate-slide-up backdrop-blur-xl">
+                  <div className="absolute right-0 top-10 z-[200] w-48 rounded-xl bg-[var(--surface-elevated)] shadow-2xl border border-[var(--border)] py-1 text-xs text-[var(--text-primary)] animate-slide-up backdrop-blur-xl">
                     <button
                       type="button"
-                      onClick={() => {
-                        setIsMuted(!isMuted);
+                      onClick={async () => {
+                        const nextMute = !isMuted;
+                        setIsMuted(nextMute);
                         setIsHeaderMenuOpen(false);
-                        toast.info(isMuted ? 'Notifications unmuted' : 'Notifications muted');
+                        if (userProfile?.id && activeConv?.id) {
+                          await messagingService.setConversationMute(userProfile.id, activeConv.id, nextMute);
+                        }
+                        toast.info(nextMute ? 'Notifications muted for this thread' : 'Notifications unmuted');
                       }}
                       className="w-full px-3.5 py-2 text-left hover:bg-black/5 dark:hover:bg-white/5 flex items-center gap-2.5 cursor-pointer transition-colors"
                     >
-                      {isMuted ? <Volume2 className="w-3.5 h-3.5 text-emerald-700" /> : <VolumeX className="w-3.5 h-3.5 text-[var(--text-muted)]" />}
+                      {isMuted ? <Volume2 className="w-3.5 h-3.5 text-emerald-500" /> : <VolumeX className="w-3.5 h-3.5 text-[var(--text-muted)]" />}
                       <span>{isMuted ? 'Unmute Notifications' : 'Mute Thread'}</span>
                     </button>
                     <button
@@ -636,7 +691,7 @@ export const DirectMessagesView: React.FC = () => {
                         setIsReportModalOpen(true);
                         setIsHeaderMenuOpen(false);
                       }}
-                      className="w-full px-3.5 py-2 text-left hover:bg-black/5 dark:hover:bg-white/5 flex items-center gap-2.5 text-amber-800 cursor-pointer transition-colors"
+                      className="w-full px-3.5 py-2 text-left hover:bg-black/5 dark:hover:bg-white/5 flex items-center gap-2.5 text-amber-500 cursor-pointer transition-colors"
                     >
                       <ShieldAlert className="w-3.5 h-3.5" />
                       <span>Report User</span>
@@ -647,7 +702,7 @@ export const DirectMessagesView: React.FC = () => {
                         setIsBlockModalOpen(true);
                         setIsHeaderMenuOpen(false);
                       }}
-                      className="w-full px-3.5 py-2 text-left hover:bg-black/5 dark:hover:bg-white/5 flex items-center gap-2.5 text-rose-400 cursor-pointer transition-colors"
+                      className="w-full px-3.5 py-2 text-left hover:bg-black/5 dark:hover:bg-white/5 flex items-center gap-2.5 text-rose-500 cursor-pointer transition-colors"
                     >
                       <Ban className="w-3.5 h-3.5" />
                       <span>Block Contact</span>
@@ -1210,7 +1265,10 @@ export const DirectMessagesView: React.FC = () => {
               <Button
                 variant="primary"
                 size="sm"
-                onClick={() => {
+                onClick={async () => {
+                  if (userProfile?.id && activeConv?.participantId) {
+                    await messagingService.blockParticipant(userProfile.id, activeConv.participantId);
+                  }
                   toast.warning(`${activeConv?.participantName} has been blocked.`);
                   setIsBlockModalOpen(false);
                 }}
@@ -1255,7 +1313,15 @@ export const DirectMessagesView: React.FC = () => {
               <Button
                 variant="primary"
                 size="sm"
-                onClick={() => {
+                onClick={async () => {
+                  if (userProfile?.id && activeConv?.participantId) {
+                    await messagingService.submitUserReport(
+                      userProfile.id,
+                      activeConv.participantId,
+                      reportReason,
+                      activeConv.id
+                    );
+                  }
                   toast.success('Trust & Safety report submitted with encrypted transcript.');
                   setIsReportModalOpen(false);
                 }}
@@ -1328,6 +1394,34 @@ export const DirectMessagesView: React.FC = () => {
             />
           </div>
         </div>
+      )}
+
+      {/* Brand Profile Inspection Modal */}
+      {selectedBrandProfileId && (
+        <BrandProfileModal
+          isOpen={Boolean(selectedBrandProfileId)}
+          onClose={() => setSelectedBrandProfileId(null)}
+          brandId={selectedBrandProfileId}
+          brandData={
+            activeConv?.participantRole === 'business'
+              ? {
+                  id: activeConv.participantId,
+                  name: activeConv.participantName,
+                  handle: activeConv.participantHandle,
+                  logo: activeConv.participantAvatar,
+                }
+              : undefined
+          }
+        />
+      )}
+
+      {/* Creator Profile Inspection Modal */}
+      {selectedCreatorProfile && (
+        <CreatorProfileModal
+          isOpen={Boolean(selectedCreatorProfile)}
+          onClose={() => setSelectedCreatorProfile(null)}
+          creator={selectedCreatorProfile}
+        />
       )}
     </div>
   );
