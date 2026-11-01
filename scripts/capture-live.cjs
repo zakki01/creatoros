@@ -1,70 +1,71 @@
 const puppeteer = require('puppeteer-core');
-const fs = require('fs');
 const path = require('path');
 
-const CHROME_PATH = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
-const SCREENSHOTS_DIR = path.resolve(__dirname, '..', 'screenshots');
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-const BRAND_SESSION = {
-  id: 'biz-101',
-  name: 'Aura Streetwear Co.',
-  email: 'partnerships@aurastreetwear.com',
-  role: 'business',
-  avatarUrl: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=200&auto=format&fit=crop&q=80',
-  provider: 'demo',
-  isDemo: true,
-};
-
-async function run() {
+(async () => {
   const browser = await puppeteer.launch({
-    executablePath: CHROME_PATH,
     headless: 'new',
-    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    executablePath: 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
+    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu']
   });
 
   const page = await browser.newPage();
+  await page.setViewport({ width: 390, height: 844 }); // iPhone 12/13/14
 
-  // 1. Live Brand Workspace (1280x800)
-  await page.setViewport({ width: 1280, height: 800, deviceScaleFactor: 1 });
-  await page.goto('http://localhost:5173/', { waitUntil: 'domcontentloaded' });
-  await page.evaluate((sess) => {
-    localStorage.setItem('creatoros_auth_session_v1', JSON.stringify(sess));
-  }, BRAND_SESSION);
-  await page.goto('http://localhost:5173/', { waitUntil: 'networkidle2' });
-  await new Promise((r) => setTimeout(r, 800));
-
-  // Navigate to Messages
+  // 1. Live Brand Workspace in Dark Mode
+  console.log('Navigating to live Brand Dark...');
+  await page.goto('https://creatoros-fawn-iota.vercel.app/', { waitUntil: 'networkidle0' });
   await page.evaluate(() => {
-    const navBtns = Array.from(document.querySelectorAll('nav button, aside button'));
-    const msgBtn = navBtns.find((b) => b.textContent && b.textContent.includes('Messages'));
-    if (msgBtn) msgBtn.click();
+    localStorage.clear();
+    const demoBrand = {
+      id: 'demo-brand-01',
+      name: 'Aura Streetwear Co.',
+      email: 'demo.brand@creatoros.ai',
+      role: 'business',
+      handle: '@aurastreetwear',
+      is_demo: true,
+      account_type: 'demo',
+      provider: 'demo',
+    };
+    localStorage.setItem('creatoros_auth_session_v1', JSON.stringify(demoBrand));
+    localStorage.setItem('creatoros_theme_v1', 'dark');
+    document.documentElement.setAttribute('data-theme', 'dark');
+    document.documentElement.classList.add('dark');
   });
-  await new Promise((r) => setTimeout(r, 1000));
+  await page.reload({ waitUntil: 'networkidle0' });
+  await sleep(1500);
 
-  const liveMessagesPath = path.join(SCREENSHOTS_DIR, 'live-direct-messages-1280x800.png');
-  await page.screenshot({ path: liveMessagesPath, fullPage: false });
-  console.log('Saved live messages screenshot:', liveMessagesPath);
+  const brandPath = path.join(__dirname, '../live_brand_dark_390.png');
+  await page.screenshot({ path: brandPath });
+  console.log('Brand screenshot saved to', brandPath);
 
-  // 2. Live Mobile Messages (375x812)
-  await page.setViewport({ width: 375, height: 812, deviceScaleFactor: 2 });
-  await new Promise((r) => setTimeout(r, 800));
-
-  // Click active conversation on mobile
+  // 2. Live Creator Workspace in Light Mode
+  console.log('Navigating to live Creator Light...');
   await page.evaluate(() => {
-    const convButtons = Array.from(document.querySelectorAll('div.overflow-y-auto button'));
-    if (convButtons.length > 0) convButtons[0].click();
+    localStorage.clear();
+    const demoCreator = {
+      id: 'demo-creator-01',
+      name: 'Rohan Sharma',
+      email: 'demo.creator@creatoros.ai',
+      role: 'creator',
+      handle: '@rohansharma',
+      is_demo: true,
+      account_type: 'demo',
+      provider: 'demo',
+    };
+    localStorage.setItem('creatoros_auth_session_v1', JSON.stringify(demoCreator));
+    localStorage.setItem('creatoros_theme_v1', 'light');
+    document.documentElement.setAttribute('data-theme', 'light');
+    document.documentElement.classList.remove('dark');
   });
-  await new Promise((r) => setTimeout(r, 800));
+  await page.reload({ waitUntil: 'networkidle0' });
+  await sleep(1500);
 
-  const liveMobilePath = path.join(SCREENSHOTS_DIR, 'live-mobile-chat-375x812.png');
-  await page.screenshot({ path: liveMobilePath, fullPage: false });
-  console.log('Saved live mobile screenshot:', liveMobilePath);
+  const creatorPath = path.join(__dirname, '../live_creator_light_390.png');
+  await page.screenshot({ path: creatorPath });
+  console.log('Creator screenshot saved to', creatorPath);
 
   await browser.close();
-  console.log('Live capture completed!');
-}
-
-run().catch((err) => {
-  console.error('Live capture error:', err);
-  process.exit(1);
-});
+  console.log('Finished capturing live production screenshots.');
+})();
