@@ -31,8 +31,9 @@ export const CreatorCampaigns: React.FC<{
   const { outreachItems, creators, submissions, userProfile, authUser } = useAppState();
   const currentCreator = getSafeCurrentCreator(creators, userProfile, authUser);
 
+  const isDemo = Boolean(authUser?.is_demo && import.meta.env.VITE_ENABLE_DEMO === 'true');
   const confirmedCampaigns = outreachItems.filter(
-    (i) => (i.creatorId === currentCreator.id || i.creatorId === 'demo-creator-01') && i.stage === 'Confirmed'
+    (i) => (i.creatorId === currentCreator.id || (isDemo && i.creatorId === 'demo-creator-01')) && i.stage === 'Confirmed'
   );
 
   const [selectedCampaign, setSelectedCampaign] = useState<typeof confirmedCampaigns[0] | null>(null);
@@ -99,7 +100,7 @@ export const CreatorCampaigns: React.FC<{
                     </Badge>
                   </div>
                   <p className="text-xs text-zinc-500 mt-0.5">
-                    Aura Streetwear Co. · <strong className="text-emerald-700 font-mono">₹{camp.proposedFee.toLocaleString()}</strong>
+                    {(camp as any).brandName || 'Brand Partner'} · <strong className="text-emerald-700 font-mono">₹{camp.proposedFee.toLocaleString()}</strong>
                   </p>
                 </div>
 

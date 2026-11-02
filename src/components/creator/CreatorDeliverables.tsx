@@ -52,7 +52,7 @@ export const CreatorDeliverables: React.FC<{
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex items-center gap-2.5">
-          <h1 className="text-xl sm:text-2xl font-bold text-zinc-900 font-display tracking-tight">
+          <h1 className="text-xl sm:text-2xl font-bold text-[var(--text-primary)] font-display tracking-tight">
             Content
           </h1>
           <Badge variant="brand" size="sm">
@@ -67,7 +67,7 @@ export const CreatorDeliverables: React.FC<{
               size="sm"
               onClick={() => onNavigate('live')}
               leftIcon={<Video className="w-3.5 h-3.5 text-[var(--primary)]" />}
-              className="border-[var(--primary)]/30 hover:border-[var(--primary)]/40 text-zinc-800"
+              className="border-[var(--primary)]/30 hover:border-[var(--primary)]/40 text-[var(--text-primary)]"
             >
               Live Studio
             </Button>
@@ -87,7 +87,7 @@ export const CreatorDeliverables: React.FC<{
 
       {/* Upcoming Deliverable Deadlines */}
       <div className="space-y-3">
-        <h3 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider">
+        <h3 className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">
           Due Soon ({deliverablesQueue.length})
         </h3>
 
@@ -104,14 +104,14 @@ export const CreatorDeliverables: React.FC<{
               <Card key={del.id} className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div className="space-y-0.5">
                   <div className="flex items-center gap-2">
-                    <h4 className="text-sm font-bold text-zinc-900">{del.title}</h4>
+                    <h4 className="text-sm font-bold text-[var(--text-primary)]">{del.title}</h4>
                     {del.urgent && (
                       <Badge variant="warning" size="sm" dot>
                         Due Soon
                       </Badge>
                     )}
                   </div>
-                  <p className="text-xs text-zinc-500">
+                  <p className="text-xs text-[var(--text-muted)]">
                     {del.campaignName} · {del.type} · Due {del.deadline} · {del.compensation}
                   </p>
                 </div>
@@ -135,12 +135,12 @@ export const CreatorDeliverables: React.FC<{
 
       {/* Submitted Drafts Review Queue */}
       <div className="space-y-4 pt-4">
-        <h3 className="text-sm font-bold text-zinc-800 uppercase tracking-wider">
+        <h3 className="text-sm font-bold text-[var(--text-primary)] uppercase tracking-wider">
           My Submitted Drafts ({mySubmissions.length})
         </h3>
 
         {mySubmissions.length === 0 ? (
-          <Card className="p-8 text-center text-zinc-500 text-xs">
+          <Card className="p-8 text-center text-[var(--text-muted)] text-xs">
             No drafts currently submitted for review.
           </Card>
         ) : (
@@ -149,8 +149,8 @@ export const CreatorDeliverables: React.FC<{
               <Card key={sub.id} className="p-5 space-y-3">
                 <div className="flex items-start justify-between gap-2">
                   <div>
-                    <h4 className="text-sm font-semibold text-zinc-900">{sub.title}</h4>
-                    <p className="text-xs text-zinc-500">{sub.campaignName}</p>
+                    <h4 className="text-sm font-semibold text-[var(--text-primary)]">{sub.title}</h4>
+                    <p className="text-xs text-[var(--text-muted)]">{sub.campaignName}</p>
                   </div>
                   <Badge
                     variant={sub.status === 'approved' ? 'success' : 'warning'}
@@ -161,19 +161,19 @@ export const CreatorDeliverables: React.FC<{
                   </Badge>
                 </div>
 
-                <div className="p-3 rounded-xl bg-zinc-50 border border-zinc-200 text-xs text-zinc-700">
+                <div className="p-3 rounded-xl bg-[var(--surface-muted)] border border-[var(--border)] text-xs text-[var(--text-secondary)]">
                   <p className="line-clamp-2 italic">"{sub.caption}"</p>
                 </div>
 
-                <div className="flex items-center justify-between text-[11px] text-zinc-500 pt-1 border-t border-zinc-200">
+                <div className="flex items-center justify-between text-[11px] text-[var(--text-muted)] pt-1 border-t border-[var(--border)]">
                   <span>Submitted: {sub.submittedAt.split(' ')[0]}</span>
                   {sub.status === 'approved' ? (
-                    <span className="text-emerald-700 font-medium inline-flex items-center gap-1">
+                    <span className="text-emerald-500 font-medium inline-flex items-center gap-1">
                       <CheckCircle2 className="w-3 h-3" />
                       Ready for scheduled drop
                     </span>
                   ) : (
-                    <span className="text-amber-800 font-medium">Brand evaluating cut</span>
+                    <span className="text-amber-500 font-medium">Brand evaluating cut</span>
                   )}
                 </div>
               </Card>

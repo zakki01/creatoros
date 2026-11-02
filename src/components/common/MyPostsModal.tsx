@@ -35,7 +35,7 @@ export const MyPostsModal: React.FC<MyPostsModalProps> = ({
 
   if (!isOpen) return null;
 
-  const currentUserId = userProfile?.id || authUser?.id || 'demo-creator-01';
+  const currentUserId = userProfile?.id || authUser?.id || '';
 
   // Get only posts created by current user
   const myPosts = socialPosts.filter(

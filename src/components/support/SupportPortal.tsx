@@ -23,11 +23,11 @@ interface SupportPortalProps {
 }
 
 export const SupportPortal: React.FC<SupportPortalProps> = ({ onBack }) => {
-  const { userProfile, role } = useAppState();
+  const { userProfile, authUser, role } = useAppState();
 
-  const currentUserId = userProfile?.id || (role === 'business' ? 'biz-101' : 'cr-01');
-  const currentUserName = userProfile?.name || (role === 'business' ? 'Aura Streetwear Co.' : 'Alex Morgan');
-  const currentUserEmail = userProfile?.email || (role === 'business' ? 'partnerships@aurastreetwear.com' : 'alex@creatoros.ai');
+  const currentUserId = userProfile?.id || authUser?.id || '';
+  const currentUserName = userProfile?.name || authUser?.name || (role === 'business' ? 'Brand Workspace' : 'Creator Studio');
+  const currentUserEmail = userProfile?.email || authUser?.email || '';
 
   const [activeTab, setActiveTab] = useState<'my_tickets' | 'new_ticket'>('my_tickets');
   const [selectedTicketId, setSelectedTicketId] = useState<string | null>(null);

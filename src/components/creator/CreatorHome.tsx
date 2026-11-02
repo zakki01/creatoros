@@ -38,36 +38,50 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
     userProfile,
   } = useAppState();
 
-  const currentCreator: Creator =
-    creators.find((c) => c.id === userProfile.id || c.id === authUser?.id) ||
-    creators[0] || {
-      id: authUser?.id || 'demo-creator-01',
-      name: authUser?.name || 'Creator',
-      handle: authUser?.handle || '@creator',
-      avatar:
-        authUser?.avatarUrl ||
-        'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80',
-      bio: '',
-      category: 'Fashion & Lifestyle',
-      location: 'Mumbai',
-      niche: 'Creator',
-      totalFollowers: 0,
-      followers: '0',
-      engagementRate: '0%',
-      tier: 'Verified Pro',
-      verified: true,
-      minimumRate: 0,
-      estimatedRate: 0,
-      availabilityStatus: 'Available',
-      availableDates: 'Available Now',
-      rates: { reel: 0, story: 0, post: 0, live: 0 },
-      platforms: ['Instagram', 'YouTube'],
-      metrics: {
-        averageViews: '0',
-        completionRate: '0%',
-        audienceDemographics: { topCountry: 'IN', topAge: '18-24' },
-      },
-    };
+  const currentCreator: Creator = (creators.find(
+    (c) => c.id === userProfile.id || c.id === authUser?.id
+  ) || {
+    id: userProfile?.id || authUser?.id || '',
+    name: userProfile?.name || authUser?.name || 'Creator',
+    handle: userProfile?.handle || authUser?.handle || '@creator',
+    avatar:
+      userProfile?.avatarUrl ||
+      authUser?.avatarUrl ||
+      'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80',
+    bio: userProfile?.bio || '',
+    category: userProfile?.category || 'Creator',
+    location: userProfile?.location || '',
+    niche: userProfile?.category || 'Creator',
+    totalFollowers: 0,
+    followers: '0',
+    engagementRate: 0,
+    avgEngagement: 0,
+    verified: false,
+    verifiedBadges: [],
+    languages: [],
+    platforms: [],
+    estimatedRate: 0,
+    rateCard: {},
+    pricing: { reel: 0, story: 0, post: 0, live: 0 },
+    reliabilityMetrics: {
+      onTimeDeliveryPct: 100,
+      disputeRatePct: 0,
+      brandSatisfactionPct: 100,
+      repeatCollabCount: 0,
+    },
+    audienceBreakdown: {
+      topLocations: [],
+      ageSplit: [],
+      genderSplit: { male: 50, female: 50, other: 0 },
+    },
+    pastCampaignsCount: 0,
+    testimonials: [],
+    portfolio: [],
+    availability: 'Available',
+    availabilityStatus: 'Available',
+    availableDates: 'Available Now',
+    minimumRate: 0,
+  }) as unknown as Creator;
 
   const incomingOpportunities = outreachItems.filter(
     (i) =>

@@ -11,8 +11,10 @@ import {
   User,
   ArrowRight,
   ShieldCheck,
+  RefreshCw,
 } from 'lucide-react';
 import { AuthService } from '../services/authService';
+import { supabase } from '../../../services/supabaseClient';
 import { OAuthNoticeModal } from './OAuthNoticeModal';
 import { ForgotPasswordModal } from './ForgotPasswordModal';
 import { useAppState } from '../../../context/StateContext';
@@ -48,6 +50,12 @@ export const WelcomeAuth: React.FC<WelcomeAuthProps> = ({
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [verificationPendingEmail, setVerificationPendingEmail] = useState<string | null>(null);
 
+  // URL Hash Verification State (e.g. expired or invalid tokens)
+  const [urlAuthError, setUrlAuthError] = useState<{ code?: string; description?: string } | null>(null);
+  const [resendEmail, setResendEmail] = useState('');
+  const [isResending, setIsResending] = useState(false);
+  const [resendSuccess, setResendSuccess] = useState(false);
+
   // Modals
   const [oauthNoticeProvider, setOauthNoticeProvider] = useState<
     'google' | 'apple' | 'facebook' | null
@@ -59,6 +67,57 @@ export const WelcomeAuth: React.FC<WelcomeAuthProps> = ({
     setMode(initialMode);
     setErrorMessage(null);
   }, [initialMode]);
+
+  // Check URL hash for Supabase auth errors (e.g. expired email confirmation link)
+  useEffect(() => {
+    try {
+      const hash = window.location.hash;
+      if (hash && (hash.includes('error=') || hash.includes('error_code='))) {
+        const cleanHash = hash.replace(/^[#?]/, '');
+        const params = new URLSearchParams(cleanHash);
+        const error = params.get('error');
+        const errorCode = params.get('error_code');
+        const rawDescription = params.get('error_description');
+
+        if (error || errorCode) {
+          const description = rawDescription
+            ? decodeURIComponent(rawDescription.replace(/\+/g, ' '))
+            : errorCode === 'otp_expired'
+            ? 'Your email verification link has expired. Please request a new link.'
+            : 'The verification link is invalid or expired.';
+
+          setUrlAuthError({
+            code: errorCode || error || undefined,
+            description,
+          });
+        }
+      }
+    } catch (err) {
+      console.warn('[WelcomeAuth] Failed to parse URL hash error:', err);
+    }
+  }, []);
+
+  const handleResendConfirmation = async (emailToResend: string) => {
+    const targetEmail = (emailToResend || email || resendEmail).trim().toLowerCase();
+    if (!targetEmail) {
+      setErrorMessage('Please enter your email to receive a new confirmation link.');
+      return;
+    }
+    setIsResending(true);
+    setResendSuccess(false);
+    try {
+      const { error } = await supabase.auth.resend({
+        type: 'signup',
+        email: targetEmail,
+      });
+      if (error) throw error;
+      setResendSuccess(true);
+    } catch (err: any) {
+      setErrorMessage(err.message || 'Failed to resend confirmation email.');
+    } finally {
+      setIsResending(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -232,6 +291,46 @@ export const WelcomeAuth: React.FC<WelcomeAuthProps> = ({
           >
             Brand
           </button>
+        </div>
+      )}
+
+      {/* URL Hash Auth Error (e.g. Expired Confirmation Link) */}
+      {urlAuthError && (
+        <div className="mb-4 p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-700 dark:text-amber-300 text-xs space-y-2 animate-fade-in text-left">
+          <div className="flex items-start gap-2">
+            <AlertCircle className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
+            <div className="space-y-0.5">
+              <p className="font-semibold">{urlAuthError.description}</p>
+              {urlAuthError.code === 'otp_expired' && (
+                <p className="text-[11px] text-[var(--text-muted)]">
+                  Verification links are time-limited. Enter your email below to receive a new link.
+                </p>
+              )}
+            </div>
+          </div>
+          <div className="flex items-center gap-2 pt-1">
+            <input
+              type="email"
+              value={resendEmail}
+              onChange={(e) => setResendEmail(e.target.value)}
+              placeholder="Your email address"
+              className="flex-1 h-8 px-2.5 rounded-lg bg-[var(--surface)] border border-[var(--border)] text-xs text-[var(--text-primary)] outline-none"
+            />
+            <button
+              type="button"
+              disabled={isResending || (!resendEmail && !email)}
+              onClick={() => handleResendConfirmation(resendEmail || email)}
+              className="px-3 h-8 rounded-lg bg-[var(--primary)] text-white text-xs font-semibold disabled:opacity-50 flex items-center gap-1 cursor-pointer"
+            >
+              {isResending ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : 'Resend Link'}
+            </button>
+          </div>
+          {resendSuccess && (
+            <p className="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium flex items-center gap-1">
+              <CheckCircle2 className="w-3.5 h-3.5" />
+              <span>A fresh confirmation link has been sent to your inbox.</span>
+            </p>
+          )}
         </div>
       )}
 

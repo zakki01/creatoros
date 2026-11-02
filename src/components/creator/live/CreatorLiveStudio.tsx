@@ -56,7 +56,7 @@ interface CreatorLiveStudioProps {
 }
 
 export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) => {
-  const { userProfile } = useAppState();
+  const { userProfile, authUser } = useAppState();
 
   // Decoupled Subsystem States
   const [cameraState, setCameraState] = useState<CameraState>('camera_requesting');
@@ -297,8 +297,8 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
       setTransportError(null);
       setTransportState('transport_connecting');
 
-      const creatorId = userProfile?.id || 'cr-01';
-      const creatorName = userProfile?.name || 'Rohan Sharma';
+      const creatorId = userProfile?.id || authUser?.id || 'creator';
+      const creatorName = userProfile?.name || authUser?.name || 'Creator';
 
       // 1. Fetch authentic signed JWT session token from server endpoint
       const sessionDetails = await liveKitSingleton.requestSessionToken({
@@ -413,7 +413,7 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
                 alt="Host"
                 className="w-6 h-6 rounded-full object-cover"
               />
-              <span className="text-xs font-semibold">{userProfile?.name || 'Rohan Sharma'}</span>
+              <span className="text-xs font-semibold">{userProfile?.name || authUser?.name || 'Creator'}</span>
               <span
                 className={`px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider flex items-center gap-1 ${
                   isLive ? 'bg-rose-600 text-white animate-pulse' : 'bg-zinc-800 text-zinc-300'
@@ -850,7 +850,7 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
             <LiveAudienceModerationPanel
               isHost={true}
               currentUserId={userProfile?.id || 'cr-01'}
-              currentUserName={userProfile?.name || 'Rohan Sharma'}
+              currentUserName={userProfile?.name || authUser?.name || 'Creator'}
             />
           </aside>
         </div>

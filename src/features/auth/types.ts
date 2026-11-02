@@ -10,7 +10,7 @@ export interface AuthUser {
   isDemo?: boolean;
   is_demo?: boolean;
   account_type?: 'demo' | 'standard' | 'enterprise';
-  provider: 'email' | 'google' | 'apple' | 'facebook' | 'demo' | 'auth0';
+  provider: 'email' | 'google' | 'apple' | 'facebook' | 'demo';
 }
 
 export type AuthMode = 'welcome' | 'auth' | 'app';

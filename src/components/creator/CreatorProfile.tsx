@@ -161,36 +161,50 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
     { id: 'analytics', label: 'Analytics' },
   ];
 
-  // Specific reel mock items
-  const reelsList = [
-    {
-      id: 'cr-r1',
-      title: 'Macro Sole Texture & 4K Lighting Grade',
-      brand: 'Aura Streetwear Co.',
-      views: '240K',
-      engagement: '14.2K',
-      duration: '0:34',
-      thumbnail: 'https://images.unsplash.com/photo-1552346154-21d32810aba3?w=600&auto=format&fit=crop&q=80',
-    },
-    {
-      id: 'cr-r2',
-      title: 'Jordan Retro High Restomod Showcase',
-      brand: 'UrbanKicks India',
-      views: '380K',
-      engagement: '22.8K',
-      duration: '0:48',
-      thumbnail: 'https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?w=600&auto=format&fit=crop&q=80',
-    },
-    {
-      id: 'cr-r3',
-      title: 'Monochrome Streetwear Transitions',
-      brand: 'Aura Streetwear Co.',
-      views: '190K',
-      engagement: '11.5K',
-      duration: '0:28',
-      thumbnail: 'https://images.unsplash.com/photo-1556906781-9a412961c28c?w=600&auto=format&fit=crop&q=80',
-    },
-  ];
+  const isDemo = Boolean(authUser?.is_demo && import.meta.env.VITE_ENABLE_DEMO === 'true');
+
+  // Specific reel items: demo fixtures for demo mode, real user posts for standard mode
+  const reelsList = isDemo
+    ? [
+        {
+          id: 'cr-r1',
+          title: 'Macro Sole Texture & 4K Lighting Grade',
+          brand: 'Aura Streetwear Co.',
+          views: '240K',
+          engagement: '14.2K',
+          duration: '0:34',
+          thumbnail: 'https://images.unsplash.com/photo-1552346154-21d32810aba3?w=600&auto=format&fit=crop&q=80',
+        },
+        {
+          id: 'cr-r2',
+          title: 'Jordan Retro High Restomod Showcase',
+          brand: 'UrbanKicks India',
+          views: '380K',
+          engagement: '22.8K',
+          duration: '0:48',
+          thumbnail: 'https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?w=600&auto=format&fit=crop&q=80',
+        },
+        {
+          id: 'cr-r3',
+          title: 'Monochrome Streetwear Transitions',
+          brand: 'Aura Streetwear Co.',
+          views: '190K',
+          engagement: '11.5K',
+          duration: '0:28',
+          thumbnail: 'https://images.unsplash.com/photo-1556906781-9a412961c28c?w=600&auto=format&fit=crop&q=80',
+        },
+      ]
+    : socialPosts
+        .filter((p) => p.authorId === userProfile.id && (p.contentType === 'reel' || p.isReel))
+        .map((p) => ({
+          id: p.id,
+          title: p.content.slice(0, 50) || 'Creator Drop',
+          brand: 'Creator Drop',
+          views: '0',
+          engagement: '0',
+          duration: '0:30',
+          thumbnail: p.mediaUrl || (p as any).mediaUrls?.[0] || 'https://images.unsplash.com/photo-1552346154-21d32810aba3?w=600&auto=format&fit=crop&q=80',
+        }));
 
   return (
     <div className="space-y-6 animate-fade-in max-w-5xl mx-auto pb-16">
@@ -505,8 +519,15 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
             </button>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {showcaseProjects.map((p) => {
+          {showcaseProjects.length === 0 ? (
+            <SpatialEmptyState
+              objectType="gallery"
+              title="No showcase projects yet"
+              subtitle="Add high-impact commercial video drops and deliverables to showcase your work."
+            />
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {showcaseProjects.map((p) => {
               const coverImg =
                 p.videos[0]?.thumbnailUrl ||
                 p.videos[0]?.url ||
@@ -565,49 +586,58 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
               );
             })}
           </div>
+          )}
         </div>
       )}
 
       {/* TAB 3: REELS */}
       {activeTab === 'reels' && (
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 animate-fade-in">
-          {reelsList.map((reel) => (
-            <SpatialCard
-              key={reel.id}
-              surface={2}
-              interactive
-              tilt
-              className="group relative overflow-hidden aspect-[9/16]"
-            >
-              <img
-                src={reel.thumbnail}
-                alt={reel.title}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent flex flex-col justify-between p-3.5">
-                <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-black/60 text-white backdrop-blur-sm">
-                    {reel.duration}
-                  </span>
-                  <div className="w-8 h-8 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center text-white group-hover:scale-110 transition-transform">
-                    <Play className="w-3.5 h-3.5 fill-current ml-0.5" />
+        reelsList.length === 0 ? (
+          <SpatialEmptyState
+            objectType="camera"
+            title="No showcase reels yet"
+            subtitle="Upload your high-impact video work or commercial deliverables to build your portfolio."
+          />
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 animate-fade-in">
+            {reelsList.map((reel) => (
+              <SpatialCard
+                key={reel.id}
+                surface={2}
+                interactive
+                tilt
+                className="group relative overflow-hidden aspect-[9/16]"
+              >
+                <img
+                  src={reel.thumbnail}
+                  alt={reel.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent flex flex-col justify-between p-3.5">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-black/60 text-white backdrop-blur-sm">
+                      {reel.duration}
+                    </span>
+                    <div className="w-8 h-8 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center text-white group-hover:scale-110 transition-transform">
+                      <Play className="w-3.5 h-3.5 fill-current ml-0.5" />
+                    </div>
                   </div>
-                </div>
 
-                <div className="space-y-1">
-                  <span className="text-[10px] text-[var(--primary)] font-mono">{reel.brand}</span>
-                  <h4 className="text-xs font-bold text-white line-clamp-2 leading-snug">
-                    {reel.title}
-                  </h4>
-                  <div className="flex items-center justify-between text-[10px] text-zinc-700 font-mono pt-1">
-                    <span>{reel.views} plays</span>
-                    <span className="text-emerald-700">{reel.engagement} likes</span>
+                  <div className="space-y-1">
+                    <span className="text-[10px] text-[var(--primary)] font-mono">{reel.brand}</span>
+                    <h4 className="text-xs font-bold text-white line-clamp-2 leading-snug">
+                      {reel.title}
+                    </h4>
+                    <div className="flex items-center justify-between text-[10px] text-zinc-700 font-mono pt-1">
+                      <span>{reel.views} plays</span>
+                      <span className="text-emerald-700">{reel.engagement} likes</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </SpatialCard>
-          ))}
-        </div>
+              </SpatialCard>
+            ))}
+          </div>
+        )
       )}
 
       {/* TAB: SHOTS (High-Res Photography) */}
@@ -739,50 +769,58 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
               Completed Brand Partnerships
             </h3>
 
-            <div className="space-y-3">
-              {[
-                {
-                  brand: 'Aura Streetwear Co.',
-                  campaign: 'Summer Collection Lookbook',
-                  status: 'Completed & Paid',
-                  deliverables: '1x 4K Reel + 2x Stories',
-                  payout: '₹40,000',
-                  rating: 5.0,
-                  comment: 'Exceptional visual polish. Rohan delivered 3 days ahead of schedule.',
-                },
-                {
-                  brand: 'UrbanKicks India',
-                  campaign: 'Sneaker Retro Launch Series',
-                  status: 'Completed & Paid',
-                  deliverables: '2x High-res Carousels',
-                  payout: '₹35,000',
-                  rating: 5.0,
-                  comment: 'Top performing creator on this campaign. High CTR on tracking link.',
-                },
-              ].map((c, idx) => (
-                <div
-                  key={idx}
-                  className="p-4 rounded-xl bg-[var(--surface-subtle)] border border-[var(--border)] space-y-2 text-xs"
-                >
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <span className="font-bold text-[var(--text-primary)] text-sm">{c.brand}</span>
-                      <p className="text-[11px] text-[var(--text-tertiary)]">{c.campaign}</p>
+            {isDemo ? (
+              <div className="space-y-3">
+                {[
+                  {
+                    brand: 'Aura Streetwear Co.',
+                    campaign: 'Summer Collection Lookbook',
+                    status: 'Completed & Paid',
+                    deliverables: '1x 4K Reel + 2x Stories',
+                    payout: '₹40,000',
+                    rating: 5.0,
+                    comment: 'Exceptional visual polish. Rohan delivered 3 days ahead of schedule.',
+                  },
+                  {
+                    brand: 'UrbanKicks India',
+                    campaign: 'Sneaker Retro Launch Series',
+                    status: 'Completed & Paid',
+                    deliverables: '2x High-res Carousels',
+                    payout: '₹35,000',
+                    rating: 5.0,
+                    comment: 'Top performing creator on this campaign. High CTR on tracking link.',
+                  },
+                ].map((c, idx) => (
+                  <div
+                    key={idx}
+                    className="p-4 rounded-xl bg-[var(--surface-subtle)] border border-[var(--border)] space-y-2 text-xs"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <span className="font-bold text-[var(--text-primary)] text-sm">{c.brand}</span>
+                        <p className="text-[11px] text-[var(--text-tertiary)]">{c.campaign}</p>
+                      </div>
+                      <div className="text-right">
+                        <span className="font-mono font-bold text-emerald-400">{c.payout}</span>
+                        <span className="block text-[10px] text-emerald-400/80 font-mono">Verified Escrow</span>
+                      </div>
                     </div>
-                    <div className="text-right">
-                      <span className="font-mono font-bold text-emerald-400">{c.payout}</span>
-                      <span className="block text-[10px] text-emerald-400/80 font-mono">Verified Escrow</span>
+                    <p className="text-[var(--text-secondary)] italic pt-1">"{c.comment}"</p>
+                    <div className="flex items-center gap-1 text-amber-400 text-[11px]">
+                      <Star className="w-3.5 h-3.5 fill-current" />
+                      <span className="font-mono font-bold">{c.rating}.0</span>
+                      <span className="text-[var(--text-tertiary)] ml-1">• {c.deliverables}</span>
                     </div>
                   </div>
-                  <p className="text-[var(--text-secondary)] italic pt-1">"{c.comment}"</p>
-                  <div className="flex items-center gap-1 text-amber-400 text-[11px]">
-                    <Star className="w-3.5 h-3.5 fill-current" />
-                    <span className="font-mono font-bold">{c.rating}.0</span>
-                    <span className="text-[var(--text-tertiary)] ml-1">• {c.deliverables}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            ) : (
+              <SpatialEmptyState
+                objectType="document"
+                title="No completed brand partnerships yet"
+                subtitle="When you complete contracts and deliver approved content, your verified brand partnerships and reviews will appear here."
+              />
+            )}
           </div>
         </div>
       )}

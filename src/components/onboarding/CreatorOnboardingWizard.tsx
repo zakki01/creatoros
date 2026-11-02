@@ -93,23 +93,21 @@ export const CreatorOnboardingWizard: React.FC<CreatorOnboardingProps> = ({
   const [step, setStep] = useState<number>(1);
 
   // Form State
-  const [selectedRoles, setSelectedRoles] = useState<string[]>(['Video Creator', 'UGC Creator']);
-  const [displayName, setDisplayName] = useState(initialName || 'Creative Director');
-  const [handle, setHandle] = useState(initialHandle || `@${initialName.toLowerCase().replace(/\s+/g, '') || 'creator'}`);
+  const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
+  const [displayName, setDisplayName] = useState(initialName || '');
+  const [handle, setHandle] = useState(initialHandle || (initialName ? `@${initialName.toLowerCase().replace(/\s+/g, '')}` : ''));
   const [avatarUrl, setAvatarUrl] = useState('');
   const [coverUrl, setCoverUrl] = useState('');
-  const [bio, setBio] = useState('Creating high-impact visual stories and authentic brand partnerships.');
-  const [location, setLocation] = useState('Mumbai, India');
-  const [languages, setLanguages] = useState<string[]>(['English', 'Hindi']);
-  const [primaryCategory, setPrimaryCategory] = useState('Streetwear & Lifestyle');
-  const [skills, setSkills] = useState<string[]>(['4K Video', 'Shorts & Reels', 'Color Grading']);
+  const [bio, setBio] = useState('');
+  const [location, setLocation] = useState('');
+  const [languages, setLanguages] = useState<string[]>([]);
+  const [primaryCategory, setPrimaryCategory] = useState('');
+  const [skills, setSkills] = useState<string[]>([]);
   const [customSkillInput, setCustomSkillInput] = useState('');
   const [experienceLevel, setExperienceLevel] = useState('Pro (3-5 years)');
 
   // Step 3: Showcase
-  const [portfolio, setPortfolio] = useState<{ title: string; type: string; url: string }[]>([
-    { title: 'Signature Commercial UGC Drop', type: 'Reel', url: 'https://example.com/showcase-1' },
-  ]);
+  const [portfolio, setPortfolio] = useState<{ title: string; type: string; url: string }[]>([]);
   const [newProjectTitle, setNewProjectTitle] = useState('');
   const [newProjectType, setNewProjectType] = useState('Reel');
   const [newProjectUrl, setNewProjectUrl] = useState('');
@@ -119,21 +117,14 @@ export const CreatorOnboardingWizard: React.FC<CreatorOnboardingProps> = ({
   const [availableFrom, setAvailableFrom] = useState('Available Now');
 
   // Step 5: Rates
-  const [startingRate, setStartingRate] = useState<number>(25000);
+  const [startingRate, setStartingRate] = useState<number>(0);
   const [rateType, setRateType] = useState('Per Deliverable');
   const [negotiable, setNegotiable] = useState(true);
-  const [rateCard, setRateCard] = useState<Record<string, number>>({
-    Reel: 30000,
-    Story: 10000,
-    Post: 20000,
-    UGC: 25000,
-  });
+  const [rateCard, setRateCard] = useState<Record<string, number>>({});
 
   const toggleRole = (r: string) => {
     if (selectedRoles.includes(r)) {
-      if (selectedRoles.length > 1) {
-        setSelectedRoles(selectedRoles.filter((item) => item !== r));
-      }
+      setSelectedRoles(selectedRoles.filter((item) => item !== r));
     } else {
       setSelectedRoles([...selectedRoles, r]);
     }
@@ -141,9 +132,7 @@ export const CreatorOnboardingWizard: React.FC<CreatorOnboardingProps> = ({
 
   const toggleLanguage = (lang: string) => {
     if (languages.includes(lang)) {
-      if (languages.length > 1) {
-        setLanguages(languages.filter((l) => l !== lang));
-      }
+      setLanguages(languages.filter((l) => l !== lang));
     } else {
       setLanguages([...languages, lang]);
     }
@@ -624,11 +613,11 @@ export const CreatorOnboardingWizard: React.FC<CreatorOnboardingProps> = ({
                 </label>
                 <Input
                   type="number"
-                  min={1000}
+                  min={0}
                   step={1000}
-                  value={startingRate}
+                  value={startingRate || ''}
                   onChange={(e) => setStartingRate(Number(e.target.value) || 0)}
-                  placeholder="25000"
+                  placeholder="e.g. 25000"
                   required
                 />
               </div>
@@ -655,7 +644,7 @@ export const CreatorOnboardingWizard: React.FC<CreatorOnboardingProps> = ({
                 Deliverable-Specific Rate Card
               </label>
               <div className="grid grid-cols-2 gap-3">
-                {Object.entries(rateCard).map(([service, rate]) => (
+                {['Reel', 'Story', 'Post', 'UGC'].map((service) => (
                   <div
                     key={service}
                     className="p-3 rounded-xl bg-[var(--surface-muted)]/40 border border-[var(--border)]"
@@ -668,7 +657,8 @@ export const CreatorOnboardingWizard: React.FC<CreatorOnboardingProps> = ({
                       <input
                         type="number"
                         step={1000}
-                        value={rate}
+                        value={rateCard[service] || ''}
+                        placeholder="0"
                         onChange={(e) =>
                           setRateCard({ ...rateCard, [service]: Number(e.target.value) || 0 })
                         }
@@ -738,25 +728,35 @@ export const CreatorOnboardingWizard: React.FC<CreatorOnboardingProps> = ({
               <div>
                 <div className="flex items-center gap-2">
                   <h3 className="text-lg font-bold text-[var(--text-primary)] font-display">
-                    {displayName}
+                    {displayName || 'Creator'}
                   </h3>
                   <ShieldCheck className="w-4 h-4 text-[var(--primary)]" />
                 </div>
-                <p className="text-xs font-mono text-[var(--text-muted)]">{handle}</p>
-                <p className="text-xs text-[var(--text-secondary)] mt-1.5 leading-relaxed">{bio}</p>
+                <p className="text-xs font-mono text-[var(--text-muted)]">{handle || '@creator'}</p>
+                {bio && <p className="text-xs text-[var(--text-secondary)] mt-1.5 leading-relaxed">{bio}</p>}
               </div>
 
               <div className="flex items-center gap-3 text-xs text-[var(--text-muted)] flex-wrap pt-1 border-t border-[var(--border)]/60">
-                <span className="flex items-center gap-1">
-                  <MapPin className="w-3.5 h-3.5" />
-                  <span>{location}</span>
-                </span>
-                <span>•</span>
-                <span>{primaryCategory}</span>
-                <span>•</span>
-                <span className="font-mono font-bold text-emerald-600 dark:text-emerald-400">
-                  From ₹{startingRate.toLocaleString()}
-                </span>
+                {location && (
+                  <span className="flex items-center gap-1">
+                    <MapPin className="w-3.5 h-3.5" />
+                    <span>{location}</span>
+                  </span>
+                )}
+                {primaryCategory && (
+                  <>
+                    <span>•</span>
+                    <span>{primaryCategory}</span>
+                  </>
+                )}
+                {startingRate > 0 && (
+                  <>
+                    <span>•</span>
+                    <span className="font-mono font-bold text-emerald-600 dark:text-emerald-400">
+                      From ₹{startingRate.toLocaleString()}
+                    </span>
+                  </>
+                )}
               </div>
 
               {/* Skills */}

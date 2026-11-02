@@ -19,6 +19,7 @@ import { Card } from '../ui/Card';
 import { Button } from '../ui/Button';
 import { Badge } from '../ui/Badge';
 import { ReportCenterModal } from '../common/ReportCenterModal';
+import { useAppState } from '../../context/StateContext';
 
 interface Collaborator {
   id: string;
@@ -30,6 +31,7 @@ interface Collaborator {
 }
 
 export const CreatorAdminWorkspace: React.FC = () => {
+  const { userProfile, authUser } = useAppState();
   const [activeTab, setActiveTab] = useState<'team' | 'governance' | 'campaigns' | 'finance' | 'security'>('team');
   const [isReportCenterOpen, setIsReportCenterOpen] = useState(false);
 
@@ -37,11 +39,11 @@ export const CreatorAdminWorkspace: React.FC = () => {
   const [collaborators, setCollaborators] = useState<Collaborator[]>([
     {
       id: 'collab-1',
-      name: 'Rohan Sharma',
-      email: 'rohan@sharmacreative.in',
+      name: userProfile.name || authUser?.name || 'Creator Owner',
+      email: userProfile.email || authUser?.email || 'owner@creatoros.ai',
       role: 'Creator Owner',
       status: 'active',
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80',
+      avatar: userProfile.avatarUrl || authUser?.avatarUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80',
     },
     {
       id: 'collab-2',

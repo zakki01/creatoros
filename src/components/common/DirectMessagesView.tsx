@@ -81,6 +81,7 @@ export const DirectMessagesView: React.FC = () => {
     deleteDirectMessage,
     role,
     userProfile,
+    authUser,
     creators,
   } = useAppState();
 
@@ -126,6 +127,27 @@ export const DirectMessagesView: React.FC = () => {
   const [activeReactionMsgId, setActiveReactionMsgId] = useState<string | null>(null);
   const [copiedMsgId, setCopiedMsgId] = useState<string | null>(null);
   const [isHeaderMenuOpen, setIsHeaderMenuOpen] = useState(false);
+  const headerMenuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!isHeaderMenuOpen) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      if (headerMenuRef.current && !headerMenuRef.current.contains(e.target as Node)) {
+        setIsHeaderMenuOpen(false);
+      }
+    };
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsHeaderMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isHeaderMenuOpen]);
   const [isMuted, setIsMuted] = useState(false);
   const [isBlockModalOpen, setIsBlockModalOpen] = useState(false);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
@@ -657,7 +679,7 @@ export const DirectMessagesView: React.FC = () => {
               </IconButton>
 
               {/* Thread Menu with z-[200] High Stacking Context */}
-              <div className="relative">
+              <div className="relative" ref={headerMenuRef}>
                 <IconButton
                   aria-label="More conversation options"
                   variant="ghost"
@@ -728,9 +750,9 @@ export const DirectMessagesView: React.FC = () => {
             ) : (
               activeMessages.map((msg) => {
                 const isMine =
-                  msg.senderRole === role ||
-                  (role === 'business' && msg.senderId === 'brand-aura') ||
-                  (role === 'creator' && msg.senderId === 'creator-rohan');
+                  (userProfile?.id && msg.senderId === userProfile.id) ||
+                  (authUser?.id && msg.senderId === authUser.id) ||
+                  msg.senderRole === role;
 
                 const msgReactions = reactions[msg.id] || {};
 
@@ -849,12 +871,12 @@ export const DirectMessagesView: React.FC = () => {
                               <div className="min-w-0 flex-1">
                                 <div className="flex items-center gap-1.5">
                                   <h4 className="text-xs font-bold text-[var(--text-primary)] truncate">
-                                    {msg.profileCardData?.name || 'Rohan Sharma'}
+                                    {msg.profileCardData?.name || 'Creator'}
                                   </h4>
                                   <ShieldCheck className="w-3.5 h-3.5 text-[var(--primary)] shrink-0" />
                                 </div>
                                 <p className="text-[11px] text-[var(--text-muted)] font-mono truncate">
-                                  {msg.profileCardData?.handle || '@rohan.kicks'}
+                                  {msg.profileCardData?.handle || '@creator'}
                                 </p>
                                 <div className="flex items-center gap-1.5 mt-1 text-[10px] text-[var(--text-secondary)]">
                                   <span>{msg.profileCardData?.category || 'Streetwear'}</span>

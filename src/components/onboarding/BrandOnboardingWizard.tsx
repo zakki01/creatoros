@@ -89,42 +89,31 @@ export const BrandOnboardingWizard: React.FC<BrandOnboardingProps> = ({
   const [step, setStep] = useState<number>(1);
 
   // Step 1: Identity
-  const [brandName, setBrandName] = useState(initialName || 'Apex Urban Gear');
-  const [handle, setHandle] = useState(initialHandle || `@${initialName.toLowerCase().replace(/\s+/g, '') || 'apexgear'}`);
+  const [brandName, setBrandName] = useState(initialName || '');
+  const [handle, setHandle] = useState(initialHandle || (initialName ? `@${initialName.toLowerCase().replace(/\s+/g, '')}` : ''));
   const [logo, setLogo] = useState('');
   const [coverUrl, setCoverUrl] = useState('');
-  const [industry, setIndustry] = useState('Streetwear & Fashion');
-  const [companySize, setCompanySize] = useState('11-50 employees');
-  const [location, setLocation] = useState('Bengaluru & Mumbai, India');
+  const [industry, setIndustry] = useState('');
+  const [companySize, setCompanySize] = useState('');
+  const [location, setLocation] = useState('');
 
   // Step 2: About & Business Details
-  const [website, setWebsite] = useState('https://examplebrand.com');
-  const [businessEmail, setBusinessEmail] = useState(initialEmail || 'partnerships@examplebrand.com');
-  const [bio, setBio] = useState('Crafting modern lifestyle apparel for contemporary youth subcultures and street fashion enthusiasts.');
-  const [mission, setMission] = useState('Empower community expression through authentic creator partnerships and direct storytelling.');
+  const [website, setWebsite] = useState('');
+  const [businessEmail, setBusinessEmail] = useState(initialEmail || '');
+  const [bio, setBio] = useState('');
+  const [mission, setMission] = useState('');
 
   // Step 3: Collaboration Preferences
-  const [creatorCategories, setCreatorCategories] = useState<string[]>([
-    'Video Creators',
-    'Fashion Stylists',
-    'UGC Specialists',
-  ]);
-  const [campaignTypes, setCampaignTypes] = useState<string[]>([
-    'Dedicated Reel',
-    'UGC Ad Creative',
-  ]);
-  const [preferredPlatforms, setPreferredPlatforms] = useState<string[]>(['Instagram', 'YouTube']);
-  const [typicalBudget, setTypicalBudget] = useState('₹35,000 – ₹75,000');
-  const [workMode, setWorkMode] = useState('Remote / Product Shipping');
-  const [contentGuidelinesSummary, setContentGuidelinesSummary] = useState(
-    'Natural product integration, 4K 60fps vertical format, clear hook within the first 3 seconds.'
-  );
+  const [creatorCategories, setCreatorCategories] = useState<string[]>([]);
+  const [campaignTypes, setCampaignTypes] = useState<string[]>([]);
+  const [preferredPlatforms, setPreferredPlatforms] = useState<string[]>([]);
+  const [typicalBudget, setTypicalBudget] = useState('');
+  const [workMode, setWorkMode] = useState('');
+  const [contentGuidelinesSummary, setContentGuidelinesSummary] = useState('');
 
   const toggleCategory = (cat: string) => {
     if (creatorCategories.includes(cat)) {
-      if (creatorCategories.length > 1) {
-        setCreatorCategories(creatorCategories.filter((c) => c !== cat));
-      }
+      setCreatorCategories(creatorCategories.filter((c) => c !== cat));
     } else {
       setCreatorCategories([...creatorCategories, cat]);
     }
@@ -132,9 +121,7 @@ export const BrandOnboardingWizard: React.FC<BrandOnboardingProps> = ({
 
   const toggleCampaignType = (type: string) => {
     if (campaignTypes.includes(type)) {
-      if (campaignTypes.length > 1) {
-        setCampaignTypes(campaignTypes.filter((t) => t !== type));
-      }
+      setCampaignTypes(campaignTypes.filter((t) => t !== type));
     } else {
       setCampaignTypes([...campaignTypes, type]);
     }
@@ -142,9 +129,7 @@ export const BrandOnboardingWizard: React.FC<BrandOnboardingProps> = ({
 
   const togglePlatform = (plat: string) => {
     if (preferredPlatforms.includes(plat)) {
-      if (preferredPlatforms.length > 1) {
-        setPreferredPlatforms(preferredPlatforms.filter((p) => p !== plat));
-      }
+      setPreferredPlatforms(preferredPlatforms.filter((p) => p !== plat));
     } else {
       setPreferredPlatforms([...preferredPlatforms, plat]);
     }
@@ -248,6 +233,7 @@ export const BrandOnboardingWizard: React.FC<BrandOnboardingProps> = ({
                   onChange={(e) => setIndustry(e.target.value)}
                   className="w-full h-10 px-3 rounded-xl bg-[var(--input)] border border-[var(--border)] text-xs text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]"
                 >
+                  <option value="">Select industry sector...</option>
                   {INDUSTRY_OPTIONS.map((ind) => (
                     <option key={ind} value={ind}>
                       {ind}
@@ -265,6 +251,7 @@ export const BrandOnboardingWizard: React.FC<BrandOnboardingProps> = ({
                   onChange={(e) => setCompanySize(e.target.value)}
                   className="w-full h-10 px-3 rounded-xl bg-[var(--input)] border border-[var(--border)] text-xs text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]"
                 >
+                  <option value="">Select company size...</option>
                   <option value="1-10 employees">1 - 10 employees (Startup)</option>
                   <option value="11-50 employees">11 - 50 employees (Growth)</option>
                   <option value="51-200 employees">51 - 200 employees (Scale)</option>
@@ -502,38 +489,50 @@ export const BrandOnboardingWizard: React.FC<BrandOnboardingProps> = ({
               <div className="flex items-end justify-between">
                 <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-[var(--surface-elevated)] border-2 border-[var(--border)] shadow-lg flex items-center justify-center font-bold text-lg text-[var(--primary)] font-display overflow-hidden">
                   {logo ? (
-                    <img src={logo} alt={brandName} className="w-full h-full object-cover" />
+                    <img src={logo} alt={brandName || 'Brand'} className="w-full h-full object-cover" />
                   ) : (
-                    brandName.slice(0, 2).toUpperCase()
+                    (brandName || 'BR').slice(0, 2).toUpperCase()
                   )}
                 </div>
-                <Badge variant="brand" size="sm" className="font-mono text-[10px]">
-                  {industry}
-                </Badge>
+                {industry && (
+                  <Badge variant="brand" size="sm" className="font-mono text-[10px]">
+                    {industry}
+                  </Badge>
+                )}
               </div>
 
               <div>
                 <div className="flex items-center gap-2">
                   <h3 className="text-lg font-bold text-[var(--text-primary)] font-display">
-                    {brandName}
+                    {brandName || 'Brand Workspace'}
                   </h3>
                   <ShieldCheck className="w-4 h-4 text-[var(--primary)]" />
                 </div>
-                <p className="text-xs font-mono text-[var(--text-muted)]">{handle}</p>
-                <p className="text-xs text-[var(--text-secondary)] mt-1.5 leading-relaxed">{bio}</p>
+                <p className="text-xs font-mono text-[var(--text-muted)]">{handle || '@brand'}</p>
+                {bio && <p className="text-xs text-[var(--text-secondary)] mt-1.5 leading-relaxed">{bio}</p>}
               </div>
 
               <div className="flex items-center gap-3 text-xs text-[var(--text-muted)] flex-wrap pt-1 border-t border-[var(--border)]/60">
-                <span className="flex items-center gap-1">
-                  <MapPin className="w-3.5 h-3.5" />
-                  <span>{location}</span>
-                </span>
-                <span>•</span>
-                <span>{companySize}</span>
-                <span>•</span>
-                <span className="font-mono font-bold text-emerald-600 dark:text-emerald-400">
-                  {typicalBudget}
-                </span>
+                {location && (
+                  <span className="flex items-center gap-1">
+                    <MapPin className="w-3.5 h-3.5" />
+                    <span>{location}</span>
+                  </span>
+                )}
+                {companySize && (
+                  <>
+                    <span>•</span>
+                    <span>{companySize}</span>
+                  </>
+                )}
+                {typicalBudget && (
+                  <>
+                    <span>•</span>
+                    <span className="font-mono font-bold text-emerald-600 dark:text-emerald-400">
+                      {typicalBudget}
+                    </span>
+                  </>
+                )}
               </div>
             </div>
           </div>

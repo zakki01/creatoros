@@ -54,7 +54,7 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
   onBack,
   onContractCreated,
 }) => {
-  const { creators, campaigns } = useAppState();
+  const { creators, campaigns, userProfile, authUser } = useAppState();
 
   // Active step (0 to 7 -> 8 steps)
   const [currentStep, setCurrentStep] = useState(0);
@@ -88,9 +88,11 @@ export const ContractBuilderPage: React.FC<ContractBuilderPageProps> = ({
     return {
       id: `draft-${Date.now()}`,
       contractNumber: `CR-2026-${Math.floor(1000 + Math.random() * 9000)}`,
-      brandId: 'brand-01',
-      brandName: 'Aura Streetwear Co.',
+      brandId: userProfile?.id || authUser?.id || '',
+      brandName: userProfile?.name || authUser?.name || 'Brand Partner',
       brandLogo:
+        userProfile?.avatarUrl ||
+        authUser?.avatarUrl ||
         'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=100&auto=format&fit=crop&q=80',
       creatorId: selectedCreator?.id || '',
       creatorName: selectedCreator?.name || '',

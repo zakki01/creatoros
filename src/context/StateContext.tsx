@@ -16,8 +16,6 @@ import {
   OutreachStage,
 } from '../types';
 import {
-  INITIAL_WORKSPACES,
-  INITIAL_USER_PROFILES,
   INITIAL_CAMPAIGNS,
   INITIAL_CREATORS,
   INITIAL_ATTENTION_ITEMS,
@@ -78,7 +76,7 @@ import {
   INITIAL_CONTENT_REPORTS,
   INITIAL_ADMIN_ACTIVITY_LOGS,
 } from '../services/socialFeedService';
-import { INITIAL_CONVERSATIONS, INITIAL_MESSAGES } from '../services/messagingService';
+import { INITIAL_CONVERSATIONS, INITIAL_MESSAGES, messagingService } from '../services/messagingService';
 import { byokAiService } from '../services/byokAiService';
 import { trustSafetyService } from '../services/trustSafetyService';
 
@@ -282,7 +280,9 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [automationLevel, setAutomationLevel] = useState<AiAutomationLevel>('assisted');
 
   const initialSession = AuthService.getStoredSession();
-  const isInitialDemo = Boolean(initialSession?.is_demo || initialSession?.isDemo);
+  const isInitialDemo = Boolean(
+    (initialSession?.is_demo || initialSession?.isDemo) && import.meta.env.VITE_ENABLE_DEMO === 'true'
+  );
 
   const [dbProfile, setDbProfile] = useState<{
     profile: any;
@@ -322,9 +322,118 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
   };
 
+  const loadUserData = async (userId: string, userRole: UserRole) => {
+    try {
+      await fetchDbProfile(userId, userRole);
+
+      // 1. Real conversations
+      const convs = await messagingService.fetchUserConversations(userId);
+      if (convs && convs.length > 0) {
+        setConversations(convs);
+      }
+
+      // 2. Real posts
+      const { data: postsData } = await supabase
+        .from('posts')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (postsData && postsData.length > 0) {
+        const mappedPosts: SocialPost[] = postsData.map((p: any) => ({
+          id: p.id,
+          authorId: p.author_id,
+          authorName: p.author_role === 'business' ? 'Brand Partner' : 'Creator',
+          authorHandle: '@' + (p.author_role || 'user'),
+          authorAvatar: '',
+          authorType: (p.author_role as UserRole) || 'creator',
+          authorVerified: true,
+          authorBadge: p.author_role === 'business' ? 'Verified Brand' : 'Creator Pro',
+          discoveryBadge: p.content_type === 'reel' ? '🔥 Trending' : '✨ Recommended',
+          contentType: p.content_type || 'shot',
+          content: p.body || p.title || '',
+          shortExcerpt: p.excerpt || (p.body ? p.body.slice(0, 100) : ''),
+          mediaUrl: p.media_urls?.[0] || p.video_url || '',
+          videoUrl: p.video_url || '',
+          likes: p.like_count || 0,
+          likedByMe: false,
+          commentsCount: p.comment_count || 0,
+          sharesCount: p.share_count || 0,
+          timestamp: p.created_at ? new Date(p.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Just now',
+          category: p.category || 'Fashion & Style',
+          tags: p.tags || [],
+          location: '',
+          createdAt: p.created_at || new Date().toISOString(),
+          postStatus: 'published',
+        }));
+        setSocialPosts(mappedPosts);
+      }
+
+      // 3. Real connections
+      const { data: connData } = await supabase
+        .from('connections')
+        .select('*')
+        .or(`requester_id.eq.${userId},target_id.eq.${userId}`);
+
+      if (connData) {
+        const map: Record<string, ConnectionState> = {};
+        connData.forEach((c: any) => {
+          const otherId = c.requester_id === userId ? c.target_id : c.requester_id;
+          map[otherId] = c.status as ConnectionState;
+        });
+        setConnections(map);
+      }
+
+      // 4. Real campaigns
+      const { data: campData } = await supabase
+        .from('campaigns')
+        .select('*');
+
+      if (campData && campData.length > 0) {
+        const mappedCamps: Campaign[] = campData.map((c: any) => ({
+          id: c.id,
+          brandId: c.brand_id,
+          name: c.name || 'Campaign',
+          title: c.name || 'Campaign',
+          brandName: c.brand_name || 'Brand Partner',
+          brandLogo: c.brand_logo || '',
+          objective: c.objective || 'Brand Awareness',
+          budgetTotal: Number(c.budget) || 0,
+          budget: Number(c.budget) || 0,
+          budgetSpent: 0,
+          revenueGenerated: 0,
+          status: c.status || 'Active',
+          health: 'Healthy',
+          progress: 0,
+          creators: { confirmed: 0, target: 5 },
+          content: { submitted: 0, target: 5 },
+          published: { published: 0, target: 5 },
+          aiInsight: 'Active campaign in progress.',
+          targetAudience: {
+            location: ['India'],
+            ageRange: '18-35',
+            gender: 'All',
+            interests: ['Fashion', 'Lifestyle'],
+            language: 'English',
+          },
+          platforms: ['Instagram'],
+          deliverables: [],
+          timeline: {
+            startDate: c.start_date || new Date().toISOString().split('T')[0],
+            endDate: c.end_date || new Date().toISOString().split('T')[0],
+            submissionDeadline: c.end_date || new Date().toISOString().split('T')[0],
+          },
+          brandGuidelines: c.description || '',
+        }));
+        setCampaigns(mappedCamps);
+      }
+    } catch (err) {
+      console.warn('Failed to load user data from Supabase:', err);
+    }
+  };
+
   const refreshUserProfile = async () => {
     if (authUser && !authUser.is_demo && !authUser.isDemo) {
-      await fetchDbProfile(authUser.id, authUser.role);
+      await loadUserData(authUser.id, authUser.role);
     }
   };
 
@@ -377,7 +486,7 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   useEffect(() => {
     if (authUser && !authUser.is_demo && !authUser.isDemo) {
-      fetchDbProfile(authUser.id, authUser.role);
+      loadUserData(authUser.id, authUser.role);
     }
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
@@ -385,6 +494,7 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         if (session?.user) {
           const userMeta = session.user.user_metadata || {};
           const userRole: UserRole = (userMeta.role === 'business' || userMeta.role === 'brand') ? 'business' : 'creator';
+          await loadUserData(session.user.id, userRole);
           const dbData = await fetchDbProfile(session.user.id, userRole);
           const name = dbData?.profile?.display_name || userMeta.display_name || userMeta.name || session.user.email?.split('@')[0] || 'User';
           const handle = dbData?.subProfile?.handle || (userMeta.handle ? (userMeta.handle.startsWith('@') ? userMeta.handle : `@${userMeta.handle}`) : `@${name.toLowerCase().replace(/\s+/g, '')}`);
@@ -423,60 +533,42 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   }, []);
 
   const [campaigns, setCampaigns] = useState<Campaign[]>(() => {
-    if (!initialSession) return [];
     if (isInitialDemo) {
       const saved = localStorage.getItem(`${STORAGE_KEY}_campaigns`);
       return saved ? JSON.parse(saved) : [DEMO_CAMPAIGN];
     }
-    const saved = localStorage.getItem(`${STORAGE_KEY}_campaigns`);
-    return saved ? JSON.parse(saved) : [];
+    return [];
   });
 
   const [creators, setCreators] = useState<Creator[]>(() => {
-    if (!initialSession) return [];
     if (isInitialDemo) {
       const saved = localStorage.getItem(`${STORAGE_KEY}_creators`);
       return saved ? JSON.parse(saved) : [DEMO_CREATOR_PROFILE];
     }
-    const saved = localStorage.getItem(`${STORAGE_KEY}_creators`);
-    return saved ? JSON.parse(saved) : [];
-  });
-
-  const [attentionItems, setAttentionItems] = useState<AiAttentionItem[]>(() => {
     return [];
   });
 
-  const [submissions, setSubmissions] = useState<ContentSubmission[]>(() => {
-    return [];
-  });
+  const [attentionItems, setAttentionItems] = useState<AiAttentionItem[]>(() => []);
+  const [submissions, setSubmissions] = useState<ContentSubmission[]>(() => []);
 
   const [outreachItems, setOutreachItems] = useState<OutreachItem[]>(() => {
-    if (!initialSession) return [];
     if (isInitialDemo) {
       const saved = localStorage.getItem(`${STORAGE_KEY}_outreach`);
       return saved ? JSON.parse(saved) : [DEMO_OUTREACH];
     }
-    const saved = localStorage.getItem(`${STORAGE_KEY}_outreach`);
-    return saved ? JSON.parse(saved) : [];
+    return [];
   });
 
   const [payments, setPayments] = useState<PaymentMilestone[]>(() => {
-    if (!initialSession) return [];
     if (isInitialDemo) {
       const saved = localStorage.getItem(`${STORAGE_KEY}_payments`);
       return saved ? JSON.parse(saved) : [DEMO_PAYMENT];
     }
-    const saved = localStorage.getItem(`${STORAGE_KEY}_payments`);
-    return saved ? JSON.parse(saved) : [];
-  });
-
-  const [notifications, setNotifications] = useState<NotificationItem[]>(() => {
     return [];
   });
 
-  const [simulationScenarios, setSimulationScenarios] = useState<CampaignSimulationScenario[]>(
-    []
-  );
+  const [notifications, setNotifications] = useState<NotificationItem[]>(() => []);
+  const [simulationScenarios, setSimulationScenarios] = useState<CampaignSimulationScenario[]>([]);
 
   const [activeCampaignId, setActiveCampaignId] = useState<string>(() => {
     if (isInitialDemo) return DEMO_CAMPAIGN.id;
@@ -486,33 +578,23 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   // RBAC & Roles
   const [businessRole, setBusinessRole] = useState<BusinessRole>('business_owner');
   const [creatorRole, setCreatorRole] = useState<CreatorRole>('creator');
-  const [teamMembers, setTeamMembers] = useState<TeamMember[]>(() => {
-    const saved = localStorage.getItem(`${STORAGE_KEY}_team`);
-    return saved ? JSON.parse(saved) : [];
-  });
-  const [auditLogs, setAuditLogs] = useState<AuditLogEntry[]>(() => {
-    const saved = localStorage.getItem(`${STORAGE_KEY}_audit`);
-    return saved ? JSON.parse(saved) : [];
-  });
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>(() => []);
+  const [auditLogs, setAuditLogs] = useState<AuditLogEntry[]>(() => []);
 
   // Messaging
   const [conversations, setConversations] = useState<Conversation[]>(() => {
-    if (!initialSession) return [];
     if (isInitialDemo) {
       const saved = localStorage.getItem(`${STORAGE_KEY}_conversations`);
       return saved ? JSON.parse(saved) : [DEMO_CONVERSATION];
     }
-    const saved = localStorage.getItem(`${STORAGE_KEY}_conversations`);
-    return saved ? JSON.parse(saved) : [];
+    return [];
   });
   const [messages, setMessages] = useState<Record<string, DirectMessage[]>>(() => {
-    if (!initialSession) return {};
     if (isInitialDemo) {
       const saved = localStorage.getItem(`${STORAGE_KEY}_messages`);
       return saved ? JSON.parse(saved) : { [DEMO_CONVERSATION.id]: DEMO_MESSAGES };
     }
-    const saved = localStorage.getItem(`${STORAGE_KEY}_messages`);
-    return saved ? JSON.parse(saved) : {};
+    return {};
   });
   const [activeConversationId, setActiveConversationId] = useState<string | null>(() => {
     if (isInitialDemo) return DEMO_CONVERSATION.id;
@@ -521,23 +603,19 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   // Social Feed
   const [socialPosts, setSocialPosts] = useState<SocialPost[]>(() => {
-    if (!initialSession) return [];
     if (isInitialDemo) {
       const saved = localStorage.getItem(`${STORAGE_KEY}_posts`);
       return saved ? JSON.parse(saved) : [DEMO_SOCIAL_POST];
     }
-    const saved = localStorage.getItem(`${STORAGE_KEY}_posts`);
-    return saved ? JSON.parse(saved) : [];
+    return [];
   });
 
   // Connect System
   const [connections, setConnections] = useState<Record<string, ConnectionState>>(() => {
-    const emptyConn: Record<string, ConnectionState> = {};
-    if (!initialSession) return emptyConn;
     if (isInitialDemo) {
       return { 'demo-brand-01': 'active_campaign', 'demo-creator-01': 'connected' };
     }
-    return emptyConn;
+    return {} as Record<string, ConnectionState>;
   });
 
   // Pro Tier Trial
@@ -600,54 +678,78 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
   });
 
-  // Sync to local storage
+  // Sync demo state to local storage ONLY in controlled demo mode
   useEffect(() => {
-    localStorage.setItem(`${STORAGE_KEY}_campaigns`, JSON.stringify(campaigns));
-  }, [campaigns]);
+    if (isInitialDemo) {
+      localStorage.setItem(`${STORAGE_KEY}_campaigns`, JSON.stringify(campaigns));
+    }
+  }, [campaigns, isInitialDemo]);
 
   useEffect(() => {
-    localStorage.setItem(`${STORAGE_KEY}_submissions`, JSON.stringify(submissions));
-  }, [submissions]);
+    if (isInitialDemo) {
+      localStorage.setItem(`${STORAGE_KEY}_submissions`, JSON.stringify(submissions));
+    }
+  }, [submissions, isInitialDemo]);
 
   useEffect(() => {
-    localStorage.setItem(`${STORAGE_KEY}_outreach`, JSON.stringify(outreachItems));
-  }, [outreachItems]);
+    if (isInitialDemo) {
+      localStorage.setItem(`${STORAGE_KEY}_outreach`, JSON.stringify(outreachItems));
+    }
+  }, [outreachItems, isInitialDemo]);
 
   useEffect(() => {
-    localStorage.setItem(`${STORAGE_KEY}_payments`, JSON.stringify(payments));
-  }, [payments]);
+    if (isInitialDemo) {
+      localStorage.setItem(`${STORAGE_KEY}_payments`, JSON.stringify(payments));
+    }
+  }, [payments, isInitialDemo]);
 
   useEffect(() => {
-    localStorage.setItem(`${STORAGE_KEY}_attention`, JSON.stringify(attentionItems));
-  }, [attentionItems]);
+    if (isInitialDemo) {
+      localStorage.setItem(`${STORAGE_KEY}_attention`, JSON.stringify(attentionItems));
+    }
+  }, [attentionItems, isInitialDemo]);
 
   useEffect(() => {
-    localStorage.setItem(`${STORAGE_KEY}_notifications`, JSON.stringify(notifications));
-  }, [notifications]);
+    if (isInitialDemo) {
+      localStorage.setItem(`${STORAGE_KEY}_notifications`, JSON.stringify(notifications));
+    }
+  }, [notifications, isInitialDemo]);
 
   useEffect(() => {
-    localStorage.setItem(`${STORAGE_KEY}_team`, JSON.stringify(teamMembers));
-  }, [teamMembers]);
+    if (isInitialDemo) {
+      localStorage.setItem(`${STORAGE_KEY}_team`, JSON.stringify(teamMembers));
+    }
+  }, [teamMembers, isInitialDemo]);
 
   useEffect(() => {
-    localStorage.setItem(`${STORAGE_KEY}_audit`, JSON.stringify(auditLogs));
-  }, [auditLogs]);
+    if (isInitialDemo) {
+      localStorage.setItem(`${STORAGE_KEY}_audit`, JSON.stringify(auditLogs));
+    }
+  }, [auditLogs, isInitialDemo]);
 
   useEffect(() => {
-    localStorage.setItem(`${STORAGE_KEY}_conversations`, JSON.stringify(conversations));
-  }, [conversations]);
+    if (isInitialDemo) {
+      localStorage.setItem(`${STORAGE_KEY}_conversations`, JSON.stringify(conversations));
+    }
+  }, [conversations, isInitialDemo]);
 
   useEffect(() => {
-    localStorage.setItem(`${STORAGE_KEY}_messages`, JSON.stringify(messages));
-  }, [messages]);
+    if (isInitialDemo) {
+      localStorage.setItem(`${STORAGE_KEY}_messages`, JSON.stringify(messages));
+    }
+  }, [messages, isInitialDemo]);
 
   useEffect(() => {
-    localStorage.setItem(`${STORAGE_KEY}_posts`, JSON.stringify(socialPosts));
-  }, [socialPosts]);
+    if (isInitialDemo) {
+      localStorage.setItem(`${STORAGE_KEY}_posts`, JSON.stringify(socialPosts));
+    }
+  }, [socialPosts, isInitialDemo]);
 
   useEffect(() => {
-    localStorage.setItem(`${STORAGE_KEY}_connections`, JSON.stringify(connections));
-  }, [connections]);
+    if (isInitialDemo) {
+      localStorage.setItem(`${STORAGE_KEY}_connections`, JSON.stringify(connections));
+    }
+  }, [connections, isInitialDemo]);
 
   useEffect(() => {
     localStorage.setItem(`${STORAGE_KEY}_feature_flags`, JSON.stringify(featureFlags));
@@ -697,10 +799,26 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           handle: dbProfile?.subProfile?.handle || authUser?.handle || '@creator',
         };
 
+  const EMPTY_USER_PROFILE: UserProfile = {
+    id: '',
+    name: '',
+    email: '',
+    role,
+    handle: '',
+    avatarUrl: '',
+    notificationsCount: 0,
+    bio: '',
+    coverUrl: '',
+    location: '',
+    website: '',
+    industry: '',
+    category: '',
+    title: '',
+  };
+
   const userProfile: UserProfile = authUser
     ? isInitialDemo
       ? {
-          ...INITIAL_USER_PROFILES[role],
           id: authUser.id,
           name: authUser.name || 'Demo User',
           email: authUser.email || '',
@@ -711,7 +829,7 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         }
       : {
           id: authUser.id,
-          name: dbProfile?.profile?.display_name || authUser.name || 'User',
+          name: dbProfile?.profile?.display_name || authUser.name || '',
           email: authUser.email || '',
           role: (dbProfile?.profile?.role as UserRole) || authUser.role || role,
           workspaceId: authUser.id,
@@ -719,7 +837,7 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           handle:
             dbProfile?.subProfile?.handle ||
             authUser.handle ||
-            (authUser.name ? `@${authUser.name.toLowerCase().replace(/\s+/g, '')}` : '@user'),
+            '',
           title:
             role === 'business'
               ? dbProfile?.subProfile?.company_name || 'Brand Workspace'
@@ -732,7 +850,7 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           category: dbProfile?.subProfile?.category || '',
           notificationsCount: notifications.filter((n) => !n.read).length,
         }
-    : INITIAL_USER_PROFILES[role];
+    : EMPTY_USER_PROFILE;
 
   const login = (user: AuthUser, initialCreatorTab?: string) => {
     setAuthUser(user);
@@ -744,7 +862,7 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
     AuthService.saveSession(user);
 
-    const isDemo = Boolean(user.is_demo || user.isDemo);
+    const isDemo = Boolean((user.is_demo || user.isDemo) && import.meta.env.VITE_ENABLE_DEMO === 'true');
     if (isDemo) {
       setCampaigns([DEMO_CAMPAIGN]);
       setCreators([DEMO_CREATOR_PROFILE]);
@@ -1379,8 +1497,8 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     const newMsg: DirectMessage = {
       id: options?.customId || `msg-${Date.now()}`,
       conversationId: activeConversationId,
-      senderId: userProfile.id || (role === 'business' ? 'brand-aura' : 'creator-rohan'),
-      senderName: userProfile.name,
+      senderId: userProfile.id || authUser?.id || '',
+      senderName: userProfile.name || authUser?.name || 'User',
       senderRole: role,
       senderAvatar: userProfile.avatarUrl,
       content,
@@ -1617,14 +1735,14 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     );
   };
 
-  const createSocialPost = (postData: Partial<SocialPost>) => {
+  const createSocialPost = async (postData: Partial<SocialPost>) => {
     const contentType = postData.contentType || 'shot';
     const newPost: SocialPost = {
       id: `post-${Date.now()}`,
-      authorId: userProfile.id || authUser?.id || (role === 'business' ? 'demo-brand-01' : role === 'super_admin' ? 'admin-001' : 'demo-creator-01'),
-      authorName: userProfile.name,
-      authorHandle: authUser?.handle || userProfile.handle || (role === 'business' ? '@demobrand' : role === 'super_admin' ? '@admin' : '@democreator'),
-      authorAvatar: userProfile.avatarUrl,
+      authorId: userProfile.id || authUser?.id || '',
+      authorName: userProfile.name || authUser?.name || 'User',
+      authorHandle: authUser?.handle || userProfile.handle || '@user',
+      authorAvatar: userProfile.avatarUrl || authUser?.avatarUrl || '',
       authorType: role,
       authorVerified: true,
       authorBadge: role === 'business' ? 'Verified Brand' : role === 'super_admin' ? 'Super Admin' : 'Creator Pro',
@@ -1646,7 +1764,7 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       duration: postData.duration || (contentType === 'reel' ? '0:30' : undefined),
       aspectRatio: postData.aspectRatio || (contentType === 'reel' ? '9:16' : '16:9'),
       tags: postData.tags || [],
-      location: postData.location || 'Mumbai, India',
+      location: postData.location || userProfile.location || '',
       timestamp: 'Just now',
       likes: 0,
       likedByMe: false,
@@ -1666,6 +1784,28 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       moderationStatus: 'approved',
     };
     setSocialPosts((prev) => [newPost, ...prev]);
+
+    if (authUser && !authUser.is_demo && !authUser.isDemo) {
+      try {
+        const { error } = await supabase.from('posts').insert({
+          author_id: authUser.id,
+          author_role: role,
+          content_type: contentType,
+          title: postData.blogTitle || (postData.content ? postData.content.slice(0, 50) : 'New Post'),
+          excerpt: newPost.shortExcerpt,
+          body: newPost.content,
+          media_urls: postData.mediaUrl ? [postData.mediaUrl] : ((postData as any).mediaUrls || []),
+          video_url: contentType === 'reel' ? (postData.videoUrl || postData.mediaUrl || null) : null,
+          category: newPost.category,
+          tags: postData.tags || [],
+          moderation_status: 'approved',
+        });
+        if (error) console.error('Failed to persist post to Supabase:', error);
+      } catch (err) {
+        console.error('Error saving post to Supabase:', err);
+      }
+    }
+
     logAdminAction('Published New Content', `${newPost.authorName} (${contentType.toUpperCase()})`, 'post', 'success');
     triggerCelebration();
   };
@@ -1827,6 +1967,28 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       [targetId]: 'pending',
     }));
 
+    // Persist to Supabase connections table if user is authenticated and IDs are valid UUIDs
+    const currentUserId = userProfile.id || authUser?.id;
+    const isUuid = (val: string) => /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(val);
+    if (currentUserId && isUuid(currentUserId) && isUuid(targetId)) {
+      supabase
+        .from('connections')
+        .upsert(
+          {
+            requester_id: currentUserId,
+            target_id: targetId,
+            status: 'pending',
+            updated_at: new Date().toISOString(),
+          },
+          { onConflict: 'requester_id,target_id' }
+        )
+        .then(({ error }) => {
+          if (error) {
+            console.error('[StateContext] Failed to persist connection to Supabase:', error);
+          }
+        });
+    }
+
     // Check if conversation exists, or create a new one
     const existingConv = conversations.find(
       (c) => c.participantId === targetId || c.participantHandle === targetHandle
@@ -1855,8 +2017,8 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       const newMsg: DirectMessage = {
         id: `msg-${Date.now()}`,
         conversationId: convId,
-        senderId: userProfile.id || (role === 'business' ? 'brand-aura' : 'creator-rohan'),
-        senderName: userProfile.name,
+        senderId: userProfile.id || authUser?.id || '',
+        senderName: userProfile.name || authUser?.name || 'User',
         senderRole: role,
         senderAvatar: userProfile.avatarUrl,
         content: message,
@@ -1886,7 +2048,7 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const addCreatorShowcase = (creatorId: string, item: any) => {
     setCreators((prev) =>
       prev.map((c) => {
-        if (c.id === creatorId || c.id === 'cr-01') {
+        if (c.id === creatorId) {
           return {
             ...c,
             portfolio: [item, ...c.portfolio],
@@ -1916,6 +2078,10 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   const resetDemoData = () => {
+    if (import.meta.env.VITE_ENABLE_DEMO !== 'true' && !isInitialDemo) {
+      console.warn('[StateContext] Demo reset rejected in production reality mode.');
+      return;
+    }
     localStorage.removeItem(`${STORAGE_KEY}_campaigns`);
     localStorage.removeItem(`${STORAGE_KEY}_submissions`);
     localStorage.removeItem(`${STORAGE_KEY}_outreach`);

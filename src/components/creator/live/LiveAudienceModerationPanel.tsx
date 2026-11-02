@@ -30,7 +30,7 @@ interface LiveAudienceModerationPanelProps {
 export const LiveAudienceModerationPanel: React.FC<LiveAudienceModerationPanelProps> = ({
   isHost = true,
   currentUserId = 'cr-101',
-  currentUserName = 'Rohan Sharma',
+  currentUserName = 'Creator',
   className = '',
 }) => {
   const [roomState, setRoomState] = useState<LiveRoomState>(() =>

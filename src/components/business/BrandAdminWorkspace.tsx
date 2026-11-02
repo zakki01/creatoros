@@ -19,7 +19,7 @@ import { Badge } from '../ui/Badge';
 import { ReportCenterModal } from '../common/ReportCenterModal';
 
 export const BrandAdminWorkspace: React.FC = () => {
-  const { teamMembers, auditLogs } = useAppState();
+  const { teamMembers, auditLogs, userProfile } = useAppState();
 
   const [activeTab, setActiveTab] = useState<'rbac' | 'permissions' | 'financial' | 'security'>('rbac');
   const [isReportCenterOpen, setIsReportCenterOpen] = useState(false);
@@ -202,9 +202,8 @@ export const BrandAdminWorkspace: React.FC = () => {
                   <CheckCircle2 className="w-3.5 h-3.5" /> Verified
                 </span>
               </div>
-              <p className="text-[var(--text-primary)] font-medium">Aura Streetwear Lifestyle Pvt Ltd</p>
-              <p className="text-[11px] text-[var(--text-muted)] font-mono">CIN: U74999MH2022PTC192837</p>
-              <p className="text-[11px] text-[var(--text-muted)] font-mono">GSTIN: 27AABCA4829Q1ZM</p>
+              <p className="text-[var(--text-primary)] font-medium">{userProfile?.name || 'Brand Workspace'}</p>
+              <p className="text-[11px] text-[var(--text-muted)] font-mono">Status: Verified Enterprise</p>
             </div>
           </Card>
         </div>

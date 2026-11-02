@@ -19,9 +19,16 @@ export default async function handler(req: any, res: any) {
     const roomName = body.roomName || `creatoros-live-${creatorId}`;
     const role = body.role || 'host';
 
-    const apiKey = process.env.LIVEKIT_API_KEY || 'devkey';
-    const apiSecret = process.env.LIVEKIT_API_SECRET || 'secret_key_dev_mode_creatoros_2026';
-    const wsUrl = process.env.LIVEKIT_URL || 'wss://live.creatoros.ai';
+    const apiKey = process.env.LIVEKIT_API_KEY;
+    const apiSecret = process.env.LIVEKIT_API_SECRET;
+    const wsUrl = process.env.LIVEKIT_URL;
+
+    if (!apiKey || !apiSecret || !wsUrl) {
+      return res.status(503).json({
+        configured: false,
+        error: 'LiveKit transport credentials are not configured on the server. Live transport is disabled.',
+      });
+    }
 
     const at = new AccessToken(apiKey, apiSecret, {
       identity: creatorId,

@@ -17,7 +17,7 @@ export interface UserProfile {
   name: string;
   email: string;
   role: UserRole;
-  workspaceId: string;
+  workspaceId?: string;
   avatarUrl: string;
   title?: string;
   handle?: string;

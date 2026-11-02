@@ -34,9 +34,9 @@ export const CreatorOpportunities: React.FC = () => {
   const currentCreator = getSafeCurrentCreator(creators, userProfile, authUser);
   const [selectedBrief, setSelectedBrief] = useState<OutreachItem | null>(null);
 
-  // Incoming opportunities: Contacted or Interested or Selected
+  const isDemo = Boolean(authUser?.is_demo && import.meta.env.VITE_ENABLE_DEMO === 'true');
   const opportunities = outreachItems.filter(
-    (i) => i.creatorId === currentCreator.id || (authUser?.is_demo && i.creatorId === 'demo-creator-01')
+    (i) => i.creatorId === currentCreator.id || (isDemo && i.creatorId === 'demo-creator-01')
   );
 
   return (
@@ -93,7 +93,7 @@ export const CreatorOpportunities: React.FC = () => {
                       )}
                     </div>
                     <p className="text-xs text-zinc-500">
-                      Aura Streetwear Co. · Mumbai · 1x Reel + 2x Stories · Due Oct 12
+                      {(opp as any).brandName || 'Brand Partner'} · {(opp as any).deliverables || 'Campaign Deliverables'}
                     </p>
                   </div>
 

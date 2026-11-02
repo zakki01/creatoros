@@ -1,8 +1,7 @@
 import React from 'react';
-import { ShieldCheck } from 'lucide-react';
 
 interface SocialLoginButtonsProps {
-  onSelectProvider: (provider: 'google' | 'facebook' | 'apple' | 'auth0') => void;
+  onSelectProvider: (provider: 'google' | 'facebook' | 'apple') => void;
   disabled?: boolean;
 }
 
@@ -12,19 +11,6 @@ export const SocialLoginButtons: React.FC<SocialLoginButtonsProps> = ({
 }) => {
   return (
     <div className="space-y-2.5">
-      {/* Primary Auth0 Enterprise / Single Sign-On */}
-      <button
-        type="button"
-        disabled={disabled}
-        onClick={() => onSelectProvider('auth0')}
-        className={`w-full h-10 px-3 rounded-xl flex items-center justify-center gap-2 text-xs font-semibold bg-[var(--primary)]/10 hover:bg-[var(--primary)]/20 text-[var(--primary-hover)] border border-[var(--primary)]/30 transition-all focus:outline-none focus:ring-1 focus:ring-sky-400 active:scale-98 cursor-pointer ${
-          disabled ? 'opacity-50 cursor-not-allowed' : ''
-        }`}
-      >
-        <ShieldCheck className="w-4 h-4 text-[var(--primary)]" />
-        <span>Continue with Auth0 Enterprise SSO</span>
-      </button>
-
       <div className="flex items-center justify-center gap-3">
         {/* Google Icon Button */}
         <button
