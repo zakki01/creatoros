@@ -159,7 +159,7 @@ export const DirectMessagesView: React.FC = () => {
     'msg-3': { '👍': 1 },
   });
 
-  const activeConv = conversations.find((c) => c.id === activeConversationId) || conversations[0];
+  const activeConv = conversations.find((c) => c.id === activeConversationId) || (conversations.length > 0 ? conversations[0] : null);
   const activeMessages = activeConv ? messages[activeConv.id] || [] : [];
 
   const filteredConversations = conversations.filter(

@@ -22,11 +22,11 @@ import { DEMO_CAMPAIGN } from '../../data/demoFixtures';
 export const BusinessAnalytics: React.FC = () => {
   const { campaigns, activeCampaignId, authUser } = useAppState();
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
-  const isDemo = Boolean(authUser?.is_demo || authUser?.isDemo);
+  const isDemo = Boolean((authUser?.is_demo || authUser?.isDemo) && import.meta.env.VITE_ENABLE_DEMO === 'true');
 
-  const activeCampaign = campaigns.find((c) => c.id === activeCampaignId) || campaigns[0] || (isDemo ? DEMO_CAMPAIGN : null);
+  const activeCampaign = campaigns.find((c) => c.id === activeCampaignId) || (campaigns.length > 0 ? campaigns[0] : null) || (isDemo ? DEMO_CAMPAIGN : null);
 
-  if (!activeCampaign && campaigns.length === 0) {
+  if (!activeCampaign) {
     return (
       <div className="space-y-8 animate-fade-in pb-12">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">

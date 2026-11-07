@@ -39,7 +39,9 @@ export const ShareProfileModal: React.FC<ShareProfileModalProps> = ({
     useAppState();
   const [copied, setCopied] = useState(false);
   const [sentChatId, setSentChatId] = useState<string | null>(null);
-  const [selectedCampaignId, setSelectedCampaignId] = useState(campaigns[0]?.id || '');
+  const [selectedCampaignId, setSelectedCampaignId] = useState(
+    campaigns.length > 0 ? campaigns[0].id : ''
+  );
   const [campaignShared, setCampaignShared] = useState(false);
 
   if (!isOpen) return null;

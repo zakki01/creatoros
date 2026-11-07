@@ -412,53 +412,59 @@ export const DEMO_SHOWCASE_PROJECT: ShowcaseProject = {
 
 /**
  * Universal safe current creator resolver.
- * Protects every creator view against `creators[0]` undefined exceptions.
+ * Strictly resolves to the authenticated user's persisted creator record.
+ * Never falls back to cross-user `creators[0]` or manufactured demo profiles in production.
  */
 export function getSafeCurrentCreator(
   creators: Creator[],
-  userProfile?: { id?: string; name?: string; handle?: string; avatarUrl?: string },
+  userProfile?: { id?: string; name?: string; handle?: string; avatarUrl?: string; bio?: string; location?: string; category?: string },
   authUser?: { id?: string; name?: string; handle?: string; avatarUrl?: string; is_demo?: boolean; isDemo?: boolean } | null
 ): Creator {
-  const isDemo = Boolean(authUser?.is_demo || authUser?.isDemo);
+  const isDemo = Boolean((authUser?.is_demo || authUser?.isDemo) && import.meta.env.VITE_ENABLE_DEMO === 'true');
   if (isDemo) {
     return DEMO_CREATOR_PROFILE;
   }
-  const found = creators.find((c) => c.id === userProfile?.id || c.id === authUser?.id);
-  if (found) return found;
-  if (creators.length > 0) return creators[0];
+
+  const userId = userProfile?.id || authUser?.id;
+  if (userId) {
+    const found = creators.find((c) => c.id === userId);
+    if (found) return found;
+  }
+
+  // Explicit honest empty / new-user creator state
+  const name = userProfile?.name || authUser?.name || 'Creator';
+  const handle = userProfile?.handle || authUser?.handle || '@creator';
+  const avatar = userProfile?.avatarUrl || authUser?.avatarUrl || '';
+  const category = userProfile?.category || 'Digital Creator';
+  const location = userProfile?.location || '';
+  const bio = userProfile?.bio || '';
 
   return {
-    id: userProfile?.id || authUser?.id || 'creator-me',
-    name: userProfile?.name || authUser?.name || 'Creator',
-    handle: userProfile?.handle || authUser?.handle || '@creator',
-    avatar: userProfile?.avatarUrl || authUser?.avatarUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80',
-    category: 'Digital Creator',
-    niche: 'Content Creation',
+    id: userId || '',
+    name,
+    handle,
+    avatar,
+    category,
+    niche: category,
     followers: '0',
     engagementRate: 0,
-    bio: 'Welcome to your Creator profile. Start publishing content or connect brand campaigns to build your reputation.',
-    location: 'Global',
-    languages: ['English'],
+    bio,
+    location,
+    languages: [],
     platforms: [],
     totalFollowers: 0,
     avgEngagement: 0,
     estimatedRate: 0,
-    rateCard: {
-      Reel: 0,
-      Story: 0,
-      'YouTube Video': 0,
-      Short: 0,
-      UGC: 0,
-    },
+    rateCard: {},
     verified: false,
     verifiedBadges: [],
     reliabilityMetrics: {
-      onTimeDelivery: 100,
-      briefCompliance: 100,
-      communication: 100,
-      contentQuality: 100,
-      campaignPerformance: 100,
-      responseReliability: 100,
+      onTimeDelivery: 0,
+      briefCompliance: 0,
+      communication: 0,
+      contentQuality: 0,
+      campaignPerformance: 0,
+      responseReliability: 0,
     },
     audienceBreakdown: {
       topLocations: [],

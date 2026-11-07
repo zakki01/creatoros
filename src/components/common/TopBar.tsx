@@ -175,12 +175,24 @@ export const TopBar: React.FC<TopBarProps> = ({
                   </span>
                 </div>
                 <p className="text-[11px] text-[var(--text-muted)] truncate mt-0.5">{userProfile.email}</p>
-                <div className="mt-2 flex items-center justify-between text-[10px] text-zinc-500">
+                <div className="mt-2 flex items-center justify-between text-[10px] text-[var(--text-muted)]">
                   <span className="flex items-center gap-1">
-                    <User className="w-3 h-3 text-zinc-500" />
+                    <User className="w-3 h-3 text-[var(--text-muted)]" />
                     {role === 'business' ? businessRole : creatorRole}
                   </span>
-                  <span className="text-amber-600 dark:text-amber-400 font-medium">Pro • {trialDaysLeft}d left</span>
+                  {trialDaysLeft > 0 && trialDaysLeft < 30 ? (
+                    <span className="text-amber-600 dark:text-amber-400 font-medium">
+                      Trial • {trialDaysLeft}d left
+                    </span>
+                  ) : trialDaysLeft >= 30 ? (
+                    <span className="text-sky-600 dark:text-sky-400 font-medium">
+                      Pro Member
+                    </span>
+                  ) : (
+                    <span className="text-[var(--text-muted)] font-medium">
+                      Starter Plan
+                    </span>
+                  )}
                 </div>
               </div>
 

@@ -618,8 +618,15 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     return {} as Record<string, ConnectionState>;
   });
 
-  // Pro Tier Trial
-  const [trialDaysLeft, setTrialDaysLeft] = useState<number>(5);
+  // Pro Tier Trial & Subscription State (Truthful, non-defaulted)
+  const [trialDaysLeft, setTrialDaysLeft] = useState<number>(() => {
+    try {
+      const saved = localStorage.getItem(`${STORAGE_KEY}_trial_days`);
+      return saved !== null ? parseInt(saved, 10) : 0;
+    } catch {
+      return 0;
+    }
+  });
   const [isProModalOpen, setIsProModalOpen] = useState<boolean>(false);
 
   // BYOK
@@ -1041,7 +1048,7 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const inviteCreator = (creatorId: string, campaignId: string, customFee?: number) => {
     const creator = creators.find((c) => c.id === creatorId);
-    const campaign = campaigns.find((c) => c.id === campaignId) || campaigns[0];
+    const campaign = campaigns.find((c) => c.id === campaignId) || (campaigns.length > 0 ? campaigns[0] : null);
     if (!creator || !campaign) return;
 
     // Check if already in outreach
@@ -1215,8 +1222,8 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
     const newSubmission: ContentSubmission = {
       id: `sub-${Date.now()}`,
-      campaignId: newSubData.campaignId || campaigns[0]?.id || 'camp-default',
-      campaignName: newSubData.campaignName || campaigns[0]?.name || 'Collaboration Brief',
+      campaignId: newSubData.campaignId || (campaigns.length > 0 ? campaigns[0].id : 'custom'),
+      campaignName: newSubData.campaignName || (campaigns.length > 0 ? campaigns[0].name : 'Direct Collaboration Brief'),
       creatorId: newSubData.creatorId || userProfile.id || authUser?.id || 'cr-default',
       creatorName: newSubData.creatorName || userProfile.name || authUser?.name || 'Creator',
       creatorHandle: newSubData.creatorHandle || userProfile.handle || authUser?.handle || '@creator',
@@ -2062,6 +2069,11 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const upgradeToPro = () => {
     setTrialDaysLeft(365);
+    try {
+      localStorage.setItem(`${STORAGE_KEY}_trial_days`, '365');
+    } catch {
+      // storage unavailable
+    }
     setIsProModalOpen(false);
     triggerCelebration();
   };

@@ -364,25 +364,31 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 pt-1 relative z-10">
           <div className="p-3 rounded-xl bg-[var(--surface-subtle)] border border-[var(--border)] text-center">
             <span className="text-base sm:text-lg font-bold font-mono text-[var(--primary)] block">
-              96
+              {creator.reliabilityMetrics?.campaignPerformance && creator.reliabilityMetrics.campaignPerformance > 0
+                ? Math.round(creator.reliabilityMetrics.campaignPerformance)
+                : '—'}
             </span>
             <span className="text-[11px] text-[var(--text-muted)] font-medium">Reputation</span>
           </div>
           <div className="p-3 rounded-xl bg-[var(--surface-subtle)] border border-[var(--border)] text-center">
             <span className="text-base sm:text-lg font-bold font-mono text-[var(--text-primary)] block">
-              {(creator.totalFollowers / 1000).toFixed(0)}K
+              {creator.totalFollowers && creator.totalFollowers > 0
+                ? creator.totalFollowers >= 1000
+                  ? `${(creator.totalFollowers / 1000).toFixed(0)}K`
+                  : creator.totalFollowers
+                : '0'}
             </span>
             <span className="text-[11px] text-[var(--text-muted)] font-medium">Followers</span>
           </div>
           <div className="p-3 rounded-xl bg-[var(--surface-subtle)] border border-[var(--border)] text-center">
             <span className="text-base sm:text-lg font-bold font-mono text-emerald-500 block">
-              {creator.avgEngagement}%
+              {creator.avgEngagement > 0 ? `${creator.avgEngagement}%` : '0%'}
             </span>
             <span className="text-[11px] text-[var(--text-muted)] font-medium">Engagement</span>
           </div>
           <div className="p-3 rounded-xl bg-[var(--surface-subtle)] border border-[var(--border)] text-center">
             <span className="text-base sm:text-lg font-bold font-mono text-[var(--text-primary)] block">
-              12
+              {creator.pastCampaignsCount || 0}
             </span>
             <span className="text-[11px] text-[var(--text-muted)] font-medium">Campaigns</span>
           </div>
@@ -477,26 +483,40 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
           {/* Audited Commercial Ledger */}
           <div className="p-5 rounded-2xl surface-2 space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-xs font-semibold text-zinc-700 uppercase tracking-wider font-mono">
+              <h3 className="text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-wider font-mono">
                 Reputation Metrics
               </h3>
-              <span className="text-xs font-mono font-bold text-emerald-700 bg-emerald-50 border border-emerald-500/20 px-2.5 py-0.5 rounded-full">
-                96 Reputation
+              <span className="text-xs font-mono font-bold text-emerald-500 bg-emerald-500/10 border border-emerald-500/25 px-2.5 py-0.5 rounded-full">
+                {creator.reliabilityMetrics?.campaignPerformance && creator.reliabilityMetrics.campaignPerformance > 0
+                  ? `${Math.round(creator.reliabilityMetrics.campaignPerformance)} Reputation`
+                  : 'Pending Score'}
               </span>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
               <div className="p-3.5 rounded-xl surface-1">
-                <span className="text-[10px] text-zinc-500 uppercase font-mono block">On-Time Delivery</span>
-                <span className="text-lg font-bold text-zinc-900 font-mono mt-1 block">98%</span>
+                <span className="text-[10px] text-[var(--text-muted)] uppercase font-mono block">On-Time Delivery</span>
+                <span className="text-lg font-bold text-[var(--text-primary)] font-mono mt-1 block">
+                  {creator.reliabilityMetrics?.onTimeDelivery && creator.reliabilityMetrics.onTimeDelivery > 0
+                    ? `${creator.reliabilityMetrics.onTimeDelivery}%`
+                    : '—'}
+                </span>
               </div>
               <div className="p-3.5 rounded-xl surface-1">
-                <span className="text-[10px] text-zinc-500 uppercase font-mono block">Brief Compliance</span>
-                <span className="text-lg font-bold text-zinc-900 font-mono mt-1 block">99%</span>
+                <span className="text-[10px] text-[var(--text-muted)] uppercase font-mono block">Brief Compliance</span>
+                <span className="text-lg font-bold text-[var(--text-primary)] font-mono mt-1 block">
+                  {creator.reliabilityMetrics?.briefCompliance && creator.reliabilityMetrics.briefCompliance > 0
+                    ? `${creator.reliabilityMetrics.briefCompliance}%`
+                    : '—'}
+                </span>
               </div>
               <div className="p-3.5 rounded-xl surface-1">
-                <span className="text-[10px] text-zinc-500 uppercase font-mono block">Response Time</span>
-                <span className="text-lg font-bold text-zinc-900 font-mono mt-1 block">2.1h</span>
+                <span className="text-[10px] text-[var(--text-muted)] uppercase font-mono block">Response Reliability</span>
+                <span className="text-lg font-bold text-[var(--text-primary)] font-mono mt-1 block">
+                  {creator.reliabilityMetrics?.responseReliability && creator.reliabilityMetrics.responseReliability > 0
+                    ? `${creator.reliabilityMetrics.responseReliability}%`
+                    : '—'}
+                </span>
               </div>
             </div>
           </div>

@@ -19,7 +19,17 @@ import { Button } from '../ui/Button';
 export const CampaignTimeline: React.FC = () => {
   const { campaigns, activeCampaignId, setActiveCampaignId } = useAppState();
 
-  const activeCampaign = campaigns.find((c) => c.id === activeCampaignId) || campaigns[0];
+  const activeCampaign = campaigns.find((c) => c.id === activeCampaignId) || (campaigns.length > 0 ? campaigns[0] : null);
+
+  if (!activeCampaign) {
+    return (
+      <div className="p-8 text-center space-y-3 bg-[var(--surface-elevated)] rounded-2xl border border-[var(--border)] max-w-2xl mx-auto my-8">
+        <Clock className="w-8 h-8 text-[var(--text-muted)] mx-auto stroke-1" />
+        <p className="text-sm font-semibold text-[var(--text-primary)]">No Active Campaigns</p>
+        <p className="text-xs text-[var(--text-muted)]">Create a campaign to track production timeline milestones.</p>
+      </div>
+    );
+  }
 
   const timelineStages = [
     {

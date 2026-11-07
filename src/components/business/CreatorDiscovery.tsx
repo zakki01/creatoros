@@ -27,7 +27,6 @@ import { CreatorProfileModal } from './CreatorProfileModal';
 
 export const CreatorDiscovery: React.FC = () => {
   const { creators, campaigns, activeCampaignId, inviteCreator, outreachItems, authUser } = useAppState();
-  const isDemo = Boolean(authUser?.is_demo || authUser?.isDemo);
 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -38,7 +37,8 @@ export const CreatorDiscovery: React.FC = () => {
   const [activeModalCreator, setActiveModalCreator] = useState<Creator | null>(null);
   const [expandedWhyId, setExpandedWhyId] = useState<string | null>(null);
 
-  const activeCampaign = campaigns.find((c) => c.id === activeCampaignId) || campaigns[0] || (isDemo ? DEMO_CAMPAIGN : null);
+  const isDemo = Boolean((authUser?.is_demo || authUser?.isDemo) && import.meta.env.VITE_ENABLE_DEMO === 'true');
+  const activeCampaign = campaigns.find((c) => c.id === activeCampaignId) || (campaigns.length > 0 ? campaigns[0] : null) || (isDemo ? DEMO_CAMPAIGN : null);
 
   const categories = [
     'All',

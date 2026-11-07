@@ -77,7 +77,8 @@ export const OutreachWorkspace: React.FC = () => {
 
   const handleGenerateAiMessage = () => {
     if (!selectedItem) return;
-    const campaign = campaigns.find((c) => c.id === selectedItem.campaignId) || campaigns[0];
+    const campaign = campaigns.find((c) => c.id === selectedItem.campaignId) || (campaigns.length > 0 ? campaigns[0] : null);
+    if (!campaign) return;
     const generated = AiCampaignEngine.generateOutreachMessage(selectedItem.creator, campaign);
     setComposerMessage(generated);
   };

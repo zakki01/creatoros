@@ -30,10 +30,10 @@ export const ApproachCreatorModal: React.FC<ApproachCreatorModalProps> = ({
   const { campaigns, addOutreachItem, addNotification, triggerCelebration, workspace } = useAppState();
 
   const [selectedCampaignId, setSelectedCampaignId] = useState<string>(
-    campaigns[0]?.id || 'custom'
+    campaigns.length > 0 ? campaigns[0].id : 'custom'
   );
   const [briefTitle, setBriefTitle] = useState(
-    campaigns[0]?.name || 'Autumn Sneaker Capsule — Lookbook & Transitions'
+    campaigns.length > 0 ? campaigns[0].name : ''
   );
   const [proposedBudget, setProposedBudget] = useState<number>(creator.estimatedRate || 35000);
   const [targetDeadline, setTargetDeadline] = useState('2026-11-15');

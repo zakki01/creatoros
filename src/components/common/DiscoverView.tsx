@@ -222,7 +222,38 @@ export const DiscoverView: React.FC = () => {
       };
       setSelectedBrandModalData(brand);
     } else {
-      const creator = creators.find((c) => c.id === post.authorId) || creators[0];
+      const creator = creators.find((c) => c.id === post.authorId) || {
+        id: post.authorId,
+        name: post.authorName,
+        handle: post.authorHandle,
+        avatar: post.authorAvatar,
+        category: post.category || 'Creator',
+        location: post.location || '',
+        bio: '',
+        followers: '0',
+        totalFollowers: 0,
+        engagementRate: 0,
+        avgEngagement: 0,
+        verified: Boolean(post.authorVerified),
+        verifiedBadges: [],
+        languages: [],
+        platforms: [],
+        estimatedRate: 0,
+        rateCard: {},
+        reliabilityMetrics: {
+          onTimeDelivery: 0,
+          briefCompliance: 0,
+          communication: 0,
+          contentQuality: 0,
+          campaignPerformance: 0,
+          responseReliability: 0,
+        },
+        audienceBreakdown: { topLocations: [], ageSplit: [], genderSplit: { male: 0, female: 0, other: 0 } },
+        pastCampaignsCount: 0,
+        testimonials: [],
+        portfolio: [],
+        availability: 'Available' as const,
+      };
       setSelectedCreatorModal(creator);
     }
   };
@@ -231,7 +262,7 @@ export const DiscoverView: React.FC = () => {
     <div className="max-w-4xl mx-auto space-y-6 pb-20 animate-fade-in font-sans relative">
       {/* 1. MINIMAL SPATIAL DISCOVER TOP BAR */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 font-display">
+        <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-primary)] font-display">
           Discover
         </h1>
 

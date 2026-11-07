@@ -14,6 +14,7 @@ import {
   History,
   Tag,
   ExternalLink,
+  Clock,
 } from 'lucide-react';
 import { useAppState } from '../../context/StateContext';
 import { ContentSubmission, ContentStatus } from '../../types';
@@ -31,12 +32,12 @@ export const ContentApprovalWorkspace: React.FC = () => {
   } = useAppState();
 
   const [selectedSubmissionId, setSelectedSubmissionId] = useState<string>(
-    submissions[0]?.id || ''
+    submissions.length > 0 ? submissions[0].id : ''
   );
   const [feedbackNote, setFeedbackNote] = useState('');
   const [isRevisionModalOpen, setIsRevisionModalOpen] = useState(false);
 
-  const selectedSub = submissions.find((s) => s.id === selectedSubmissionId) || submissions[0];
+  const selectedSub = submissions.find((s) => s.id === selectedSubmissionId) || (submissions.length > 0 ? submissions[0] : null);
 
   const handleApprove = () => {
     if (!selectedSub) return;
@@ -100,6 +101,13 @@ export const ContentApprovalWorkspace: React.FC = () => {
       </div>
 
       {/* Main Workspace Layout */}
+      {submissions.length === 0 ? (
+        <div className="p-12 text-center bg-[var(--surface-elevated)] rounded-2xl border border-dashed border-[var(--border)] max-w-xl mx-auto space-y-3">
+          <Clock className="w-10 h-10 text-[var(--text-muted)] mx-auto stroke-1" />
+          <p className="text-base font-semibold text-[var(--text-primary)]">No Submissions in Queue</p>
+          <p className="text-xs text-[var(--text-muted)]">Creator submissions awaiting review and compliance checks will appear here.</p>
+        </div>
+      ) : selectedSub ? (
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Column: Submissions Queue List (4 cols) */}
         <div className="lg:col-span-4 space-y-3">
@@ -360,6 +368,7 @@ export const ContentApprovalWorkspace: React.FC = () => {
           </div>
         )}
       </div>
+      ) : null}
 
       {/* Revision History Modal */}
       {selectedSub && (

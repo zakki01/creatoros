@@ -59,9 +59,13 @@ export const CreatorProfileModal: React.FC<CreatorProfileModalProps> = ({
     isOwnProfile,
   });
 
-  const activeCampaign = campaigns.find((c) => c.id === activeCampaignId) || campaigns[0];
+  const activeCampaign = campaigns.find((c) => c.id === activeCampaignId) || (campaigns.length > 0 ? campaigns[0] : null);
 
   const handleInvite = () => {
+    if (!activeCampaign) {
+      alert('Please select or create an active campaign first.');
+      return;
+    }
     inviteCreator(creator.id, activeCampaign.id, creator.estimatedRate);
     setInvited(true);
     if (onInvite) onInvite(creator.id);

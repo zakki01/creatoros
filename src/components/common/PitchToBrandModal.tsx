@@ -54,9 +54,11 @@ export const PitchToBrandModal: React.FC<PitchToBrandModalProps> = ({
     'Sponsored Reel (4K 60fps)',
     '2x High-Engagement Stories',
   ]);
-  const [selectedPortfolio, setSelectedPortfolio] = useState<string[]>([
-    currentCreator.portfolio[0]?.title || 'Streetwear Macro Lookbook',
-  ]);
+  const [selectedPortfolio, setSelectedPortfolio] = useState<string[]>(
+    currentCreator.portfolio && currentCreator.portfolio.length > 0
+      ? [currentCreator.portfolio[0].title]
+      : []
+  );
 
   // File upload state & validation
   const [uploadedFile, setUploadedFile] = useState<{

@@ -40,17 +40,29 @@ export const CampaignDetail: React.FC<CampaignDetailProps> = ({
     triggerCelebration,
   } = useAppState();
 
-  const campaign = campaigns.find((c) => c.id === campaignId) || campaigns[0];
+  const campaign = campaigns.find((c) => c.id === campaignId) || null;
   const [activeTab, setActiveTab] = useState('overview');
 
   // Submissions for this campaign
-  const campaignSubmissions = submissions.filter((s) => s.campaignId === campaign.id);
+  const campaignSubmissions = campaign ? submissions.filter((s) => s.campaignId === campaign.id) : [];
   const [reviewFeedback, setReviewFeedback] = useState('');
 
   // Outreach for this campaign
-  const campaignOutreach = outreachItems.filter((o) => o.campaignId === campaign.id);
+  const campaignOutreach = campaign ? outreachItems.filter((o) => o.campaignId === campaign.id) : [];
   const [selectedOutreach, setSelectedOutreach] = useState<OutreachItem | null>(null);
   const [outreachReply, setOutreachReply] = useState('');
+
+  if (!campaign) {
+    return (
+      <div className="p-8 text-center space-y-3">
+        <p className="text-sm font-semibold text-[var(--text-primary)]">Campaign Not Found</p>
+        <p className="text-xs text-[var(--text-muted)]">This campaign does not exist or has been removed.</p>
+        <Button variant="secondary" size="sm" onClick={onBack}>
+          ← Back to Campaigns
+        </Button>
+      </div>
+    );
+  }
 
   const tabs = [
     { id: 'overview', label: 'Overview' },
