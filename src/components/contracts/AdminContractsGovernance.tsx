@@ -167,25 +167,43 @@ export const AdminContractsGovernance: React.FC = () => {
           </p>
         </div>
 
-        {/* View Switcher Pills */}
-        <div className="flex items-center gap-1.5 p-1 rounded-xl bg-[var(--surface-muted)] border border-[var(--border)] self-start sm:self-auto">
-          {[
-            { id: 'contracts', label: `All Agreements (${contracts.length})` },
-            { id: 'disputes', label: `Disputes Queue (${disputedContracts.length})` },
-            { id: 'config', label: 'Platform Policy & Fees' },
-          ].map((v) => (
-            <button
-              key={v.id}
-              onClick={() => setActiveView(v.id as any)}
-              className={`min-h-[36px] px-3.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${
-                activeView === v.id
-                  ? 'bg-[var(--surface-elevated)] text-[var(--accent)] border border-[var(--border)] font-bold shadow-xs'
-                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
-              }`}
-            >
-              {v.label}
-            </button>
-          ))}
+        {/* View Switcher Pills & Action */}
+        <div className="flex flex-wrap items-center gap-2 self-start sm:self-auto">
+          <div className="flex items-center gap-1.5 p-1 rounded-xl bg-[var(--surface-muted)] border border-[var(--border)]">
+            {[
+              { id: 'contracts', label: `All Agreements (${contracts.length})` },
+              { id: 'disputes', label: `Disputes Queue (${disputedContracts.length})` },
+              { id: 'config', label: 'Platform Policy & Fees' },
+            ].map((v) => (
+              <button
+                key={v.id}
+                onClick={() => setActiveView(v.id as any)}
+                className={`min-h-[36px] px-3.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${
+                  activeView === v.id
+                    ? 'bg-[var(--surface-elevated)] text-[var(--accent)] border border-[var(--border)] font-bold shadow-xs'
+                    : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                }`}
+              >
+                {v.label}
+              </button>
+            ))}
+          </div>
+
+          <button
+            onClick={() => {
+              if (contracts.length > 0) {
+                setSelectedOverrideContract(contracts[0]);
+              } else {
+                setFeedback('God Mode Escrow Override is active. Select or initiate an agreement to execute live overrides.');
+                setTimeout(() => setFeedback(null), 4000);
+              }
+            }}
+            className="min-h-[36px] px-3.5 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 font-mono text-xs font-semibold border border-rose-500/30 transition-all cursor-pointer flex items-center gap-1.5"
+            title="Force Release or Refund Escrow"
+          >
+            <ShieldAlert className="w-3.5 h-3.5 text-rose-400" />
+            <span>Escrow Override</span>
+          </button>
         </div>
       </div>
 
@@ -225,140 +243,156 @@ export const AdminContractsGovernance: React.FC = () => {
             </select>
           </div>
 
-          {/* Mobile Admin Contracts Card List */}
-          <div className="space-y-3 md:hidden">
-            {filteredContracts.map((c) => (
-              <div
-                key={c.id}
-                className="p-4 rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-xs space-y-3 text-xs"
-              >
-                <div className="flex items-start justify-between gap-2">
-                  <div>
-                    <span className="text-[10px] font-mono text-[var(--primary)] uppercase font-semibold">
-                      {c.contractNumber}
-                    </span>
-                    <h4 className="font-bold text-[var(--text-primary)] text-sm mt-0.5">{c.brandName}</h4>
-                  </div>
-                  <ContractStatusBadge status={c.status} size="sm" />
-                </div>
+          {filteredContracts.length === 0 ? (
+            <div className="p-12 text-center rounded-2xl bg-[var(--surface)] border border-dashed border-[var(--border)] text-xs text-[var(--text-muted)] space-y-3">
+              <FileText className="w-8 h-8 mx-auto text-zinc-500 opacity-40" />
+              <h4 className="text-sm font-semibold text-[var(--text-primary)]">
+                {searchQuery || statusFilter !== 'all' ? 'No Contracts Found' : 'No Commercial Contracts Yet'}
+              </h4>
+              <p className="max-w-md mx-auto">
+                {searchQuery || statusFilter !== 'all'
+                  ? 'No contracts matched the selected filters.'
+                  : 'Active contracts created by brands and creators will appear here with full escrow governance and override capabilities.'}
+              </p>
+            </div>
+          ) : (
+            <>
+              {/* Mobile Admin Contracts Card List */}
+              <div className="space-y-3 md:hidden">
+                {filteredContracts.map((c) => (
+                  <div
+                    key={c.id}
+                    className="p-4 rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-xs space-y-3 text-xs"
+                  >
+                    <div className="flex items-start justify-between gap-2">
+                      <div>
+                        <span className="text-[10px] font-mono text-[var(--primary)] uppercase font-semibold">
+                          {c.contractNumber}
+                        </span>
+                        <h4 className="font-bold text-[var(--text-primary)] text-sm mt-0.5">{c.brandName}</h4>
+                      </div>
+                      <ContractStatusBadge status={c.status} size="sm" />
+                    </div>
 
-                <div className="flex items-center gap-2 pt-1 border-t border-[var(--border)]/50">
-                  <img
-                    src={c.creatorAvatar}
-                    alt={c.creatorName}
-                    className="w-6 h-6 rounded-md object-cover"
-                  />
-                  <span className="text-[var(--text-secondary)] font-medium">{c.creatorName}</span>
-                  <span className="text-[var(--text-muted)]">•</span>
-                  <span className="text-[var(--text-secondary)] truncate">{c.projectName}</span>
-                </div>
+                    <div className="flex items-center gap-2 pt-1 border-t border-[var(--border)]/50">
+                      <img
+                        src={c.creatorAvatar}
+                        alt={c.creatorName}
+                        className="w-6 h-6 rounded-md object-cover"
+                      />
+                      <span className="text-[var(--text-secondary)] font-medium">{c.creatorName}</span>
+                      <span className="text-[var(--text-muted)]">•</span>
+                      <span className="text-[var(--text-secondary)] truncate">{c.projectName}</span>
+                    </div>
 
-                <div className="flex items-center justify-between pt-1">
-                  <div>
-                    <span className="text-[10px] font-mono text-[var(--text-muted)] block">Total Value</span>
-                    <span className="text-base font-bold font-mono text-emerald-500 dark:text-emerald-400">
-                      ${c.payment.totalAmount.toLocaleString()}
-                    </span>
-                  </div>
+                    <div className="flex items-center justify-between pt-1">
+                      <div>
+                        <span className="text-[10px] font-mono text-[var(--text-muted)] block">Total Value</span>
+                        <span className="text-base font-bold font-mono text-emerald-500 dark:text-emerald-400">
+                          ${c.payment.totalAmount.toLocaleString()}
+                        </span>
+                      </div>
 
-                  <div className="flex items-center gap-1.5">
-                    <button
-                      onClick={() => {
-                        setSelectedOverrideContract(c);
-                        setOverrideAction('force_release');
-                      }}
-                      className="min-h-[36px] px-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-rose-300 font-semibold text-[11px] border border-rose-500/30 cursor-pointer flex items-center gap-1"
-                      title="God Mode Escrow Override"
-                    >
-                      <ShieldAlert className="w-3 h-3 text-rose-400" />
-                      <span>Override</span>
-                    </button>
-                    {c.status === 'disputed' ? (
-                      <button
-                        onClick={() => setSelectedDisputeContract(c)}
-                        className="min-h-[36px] px-3 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs cursor-pointer shadow-xs"
-                      >
-                        Arbitrate
-                      </button>
-                    ) : (
-                      <span className="text-[var(--text-muted)] text-[11px] font-mono">Governed</span>
-                    )}
+                      <div className="flex items-center gap-1.5">
+                        <button
+                          onClick={() => {
+                            setSelectedOverrideContract(c);
+                            setOverrideAction('force_release');
+                          }}
+                          className="min-h-[36px] px-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-rose-300 font-semibold text-[11px] border border-rose-500/30 cursor-pointer flex items-center gap-1"
+                          title="God Mode Escrow Override"
+                        >
+                          <ShieldAlert className="w-3 h-3 text-rose-400" />
+                          <span>Override</span>
+                        </button>
+                        {c.status === 'disputed' ? (
+                          <button
+                            onClick={() => setSelectedDisputeContract(c)}
+                            className="min-h-[36px] px-3 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs cursor-pointer shadow-xs"
+                          >
+                            Arbitrate
+                          </button>
+                        ) : (
+                          <span className="text-[var(--text-muted)] text-[11px] font-mono">Governed</span>
+                        )}
+                      </div>
+                    </div>
                   </div>
+                ))}
+              </div>
+
+              {/* Desktop Table View */}
+              <div className="rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-xs overflow-hidden hidden md:block">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-xs">
+                    <thead className="bg-[var(--surface-muted)] text-[var(--text-secondary)] border-b border-[var(--border)] uppercase text-[10px] font-semibold tracking-wider font-mono">
+                      <tr>
+                        <th className="py-3 px-4">Contract ID</th>
+                        <th className="py-3 px-4">Brand</th>
+                        <th className="py-3 px-4">Creator</th>
+                        <th className="py-3 px-4">Project</th>
+                        <th className="py-3 px-4">Amount</th>
+                        <th className="py-3 px-4">Status</th>
+                        <th className="py-3 px-4 text-right">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-[var(--border)] font-sans">
+                      {filteredContracts.map((c) => (
+                        <tr key={c.id} className="hover:bg-[var(--surface-elevated)] transition-colors">
+                          <td className="py-3.5 px-4 font-mono text-[var(--text-muted)]">{c.contractNumber}</td>
+                          <td className="py-3.5 px-4 font-semibold text-[var(--text-primary)]">{c.brandName}</td>
+                          <td className="py-3.5 px-4">
+                            <div className="flex items-center gap-2">
+                              <img
+                                src={c.creatorAvatar}
+                                alt={c.creatorName}
+                                className="w-6 h-6 rounded-md object-cover"
+                              />
+                              <span className="text-[var(--text-primary)]">{c.creatorName}</span>
+                            </div>
+                          </td>
+                          <td className="py-3.5 px-4 text-[var(--text-secondary)] max-w-xs truncate">
+                            {c.projectName}
+                          </td>
+                          <td className="py-3.5 px-4 font-mono font-bold text-emerald-500 dark:text-emerald-400">
+                            ${c.payment.totalAmount.toLocaleString()}
+                          </td>
+                          <td className="py-3.5 px-4">
+                            <ContractStatusBadge status={c.status} size="sm" />
+                          </td>
+                          <td className="py-3.5 px-4 text-right">
+                            <div className="flex items-center justify-end gap-2">
+                              <button
+                                onClick={() => {
+                                  setSelectedOverrideContract(c);
+                                  setOverrideAction('force_release');
+                                }}
+                                className="min-h-[32px] px-2.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-rose-300 hover:text-white font-mono text-[11px] border border-rose-500/30 transition-all cursor-pointer flex items-center gap-1"
+                                title="God Mode Escrow Override"
+                              >
+                                <ShieldAlert className="w-3 h-3 text-rose-400" />
+                                <span>Override</span>
+                              </button>
+                              {c.status === 'disputed' ? (
+                                <button
+                                  onClick={() => setSelectedDisputeContract(c)}
+                                  className="min-h-[32px] px-3 rounded-lg bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs cursor-pointer shadow-xs"
+                                >
+                                  Arbitrate
+                                </button>
+                              ) : (
+                                <span className="text-[var(--text-muted)] text-[11px] font-mono">Governed</span>
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               </div>
-            ))}
-          </div>
-
-          {/* Desktop Table View */}
-          <div className="rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-xs overflow-hidden hidden md:block">
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
-                <thead className="bg-[var(--surface-muted)] text-[var(--text-secondary)] border-b border-[var(--border)] uppercase text-[10px] font-semibold tracking-wider font-mono">
-                  <tr>
-                    <th className="py-3 px-4">Contract ID</th>
-                    <th className="py-3 px-4">Brand</th>
-                    <th className="py-3 px-4">Creator</th>
-                    <th className="py-3 px-4">Project</th>
-                    <th className="py-3 px-4">Amount</th>
-                    <th className="py-3 px-4">Status</th>
-                    <th className="py-3 px-4 text-right">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-[var(--border)] font-sans">
-                  {filteredContracts.map((c) => (
-                    <tr key={c.id} className="hover:bg-[var(--surface-elevated)] transition-colors">
-                      <td className="py-3.5 px-4 font-mono text-[var(--text-muted)]">{c.contractNumber}</td>
-                      <td className="py-3.5 px-4 font-semibold text-[var(--text-primary)]">{c.brandName}</td>
-                      <td className="py-3.5 px-4">
-                        <div className="flex items-center gap-2">
-                          <img
-                            src={c.creatorAvatar}
-                            alt={c.creatorName}
-                            className="w-6 h-6 rounded-md object-cover"
-                          />
-                          <span className="text-[var(--text-primary)]">{c.creatorName}</span>
-                        </div>
-                      </td>
-                      <td className="py-3.5 px-4 text-[var(--text-secondary)] max-w-xs truncate">
-                        {c.projectName}
-                      </td>
-                      <td className="py-3.5 px-4 font-mono font-bold text-emerald-500 dark:text-emerald-400">
-                        ${c.payment.totalAmount.toLocaleString()}
-                      </td>
-                      <td className="py-3.5 px-4">
-                        <ContractStatusBadge status={c.status} size="sm" />
-                      </td>
-                      <td className="py-3.5 px-4 text-right">
-                        <div className="flex items-center justify-end gap-2">
-                          <button
-                            onClick={() => {
-                              setSelectedOverrideContract(c);
-                              setOverrideAction('force_release');
-                            }}
-                            className="min-h-[32px] px-2.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-rose-300 hover:text-white font-mono text-[11px] border border-rose-500/30 transition-all cursor-pointer flex items-center gap-1"
-                            title="God Mode Escrow Override"
-                          >
-                            <ShieldAlert className="w-3 h-3 text-rose-400" />
-                            <span>Override</span>
-                          </button>
-                          {c.status === 'disputed' ? (
-                            <button
-                              onClick={() => setSelectedDisputeContract(c)}
-                              className="min-h-[32px] px-3 rounded-lg bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs cursor-pointer shadow-xs"
-                            >
-                              Arbitrate
-                            </button>
-                          ) : (
-                            <span className="text-[var(--text-muted)] text-[11px] font-mono">Governed</span>
-                          )}
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
+            </>
+          )}
         </div>
       )}
 

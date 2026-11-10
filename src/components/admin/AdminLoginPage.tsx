@@ -28,8 +28,8 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({
     window.location.href = '/';
   },
 }) => {
-  const [email, setEmail] = useState('alex.admin@creatoros.ai');
-  const [password, setPassword] = useState('admin123456');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [twoFactorCode, setTwoFactorCode] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);

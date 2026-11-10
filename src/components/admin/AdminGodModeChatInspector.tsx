@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   ShieldAlert,
   MessageSquare,
@@ -32,10 +32,38 @@ export const AdminGodModeChatInspector: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'conversations' | 'flagged'>('conversations');
   const [searchQuery, setSearchQuery] = useState('');
   const [feedback, setFeedback] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const reloadData = () => {
-    setConversations(messagingService.getAllConversationsForensic());
-    setFeedback('Forensic chat logs refreshed.');
+  useEffect(() => {
+    let mounted = true;
+    async function loadRealConversations() {
+      setIsLoading(true);
+      try {
+        const liveConvs = await messagingService.fetchForensicConversations();
+        if (mounted && liveConvs) {
+          setConversations(liveConvs);
+          if (liveConvs.length > 0 && !selectedConversationId) {
+            setSelectedConversationId(liveConvs[0].id);
+          }
+        }
+      } catch (err) {
+        console.warn('Could not load forensic conversations:', err);
+      } finally {
+        if (mounted) setIsLoading(false);
+      }
+    }
+    loadRealConversations();
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  const reloadData = async () => {
+    setIsLoading(true);
+    const live = await messagingService.fetchForensicConversations();
+    setConversations(live);
+    setIsLoading(false);
+    setFeedback('Forensic chat logs synchronized with live database.');
     setTimeout(() => setFeedback(null), 3000);
   };
 
@@ -206,7 +234,13 @@ export const AdminGodModeChatInspector: React.FC = () => {
             </div>
 
             <div className="space-y-2 max-h-[520px] overflow-y-auto pr-1">
-              {filteredConversations.map((c) => {
+              {filteredConversations.length === 0 ? (
+                <div className="p-8 text-center rounded-2xl border border-dashed border-[var(--border)] text-xs text-[var(--text-muted)] space-y-2">
+                  <MessageSquare className="w-5 h-5 mx-auto text-zinc-500 opacity-60" />
+                  <p>{searchQuery ? 'No conversations matching query.' : 'No platform conversations yet.'}</p>
+                </div>
+              ) : (
+                filteredConversations.map((c) => {
                 const isSelected = c.id === selectedConversation?.id;
                 const msgs = messagingService.getConversationForensicMessages(c.id);
                 const hasFlags = msgs.some((m) => MessagingService.scanForCircumvention(m.content).flagged);
@@ -262,7 +296,7 @@ export const AdminGodModeChatInspector: React.FC = () => {
                     </p>
                   </button>
                 );
-              })}
+              }))}
             </div>
           </div>
 

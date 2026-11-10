@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Activity,
   AlertTriangle,
@@ -22,6 +22,7 @@ import {
   Zap,
 } from 'lucide-react';
 import { useAppState } from '../../context/StateContext';
+import { supabase } from '../../services/supabaseClient';
 
 interface AdminOverviewViewProps {
   onNavigateTab: (tabId: string) => void;
@@ -42,10 +43,36 @@ export const AdminOverviewView: React.FC<AdminOverviewViewProps> = ({ onNavigate
     logAdminAction,
   } = useAppState();
 
-  const totalUsers = creators.length + 8; // Creators + Brand entities + Admins
+  const [realUserCount, setRealUserCount] = useState<number | null>(null);
+  const [realCampaignCount, setRealCampaignCount] = useState<number | null>(null);
+  const [realPostCount, setRealPostCount] = useState<number | null>(null);
+  const [realContractCount, setRealContractCount] = useState<number | null>(null);
+
+  useEffect(() => {
+    async function fetchCounts() {
+      try {
+        const { count: users } = await supabase.from('profiles').select('*', { count: 'exact', head: true });
+        if (users !== null && users !== undefined) setRealUserCount(users);
+
+        const { count: camps } = await supabase.from('campaigns').select('*', { count: 'exact', head: true });
+        if (camps !== null && camps !== undefined) setRealCampaignCount(camps);
+
+        const { count: posts } = await supabase.from('posts').select('*', { count: 'exact', head: true });
+        if (posts !== null && posts !== undefined) setRealPostCount(posts);
+
+        const { count: contracts } = await supabase.from('contracts').select('*', { count: 'exact', head: true });
+        if (contracts !== null && contracts !== undefined) setRealContractCount(contracts);
+      } catch (e) {
+        console.warn('Failed to fetch real database counts:', e);
+      }
+    }
+    fetchCounts();
+  }, []);
+
+  const totalUsers = realUserCount !== null ? realUserCount : creators.length;
   const totalCreators = creators.length;
   const verifiedCreators = creators.filter((c) => c.verified).length;
-  const activeCampaigns = campaigns.filter((c) => c.status === 'Active');
+  const activeCampaigns = realCampaignCount !== null ? campaigns.filter((c) => c.status === 'Active') : campaigns.filter((c) => c.status === 'Active');
   const totalEscrowSecured = campaigns.reduce((sum, c) => sum + (c.budgetTotal || c.budget || 0), 0);
 
   const reelPosts = socialPosts.filter((p) => p.contentType === 'reel');

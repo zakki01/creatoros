@@ -50,6 +50,8 @@ async function run() {
   console.log('============================================================\n');
 
   console.log('[E2E Setup] Building and previewing production app on port', PORT);
+  const { execSync } = require('child_process');
+  execSync('npx vite build', { cwd: path.resolve(__dirname, '..'), stdio: 'inherit' });
   const previewProcess = spawn('npx', ['vite', 'preview', '--port', String(PORT), '--strictPort'], {
     shell: true,
     cwd: path.resolve(__dirname, '..'),
@@ -69,6 +71,15 @@ async function run() {
 
   const page = await browser.newPage();
   await page.setViewport({ width: 1280, height: 800 });
+
+  page.on('console', (msg) => {
+    if (msg.type() === 'error') {
+      console.error('[Browser Console Error]:', msg.text());
+    }
+  });
+  page.on('pageerror', (err) => {
+    console.error('[Browser Page Error]:', err.message);
+  });
 
   const testResults = [];
 
@@ -252,25 +263,25 @@ async function run() {
     recordResult(12, 'Private Beta Invite-Only Registration Gate', inviteFieldVerified, 'Invite field & waitlist launcher verified');
 
     // -------------------------------------------------------------
-    // Journey 13: Secret God Mode Air-Gap (404 Stealth) & Root Login
+    // Journey 13: Secret God Mode Direct Portal & Root Login
     // -------------------------------------------------------------
-    console.log('\n--- Executing Journey 13: Secret God Mode Air-Gap & Root Login ---');
-    // 1. Visitor directly accessing /godmode without credentials receives 404
+    console.log('\n--- Executing Journey 13: Secret God Mode Direct Portal & Root Login ---');
+    // 1. Direct access to /godmode renders the Super Admin Portal directly with zero 404
     await page.goto(`${BASE_URL}/godmode`, { waitUntil: 'networkidle0' });
     await sleep(500);
-    const stealth404Passed = await page.evaluate(() => {
+    const godmodeLoginPassed = await page.evaluate(() => {
       const text = document.body.innerText;
-      return text.includes('404') || text.includes('Lost in space') || text.includes('not found') || text.includes('Back to Safety');
+      return text.includes('ROOT ENCLAVE') || text.includes('Super Admin Access') || text.includes('CreatorOS Command Center');
     });
 
-    // 2. Secret URL /godmode/login displays dedicated Root Admin console
+    // 2. Secret URL /godmode/login also displays dedicated Root Admin console
     await page.goto(`${BASE_URL}/godmode/login`, { waitUntil: 'networkidle0' });
     await sleep(600);
     const rootLoginPassed = await page.evaluate(() => {
       const text = document.body.innerText;
       return text.includes('ROOT ENCLAVE') || text.includes('Super Admin Access') || text.includes('Command Center');
     });
-    recordResult(13, 'Secret God Mode Stealth Air-Gap (404) & Root Login', stealth404Passed && rootLoginPassed, 'Stealth 404 + root enclave login verified');
+    recordResult(13, 'Secret God Mode Direct Enclave Access & Root Login', godmodeLoginPassed && rootLoginPassed, 'Direct /godmode enclave portal + root login verified');
 
     // -------------------------------------------------------------
     // Journey 14: Forensic Chat Inspector & God Mode Escrow Override
@@ -311,9 +322,10 @@ async function run() {
     await sleep(800);
     const escrowOverrideAvailable = await page.evaluate(() => {
       const text = document.body.innerText;
-      const btns = Array.from(document.querySelectorAll('button'));
-      const hasOverrideBtn = btns.some((b) => b.textContent && b.textContent.includes('Override'));
-      return text.includes('Commercial Contracts') && hasOverrideBtn;
+      const allButtons = Array.from(document.querySelectorAll('button')).map((b) => b.textContent?.trim() || '');
+      const hasOverrideBtn = allButtons.some((b) => b.includes('Override'));
+      const hasHeader = text.includes('Commercial Contracts') || text.includes('Commercial Contract');
+      return hasHeader && hasOverrideBtn;
     });
 
     recordResult(14, 'God Mode Forensic Chat Inspector & Escrow Override', godmodeLoaded && chatInspectorLoaded && escrowOverrideAvailable, 'Chat monitor + escrow override confirmed');

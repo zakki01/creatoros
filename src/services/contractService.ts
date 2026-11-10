@@ -801,19 +801,12 @@ export class ContractService {
         this.contracts = JSON.parse(saved);
         return this.contracts!;
       } catch (e) {
-        console.error('Failed to parse contracts from localStorage, using initial mock data', e);
+        console.error('Failed to parse contracts from localStorage', e);
       }
     }
-    const sessionRaw = typeof window !== 'undefined' ? localStorage.getItem('creatoros_auth_session_v1') : null;
-    const adminSessionRaw = typeof window !== 'undefined' ? localStorage.getItem('creatoros_admin_session_v1') : null;
-    const session = sessionRaw ? JSON.parse(sessionRaw) : null;
-    const adminSession = adminSessionRaw ? JSON.parse(adminSessionRaw) : null;
-    const isDemo = Boolean(session?.is_demo || session?.isDemo || adminSession?.role === 'super_admin');
-    if (isDemo || (!saved && adminSession)) {
+    // In test environment only: seed test fixture
+    if (typeof window !== 'undefined' && import.meta.env?.MODE === 'test') {
       this.contracts = [DEMO_CONTRACT];
-      try {
-        localStorage.setItem(STORAGE_CONTRACTS_KEY, JSON.stringify(this.contracts));
-      } catch {}
       return this.contracts;
     }
     this.contracts = [];

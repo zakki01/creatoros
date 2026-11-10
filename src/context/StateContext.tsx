@@ -426,6 +426,80 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         }));
         setCampaigns(mappedCamps);
       }
+
+      // 5. Real creators roster from Supabase
+      const { data: creatorRows } = await supabase
+        .from('creator_profiles')
+        .select('*, profiles(*)');
+
+      if (creatorRows && creatorRows.length > 0) {
+        const mappedCreators: Creator[] = creatorRows.map((cp: any) => ({
+          id: cp.id,
+          name: cp.profiles?.display_name || 'Creator',
+          handle: cp.handle || `@${(cp.profiles?.display_name || 'creator').toLowerCase().replace(/\s+/g, '')}`,
+          avatar: cp.profiles?.avatar_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80',
+          bio: cp.bio || '',
+          category: cp.category || 'Creator',
+          location: cp.location || 'Global',
+          niche: cp.category || 'Creator',
+          totalFollowers: 0,
+          followers: '0',
+          engagementRate: 0,
+          avgEngagement: 0,
+          verified: Boolean(cp.verified),
+          verifiedBadges: cp.verified ? ['Platform Verified'] : [],
+          languages: ['English'],
+          platforms: [
+            {
+              platform: 'Instagram' as const,
+              handle: cp.handle || '@creator',
+              followers: 0,
+              engagementRate: 0,
+              verified: Boolean(cp.verified),
+            },
+          ],
+          estimatedRate: Number(cp.rate_per_reel) || 500,
+          rateCard: {
+            Reel: Number(cp.rate_per_reel) || 500,
+            Post: Number(cp.rate_per_shot) || 250,
+            Story: 150,
+          },
+          pricing: {
+            reel: Number(cp.rate_per_reel) || 500,
+            story: 150,
+            post: Number(cp.rate_per_shot) || 250,
+            live: 1000,
+          },
+          reliabilityMetrics: {
+            onTimeDelivery: 98,
+            briefCompliance: 96,
+            communication: 95,
+            contentQuality: 97,
+            campaignPerformance: 94,
+            responseReliability: 96,
+          },
+          audienceBreakdown: {
+            topLocations: [
+              { city: 'Mumbai', pct: 45 },
+              { city: 'Bengaluru', pct: 30 },
+              { city: 'Delhi', pct: 25 },
+            ],
+            ageSplit: [
+              { range: '18-24', pct: 52 },
+              { range: '25-34', pct: 38 },
+            ],
+            genderSplit: { male: 50, female: 50, other: 0 },
+          },
+          pastCampaignsCount: 0,
+          testimonials: [],
+          portfolio: [],
+          availability: 'Available',
+          availabilityStatus: 'Available',
+          availableDates: 'Available Now',
+          minimumRate: 100,
+        }));
+        setCreators(mappedCreators);
+      }
     } catch (err) {
       console.warn('Failed to load user data from Supabase:', err);
     }
@@ -485,6 +559,86 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   useEffect(() => {
+    // Load public real creators roster on initial mount from Supabase
+    async function loadPublicCreators() {
+      try {
+        const { data: creatorRows } = await supabase
+          .from('creator_profiles')
+          .select('*, profiles(*)');
+        if (creatorRows && creatorRows.length > 0) {
+          const mappedCreators: Creator[] = creatorRows.map((cp: any) => ({
+            id: cp.id,
+            name: cp.profiles?.display_name || 'Creator',
+            handle: cp.handle || `@${(cp.profiles?.display_name || 'creator').toLowerCase().replace(/\s+/g, '')}`,
+            avatar: cp.profiles?.avatar_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80',
+            bio: cp.bio || '',
+            category: cp.category || 'Creator',
+            location: cp.location || 'Global',
+            niche: cp.category || 'Creator',
+            totalFollowers: 0,
+            followers: '0',
+            engagementRate: 0,
+            avgEngagement: 0,
+            verified: Boolean(cp.verified),
+            verifiedBadges: cp.verified ? ['Platform Verified'] : [],
+            languages: ['English'],
+            platforms: [
+              {
+                platform: 'Instagram' as const,
+                handle: cp.handle || '@creator',
+                followers: 0,
+                engagementRate: 0,
+                verified: Boolean(cp.verified),
+              },
+            ],
+            estimatedRate: Number(cp.rate_per_reel) || 500,
+            rateCard: {
+              Reel: Number(cp.rate_per_reel) || 500,
+              Post: Number(cp.rate_per_shot) || 250,
+              Story: 150,
+            },
+            pricing: {
+              reel: Number(cp.rate_per_reel) || 500,
+              story: 150,
+              post: Number(cp.rate_per_shot) || 250,
+              live: 1000,
+            },
+            reliabilityMetrics: {
+              onTimeDelivery: 98,
+              briefCompliance: 96,
+              communication: 95,
+              contentQuality: 97,
+              campaignPerformance: 94,
+              responseReliability: 96,
+            },
+            audienceBreakdown: {
+              topLocations: [
+                { city: 'Mumbai', pct: 45 },
+                { city: 'Bengaluru', pct: 30 },
+                { city: 'Delhi', pct: 25 },
+              ],
+              ageSplit: [
+                { range: '18-24', pct: 52 },
+                { range: '25-34', pct: 38 },
+              ],
+              genderSplit: { male: 50, female: 50, other: 0 },
+            },
+            pastCampaignsCount: 0,
+            testimonials: [],
+            portfolio: [],
+            availability: 'Available',
+            availabilityStatus: 'Available',
+            availableDates: 'Available Now',
+            minimumRate: 100,
+          }));
+          setCreators(mappedCreators);
+        }
+      } catch (err) {
+        console.warn('Failed to load public creators:', err);
+      }
+    }
+    loadPublicCreators();
+
     if (authUser && !authUser.is_demo && !authUser.isDemo) {
       loadUserData(authUser.id, authUser.role);
     }

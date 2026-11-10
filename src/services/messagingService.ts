@@ -65,8 +65,8 @@ export const INITIAL_MESSAGES: Record<string, DirectMessage[]> = {
 };
 
 export class MessagingService {
-  private conversations: Conversation[] = [...INITIAL_CONVERSATIONS];
-  private messages: Record<string, DirectMessage[]> = { ...INITIAL_MESSAGES };
+  private conversations: Conversation[] = [];
+  private messages: Record<string, DirectMessage[]> = {};
   private flaggedMessages: Array<{
     id: string;
     conversationId: string;
@@ -77,6 +77,13 @@ export class MessagingService {
     severity: string;
     timestamp: string;
   }> = [];
+
+  constructor(seedDemo: boolean = (typeof window !== 'undefined' && import.meta.env?.MODE === 'test')) {
+    if (seedDemo) {
+      this.conversations = [...INITIAL_CONVERSATIONS];
+      this.messages = { ...INITIAL_MESSAGES };
+    }
+  }
 
   getConversations(): Conversation[] {
     return this.conversations;
@@ -526,6 +533,75 @@ export class MessagingService {
    */
   getAllConversationsForensic(): Conversation[] {
     return [...this.conversations];
+  }
+
+  /**
+   * Super Admin God Mode: asynchronously queries real conversations across the entire platform from Supabase
+   */
+  async fetchForensicConversations(): Promise<Conversation[]> {
+    try {
+      const { data: convRows, error } = await supabase
+        .from('conversations')
+        .select(`
+          id,
+          participant_one,
+          participant_two,
+          last_message_at,
+          created_at
+        `)
+        .order('last_message_at', { ascending: false });
+
+      if (error || !convRows || convRows.length === 0) {
+        return this.conversations;
+      }
+
+      const results: Conversation[] = [];
+      for (const row of convRows) {
+        const { data: p1 } = await supabase
+          .from('profiles')
+          .select('id, display_name, avatar_url, role')
+          .eq('id', row.participant_one)
+          .maybeSingle();
+
+        const { data: p2 } = await supabase
+          .from('profiles')
+          .select('id, display_name, avatar_url, role')
+          .eq('id', row.participant_two)
+          .maybeSingle();
+
+        const { data: lastMsg } = await supabase
+          .from('messages')
+          .select('content, message_type, attachment_url, created_at, is_read, sender_id')
+          .eq('conversation_id', row.id)
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .maybeSingle();
+
+        const name = `${p1?.display_name || 'Participant 1'} ↔ ${p2?.display_name || 'Participant 2'}`;
+
+        results.push({
+          id: row.id,
+          participantId: row.participant_two,
+          participantName: name,
+          participantHandle: `@${(p2?.display_name || 'user').toLowerCase().replace(/\s+/g, '')}`,
+          participantAvatar: p2?.avatar_url || '',
+          participantRole: (p2?.role as any) || 'creator',
+          participantBadge: p2?.role === 'business' ? 'Brand Partner' : 'Creator',
+          lastMessage: lastMsg?.content || 'Conversation initiated',
+          lastTimestamp: lastMsg?.created_at
+            ? new Date(lastMsg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            : new Date(row.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          unreadCount: 0,
+          isOnline: true,
+        });
+      }
+
+      this.conversations = results;
+      return results;
+    } catch (e) {
+      console.warn('Failed to fetch forensic conversations from Supabase:', e);
+      return this.conversations;
+    }
   }
 
   /**

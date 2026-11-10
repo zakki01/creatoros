@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Users,
   Search,
@@ -13,98 +13,90 @@ import {
   Sparkles,
   ExternalLink,
   ChevronDown,
+  RefreshCw,
+  Loader2,
 } from 'lucide-react';
 import { useAppState } from '../../context/StateContext';
+import { supabase } from '../../services/supabaseClient';
+
+export interface UnifiedUserAccount {
+  id: string;
+  name: string;
+  handle: string;
+  email: string;
+  role: 'creator' | 'business' | 'admin';
+  verified: boolean;
+  category: string;
+  location: string;
+  followers: string;
+  engagement: string;
+  avatar: string;
+  createdAt: string;
+}
 
 export const AdminUsersView: React.FC = () => {
   const {
-    creators,
     suspendedUserIds,
     toggleUserSuspension,
-    toggleCreatorVerification,
     logAdminAction,
     triggerCelebration,
   } = useAppState();
 
+  const [realAccounts, setRealAccounts] = useState<UnifiedUserAccount[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [roleFilter, setRoleFilter] = useState<'all' | 'creator' | 'business' | 'admin'>('all');
   const [statusFilter, setStatusFilter] = useState<'all' | 'verified' | 'suspended'>('all');
+  const [feedback, setFeedback] = useState<string | null>(null);
 
-  // Hardcoded known platform accounts to supplement creators roster
-  const platformBrands = [
-    {
-      id: 'brand-aura',
-      name: 'Aura Streetwear Co.',
-      handle: '@aurastreetwear',
-      email: 'partnerships@aurastreetwear.io',
-      role: 'business' as const,
-      verified: true,
-      category: 'Streetwear & Apparel',
-      location: 'Mumbai, India',
-      followers: '48.2K',
-      engagement: '6.4%',
-      avatar: 'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=150&auto=format&fit=crop&q=80',
-    },
-    {
-      id: 'brand-luxe',
-      name: 'Luxe Audio Tech',
-      handle: '@luxeaudio',
-      email: 'creator-ops@luxeaudio.com',
-      role: 'business' as const,
-      verified: true,
-      category: 'Consumer Electronics',
-      location: 'Bengaluru, India',
-      followers: '82.1K',
-      engagement: '4.9%',
-      avatar: 'https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=150&auto=format&fit=crop&q=80',
-    },
-    {
-      id: 'brand-zenith',
-      name: 'Zenith Organic Botanicals',
-      handle: '@zenithbeauty',
-      email: 'marketing@zenithbotanicals.in',
-      role: 'business' as const,
-      verified: false,
-      category: 'Clean Beauty & Wellness',
-      location: 'Delhi NCR, India',
-      followers: '19.4K',
-      engagement: '8.1%',
-      avatar: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=150&auto=format&fit=crop&q=80',
-    },
-  ];
+  const loadRealAccounts = async () => {
+    setIsLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*, creator_profiles(*), brand_profiles(*)');
 
-  const platformAdmins = [
-    {
-      id: 'admin-root',
-      name: 'Super Admin Operator',
-      handle: '@admin.root',
-      email: 'security-root@creatoros.internal',
-      role: 'admin' as const,
-      verified: true,
-      category: 'System Infrastructure',
-      location: 'Global Control Plane',
-      followers: 'Internal',
-      engagement: 'N/A',
-      avatar: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=150&auto=format&fit=crop&q=80',
-    },
-  ];
+      if (data && data.length > 0) {
+        const mapped: UnifiedUserAccount[] = data.map((p: any) => {
+          const isBrand = p.role === 'business';
+          const sub = isBrand ? p.brand_profiles : p.creator_profiles;
+          const name = isBrand ? (sub?.company_name || p.display_name) : p.display_name;
+          const handle = sub?.handle || `@${name.toLowerCase().replace(/[^a-z0-9_]/g, '')}`;
+          const category = isBrand ? (sub?.industry || 'Brand Partner') : (sub?.category || 'Creator');
+          const location = sub?.location || 'Global';
+          const verified = Boolean(sub?.verified);
 
-  // Map creators to unified account structure
-  const creatorAccounts = creators.map((c) => ({
-    id: c.id,
-    name: c.name,
-    handle: c.handle,
-    email: `${c.handle.replace('@', '')}@creators.creatoros.internal`,
-    role: 'creator' as const,
-    verified: c.verified,
-    category: c.category,
-    location: c.location,
-    followers: c.followers,
-    engagement: c.engagementRate,
-    avatar: c.avatar,
-  }));
+          return {
+            id: p.id,
+            name: name || 'User',
+            handle: handle || '@user',
+            email: p.email || '',
+            role: p.role === 'business' ? 'business' : p.role === 'super_admin' ? 'admin' : 'creator',
+            verified,
+            category,
+            location,
+            followers: isBrand ? 'Active Brand' : (sub?.rate_per_reel ? `₹${sub.rate_per_reel}/reel` : 'Live Creator'),
+            engagement: isBrand ? 'Enterprise' : 'Verified Roster',
+            avatar: p.avatar_url || '',
+            createdAt: p.created_at || new Date().toISOString(),
+          };
+        });
+        setRealAccounts(mapped);
+      } else {
+        setRealAccounts([]);
+      }
+    } catch (err) {
+      console.warn('Failed to load accounts from Supabase:', err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-  const allAccounts = [...creatorAccounts, ...platformBrands, ...platformAdmins];
+  useEffect(() => {
+    loadRealAccounts();
+  }, []);
+
+  const allAccounts = realAccounts;
 
   const filteredAccounts = allAccounts.filter((account) => {
     // Search query
@@ -127,7 +119,7 @@ export const AdminUsersView: React.FC = () => {
     return matchesSearch && matchesRole && matchesStatus;
   });
 
-  const handleToggleSuspend = (account: typeof allAccounts[0]) => {
+  const handleToggleSuspend = (account: UnifiedUserAccount) => {
     toggleUserSuspension(account.id);
     const isNowSuspended = !suspendedUserIds.includes(account.id);
     logAdminAction(
@@ -142,22 +134,39 @@ export const AdminUsersView: React.FC = () => {
     triggerCelebration();
   };
 
-  const handleToggleVerify = (account: typeof allAccounts[0]) => {
-    if (account.role === 'creator') {
-      toggleCreatorVerification(account.id);
-      const nextVerified = !account.verified;
+  const handleToggleVerify = async (account: UnifiedUserAccount) => {
+    const nextVerified = !account.verified;
+    try {
+      if (account.role === 'creator') {
+        await supabase
+          .from('creator_profiles')
+          .update({ verified: nextVerified, verified_at: nextVerified ? new Date().toISOString() : null })
+          .eq('id', account.id);
+      } else if (account.role === 'business') {
+        await supabase
+          .from('brand_profiles')
+          .update({ verified: nextVerified, verified_at: nextVerified ? new Date().toISOString() : null })
+          .eq('id', account.id);
+      }
+      setRealAccounts((prev) =>
+        prev.map((a) => (a.id === account.id ? { ...a, verified: nextVerified } : a))
+      );
+      setFeedback(`Updated verification status for ${account.name}.`);
+      setTimeout(() => setFeedback(null), 3000);
       logAdminAction(
         nextVerified ? 'GRANT_VERIFICATION' : 'REVOKE_VERIFICATION',
         account.id,
-        'creator',
+        account.role,
         'success',
-        `Creator badge ${nextVerified ? 'GRANTED' : 'REVOKED'} for ${account.handle}`
+        `${account.role.toUpperCase()} verification ${nextVerified ? 'GRANTED' : 'REVOKED'} for ${account.handle}`
       );
       triggerCelebration();
+    } catch (e) {
+      console.error('Failed to update verification in Supabase:', e);
     }
   };
 
-  const handleResetAccess = (account: typeof allAccounts[0]) => {
+  const handleResetAccess = (account: UnifiedUserAccount) => {
     logAdminAction(
       'FORCE_PASSWORD_RESET',
       account.id,
@@ -165,6 +174,8 @@ export const AdminUsersView: React.FC = () => {
       'warning',
       `Sent emergency magic link reset email to ${account.email}`
     );
+    setFeedback(`Reset credentials notification sent to ${account.email}.`);
+    setTimeout(() => setFeedback(null), 3000);
     triggerCelebration();
   };
 
@@ -182,6 +193,20 @@ export const AdminUsersView: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-2">
+          {feedback && (
+            <span className="text-xs text-emerald-400 font-medium animate-fadeIn">
+              {feedback}
+            </span>
+          )}
+          <button
+            onClick={loadRealAccounts}
+            disabled={isLoading}
+            className="p-1.5 rounded-lg border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-muted)] transition-all cursor-pointer flex items-center gap-1.5 text-xs font-mono"
+            title="Refresh database accounts"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin text-[var(--primary)]' : ''}`} />
+            <span>Sync</span>
+          </button>
           <span className="text-xs font-mono text-[var(--text-muted)]">
             Showing {filteredAccounts.length} of {allAccounts.length} accounts
           </span>
@@ -265,7 +290,22 @@ export const AdminUsersView: React.FC = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-[var(--border)] text-xs">
-              {filteredAccounts.map((account) => {
+              {isLoading ? (
+                <tr>
+                  <td colSpan={6} className="py-12 text-center text-xs text-[var(--text-muted)]">
+                    <Loader2 className="w-5 h-5 animate-spin mx-auto text-[var(--primary)] mb-2" />
+                    <span>Synchronizing real registered accounts from database...</span>
+                  </td>
+                </tr>
+              ) : filteredAccounts.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className="py-12 text-center text-xs text-[var(--text-muted)] space-y-2">
+                    <Users className="w-6 h-6 mx-auto mb-2 opacity-40 text-zinc-500" />
+                    <span>No registered accounts found matching your filters.</span>
+                  </td>
+                </tr>
+              ) : (
+                filteredAccounts.map((account) => {
                 const isSuspended = suspendedUserIds.includes(account.id);
 
                 return (
@@ -392,7 +432,7 @@ export const AdminUsersView: React.FC = () => {
                     </td>
                   </tr>
                 );
-              })}
+              }))}
             </tbody>
           </table>
         </div>
