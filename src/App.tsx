@@ -128,63 +128,41 @@ const MainApp: React.FC = () => {
   // 1. SECRET GOD MODE & ENCLAVE ROUTING (/godmode)
   // =========================================================================
   if (isGodModeRoute || isAdminRoute) {
-    // If explicitly on /godmode/login or legacy /admin/login
-    if (isGodModeLoginRoute || isAdminLoginRoute) {
-      if (adminSessionState && adminSessionState.role === 'super_admin') {
-        // Already authenticated as super admin -> enter command center
-        return (
-          <Suspense fallback={<AppLoadingScreen />}>
-            <SuperAdminLayout
-              initialPath={currentPath.startsWith('/admin') ? currentPath.replace('/admin', '/godmode') : currentPath}
-              onNavigateRoute={navigateTo}
-              onAdminSignOut={() => {
-                AdminAuthService.logout();
-                setAdminSessionState(null);
-                navigateTo('/godmode/login');
-              }}
-            />
-          </Suspense>
-        );
-      }
-
-      return (
-        <Suspense fallback={<AppLoadingScreen />}>
-          <AdminLoginPage
-            onLoginSuccess={() => {
-              setAdminSessionState(AdminAuthService.getStoredSession());
-              navigateTo('/godmode');
-            }}
-            onExitToPublic={() => {
-              navigateTo('/');
-            }}
-          />
-        </Suspense>
-      );
-    }
-
-    // Protected /godmode/* and /admin/* routes:
-    // Check if user has active Super Admin session
+    // If authenticated as super admin -> enter command center
     if (adminSessionState && adminSessionState.role === 'super_admin') {
       return (
         <Suspense fallback={<AppLoadingScreen />}>
           <SuperAdminLayout
-            initialPath={currentPath.startsWith('/admin') ? currentPath.replace('/admin', '/godmode') : currentPath}
+            initialPath={
+              currentPath === '/godmode/login' || currentPath === '/admin/login'
+                ? '/godmode'
+                : currentPath.startsWith('/admin')
+                ? currentPath.replace('/admin', '/godmode')
+                : currentPath
+            }
             onNavigateRoute={navigateTo}
             onAdminSignOut={() => {
               AdminAuthService.logout();
               setAdminSessionState(null);
-              navigateTo('/godmode/login');
+              navigateTo('/godmode');
             }}
           />
         </Suspense>
       );
     }
 
-    // Air-Gap Stealth Mode:
-    // Any visitor or ordinary logged-in user navigating to /godmode without active super_admin session receives 404
+    // Unauthenticated: Present Super Admin Login Gate directly
     return (
       <Suspense fallback={<AppLoadingScreen />}>
-        <NotFoundPage onGoHome={() => navigateTo('/')} onGoBack={() => window.history.back()} />
+        <AdminLoginPage
+          onLoginSuccess={() => {
+            setAdminSessionState(AdminAuthService.getStoredSession());
+            navigateTo('/godmode');
+          }}
+          onExitToPublic={() => {
+            navigateTo('/');
+          }}
+        />
       </Suspense>
     );
   }
