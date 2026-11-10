@@ -109,7 +109,7 @@ export default async function handler(req: any, res: any) {
       });
 
       if (userResp.ok) {
-        const user = await userResp.json();
+        const user = (await userResp.json()) as any;
         const meta = user.user_metadata || {};
         const role = meta.role === 'business' || meta.role === 'brand' ? 'business' : 'creator';
 
