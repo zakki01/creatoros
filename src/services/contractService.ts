@@ -24,11 +24,11 @@ const STORAGE_DRAFTS_KEY = 'creatoros_contract_drafts_v2';
 const STORAGE_ADMIN_CONFIG_KEY = 'creatoros_contract_admin_config_v2';
 
 export const DEFAULT_PLATFORM_CONFIG: ContractPlatformConfig = {
-  platformFeePercentage: 10, // 10%
-  minFee: 15,
-  maxFee: 5000,
-  whoPaysFee: 'brand',
-  protectionPercentage: 20, // 20%
+  platformFeePercentage: 10, // 10% standard platform settlement fee
+  minFee: 0,
+  maxFee: 50000,
+  whoPaysFee: 'creator',
+  protectionPercentage: 0, // 0% holding fee — zero fee to deposit and hold funds in escrow
   defaultApprovalWindowDays: 3,
   defaultCreatorResponseDays: 3,
   defaultRevisionLimit: 2,
@@ -805,11 +805,15 @@ export class ContractService {
       }
     }
     const sessionRaw = typeof window !== 'undefined' ? localStorage.getItem('creatoros_auth_session_v1') : null;
+    const adminSessionRaw = typeof window !== 'undefined' ? localStorage.getItem('creatoros_admin_session_v1') : null;
     const session = sessionRaw ? JSON.parse(sessionRaw) : null;
-    const isDemo = Boolean(session?.is_demo || session?.isDemo);
-    if (isDemo) {
+    const adminSession = adminSessionRaw ? JSON.parse(adminSessionRaw) : null;
+    const isDemo = Boolean(session?.is_demo || session?.isDemo || adminSession?.role === 'super_admin');
+    if (isDemo || (!saved && adminSession)) {
       this.contracts = [DEMO_CONTRACT];
-      localStorage.setItem(STORAGE_CONTRACTS_KEY, JSON.stringify(this.contracts));
+      try {
+        localStorage.setItem(STORAGE_CONTRACTS_KEY, JSON.stringify(this.contracts));
+      } catch {}
       return this.contracts;
     }
     this.contracts = [];
@@ -882,20 +886,21 @@ export class ContractService {
   ): ContractPayment {
     const config = this.getAdminConfig();
     const feeRate = config.platformFeePercentage / 100;
-    const protRate = config.protectionPercentage / 100;
 
     let computedFee = Math.round(creatorPayment * feeRate);
     if (computedFee < config.minFee && creatorPayment > 0) computedFee = config.minFee;
     if (computedFee > config.maxFee) computedFee = config.maxFee;
 
-    const computedProtection = Math.round(creatorPayment * protRate);
-    const totalAmount = creatorPayment + computedFee + computedProtection;
+    // Strict 0% holding fee: No fee charged to hold funds in platform escrow.
+    // Platform settlement fee is deducted upon milestone approval.
+    const computedProtection = 0;
+    const totalAmount = creatorPayment; // Brand funds exact contract value without markup
 
     return {
       creatorPayment,
       platformFeeRate: feeRate,
       platformFee: computedFee,
-      protectionAmountRate: protRate,
+      protectionAmountRate: 0,
       protectionAmount: computedProtection,
       totalAmount,
       currency,
@@ -1677,6 +1682,119 @@ export class ContractService {
       action: 'Dispute Resolved by Super Admin',
       timestamp: now,
       details: `Dispute closed (${resolution.outcome}). Creator released: $${resolution.creatorAmount}, Brand refunded: $${resolution.brandRefundAmount}. Note: ${resolution.notes}`,
+    });
+
+    c.updatedAt = now;
+    list[index] = c;
+    this.saveContracts(list);
+    return { success: true, contract: c };
+  }
+
+  /**
+   * God Mode: Force release locked escrow payment directly to creator
+   */
+  static async forceReleaseEscrow(
+    contractId: string,
+    adminNotes: string,
+    adminActor: string = 'Super Admin God Mode'
+  ): Promise<{ success: boolean; contract?: BrandContract; error?: string }> {
+    const list = this.loadContracts();
+    const index = list.findIndex((c) => c.id === contractId);
+    if (index === -1) return { success: false, error: 'Contract not found.' };
+
+    const c = list[index];
+    const now = new Date().toISOString();
+    const provider = PaymentProviderRegistry.getProvider(c.payment.provider);
+
+    await provider.releasePayout(
+      c.payment.transactionId || 'tx_godmode_release',
+      c.creatorId,
+      c.payment.creatorPayment,
+      c.payment.currency
+    );
+
+    c.status = 'completed';
+    c.payment.paymentStatus = 'paid';
+    if (c.deliverables && c.deliverables.length > 0) {
+      c.deliverables.forEach((d) => {
+        d.status = 'approved';
+      });
+    }
+    if (c.dispute) {
+      c.dispute.status = 'resolved';
+      c.dispute.resolution = {
+        outcome: 'release_to_creator',
+        creatorAmount: c.payment.creatorPayment,
+        brandRefundAmount: 0,
+        resolvedBy: adminActor,
+        resolvedAt: now,
+        notes: `God Mode Overridden: ${adminNotes}`,
+      };
+    }
+
+    c.auditTrail.push({
+      id: `adt-${Date.now()}`,
+      contractId: c.id,
+      actorId: 'super_admin_godmode',
+      actorName: adminActor,
+      actorRole: 'super_admin',
+      action: 'GODMODE_FORCE_RELEASE_ESCROW',
+      timestamp: now,
+      details: `God Mode Force Release: Escrow released in full to creator ($${c.payment.creatorPayment}). Reason: ${adminNotes}`,
+    });
+
+    c.updatedAt = now;
+    list[index] = c;
+    this.saveContracts(list);
+    return { success: true, contract: c };
+  }
+
+  /**
+   * God Mode: Force refund locked escrow payment back to brand
+   */
+  static async forceRefundEscrow(
+    contractId: string,
+    adminNotes: string,
+    adminActor: string = 'Super Admin God Mode'
+  ): Promise<{ success: boolean; contract?: BrandContract; error?: string }> {
+    const list = this.loadContracts();
+    const index = list.findIndex((c) => c.id === contractId);
+    if (index === -1) return { success: false, error: 'Contract not found.' };
+
+    const c = list[index];
+    const now = new Date().toISOString();
+    const provider = PaymentProviderRegistry.getProvider(c.payment.provider);
+
+    await provider.processRefund(
+      c.payment.transactionId || 'tx_godmode_refund',
+      c.payment.totalAmount,
+      c.payment.currency,
+      `God Mode Force Refund: ${adminNotes}`
+    );
+
+    c.status = 'cancelled';
+    c.payment.paymentStatus = 'refunded';
+    if (c.dispute) {
+      c.dispute.status = 'resolved';
+      c.dispute.resolution = {
+        outcome: 'refund_to_brand',
+        creatorAmount: 0,
+        brandRefundAmount: c.payment.totalAmount,
+        resolvedBy: adminActor,
+        resolvedAt: now,
+        notes: `God Mode Overridden: ${adminNotes}`,
+      };
+    }
+
+    c.auditTrail.push({
+      id: `adt-${Date.now()}`,
+      contractId: c.id,
+      actorId: 'super_admin_godmode',
+      actorName: adminActor,
+      actorRole: 'super_admin',
+      action: 'GODMODE_FORCE_REFUND_ESCROW',
+      timestamp: now,
+      details: `God Mode Force Refund: 100% of escrow refunded to brand ($${c.payment.totalAmount}). Reason: ${adminNotes}`,
     });
 
     c.updatedAt = now;

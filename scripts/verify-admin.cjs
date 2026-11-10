@@ -43,39 +43,39 @@ async function run() {
   const page = await browser.newPage();
   await page.setViewport({ width: 1280, height: 800, deviceScaleFactor: 1 });
 
-  // Test 1: Dedicated Admin Login Page (/admin/login)
-  console.log('\n--- Test 1: Dedicated Admin Login Page (/admin/login) ---');
-  await page.goto('http://localhost:5173/admin/login', { waitUntil: 'domcontentloaded' });
+  // Test 1: Dedicated Secret Admin Login Page (/godmode/login)
+  console.log('\n--- Test 1: Dedicated Secret Admin Login Page (/godmode/login) ---');
+  await page.goto('http://localhost:5173/godmode/login', { waitUntil: 'domcontentloaded' });
   await page.evaluate(() => {
     localStorage.removeItem('creatoros_auth_session_v1');
     localStorage.removeItem('creatoros_admin_session_v1');
   });
-  await page.goto('http://localhost:5173/admin/login', { waitUntil: 'networkidle2' });
+  await page.goto('http://localhost:5173/godmode/login', { waitUntil: 'networkidle2' });
   await new Promise(r => setTimeout(r, 1000));
 
   const adminLoginShot = path.join(SCREENSHOTS_DIR, 'admin-login-1280x800.png');
   await page.screenshot({ path: adminLoginShot, fullPage: false });
   console.log('Saved:', adminLoginShot);
 
-  // Test 2: Access Denied (403 Forbidden) for Non-Admin visiting /admin
-  console.log('\n--- Test 2: Access Denied (403) for Creator visiting /admin ---');
+  // Test 2: Stealth Air-Gap (404 Not Found) for Non-Admin visiting /godmode
+  console.log('\n--- Test 2: Stealth Air-Gap (404) for Creator visiting /godmode ---');
   await page.evaluate((sess) => {
     localStorage.setItem('creatoros_auth_session_v1', JSON.stringify(sess));
     localStorage.removeItem('creatoros_admin_session_v1');
   }, CREATOR_SESSION);
-  await page.goto('http://localhost:5173/admin', { waitUntil: 'networkidle2' });
+  await page.goto('http://localhost:5173/godmode', { waitUntil: 'networkidle2' });
   await new Promise(r => setTimeout(r, 1000));
 
   const accessDeniedShot = path.join(SCREENSHOTS_DIR, 'admin-access-denied-1280x800.png');
   await page.screenshot({ path: accessDeniedShot, fullPage: false });
   console.log('Saved:', accessDeniedShot);
 
-  // Test 3: Super Admin Command Center Dashboard
-  console.log('\n--- Test 3: Super Admin Command Center Dashboard ---');
+  // Test 3: Super Admin God Mode Command Center Dashboard (/godmode)
+  console.log('\n--- Test 3: Super Admin God Mode Command Center Dashboard (/godmode) ---');
   await page.evaluate((adminSess) => {
     localStorage.setItem('creatoros_admin_session_v1', JSON.stringify(adminSess));
   }, SUPER_ADMIN_SESSION);
-  await page.goto('http://localhost:5173/admin', { waitUntil: 'networkidle2' });
+  await page.goto('http://localhost:5173/godmode', { waitUntil: 'networkidle2' });
   await new Promise(r => setTimeout(r, 1200));
 
   const adminDashboardShot = path.join(SCREENSHOTS_DIR, 'admin-dashboard-1280x800.png');

@@ -43,10 +43,58 @@ export const AdminContractsGovernance: React.FC = () => {
   const [brandRefundAmount, setBrandRefundAmount] = useState(400);
   const [resolutionNotes, setResolutionNotes] = useState('');
 
+  // God Mode Escrow Override state
+  const [selectedOverrideContract, setSelectedOverrideContract] = useState<BrandContract | null>(null);
+  const [overrideAction, setOverrideAction] = useState<'force_release' | 'force_refund'>('force_release');
+  const [overrideNotes, setOverrideNotes] = useState('');
+  const [isOverriding, setIsOverriding] = useState(false);
+
   const [feedback, setFeedback] = useState<string | null>(null);
 
   const reloadContracts = () => {
     setContracts(ContractService.getAllContracts());
+  };
+
+  const handleExecuteOverride = async () => {
+    if (!selectedOverrideContract) return;
+    if (!overrideNotes.trim()) {
+      setFeedback('A mandatory administrative justification is required for God Mode escrow overrides.');
+      return;
+    }
+
+    setIsOverriding(true);
+    try {
+      let res;
+      if (overrideAction === 'force_release') {
+        res = await ContractService.forceReleaseEscrow(
+          selectedOverrideContract.id,
+          overrideNotes,
+          'Super Admin God Mode'
+        );
+      } else {
+        res = await ContractService.forceRefundEscrow(
+          selectedOverrideContract.id,
+          overrideNotes,
+          'Super Admin God Mode'
+        );
+      }
+
+      if (res.success) {
+        setFeedback(
+          overrideAction === 'force_release'
+            ? `God Mode Escrow Override executed: Full payout forcefully released to creator ${selectedOverrideContract.creatorName}!`
+            : `God Mode Escrow Override executed: Full escrow forcefully refunded to brand ${selectedOverrideContract.brandName}!`
+        );
+        setSelectedOverrideContract(null);
+        setOverrideNotes('');
+        reloadContracts();
+        setTimeout(() => setFeedback(null), 5000);
+      } else {
+        setFeedback(res.error || 'Failed to execute escrow override.');
+      }
+    } finally {
+      setIsOverriding(false);
+    }
   };
 
   const filteredContracts = contracts.filter((c) => {
@@ -213,16 +261,29 @@ export const AdminContractsGovernance: React.FC = () => {
                     </span>
                   </div>
 
-                  {c.status === 'disputed' ? (
+                  <div className="flex items-center gap-1.5">
                     <button
-                      onClick={() => setSelectedDisputeContract(c)}
-                      className="min-h-[44px] px-4 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs cursor-pointer shadow-xs"
+                      onClick={() => {
+                        setSelectedOverrideContract(c);
+                        setOverrideAction('force_release');
+                      }}
+                      className="min-h-[36px] px-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-rose-300 font-semibold text-[11px] border border-rose-500/30 cursor-pointer flex items-center gap-1"
+                      title="God Mode Escrow Override"
                     >
-                      Arbitrate
+                      <ShieldAlert className="w-3 h-3 text-rose-400" />
+                      <span>Override</span>
                     </button>
-                  ) : (
-                    <span className="text-[var(--text-muted)] text-[11px] font-mono">Governed</span>
-                  )}
+                    {c.status === 'disputed' ? (
+                      <button
+                        onClick={() => setSelectedDisputeContract(c)}
+                        className="min-h-[36px] px-3 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs cursor-pointer shadow-xs"
+                      >
+                        Arbitrate
+                      </button>
+                    ) : (
+                      <span className="text-[var(--text-muted)] text-[11px] font-mono">Governed</span>
+                    )}
+                  </div>
                 </div>
               </div>
             ))}
@@ -268,16 +329,29 @@ export const AdminContractsGovernance: React.FC = () => {
                         <ContractStatusBadge status={c.status} size="sm" />
                       </td>
                       <td className="py-3.5 px-4 text-right">
-                        {c.status === 'disputed' ? (
+                        <div className="flex items-center justify-end gap-2">
                           <button
-                            onClick={() => setSelectedDisputeContract(c)}
-                            className="min-h-[36px] px-3 rounded-lg bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs cursor-pointer shadow-xs"
+                            onClick={() => {
+                              setSelectedOverrideContract(c);
+                              setOverrideAction('force_release');
+                            }}
+                            className="min-h-[32px] px-2.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-rose-300 hover:text-white font-mono text-[11px] border border-rose-500/30 transition-all cursor-pointer flex items-center gap-1"
+                            title="God Mode Escrow Override"
                           >
-                            Arbitrate
+                            <ShieldAlert className="w-3 h-3 text-rose-400" />
+                            <span>Override</span>
                           </button>
-                        ) : (
-                          <span className="text-[var(--text-muted)] text-[11px] font-mono">Governed</span>
-                        )}
+                          {c.status === 'disputed' ? (
+                            <button
+                              onClick={() => setSelectedDisputeContract(c)}
+                              className="min-h-[32px] px-3 rounded-lg bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs cursor-pointer shadow-xs"
+                            >
+                              Arbitrate
+                            </button>
+                          ) : (
+                            <span className="text-[var(--text-muted)] text-[11px] font-mono">Governed</span>
+                          )}
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -532,6 +606,147 @@ export const AdminContractsGovernance: React.FC = () => {
                 className="min-h-[44px] px-5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold cursor-pointer shadow-md shadow-rose-600/30"
               >
                 Execute Ruling & Disburse Escrow
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* GOD MODE ESCROW OVERRIDE MODAL */}
+      {selectedOverrideContract && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md animate-fade-in">
+          <div className="w-full max-w-lg p-6 rounded-3xl bg-[var(--surface)] border border-rose-500/50 text-[var(--text-primary)] space-y-5 text-xs shadow-2xl ring-1 ring-rose-500/30">
+            <div className="flex justify-between items-start">
+              <div className="flex items-center gap-2.5">
+                <div className="w-9 h-9 rounded-xl bg-rose-500/20 border border-rose-500/40 flex items-center justify-center text-rose-400">
+                  <ShieldAlert className="w-5 h-5 animate-pulse" />
+                </div>
+                <div>
+                  <span className="text-[10px] uppercase font-mono text-rose-400 font-bold block">
+                    God Mode Escrow Override
+                  </span>
+                  <h3 className="text-base font-bold text-[var(--text-primary)] font-display mt-0.5">
+                    {selectedOverrideContract.contractNumber}: {selectedOverrideContract.projectName}
+                  </h3>
+                </div>
+              </div>
+              <ContractStatusBadge status={selectedOverrideContract.status} size="sm" />
+            </div>
+
+            {/* Escrow Details */}
+            <div className="p-4 rounded-2xl bg-[var(--surface-muted)] border border-[var(--border)] space-y-2">
+              <div className="flex justify-between text-[var(--text-secondary)]">
+                <span>Parties:</span>
+                <span className="font-semibold text-[var(--text-primary)]">
+                  {selectedOverrideContract.brandName} (Brand) ⇄ {selectedOverrideContract.creatorName} (Creator)
+                </span>
+              </div>
+              <div className="flex justify-between text-[var(--text-secondary)] font-mono">
+                <span>Locked Escrow Balance:</span>
+                <span className="text-emerald-400 font-bold">
+                  ${selectedOverrideContract.payment.totalAmount.toLocaleString()}
+                </span>
+              </div>
+              <div className="flex justify-between text-[var(--text-secondary)] font-mono">
+                <span>Escrow Hold Fee:</span>
+                <span className="text-[var(--text-primary)] font-bold">
+                  $0.00 (0% Platform Shield)
+                </span>
+              </div>
+              <div className="flex justify-between text-[var(--text-secondary)] font-mono">
+                <span>Creator Payout Target:</span>
+                <span className="text-[var(--text-primary)] font-bold">
+                  ${selectedOverrideContract.payment.creatorPayment.toLocaleString()}
+                </span>
+              </div>
+            </div>
+
+            {/* Override Action Choice */}
+            <div className="space-y-2">
+              <label className="text-[11px] font-mono font-medium text-[var(--text-secondary)] block">
+                Select Force Action:
+              </label>
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  onClick={() => setOverrideAction('force_release')}
+                  className={`p-3 rounded-2xl border text-left transition-all cursor-pointer ${
+                    overrideAction === 'force_release'
+                      ? 'bg-emerald-500/10 border-emerald-500/60 ring-1 ring-emerald-500/40 text-emerald-300'
+                      : 'bg-[var(--surface-muted)] border-[var(--border)] text-[var(--text-secondary)]'
+                  }`}
+                >
+                  <div className="font-bold text-xs flex items-center gap-1.5">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>Force Release Escrow</span>
+                  </div>
+                  <span className="text-[10px] text-[var(--text-muted)] mt-1 block">
+                    Disburses 100% of payout to creator immediately.
+                  </span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setOverrideAction('force_refund')}
+                  className={`p-3 rounded-2xl border text-left transition-all cursor-pointer ${
+                    overrideAction === 'force_refund'
+                      ? 'bg-rose-500/10 border-rose-500/60 ring-1 ring-rose-500/40 text-rose-300'
+                      : 'bg-[var(--surface-muted)] border-[var(--border)] text-[var(--text-secondary)]'
+                  }`}
+                >
+                  <div className="font-bold text-xs flex items-center gap-1.5">
+                    <XCircle className="w-3.5 h-3.5 text-rose-400" />
+                    <span>Force Refund Brand</span>
+                  </div>
+                  <span className="text-[10px] text-[var(--text-muted)] mt-1 block">
+                    Cancels contract and refunds brand in full.
+                  </span>
+                </button>
+              </div>
+            </div>
+
+            {/* Mandatory Reason */}
+            <div className="space-y-1.5">
+              <label className="text-[11px] font-mono font-medium text-[var(--text-secondary)] block">
+                Mandatory Administrative Reason &amp; Audit Log <span className="text-rose-400">*</span>
+              </label>
+              <textarea
+                rows={3}
+                placeholder="State the bad faith trigger or manual intervention justification..."
+                value={overrideNotes}
+                onChange={(e) => setOverrideNotes(e.target.value)}
+                className="w-full p-3 rounded-xl bg-[var(--input)] border border-[var(--border)] text-[var(--text-primary)] text-xs focus:outline-none focus:border-rose-500 resize-none font-sans"
+              />
+            </div>
+
+            {/* Buttons */}
+            <div className="flex items-center justify-end gap-2.5 pt-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setSelectedOverrideContract(null);
+                  setOverrideNotes('');
+                }}
+                disabled={isOverriding}
+                className="min-h-[44px] px-4 rounded-xl bg-[var(--surface-muted)] text-[var(--text-secondary)] border border-[var(--border)] font-semibold cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleExecuteOverride}
+                disabled={isOverriding || !overrideNotes.trim()}
+                className={`min-h-[44px] px-5 rounded-xl font-bold text-white cursor-pointer shadow-lg disabled:opacity-50 transition-all ${
+                  overrideAction === 'force_release'
+                    ? 'bg-emerald-600 hover:bg-emerald-500 shadow-emerald-600/30'
+                    : 'bg-rose-600 hover:bg-rose-500 shadow-rose-600/30'
+                }`}
+              >
+                {isOverriding
+                  ? 'Executing Override...'
+                  : overrideAction === 'force_release'
+                  ? 'Confirm Force Release to Creator'
+                  : 'Confirm Force Refund to Brand'}
               </button>
             </div>
           </div>

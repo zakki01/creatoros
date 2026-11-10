@@ -109,6 +109,8 @@ const MainApp: React.FC = () => {
     setAdminSessionState(AdminAuthService.getStoredSession());
   };
 
+  const isGodModeRoute = currentPath.startsWith('/godmode');
+  const isGodModeLoginRoute = currentPath === '/godmode/login';
   const isAdminRoute = currentPath.startsWith('/admin') || currentPath.startsWith('/secure-admin');
   const isAdminLoginRoute = currentPath === '/admin/login' || currentPath === '/secure-admin/login';
 
@@ -123,22 +125,22 @@ const MainApp: React.FC = () => {
   }
 
   // =========================================================================
-  // 1. DEDICATED ADMIN / RESTRICTED ENCLAVE ROUTING
+  // 1. SECRET GOD MODE & ENCLAVE ROUTING (/godmode)
   // =========================================================================
-  if (isAdminRoute) {
-    // If explicitly on /admin/login
-    if (isAdminLoginRoute) {
+  if (isGodModeRoute || isAdminRoute) {
+    // If explicitly on /godmode/login or legacy /admin/login
+    if (isGodModeLoginRoute || isAdminLoginRoute) {
       if (adminSessionState && adminSessionState.role === 'super_admin') {
-        // Already authenticated as admin -> enter command center
+        // Already authenticated as super admin -> enter command center
         return (
           <Suspense fallback={<AppLoadingScreen />}>
             <SuperAdminLayout
-              initialPath={currentPath}
+              initialPath={currentPath.startsWith('/admin') ? currentPath.replace('/admin', '/godmode') : currentPath}
               onNavigateRoute={navigateTo}
               onAdminSignOut={() => {
                 AdminAuthService.logout();
                 setAdminSessionState(null);
-                navigateTo('/admin/login');
+                navigateTo('/godmode/login');
               }}
             />
           </Suspense>
@@ -150,7 +152,7 @@ const MainApp: React.FC = () => {
           <AdminLoginPage
             onLoginSuccess={() => {
               setAdminSessionState(AdminAuthService.getStoredSession());
-              navigateTo('/admin');
+              navigateTo('/godmode');
             }}
             onExitToPublic={() => {
               navigateTo('/');
@@ -160,49 +162,29 @@ const MainApp: React.FC = () => {
       );
     }
 
-    // Protected /admin/* routes:
+    // Protected /godmode/* and /admin/* routes:
     // Check if user has active Super Admin session
     if (adminSessionState && adminSessionState.role === 'super_admin') {
       return (
         <Suspense fallback={<AppLoadingScreen />}>
           <SuperAdminLayout
-            initialPath={currentPath}
+            initialPath={currentPath.startsWith('/admin') ? currentPath.replace('/admin', '/godmode') : currentPath}
             onNavigateRoute={navigateTo}
             onAdminSignOut={() => {
               AdminAuthService.logout();
               setAdminSessionState(null);
-              navigateTo('/admin/login');
+              navigateTo('/godmode/login');
             }}
           />
         </Suspense>
       );
     }
 
-    // If a normal user (creator or brand) is logged in and navigates to /admin/*
-    // Deny access strictly with 403 Forbidden AccessDeniedPage
-    if (isAuthenticated) {
-      return (
-        <Suspense fallback={<AppLoadingScreen />}>
-          <AccessDeniedPage
-            onBackToApp={() => navigateTo('/')}
-            onGoToAdminLogin={() => navigateTo('/admin/login')}
-          />
-        </Suspense>
-      );
-    }
-
-    // Unauthenticated user attempting to access /admin -> Show dedicated Admin Login
+    // Air-Gap Stealth Mode:
+    // Any visitor or ordinary logged-in user navigating to /godmode without active super_admin session receives 404
     return (
       <Suspense fallback={<AppLoadingScreen />}>
-        <AdminLoginPage
-          onLoginSuccess={() => {
-            setAdminSessionState(AdminAuthService.getStoredSession());
-            navigateTo('/admin');
-          }}
-          onExitToPublic={() => {
-            navigateTo('/');
-          }}
-        />
+        <NotFoundPage onGoHome={() => navigateTo('/')} onGoBack={() => window.history.back()} />
       </Suspense>
     );
   }
@@ -255,6 +237,7 @@ const MainApp: React.FC = () => {
     '/',
     '/brand',
     '/creator',
+    '/godmode',
     '/admin',
     '/secure-admin',
     '/terms',

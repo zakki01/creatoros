@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Activity,
   Users,
@@ -18,6 +18,8 @@ import {
   LifeBuoy,
   Radio,
   LayoutGrid,
+  Ticket,
+  MessageSquare,
 } from 'lucide-react';
 import { BrandLogo } from '../common/BrandLogo';
 import { useAppState } from '../../context/StateContext';
@@ -31,6 +33,8 @@ import { AdminLogsView } from './AdminLogsView';
 import { AdminContractsGovernance } from '../contracts/AdminContractsGovernance';
 import { AdminSupportDesk } from '../support/AdminSupportDesk';
 import { AdminLiveMonitoringView } from './AdminLiveMonitoringView';
+import { AdminGodModeChatInspector } from './AdminGodModeChatInspector';
+import { AdminBetaWaitlistView } from './AdminBetaWaitlistView';
 import { DiscoverView } from '../common/DiscoverView';
 import { CommandPalette } from '../common/CommandPalette';
 import { NotificationDrawer } from '../common/NotificationDrawer';
@@ -45,6 +49,8 @@ interface SuperAdminLayoutProps {
 
 const getTabFromPath = (path: string): string => {
   const p = path.toLowerCase();
+  if (p.includes('/chat') || p.includes('/messages')) return 'chat-inspector';
+  if (p.includes('/beta') || p.includes('/waitlist') || p.includes('/invites')) return 'beta-access';
   if (p.includes('/contracts')) return 'contracts';
   if (p.includes('/live') || p.includes('/broadcasts')) return 'live';
   if (p.includes('/support') || p.includes('/tickets')) return 'support';
@@ -59,16 +65,18 @@ const getTabFromPath = (path: string): string => {
 
 const getPathFromTab = (tab: string): string => {
   switch (tab) {
-    case 'contracts': return '/admin/contracts';
-    case 'live': return '/admin/live';
-    case 'support': return '/admin/support';
-    case 'users': return '/admin/users';
-    case 'moderation': return '/admin/moderation';
-    case 'reports': return '/admin/reports';
-    case 'discover': return '/admin/content';
-    case 'settings': return '/admin/settings';
-    case 'logs': return '/admin/audit';
-    default: return '/admin';
+    case 'chat-inspector': return '/godmode/chat';
+    case 'beta-access': return '/godmode/beta';
+    case 'contracts': return '/godmode/contracts';
+    case 'live': return '/godmode/live';
+    case 'support': return '/godmode/support';
+    case 'users': return '/godmode/users';
+    case 'moderation': return '/godmode/moderation';
+    case 'reports': return '/godmode/reports';
+    case 'discover': return '/godmode/content';
+    case 'settings': return '/godmode/settings';
+    case 'logs': return '/godmode/audit';
+    default: return '/godmode';
   }
 };
 
@@ -89,6 +97,12 @@ export const SuperAdminLayout: React.FC<SuperAdminLayoutProps> = ({
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [isAppsDrawerOpen, setIsAppsDrawerOpen] = useState(false);
 
+  useEffect(() => {
+    if (initialPath) {
+      setActiveTabState(getTabFromPath(initialPath));
+    }
+  }, [initialPath]);
+
   const adminSession = AdminAuthService.getStoredSession();
 
   const handleTabChange = (tabId: string) => {
@@ -106,7 +120,7 @@ export const SuperAdminLayout: React.FC<SuperAdminLayoutProps> = ({
     if (onAdminSignOut) {
       onAdminSignOut();
     } else {
-      window.location.href = '/admin/login';
+      window.location.href = '/godmode/login';
     }
   };
 
@@ -115,8 +129,10 @@ export const SuperAdminLayout: React.FC<SuperAdminLayoutProps> = ({
 
   const navigationItems = [
     { id: 'overview', label: 'Command Center', icon: Activity },
-    { id: 'live', label: 'Live Broadcasts & Ledgers', icon: Radio },
+    { id: 'beta-access', label: 'Beta Invites & Waitlist', icon: Ticket },
+    { id: 'chat-inspector', label: 'Forensic Chat Inspector', icon: MessageSquare },
     { id: 'contracts', label: 'Commercial Contracts', icon: FileText },
+    { id: 'live', label: 'Live Broadcasts & Ledgers', icon: Radio },
     { id: 'support', label: 'Support Desk', icon: LifeBuoy },
     { id: 'users', label: 'User Governance', icon: Users },
     {
@@ -312,6 +328,8 @@ export const SuperAdminLayout: React.FC<SuperAdminLayoutProps> = ({
         {/* Main Content Area */}
         <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 pb-24 md:pb-8 max-w-7xl w-full mx-auto space-y-8">
           {activeTab === 'overview' && <AdminOverviewView onNavigateTab={handleTabChange} />}
+          {activeTab === 'beta-access' && <AdminBetaWaitlistView />}
+          {activeTab === 'chat-inspector' && <AdminGodModeChatInspector />}
           {activeTab === 'live' && <AdminLiveMonitoringView />}
           {activeTab === 'contracts' && <AdminContractsGovernance />}
           {activeTab === 'support' && <AdminSupportDesk />}

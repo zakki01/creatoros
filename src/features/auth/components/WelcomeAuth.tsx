@@ -12,8 +12,11 @@ import {
   ArrowRight,
   ShieldCheck,
   RefreshCw,
+  Ticket,
 } from 'lucide-react';
 import { AuthService } from '../services/authService';
+import { BetaAccessService } from '../../../services/betaAccessService';
+import { RequestBetaAccessModal } from './RequestBetaAccessModal';
 import { supabase } from '../../../services/supabaseClient';
 import { OAuthNoticeModal } from './OAuthNoticeModal';
 import { ForgotPasswordModal } from './ForgotPasswordModal';
@@ -36,7 +39,7 @@ export const WelcomeAuth: React.FC<WelcomeAuthProps> = ({
   const { setRole, triggerCelebration, login } = useAppState();
 
   const [mode, setMode] = useState<AuthPanelMode>(initialMode);
-  const [selectedRole, setSelectedRole] = useState<UserRole>('creator');
+  const [selectedRole, setSelectedRole] = useState<'creator' | 'business'>('creator');
 
   // Form Fields - Clean initial values (ZERO DEMO PREFILL)
   const [name, setName] = useState('');
@@ -44,11 +47,34 @@ export const WelcomeAuth: React.FC<WelcomeAuthProps> = ({
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [inviteCode, setInviteCode] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const p = new URLSearchParams(window.location.search);
+      return (p.get('invite') || '').toUpperCase();
+    }
+    return '';
+  });
+  const [inviteFeedback, setInviteFeedback] = useState<string | null>(null);
+  const [isWaitlistModalOpen, setIsWaitlistModalOpen] = useState(false);
 
   // States
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [verificationPendingEmail, setVerificationPendingEmail] = useState<string | null>(null);
+
+  // Real-time Invite Code Verification
+  useEffect(() => {
+    if (inviteCode.trim()) {
+      const res = BetaAccessService.validateInviteCode(inviteCode.trim(), selectedRole);
+      if (res.valid) {
+        setInviteFeedback(res.badge || 'Verified Beta VIP Pass');
+      } else {
+        setInviteFeedback(null);
+      }
+    } else {
+      setInviteFeedback(null);
+    }
+  }, [inviteCode, selectedRole]);
 
   // URL Hash Verification State (e.g. expired or invalid tokens)
   const [urlAuthError, setUrlAuthError] = useState<{ code?: string; description?: string } | null>(null);
@@ -143,6 +169,13 @@ export const WelcomeAuth: React.FC<WelcomeAuthProps> = ({
         setErrorMessage('Passwords do not match. Please re-enter your password.');
         return;
       }
+
+      // Private Beta Invite Code Requirement
+      const inviteValidation = BetaAccessService.validateInviteCode(inviteCode.trim(), selectedRole);
+      if (!inviteValidation.valid) {
+        setErrorMessage(inviteValidation.error || 'A valid VIP invite code is required to join the private beta.');
+        return;
+      }
     }
 
     setIsLoading(true);
@@ -159,6 +192,14 @@ export const WelcomeAuth: React.FC<WelcomeAuthProps> = ({
           password,
           role: selectedRole,
         });
+
+        if (inviteCode.trim()) {
+          BetaAccessService.redeemInviteCode(
+            inviteCode.trim(),
+            result.user?.id || 'pending_usr',
+            trimmedEmail
+          );
+        }
 
         if (result.emailConfirmationRequired) {
           setVerificationPendingEmail(trimmedEmail);
@@ -346,6 +387,46 @@ export const WelcomeAuth: React.FC<WelcomeAuthProps> = ({
           3. INPUT FORM
          ───────────────────────────────────────────────────────────── */}
       <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Beta Invite Code Field (Register Mode Only) */}
+        {mode === 'register' && (
+          <div className="space-y-1.5 text-left animate-fade-in">
+            <div className="flex items-center justify-between">
+              <label className="text-xs sm:text-sm font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-1.5 font-sans">
+                <span>Beta Invite Code</span>
+                <span className="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-purple-500/10 text-purple-600 dark:text-purple-400 font-bold border border-purple-500/20">
+                  Invite-Only
+                </span>
+              </label>
+              <button
+                type="button"
+                onClick={() => setIsWaitlistModalOpen(true)}
+                className="text-[11px] text-[var(--primary)] hover:underline font-semibold cursor-pointer"
+              >
+                Request Beta Access
+              </button>
+            </div>
+            <div className="studio-input-soft rounded-lg flex items-center px-3.5 py-2.5">
+              <Ticket className="w-4 h-4 text-purple-500 mr-2.5 shrink-0" />
+              <input
+                type="text"
+                name="inviteCode"
+                required
+                value={inviteCode}
+                onChange={(e) => setInviteCode(e.target.value.toUpperCase())}
+                placeholder="e.g. ALPHA-2026 or CREATOR-VIP"
+                disabled={isLoading}
+                autoComplete="off"
+                className="w-full text-xs sm:text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 bg-transparent outline-none font-mono uppercase font-bold tracking-wider"
+              />
+              {inviteFeedback && (
+                <span className="text-[10px] font-mono text-emerald-600 dark:text-emerald-400 font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 whitespace-nowrap">
+                  ✓ {inviteFeedback}
+                </span>
+              )}
+            </div>
+          </div>
+        )}
+
         {/* Name Field (Register Mode Only) */}
         {mode === 'register' && (
           <div className="space-y-1.5 text-left animate-fade-in">
@@ -553,6 +634,17 @@ export const WelcomeAuth: React.FC<WelcomeAuthProps> = ({
       <ForgotPasswordModal
         isOpen={isForgotModalOpen}
         onClose={() => setIsForgotModalOpen(false)}
+      />
+
+      {/* Request Beta Access Waitlist Modal */}
+      <RequestBetaAccessModal
+        isOpen={isWaitlistModalOpen}
+        onClose={() => setIsWaitlistModalOpen(false)}
+        defaultRole={selectedRole}
+        onUseCode={(code) => {
+          setInviteCode(code);
+          setIsWaitlistModalOpen(false);
+        }}
       />
     </div>
   );

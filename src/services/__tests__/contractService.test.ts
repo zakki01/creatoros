@@ -17,9 +17,9 @@ describe('ContractService', () => {
       expect(breakdown.creatorPayment).toBe(1000);
       expect(breakdown.platformFeeRate).toBe(0.1); // 10%
       expect(breakdown.platformFee).toBe(100);
-      expect(breakdown.protectionAmountRate).toBe(0.2); // 20%
-      expect(breakdown.protectionAmount).toBe(200);
-      expect(breakdown.totalAmount).toBe(1300); // 1000 + 100 + 200
+      expect(breakdown.protectionAmountRate).toBe(0); // 0% holding fee
+      expect(breakdown.protectionAmount).toBe(0);
+      expect(breakdown.totalAmount).toBe(1000); // 1000 held in escrow at 0% holding fee
       expect(breakdown.currency).toBe('USD');
       expect(breakdown.provider).toBe('stripe');
       expect(breakdown.paymentStatus).toBe('unfunded');
@@ -258,6 +258,48 @@ describe('ContractService', () => {
 
       const found = ContractService.getContractById(draft.id);
       expect(found).toBeNull();
+    });
+
+    it('allows Super Admin God Mode to force release escrow to creator', async () => {
+      const draft = ContractService.saveDraft({
+        projectName: 'God Mode Release Test',
+        brandId: 'brand_test',
+        brandName: 'Test Brand',
+        creatorId: 'creator_test',
+        creatorName: 'Test Creator',
+      });
+      ContractService.sendContract(draft.id);
+      ContractService.acceptContract(draft.id);
+
+      const result = await ContractService.forceReleaseEscrow(
+        draft.id,
+        'Creator fulfilled agreement; brand unresponsive'
+      );
+      expect(result.success).toBe(true);
+      expect(result.contract?.status).toBe('completed');
+      expect(result.contract?.payment.paymentStatus).toBe('paid');
+      expect(result.contract?.auditTrail.some((a) => a.action === 'GODMODE_FORCE_RELEASE_ESCROW')).toBe(true);
+    });
+
+    it('allows Super Admin God Mode to force refund escrow to brand', async () => {
+      const draft = ContractService.saveDraft({
+        projectName: 'God Mode Refund Test',
+        brandId: 'brand_test_2',
+        brandName: 'Test Brand 2',
+        creatorId: 'creator_test_2',
+        creatorName: 'Test Creator 2',
+      });
+      ContractService.sendContract(draft.id);
+      ContractService.acceptContract(draft.id);
+
+      const result = await ContractService.forceRefundEscrow(
+        draft.id,
+        'Creator abandoned delivery deadlines without notice'
+      );
+      expect(result.success).toBe(true);
+      expect(result.contract?.status).toBe('cancelled');
+      expect(result.contract?.payment.paymentStatus).toBe('refunded');
+      expect(result.contract?.auditTrail.some((a) => a.action === 'GODMODE_FORCE_REFUND_ESCROW')).toBe(true);
     });
   });
 });

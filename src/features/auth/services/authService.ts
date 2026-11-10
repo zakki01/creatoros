@@ -108,6 +108,8 @@ export class AuthServiceSingleton {
           name: name,
           role: role,
           handle: handle,
+          is_beta_user: true,
+          badge: role === 'business' ? 'Alpha Brand Partner' : 'Founding Creator',
         },
       },
     });

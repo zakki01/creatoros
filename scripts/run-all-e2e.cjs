@@ -222,6 +222,102 @@ async function run() {
     });
     recordResult(11, 'Decart Live Studio & AR Pipeline', liveStudioLoaded);
 
+    // -------------------------------------------------------------
+    // Journey 12: Private Beta Invite Gate & Waitlist Modal
+    // -------------------------------------------------------------
+    console.log('\n--- Executing Journey 12: Private Beta Gate & Waitlist ---');
+    await page.goto(`${BASE_URL}/`, { waitUntil: 'networkidle0' });
+    await page.evaluate(() => {
+      localStorage.removeItem('creatoros_auth_session_v1');
+      localStorage.removeItem('creatoros_admin_session_v1');
+    });
+    await page.goto(`${BASE_URL}/`, { waitUntil: 'networkidle0' });
+    await sleep(600);
+
+    const betaGatePassed = await page.evaluate(() => {
+      // Switch to sign up mode
+      const btns = Array.from(document.querySelectorAll('button'));
+      const signUpBtn = btns.find((b) => b.textContent && (b.textContent.includes('Sign Up') || b.textContent.includes('Create Account') || b.textContent.includes('Register')));
+      if (signUpBtn) signUpBtn.click();
+      return true;
+    });
+    await sleep(500);
+
+    const inviteFieldVerified = await page.evaluate(() => {
+      const inputs = Array.from(document.querySelectorAll('input'));
+      const hasInviteField = inputs.some((i) => (i.placeholder && i.placeholder.includes('ALPHA')) || i.name === 'inviteCode');
+      const hasWaitlistTrigger = Array.from(document.querySelectorAll('button')).some((b) => b.textContent && b.textContent.includes('Request Beta Access'));
+      return hasInviteField || hasWaitlistTrigger;
+    });
+    recordResult(12, 'Private Beta Invite-Only Registration Gate', inviteFieldVerified, 'Invite field & waitlist launcher verified');
+
+    // -------------------------------------------------------------
+    // Journey 13: Secret God Mode Air-Gap (404 Stealth) & Root Login
+    // -------------------------------------------------------------
+    console.log('\n--- Executing Journey 13: Secret God Mode Air-Gap & Root Login ---');
+    // 1. Visitor directly accessing /godmode without credentials receives 404
+    await page.goto(`${BASE_URL}/godmode`, { waitUntil: 'networkidle0' });
+    await sleep(500);
+    const stealth404Passed = await page.evaluate(() => {
+      const text = document.body.innerText;
+      return text.includes('404') || text.includes('Lost in space') || text.includes('not found') || text.includes('Back to Safety');
+    });
+
+    // 2. Secret URL /godmode/login displays dedicated Root Admin console
+    await page.goto(`${BASE_URL}/godmode/login`, { waitUntil: 'networkidle0' });
+    await sleep(600);
+    const rootLoginPassed = await page.evaluate(() => {
+      const text = document.body.innerText;
+      return text.includes('ROOT ENCLAVE') || text.includes('Super Admin Access') || text.includes('Command Center');
+    });
+    recordResult(13, 'Secret God Mode Stealth Air-Gap (404) & Root Login', stealth404Passed && rootLoginPassed, 'Stealth 404 + root enclave login verified');
+
+    // -------------------------------------------------------------
+    // Journey 14: Forensic Chat Inspector & God Mode Escrow Override
+    // -------------------------------------------------------------
+    console.log('\n--- Executing Journey 14: Forensic Chat Inspector & Escrow Override ---');
+    const superAdminSession = {
+      id: 'admin-sec-001',
+      name: 'Alex Vance',
+      email: 'alex.admin@creatoros.ai',
+      role: 'super_admin',
+      avatarUrl: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200',
+      token: 'admin_jwt_verified_super_admin',
+      loginTimestamp: Date.now(),
+      expiresAt: Date.now() + 24 * 60 * 60 * 1000,
+      twoFactorVerified: true,
+    };
+    await page.evaluate((adminSess) => {
+      localStorage.setItem('creatoros_admin_session_v1', JSON.stringify(adminSess));
+    }, superAdminSession);
+    await page.goto(`${BASE_URL}/godmode`, { waitUntil: 'networkidle0' });
+    await sleep(1000);
+
+    const godmodeLoaded = await page.evaluate(() => {
+      const text = document.body.innerText;
+      return text.includes('Command Center') || text.includes('Super Admin') || text.includes('Audit Trail');
+    });
+
+    // Navigate to Chat Inspector
+    await page.goto(`${BASE_URL}/godmode/chat`, { waitUntil: 'networkidle0' });
+    await sleep(800);
+    const chatInspectorLoaded = await page.evaluate(() => {
+      const text = document.body.innerText;
+      return text.includes('Forensic Chat Inspector') || text.includes('Anti-Circumvention') || text.includes('Monitored Threads');
+    });
+
+    // Navigate to Contracts Governance and verify Escrow Override capability
+    await page.goto(`${BASE_URL}/godmode/contracts`, { waitUntil: 'networkidle0' });
+    await sleep(800);
+    const escrowOverrideAvailable = await page.evaluate(() => {
+      const text = document.body.innerText;
+      const btns = Array.from(document.querySelectorAll('button'));
+      const hasOverrideBtn = btns.some((b) => b.textContent && b.textContent.includes('Override'));
+      return text.includes('Commercial Contracts') && hasOverrideBtn;
+    });
+
+    recordResult(14, 'God Mode Forensic Chat Inspector & Escrow Override', godmodeLoaded && chatInspectorLoaded && escrowOverrideAvailable, 'Chat monitor + escrow override confirmed');
+
   } catch (err) {
     console.error('Fatal error during E2E test execution:', err);
   } finally {
@@ -243,7 +339,7 @@ async function run() {
     console.error('\n❌ ONE OR MORE E2E JOURNEYS FAILED.');
     process.exit(1);
   } else {
-    console.log('\n🎉 ALL 11 E2E CRITICAL USER JOURNEYS PASSED SUCCESSFULLY!\n');
+    console.log(`\n🎉 ALL ${testResults.length} E2E CRITICAL USER JOURNEYS PASSED SUCCESSFULLY!\n`);
     process.exit(0);
   }
 }

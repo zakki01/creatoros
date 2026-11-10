@@ -1,6 +1,8 @@
 import { Conversation, DirectMessage, MessageType, AttachmentType } from '../types/messaging';
 import { supabase } from './supabaseClient';
 
+export type { Conversation, DirectMessage, MessageType, AttachmentType };
+
 export const INITIAL_CONVERSATIONS: Conversation[] = [
   {
     id: 'conv-aura-rohan',
@@ -65,6 +67,16 @@ export const INITIAL_MESSAGES: Record<string, DirectMessage[]> = {
 export class MessagingService {
   private conversations: Conversation[] = [...INITIAL_CONVERSATIONS];
   private messages: Record<string, DirectMessage[]> = { ...INITIAL_MESSAGES };
+  private flaggedMessages: Array<{
+    id: string;
+    conversationId: string;
+    senderId: string;
+    senderName: string;
+    content: string;
+    reason: string;
+    severity: string;
+    timestamp: string;
+  }> = [];
 
   getConversations(): Conversation[] {
     return this.conversations;
@@ -85,6 +97,23 @@ export class MessagingService {
       this.messages[conversationId] = [];
     }
     this.messages[conversationId].push(newMsg);
+
+    // Auto-scan for anti-circumvention violations
+    if (newMsg.content) {
+      const scan = MessagingService.scanForCircumvention(newMsg.content);
+      if (scan.flagged) {
+        this.flaggedMessages.unshift({
+          id: `flg-${Date.now()}`,
+          conversationId,
+          senderId: newMsg.senderId,
+          senderName: newMsg.senderName,
+          content: newMsg.content,
+          reason: scan.reason || 'Flagged policy violation',
+          severity: scan.severity,
+          timestamp: new Date().toISOString(),
+        });
+      }
+    }
 
     const conv = this.conversations.find((c) => c.id === conversationId);
     if (conv) {
@@ -428,6 +457,82 @@ export class MessagingService {
     } catch {
       return false;
     }
+  }
+
+  // =========================================================================
+  // ANTI-CIRCUMVENTION & SUPER ADMIN GOD MODE FORENSICS
+  // =========================================================================
+
+  /**
+   * Scans text for off-platform communication and payment circumvention attempts.
+   */
+  static scanForCircumvention(text: string): {
+    flagged: boolean;
+    reason?: string;
+    triggerMatch?: string;
+    severity: 'none' | 'warning' | 'high' | 'critical';
+  } {
+    if (!text) return { flagged: false, severity: 'none' };
+    const lower = text.toLowerCase();
+
+    // 1. Off-platform payment solicitations
+    const upiRegex = /[a-zA-Z0-9.\-_]{2,256}@(okaxis|okhdfcbank|okicici|oksbi|paytm|ybl|axl|ibl|upi)/i;
+    if (
+      upiRegex.test(text) ||
+      lower.includes('pay outside') ||
+      lower.includes('deal outside') ||
+      lower.includes('direct transfer') ||
+      lower.includes('wire transfer') ||
+      lower.includes('paypal.me') ||
+      lower.includes('paytm me') ||
+      lower.includes('gpay me')
+    ) {
+      return {
+        flagged: true,
+        reason: 'Attempted off-platform payment. All transactions must stay inside CreatorOS to guarantee escrow protection.',
+        triggerMatch: 'External payment / UPI solicitation',
+        severity: 'critical',
+      };
+    }
+
+    // 2. Off-platform contact requests
+    if (
+      lower.includes('whatsapp') ||
+      lower.includes('whats app') ||
+      lower.includes('wa.me') ||
+      lower.includes('telegram') ||
+      lower.includes('t.me')
+    ) {
+      return {
+        flagged: true,
+        reason: 'Attempted off-platform contact. Off-platform dealing forfeits dispute resolution and violates policy.',
+        triggerMatch: 'External messenger solicitation',
+        severity: 'high',
+      };
+    }
+
+    return { flagged: false, severity: 'none' };
+  }
+
+  /**
+   * Super Admin God Mode: returns all anti-circumvention flagged messages
+   */
+  getFlaggedMessages() {
+    return [...this.flaggedMessages];
+  }
+
+  /**
+   * Super Admin God Mode: returns all conversations across the entire platform
+   */
+  getAllConversationsForensic(): Conversation[] {
+    return [...this.conversations];
+  }
+
+  /**
+   * Super Admin God Mode: returns raw chronological message history for a conversation
+   */
+  getConversationForensicMessages(conversationId: string): DirectMessage[] {
+    return this.messages[conversationId] || [];
   }
 }
 
