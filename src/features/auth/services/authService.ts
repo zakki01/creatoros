@@ -455,25 +455,34 @@ class AdminAuthServiceSingleton {
       throw new Error(`Too many failed login attempts. Enclave locked for ${secondsRemaining}s.`);
     }
 
-    const email = credentials.email.trim().toLowerCase();
-    const password = credentials.password;
+    const email = credentials.email ? credentials.email.trim().toLowerCase() : '';
+    const password = credentials.password || '';
 
-    await new Promise((r) => setTimeout(r, 450));
+    await new Promise((r) => setTimeout(r, 50));
+
+    const recordFailure = (msg: string) => {
+      this.failedAttempts++;
+      if (this.failedAttempts >= 5) {
+        this.lockoutUntil = Date.now() + 60000;
+      }
+      throw new Error(msg);
+    };
 
     if (!email || !password) {
-      this.failedAttempts++;
-      throw new Error('Please provide both administrator email and passphrase.');
+      recordFailure('Please provide both administrator email and passphrase.');
     }
 
     if (password.length < 8) {
-      this.failedAttempts++;
-      throw new Error('Passphrase does not meet enclave cryptographic complexity requirements.');
+      recordFailure('Passphrase does not meet enclave cryptographic complexity requirements.');
+    }
+
+    if (!email.includes('admin') && !email.includes('creatoros.ai')) {
+      recordFailure('Administrative access denied for this domain.');
     }
 
     const twoFactorCode = credentials.twoFactorCode;
     if (twoFactorCode && !/^\d{6}$/.test(twoFactorCode)) {
-      this.failedAttempts++;
-      throw new Error('2FA verification code must be a 6-digit numeric TOTP token.');
+      recordFailure('2FA verification code must be a 6-digit numeric TOTP token.');
     }
 
     this.failedAttempts = 0;

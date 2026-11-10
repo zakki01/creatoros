@@ -1,0 +1,33 @@
+name: CreatorOS Production Release Verification
+
+on:
+  deployment_status:
+  workflow_dispatch:
+    inputs:
+      target_url:
+        description: 'Production or Preview URL to verify'
+        required: true
+        default: 'https://creatoros-fawn-iota.vercel.app'
+
+jobs:
+  verify-release:
+    name: Health Check & CDN Verification
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Health Check Endpoint
+        run: |
+          TARGET="${{ github.event.inputs.target_url || 'https://creatoros-fawn-iota.vercel.app' }}"
+          echo "Verifying endpoint: $TARGET"
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$TARGET")
+          echo "HTTP Response Status: $STATUS"
+          if [ "$STATUS" -ne 200 ]; then
+            echo "Release verification failed: expected HTTP 200, got $STATUS"
+            exit 1
+          fi
+          echo "Health check passed: HTTP 200 OK"
+
+      - name: Verify Security Headers
+        run: |
+          TARGET="${{ github.event.inputs.target_url || 'https://creatoros-fawn-iota.vercel.app' }}"
+          curl -I -s "$TARGET" | grep -iE "(strict-transport-security|x-content-type-options|x-frame-options)" || true

@@ -1,0 +1,43 @@
+name: CreatorOS CI/CD Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  verify:
+    name: Code Quality, Security & Coverage
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies (clean)
+        run: npm ci
+
+      - name: TypeScript Typecheck
+        run: npm run typecheck
+
+      - name: Linter Check (oxlint)
+        run: npm run lint
+
+      - name: Security Vulnerability Audit
+        run: npm audit --audit-level=high
+
+      - name: Run Unit & Integration Tests with Coverage
+        run: npm run test:coverage
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL || 'https://fthqnbqqsgfkotsmsjgz.supabase.co' }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ0aHFuYnFxc2dma290c21zamd6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMzMDIwMDYsImV4cCI6MjEwODg3ODAwNn0.X3z-fWrjyKymWwF_p5rGsNgibuOk7e7BUS7rGqdviJE' }}
+
+      - name: Production Vite Build
+        run: npm run build
