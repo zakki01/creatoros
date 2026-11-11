@@ -792,11 +792,11 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
                       onClick={() => setStudioTab('effects')}
                       className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                         studioTab === 'effects'
-                          ? 'bg-[var(--surface)] text-[var(--text-primary)] shadow-xs'
-                          : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                          ? 'bg-blue-600 text-white font-semibold shadow-xs dark:bg-sky-500 dark:text-slate-950'
+                          : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white font-medium'
                       }`}
                     >
-                      <Wand2 className="w-3.5 h-3.5 text-[var(--primary)]" />
+                      <Wand2 className={`w-3.5 h-3.5 ${studioTab === 'effects' ? 'text-white dark:text-slate-950' : 'text-[var(--primary)]'}`} />
                       <span>AR Effects &amp; Beauty</span>
                     </button>
                     <button
@@ -804,11 +804,11 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
                       onClick={() => setStudioTab('scenes')}
                       className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                         studioTab === 'scenes'
-                          ? 'bg-[var(--surface)] text-[var(--text-primary)] shadow-xs'
-                          : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                          ? 'bg-blue-600 text-white font-semibold shadow-xs dark:bg-sky-500 dark:text-slate-950'
+                          : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white font-medium'
                       }`}
                     >
-                      <Sparkles className="w-3.5 h-3.5 text-[var(--primary)]" />
+                      <Sparkles className={`w-3.5 h-3.5 ${studioTab === 'scenes' ? 'text-white dark:text-slate-950' : 'text-[var(--primary)]'}`} />
                       <span>Scene Lighting</span>
                     </button>
                     <button
@@ -816,11 +816,11 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
                       onClick={() => setStudioTab('reference')}
                       className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                         studioTab === 'reference'
-                          ? 'bg-[var(--surface)] text-[var(--text-primary)] shadow-xs'
-                          : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                          ? 'bg-blue-600 text-white font-semibold shadow-xs dark:bg-sky-500 dark:text-slate-950'
+                          : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white font-medium'
                       }`}
                     >
-                      <Sliders className="w-3.5 h-3.5 text-[var(--primary)]" />
+                      <Sliders className={`w-3.5 h-3.5 ${studioTab === 'reference' ? 'text-white dark:text-slate-950' : 'text-[var(--primary)]'}`} />
                       <span>Reference</span>
                     </button>
                   </div>

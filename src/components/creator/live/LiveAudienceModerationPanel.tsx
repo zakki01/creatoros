@@ -76,8 +76,8 @@ export const LiveAudienceModerationPanel: React.FC<LiveAudienceModerationPanelPr
               onClick={() => setActiveTab('chat')}
               className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                 activeTab === 'chat'
-                  ? 'bg-[var(--primary)] text-white shadow-xs'
-                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                  ? 'bg-blue-600 text-white font-semibold shadow-xs dark:bg-sky-500 dark:text-slate-950'
+                  : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white font-medium'
               }`}
             >
               <MessageSquare className="w-3.5 h-3.5" />
@@ -88,8 +88,8 @@ export const LiveAudienceModerationPanel: React.FC<LiveAudienceModerationPanelPr
               onClick={() => setActiveTab('participants')}
               className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                 activeTab === 'participants'
-                  ? 'bg-[var(--primary)] text-white shadow-xs'
-                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                  ? 'bg-blue-600 text-white font-semibold shadow-xs dark:bg-sky-500 dark:text-slate-950'
+                  : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white font-medium'
               }`}
             >
               <Users className="w-3.5 h-3.5" />
@@ -100,8 +100,8 @@ export const LiveAudienceModerationPanel: React.FC<LiveAudienceModerationPanelPr
               onClick={() => setActiveTab('moderation')}
               className={`flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                 activeTab === 'moderation'
-                  ? 'bg-[var(--primary)] text-white shadow-xs'
-                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                  ? 'bg-blue-600 text-white font-semibold shadow-xs dark:bg-sky-500 dark:text-slate-950'
+                  : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white font-medium'
               }`}
               title="Moderation Center"
             >
@@ -113,12 +113,12 @@ export const LiveAudienceModerationPanel: React.FC<LiveAudienceModerationPanelPr
               onClick={() => setActiveTab('gifts')}
               className={`flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                 activeTab === 'gifts'
-                  ? 'bg-[var(--primary)] text-white shadow-xs'
-                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                  ? 'bg-blue-600 text-white font-semibold shadow-xs dark:bg-sky-500 dark:text-slate-950'
+                  : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white font-medium'
               }`}
               title="Gifts Stream"
             >
-              <Gift className="w-3.5 h-3.5 text-amber-500" />
+              <Gift className={`w-3.5 h-3.5 ${activeTab === 'gifts' ? 'text-white dark:text-slate-950' : 'text-amber-500'}`} />
               <span className="hidden xl:inline">Gifts</span>
             </button>
           </div>

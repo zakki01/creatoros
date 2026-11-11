@@ -422,7 +422,7 @@ export const CreatorAdminWorkspace: React.FC = () => {
             </h3>
             <div className="space-y-2 text-xs font-mono">
               {[
-                { action: 'Team invite sent to tanvi.cuts@gmail.com', time: 'Yesterday, 18:22' },
+                { action: 'Creator workspace security policy initialized', time: 'Yesterday, 18:22' },
                 { action: 'Updated minimum sponsorship floor to ₹35,000', time: '3 days ago' },
                 { action: 'Verified GSTIN tax registration certificate', time: '1 week ago' },
                 { action: '2FA Authenticator verified on device', time: '2 weeks ago' },

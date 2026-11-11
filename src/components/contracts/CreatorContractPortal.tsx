@@ -245,8 +245,8 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
             onClick={() => setActiveTab(tab.id as TabType)}
             className={`min-h-[44px] px-3.5 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
               activeTab === tab.id
-                ? 'bg-[var(--surface)] text-[var(--text-primary)] shadow-xs border border-[var(--border)]'
-                : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
+                ? 'bg-blue-600 text-white font-semibold shadow-xs dark:bg-sky-500 dark:text-slate-950'
+                : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white font-medium hover:bg-[var(--surface-muted)]'
             }`}
           >
             <span>{tab.label}</span>
@@ -254,7 +254,7 @@ export const CreatorContractPortal: React.FC<CreatorContractPortalProps> = ({
               <span
                 className={`px-1.5 py-0.2 rounded-full text-[10px] font-mono ${
                   activeTab === tab.id
-                    ? 'bg-sky-50 text-sky-800 font-bold'
+                    ? 'bg-white/20 text-white dark:bg-black/20 dark:text-slate-950 font-bold'
                     : 'bg-[var(--surface-muted)] text-[var(--text-muted)] border border-[var(--border)]'
                 }`}
               >

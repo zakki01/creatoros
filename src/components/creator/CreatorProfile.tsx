@@ -244,7 +244,9 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
                 )}
               </div>
               <p className="text-xs sm:text-sm text-[var(--text-secondary)] font-medium">
-                {creator.category || 'Sneaker & Streetwear'} Creator
+                {creator.category
+                  ? (creator.category.toLowerCase().includes('creator') ? creator.category : `${creator.category} Creator`)
+                  : 'Digital Creator'}
               </p>
               <p className="text-xs text-[var(--text-muted)] flex items-center gap-1.5 flex-wrap">
                 <MapPin className="w-3.5 h-3.5 text-[var(--text-muted)] shrink-0" />
@@ -405,8 +407,8 @@ export const CreatorProfile: React.FC<CreatorProfileProps> = ({
               onClick={() => setActiveTab(tab.id as any)}
               className={`min-h-[44px] px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition-all cursor-pointer select-none shrink-0 ${
                 isActive
-                  ? 'bg-[var(--surface-elevated)] text-[var(--text-primary)] shadow-sm border border-[var(--border)]'
-                  : 'text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-muted)]'
+                  ? 'bg-blue-600 text-white font-semibold shadow-xs dark:bg-sky-500 dark:text-slate-950'
+                  : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white font-medium hover:bg-[var(--surface-muted)]'
               }`}
             >
               {tab.label}

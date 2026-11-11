@@ -131,7 +131,8 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
               </span>
             </div>
             <p className="text-xs text-[var(--text-secondary)] mt-0.5">
-              {currentCreator.category || currentCreator.niche} · {currentCreator.location}
+              <span>{currentCreator.category || currentCreator.niche || 'Digital Creator'}</span>
+              {currentCreator.location ? <span> · {currentCreator.location}</span> : null}
             </p>
           </div>
         </div>

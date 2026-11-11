@@ -275,7 +275,7 @@ export const DiscoverView: React.FC = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search..."
-              className="w-full pl-8 pr-3 py-2 rounded-xl surface-2 text-xs text-zinc-900 placeholder-zinc-500 focus:outline-none focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)]/60"
+              className="w-full pl-8 pr-3 py-2 rounded-xl surface-2 text-xs text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)]/60"
             />
             {searchQuery && (
               <button
@@ -293,7 +293,7 @@ export const DiscoverView: React.FC = () => {
             className={`min-h-[38px] px-3 py-2 rounded-xl text-xs font-medium flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
               showFilterDrawer || selectedLocation !== 'All' || verifiedOnly || selectedContentType !== 'All'
                 ? 'surface-3 border-[var(--primary)]/50 text-[var(--primary)]'
-                : 'surface-2 text-zinc-700 hover:text-zinc-900'
+                : 'surface-2 text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white'
             }`}
             title="Filters"
           >
@@ -304,7 +304,7 @@ export const DiscoverView: React.FC = () => {
           <button
             onClick={() => setIsMyPostsOpen(true)}
             aria-label="My Posts"
-            className="min-h-[38px] px-3 py-2 rounded-xl surface-2 text-xs font-medium text-zinc-700 hover:text-zinc-900 transition-all cursor-pointer flex items-center justify-center gap-1.5"
+            className="min-h-[38px] px-3 py-2 rounded-xl surface-2 text-xs font-medium text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white transition-all cursor-pointer flex items-center justify-center gap-1.5"
             title="My Posts"
           >
             <Bookmark className="w-3.5 h-3.5 text-zinc-500" />
@@ -343,8 +343,8 @@ export const DiscoverView: React.FC = () => {
                 onClick={() => setSubTab(tab.id as any)}
                 className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
                   isActive
-                    ? 'depth-btn-primary text-white'
-                    : 'text-zinc-500 hover:text-zinc-800 hover:bg-zinc-100'
+                    ? 'bg-blue-600 text-white font-semibold shadow-xs dark:bg-sky-500 dark:text-slate-950'
+                    : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/50 dark:hover:bg-slate-800/60'
                 }`}
               >
                 <Icon className="w-3.5 h-3.5" />
@@ -362,8 +362,8 @@ export const DiscoverView: React.FC = () => {
               onClick={() => setSelectedLocation(loc)}
               className={`px-2.5 py-1 rounded-xl text-[11px] font-mono transition-all cursor-pointer ${
                 selectedLocation === loc
-                  ? 'surface-3 text-[var(--text-primary)] border-[var(--accent)]/35'
-                  : 'text-[var(--text-muted)] hover:text-[var(--text-primary)] bg-[var(--surface)] border border-[var(--border)]'
+                  ? 'bg-blue-600 text-white font-semibold dark:bg-sky-500 dark:text-slate-950'
+                  : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white bg-[var(--surface)] border border-[var(--border)]'
               }`}
             >
               {loc}
