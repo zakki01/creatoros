@@ -96,21 +96,21 @@ export const RequestPayoutModal: React.FC<RequestPayoutModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fade-in">
-      <div className="w-full max-w-md rounded-2xl bg-[var(--surface-elevated)] border border-[var(--border)] shadow-2xl overflow-hidden font-sans text-[var(--text-primary)]">
+      <div className="w-full max-w-md rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden font-sans text-slate-900 dark:text-slate-100">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--border)]">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-800">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
               <DollarSign className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="text-sm font-bold text-[var(--text-primary)]">Request Milestone Payout</h3>
-              <p className="text-[11px] text-[var(--text-secondary)]">Disburse cleared escrow earnings</p>
+              <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">Request Milestone Payout</h3>
+              <p className="text-[11px] text-slate-600 dark:text-slate-400">Disburse cleared escrow earnings</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded-lg hover:bg-[var(--surface-muted)] text-[var(--text-muted)] cursor-pointer"
+            className="p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
@@ -144,11 +144,11 @@ export const RequestPayoutModal: React.FC<RequestPayoutModalProps> = ({
           )}
 
           <div>
-            <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5">
+            <label className="text-xs font-bold text-slate-800 dark:text-slate-200 block mb-1.5">
               Payout Amount (USD)
             </label>
             <div className="relative">
-              <span className="absolute left-3 top-2.5 text-xs font-mono text-[var(--text-muted)]">$</span>
+              <span className="absolute left-3 top-2.5 text-xs font-mono text-slate-400">$</span>
               <input
                 type="number"
                 step="0.01"
@@ -157,23 +157,23 @@ export const RequestPayoutModal: React.FC<RequestPayoutModalProps> = ({
                 onChange={(e) => setAmount(e.target.value)}
                 placeholder="0.00"
                 disabled={!isKycVerified || !hasEligibleMethod}
-                className="w-full min-h-[40px] pl-7 pr-3 rounded-xl bg-[var(--input)] border border-[var(--border)] text-xs text-[var(--text-primary)] font-mono font-bold focus:outline-none focus:border-[var(--accent)] disabled:opacity-50"
+                className="w-full min-h-[40px] pl-7 pr-3 rounded-xl bg-white dark:bg-slate-900/90 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 font-mono font-bold text-xs focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 dark:focus:border-sky-500 transition-all disabled:opacity-50"
               />
             </div>
-            <span className="text-[10px] text-[var(--text-muted)] mt-1 block">
+            <span className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 block">
               Available to disburse: <span className="font-mono font-bold text-emerald-600 dark:text-emerald-400">${availableBalance.toLocaleString()}</span>
             </span>
           </div>
 
           <div>
-            <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5">
+            <label className="text-xs font-bold text-slate-800 dark:text-slate-200 block mb-1.5">
               Disbursement Method
             </label>
             <select
               value={selectedMethodId}
               onChange={(e) => setSelectedMethodId(e.target.value)}
               disabled={!hasEligibleMethod}
-              className="w-full min-h-[40px] px-3 rounded-xl bg-[var(--input)] border border-[var(--border)] text-xs text-[var(--text-primary)] focus:outline-none focus:border-[var(--accent)] disabled:opacity-50"
+              className="w-full min-h-[40px] px-3.5 rounded-xl bg-white dark:bg-slate-900/90 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 dark:focus:border-sky-500 transition-all disabled:opacity-50 cursor-pointer"
             >
               {methods.map((m) => (
                 <option key={m.id} value={m.id}>
@@ -183,7 +183,7 @@ export const RequestPayoutModal: React.FC<RequestPayoutModalProps> = ({
             </select>
           </div>
 
-          <div className="p-3 rounded-xl surface-2 text-[11px] text-[var(--text-secondary)] space-y-1">
+          <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-850/60 border border-slate-200 dark:border-slate-750 text-[11px] text-slate-700 dark:text-slate-300 space-y-1.5">
             <div className="flex justify-between">
               <span>Platform Disbursement Fee</span>
               <span className="font-mono font-semibold text-emerald-600 dark:text-emerald-400">$0.00 (0%)</span>
@@ -195,18 +195,18 @@ export const RequestPayoutModal: React.FC<RequestPayoutModalProps> = ({
           </div>
 
           {/* Action Footer */}
-          <div className="flex items-center justify-end gap-2 pt-2 border-t border-[var(--border)]">
+          <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-200 dark:border-slate-800">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 rounded-xl text-xs font-medium text-[var(--text-secondary)] hover:bg-[var(--surface-muted)] cursor-pointer"
+              className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-200/60 dark:hover:bg-slate-800 cursor-pointer transition-all"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isSubmitting || !isKycVerified || !hasEligibleMethod}
-              className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shadow-xs"
+              className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shadow-xs active:scale-95"
             >
               {isSubmitting ? 'Processing...' : 'Confirm Request'}
               <ArrowRight className="w-3.5 h-3.5" />

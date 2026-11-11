@@ -67,9 +67,9 @@ export const CreatorFinanceCenter: React.FC<CreatorFinanceCenterProps> = ({
         <div className="flex items-center gap-2">
           <button
             onClick={() => setIsPayoutModalOpen(true)}
-            className="px-4 py-2 rounded-xl text-xs font-semibold bg-[var(--primary)] text-white hover:bg-[var(--primary-hover)] transition-all flex items-center gap-1.5 shadow-sm active:scale-95 cursor-pointer"
+            className="px-4 py-2 rounded-xl text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white dark:bg-sky-500 dark:hover:bg-sky-400 dark:text-slate-950 dark:font-bold shadow-xs transition-all flex items-center gap-1.5 active:scale-95 cursor-pointer"
           >
-            <DollarSign className="w-3.5 h-3.5 text-white" />
+            <DollarSign className="w-3.5 h-3.5 text-white dark:text-slate-950" />
             <span>Request Payout</span>
           </button>
         </div>
@@ -84,13 +84,13 @@ export const CreatorFinanceCenter: React.FC<CreatorFinanceCenterProps> = ({
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-medium whitespace-nowrap transition-all cursor-pointer ${
+              className={`flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs whitespace-nowrap transition-all cursor-pointer ${
                 isActive
-                  ? 'bg-[var(--primary)] text-white shadow-sm font-semibold'
-                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-muted)]'
+                  ? 'bg-blue-600 text-white dark:bg-sky-500 dark:text-slate-950 font-semibold shadow-xs'
+                  : 'text-slate-600 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white hover:bg-slate-200/70 dark:hover:bg-slate-800/70 font-medium'
               }`}
             >
-              <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-white' : 'text-[var(--text-muted)]'}`} />
+              <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-white dark:text-slate-950' : 'text-slate-500 dark:text-slate-400'}`} />
               <span>{tab.label}</span>
             </button>
           );

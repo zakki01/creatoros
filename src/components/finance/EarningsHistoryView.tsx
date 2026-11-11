@@ -96,44 +96,44 @@ export const EarningsHistoryView: React.FC<EarningsHistoryViewProps> = ({ userId
 
       {/* Itemized Table */}
       <SpatialCard surface={1} className="p-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[var(--border-subtle)] pb-4 mb-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-4 mb-4">
           <div>
-            <h3 className="text-sm font-semibold text-[var(--text-primary)] uppercase tracking-wider font-mono">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200">
               Itemized Milestone Earnings
             </h3>
-            <p className="text-xs text-[var(--text-secondary)] mt-0.5">
+            <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">
               Every completed campaign milestone and its escrow settlement status.
             </p>
           </div>
 
           <div className="flex items-center gap-2">
-            <div className="flex items-center rounded-xl p-0.5 surface-2 border border-[var(--border-subtle)] text-xs">
+            <div className="flex items-center rounded-xl p-0.5 bg-slate-100 dark:bg-slate-850 border border-slate-200 dark:border-slate-700 text-xs">
               <button
                 onClick={() => setFilterStatus('all')}
-                className={`px-3 py-1 rounded-lg font-medium transition-colors ${
+                className={`px-3 py-1 rounded-lg transition-colors cursor-pointer ${
                   filterStatus === 'all'
-                    ? 'bg-[var(--surface-1)] text-[var(--text-primary)] shadow-sm'
-                    : 'text-[var(--text-secondary)]'
+                    ? 'bg-blue-600 text-white dark:bg-sky-500 dark:text-slate-950 font-bold shadow-xs'
+                    : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white font-medium'
                 }`}
               >
                 All
               </button>
               <button
                 onClick={() => setFilterStatus('paid')}
-                className={`px-3 py-1 rounded-lg font-medium transition-colors ${
+                className={`px-3 py-1 rounded-lg transition-colors cursor-pointer ${
                   filterStatus === 'paid'
-                    ? 'bg-[var(--surface-1)] text-[var(--text-primary)] shadow-sm'
-                    : 'text-[var(--text-secondary)]'
+                    ? 'bg-blue-600 text-white dark:bg-sky-500 dark:text-slate-950 font-bold shadow-xs'
+                    : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white font-medium'
                 }`}
               >
                 Paid
               </button>
               <button
                 onClick={() => setFilterStatus('pending')}
-                className={`px-3 py-1 rounded-lg font-medium transition-colors ${
+                className={`px-3 py-1 rounded-lg transition-colors cursor-pointer ${
                   filterStatus === 'pending'
-                    ? 'bg-[var(--surface-1)] text-[var(--text-primary)] shadow-sm'
-                    : 'text-[var(--text-secondary)]'
+                    ? 'bg-blue-600 text-white dark:bg-sky-500 dark:text-slate-950 font-bold shadow-xs'
+                    : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white font-medium'
                 }`}
               >
                 Pending
@@ -143,7 +143,7 @@ export const EarningsHistoryView: React.FC<EarningsHistoryViewProps> = ({ userId
             {userPayments.length > 0 && (
               <button
                 onClick={handleExportCSV}
-                className="px-3 py-1.5 rounded-xl border border-[var(--border-subtle)] text-xs font-medium text-[var(--text-primary)] hover:bg-[var(--surface-3)] transition-colors flex items-center gap-1.5"
+                className="px-3.5 py-1.5 rounded-xl border border-slate-300 dark:border-slate-700 text-xs font-semibold text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors flex items-center gap-1.5 cursor-pointer"
               >
                 <Download className="w-3.5 h-3.5" />
                 Export CSV
@@ -162,7 +162,7 @@ export const EarningsHistoryView: React.FC<EarningsHistoryViewProps> = ({ userId
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead>
-                <tr className="border-b border-[var(--border-subtle)] text-[var(--text-muted)] font-mono uppercase tracking-wider">
+                <tr className="border-b border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 font-bold uppercase tracking-wider text-[11px] bg-slate-50 dark:bg-slate-900/60">
                   <th className="py-3 px-3">Milestone / Campaign</th>
                   <th className="py-3 px-3">Amount</th>
                   <th className="py-3 px-3">Escrow Status</th>

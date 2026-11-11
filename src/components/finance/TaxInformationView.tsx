@@ -222,7 +222,7 @@ export const TaxInformationView: React.FC<TaxInformationViewProps> = ({ userId }
         {!isEditing && taxProfile && (
           <button
             onClick={() => setIsEditing(true)}
-            className="px-3.5 py-1.5 rounded-lg border border-[var(--border-subtle)] text-xs font-medium text-[var(--text-primary)] hover:bg-[var(--surface-3)] transition-colors flex items-center gap-1.5 self-start sm:self-auto"
+            className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 border border-slate-300 dark:border-slate-700 text-xs font-semibold cursor-pointer transition-all flex items-center gap-1.5 self-start sm:self-auto shadow-xs active:scale-95"
           >
             <Edit2 className="w-3.5 h-3.5" />
             Edit Tax Info
@@ -233,18 +233,18 @@ export const TaxInformationView: React.FC<TaxInformationViewProps> = ({ userId }
       {/* Tax Form */}
       <SpatialCard surface={1} className="p-6">
         <form onSubmit={handleSave} className="space-y-6">
-          <div className="flex items-center justify-between border-b border-[var(--border-subtle)] pb-3">
-            <h3 className="text-sm font-semibold text-[var(--text-primary)] uppercase tracking-wider font-mono">
+          <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200">
               Tax Residency & Classification
             </h3>
-            <span className="text-xs text-[var(--text-muted)] flex items-center gap-1">
-              <Lock className="w-3 h-3" /> PCI-DSS & SOC2 Safe
+            <span className="text-xs font-medium text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+              <Lock className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" /> PCI-DSS & SOC2 Safe
             </span>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-medium text-[var(--text-secondary)] mb-1">
+              <label className="block text-xs font-bold text-slate-800 dark:text-slate-200 mb-1.5">
                 Country of Tax Residency
               </label>
               <select
@@ -263,7 +263,7 @@ export const TaxInformationView: React.FC<TaxInformationViewProps> = ({ userId }
                     setTaxResidency(e.target.value);
                   }
                 }}
-                className="w-full px-3 py-2 rounded-xl text-sm surface-2 border border-[var(--border-subtle)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--primary)] disabled:opacity-70"
+                className="w-full px-3.5 py-2.5 rounded-xl text-xs sm:text-sm bg-white dark:bg-slate-900/90 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 dark:focus:border-sky-500 transition-all cursor-pointer disabled:opacity-75 disabled:cursor-not-allowed"
               >
                 <option value="IN">India (IN)</option>
                 <option value="US">United States (US)</option>
@@ -277,14 +277,14 @@ export const TaxInformationView: React.FC<TaxInformationViewProps> = ({ userId }
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-[var(--text-secondary)] mb-1">
+              <label className="block text-xs font-bold text-slate-800 dark:text-slate-200 mb-1.5">
                 Tax Entity Classification
               </label>
               <select
                 disabled={!isEditing}
                 value={classification}
                 onChange={(e) => setClassification(e.target.value as any)}
-                className="w-full px-3 py-2 rounded-xl text-sm surface-2 border border-[var(--border-subtle)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--primary)] disabled:opacity-70"
+                className="w-full px-3.5 py-2.5 rounded-xl text-xs sm:text-sm bg-white dark:bg-slate-900/90 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 dark:focus:border-sky-500 transition-all cursor-pointer disabled:opacity-75 disabled:cursor-not-allowed"
               >
                 <option value="individual">Individual / Sole Proprietor</option>
                 <option value="business">Registered Business / Company / LLP</option>
@@ -292,8 +292,8 @@ export const TaxInformationView: React.FC<TaxInformationViewProps> = ({ userId }
             </div>
 
             <div className="sm:col-span-2">
-              <label className="block text-xs font-medium text-[var(--text-secondary)] mb-1">
-                Legal Name (Must match government tax records) *
+              <label className="block text-xs font-bold text-slate-800 dark:text-slate-200 mb-1.5">
+                Legal Name (Must match government tax records) <span className="text-rose-500 font-bold">*</span>
               </label>
               <input
                 type="text"
@@ -301,21 +301,21 @@ export const TaxInformationView: React.FC<TaxInformationViewProps> = ({ userId }
                 value={legalBusinessName}
                 onChange={(e) => setLegalBusinessName(e.target.value)}
                 placeholder="e.g. Rahul Sharma or TechSparks Media LLP"
-                className="w-full px-3 py-2 rounded-xl text-sm surface-2 border border-[var(--border-subtle)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--primary)] disabled:opacity-70"
+                className="w-full px-3.5 py-2.5 rounded-xl text-xs sm:text-sm bg-white dark:bg-slate-900/90 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 dark:focus:border-sky-500 transition-all disabled:opacity-75 disabled:cursor-not-allowed"
                 required
               />
             </div>
           </div>
 
           {/* Tax Identification (PAN / GSTIN / SSN) */}
-          <div className="pt-2 border-t border-[var(--border-subtle)]">
-            <h4 className="text-xs font-semibold text-[var(--text-primary)] uppercase tracking-wider font-mono mb-4">
+          <div className="pt-2 border-t border-slate-200 dark:border-slate-800">
+            <h4 className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider mb-4">
               Tax Identifiers & Compliance
             </h4>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-medium text-[var(--text-secondary)] mb-1 flex items-center justify-between">
+                <label className="block text-xs font-bold text-slate-800 dark:text-slate-200 mb-1.5 flex items-center justify-between">
                   <span>
                     {country === 'IN' ? 'PAN (Permanent Account Number) *' : 'Tax ID Number (TIN / SSN / EIN) *'}
                   </span>
@@ -323,7 +323,7 @@ export const TaxInformationView: React.FC<TaxInformationViewProps> = ({ userId }
                     <button
                       type="button"
                       onClick={() => setShowTaxId(!showTaxId)}
-                      className="text-[11px] text-[var(--primary)] hover:underline flex items-center gap-1"
+                      className="text-[11px] font-semibold text-blue-600 dark:text-sky-400 hover:underline flex items-center gap-1 cursor-pointer"
                     >
                       {showTaxId ? <EyeOff className="w-3 h-3" /> : <Eye className="w-3 h-3" />}
                       {showTaxId ? 'Mask' : 'Reveal'}
@@ -338,12 +338,12 @@ export const TaxInformationView: React.FC<TaxInformationViewProps> = ({ userId }
                     onChange={(e) => setTaxId(e.target.value.toUpperCase())}
                     placeholder={country === 'IN' ? 'e.g. ABCDE1234F' : 'Tax ID Number'}
                     maxLength={country === 'IN' ? 10 : 30}
-                    className="w-full px-3 py-2 rounded-xl text-sm font-mono surface-2 border border-[var(--border-subtle)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--primary)] uppercase disabled:opacity-70"
+                    className="w-full px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-mono bg-white dark:bg-slate-900/90 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 dark:focus:border-sky-500 uppercase transition-all disabled:opacity-75 disabled:cursor-not-allowed"
                     required
                   />
                 </div>
                 {country === 'IN' && (
-                  <p className="text-[11px] text-[var(--text-muted)] mt-1">
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
                     Standard 10-character Indian alphanumeric identifier.
                   </p>
                 )}
@@ -351,7 +351,7 @@ export const TaxInformationView: React.FC<TaxInformationViewProps> = ({ userId }
 
               {country === 'IN' && (
                 <div>
-                  <label className="block text-xs font-medium text-[var(--text-secondary)] mb-1">
+                  <label className="block text-xs font-bold text-slate-800 dark:text-slate-200 mb-1.5">
                     GSTIN (Optional — only if registered under GST)
                   </label>
                   <input
@@ -361,9 +361,9 @@ export const TaxInformationView: React.FC<TaxInformationViewProps> = ({ userId }
                     onChange={(e) => setGstin(e.target.value.toUpperCase())}
                     placeholder="e.g. 27ABCDE1234F1Z5 (15 digits)"
                     maxLength={15}
-                    className="w-full px-3 py-2 rounded-xl text-sm font-mono surface-2 border border-[var(--border-subtle)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--primary)] uppercase disabled:opacity-70"
+                    className="w-full px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-mono bg-white dark:bg-slate-900/90 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 dark:focus:border-sky-500 uppercase transition-all disabled:opacity-75 disabled:cursor-not-allowed"
                   />
-                  <p className="text-[11px] text-[var(--text-muted)] mt-1">
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
                     Leave blank if your annual turnover is below the GST registration threshold.
                   </p>
                 </div>
@@ -372,14 +372,14 @@ export const TaxInformationView: React.FC<TaxInformationViewProps> = ({ userId }
           </div>
 
           {/* Billing Address for Tax Invoicing */}
-          <div className="pt-2 border-t border-[var(--border-subtle)]">
-            <h4 className="text-xs font-semibold text-[var(--text-primary)] uppercase tracking-wider font-mono mb-4">
+          <div className="pt-2 border-t border-slate-200 dark:border-slate-800">
+            <h4 className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider mb-4">
               Registered Tax Address
             </h4>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div className="sm:col-span-3">
-                <label className="block text-xs font-medium text-[var(--text-secondary)] mb-1">
+                <label className="block text-xs font-bold text-slate-800 dark:text-slate-200 mb-1.5">
                   Street Address
                 </label>
                 <input
@@ -388,12 +388,12 @@ export const TaxInformationView: React.FC<TaxInformationViewProps> = ({ userId }
                   value={addressLine1}
                   onChange={(e) => setAddressLine1(e.target.value)}
                   placeholder="Street address, unit, building"
-                  className="w-full px-3 py-2 rounded-xl text-sm surface-2 border border-[var(--border-subtle)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--primary)] disabled:opacity-70"
+                  className="w-full px-3.5 py-2.5 rounded-xl text-xs sm:text-sm bg-white dark:bg-slate-900/90 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 dark:focus:border-sky-500 transition-all disabled:opacity-75 disabled:cursor-not-allowed"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-[var(--text-secondary)] mb-1">
+                <label className="block text-xs font-bold text-slate-800 dark:text-slate-200 mb-1.5">
                   City
                 </label>
                 <input
@@ -402,12 +402,12 @@ export const TaxInformationView: React.FC<TaxInformationViewProps> = ({ userId }
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
                   placeholder="City"
-                  className="w-full px-3 py-2 rounded-xl text-sm surface-2 border border-[var(--border-subtle)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--primary)] disabled:opacity-70"
+                  className="w-full px-3.5 py-2.5 rounded-xl text-xs sm:text-sm bg-white dark:bg-slate-900/90 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 dark:focus:border-sky-500 transition-all disabled:opacity-75 disabled:cursor-not-allowed"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-[var(--text-secondary)] mb-1">
+                <label className="block text-xs font-bold text-slate-800 dark:text-slate-200 mb-1.5">
                   State / Province
                 </label>
                 <input
@@ -416,12 +416,12 @@ export const TaxInformationView: React.FC<TaxInformationViewProps> = ({ userId }
                   value={stateVal}
                   onChange={(e) => setStateVal(e.target.value)}
                   placeholder="State"
-                  className="w-full px-3 py-2 rounded-xl text-sm surface-2 border border-[var(--border-subtle)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--primary)] disabled:opacity-70"
+                  className="w-full px-3.5 py-2.5 rounded-xl text-xs sm:text-sm bg-white dark:bg-slate-900/90 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 dark:focus:border-sky-500 transition-all disabled:opacity-75 disabled:cursor-not-allowed"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-[var(--text-secondary)] mb-1">
+                <label className="block text-xs font-bold text-slate-800 dark:text-slate-200 mb-1.5">
                   Postal / PIN Code
                 </label>
                 <input
@@ -430,7 +430,7 @@ export const TaxInformationView: React.FC<TaxInformationViewProps> = ({ userId }
                   value={postalCode}
                   onChange={(e) => setPostalCode(e.target.value)}
                   placeholder="Postal Code"
-                  className="w-full px-3 py-2 rounded-xl text-sm surface-2 border border-[var(--border-subtle)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--primary)] disabled:opacity-70"
+                  className="w-full px-3.5 py-2.5 rounded-xl text-xs sm:text-sm bg-white dark:bg-slate-900/90 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 dark:focus:border-sky-500 transition-all disabled:opacity-75 disabled:cursor-not-allowed"
                 />
               </div>
             </div>
@@ -438,13 +438,13 @@ export const TaxInformationView: React.FC<TaxInformationViewProps> = ({ userId }
 
           {/* Form Actions */}
           {isEditing && (
-            <div className="pt-4 border-t border-[var(--border-subtle)] flex items-center justify-end gap-3">
+            <div className="pt-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-end gap-3">
               {taxProfile && (
                 <button
                   type="button"
                   onClick={handleCancel}
                   disabled={isSaving}
-                  className="px-4 py-2 rounded-xl text-sm font-medium text-[var(--text-secondary)] hover:bg-[var(--surface-3)] transition-colors"
+                  className="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-200/60 dark:hover:bg-slate-800 transition-all cursor-pointer"
                 >
                   Cancel
                 </button>
@@ -452,9 +452,9 @@ export const TaxInformationView: React.FC<TaxInformationViewProps> = ({ userId }
               <button
                 type="submit"
                 disabled={isSaving}
-                className="px-5 py-2 rounded-xl text-sm font-semibold bg-[var(--primary)] text-white hover:opacity-90 transition-opacity flex items-center gap-2"
+                className="px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-blue-600 hover:bg-blue-700 text-white dark:bg-sky-500 dark:hover:bg-sky-400 dark:text-slate-950 dark:font-bold shadow-xs transition-all flex items-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50"
               >
-                {isSaving && <Loader2 className="w-4 h-4 animate-spin" />}
+                {isSaving && <Loader2 className="w-4 h-4 animate-spin text-white dark:text-slate-950" />}
                 {isSaving ? 'Verifying & Saving...' : 'Save Tax Information'}
               </button>
             </div>
@@ -463,10 +463,10 @@ export const TaxInformationView: React.FC<TaxInformationViewProps> = ({ userId }
       </SpatialCard>
 
       {/* Advisory Note */}
-      <div className="p-4 rounded-xl surface-2 border border-[var(--border-subtle)] text-xs text-[var(--text-secondary)] flex items-start gap-3">
+      <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 text-xs text-slate-600 dark:text-slate-300 flex items-start gap-3">
         <Info className="w-4 h-4 text-purple-600 dark:text-purple-400 flex-shrink-0 mt-0.5" />
         <p>
-          <strong>Tax Compliance Notice:</strong> CreatorOS complies with applicable tax withholding laws (such as Section 194J / 194O of the Indian Income Tax Act where applicable). Providing your PAN ensures appropriate TDS deduction rates (e.g. 1% or 2% vs 20% default withholding without PAN). This information is never shared with third parties except statutory authorities upon lawful request.
+          <strong className="text-slate-900 dark:text-slate-100">Tax Compliance Notice:</strong> CreatorOS complies with applicable tax withholding laws (such as Section 194J / 194O of the Indian Income Tax Act where applicable). Providing your PAN ensures appropriate TDS deduction rates (e.g. 1% or 2% vs 20% default withholding without PAN). This information is never shared with third parties except statutory authorities upon lawful request.
         </p>
       </div>
     </div>

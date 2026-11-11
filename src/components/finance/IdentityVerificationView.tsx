@@ -163,22 +163,22 @@ export const IdentityVerificationView: React.FC<IdentityVerificationViewProps> =
               <p className="text-xs text-[var(--text-secondary)] mt-1">
                 You are certified for unlimited escrow releases, PayPal, Stripe, and UPI payouts.
               </p>
-              <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3 p-4 rounded-xl surface-2 border border-[var(--border-subtle)] text-xs">
+              <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3 p-4 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 text-xs">
                 <div>
-                  <span className="text-[10px] text-[var(--text-muted)] uppercase font-mono block">Document Type</span>
-                  <span className="font-semibold text-[var(--text-primary)] capitalize mt-0.5 block">
+                  <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">Document Type</span>
+                  <span className="font-semibold text-slate-900 dark:text-slate-100 capitalize mt-0.5 block">
                     {kycRecord.idType.replace('_', ' ')}
                   </span>
                 </div>
                 <div>
-                  <span className="text-[10px] text-[var(--text-muted)] uppercase font-mono block">Document ID</span>
-                  <span className="font-mono font-semibold text-[var(--text-primary)] mt-0.5 block">
+                  <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">Document ID</span>
+                  <span className="font-mono font-semibold text-slate-900 dark:text-slate-100 mt-0.5 block">
                     {kycRecord.idNumberMasked || '••••••••'}
                   </span>
                 </div>
                 <div>
-                  <span className="text-[10px] text-[var(--text-muted)] uppercase font-mono block">Verified At</span>
-                  <span className="text-[var(--text-secondary)] mt-0.5 block">
+                  <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">Verified At</span>
+                  <span className="text-slate-700 dark:text-slate-300 mt-0.5 block">
                     {kycRecord.verifiedAt ? new Date(kycRecord.verifiedAt).toLocaleDateString() : 'Active'}
                   </span>
                 </div>
@@ -196,18 +196,18 @@ export const IdentityVerificationView: React.FC<IdentityVerificationViewProps> =
               <Clock className="w-6 h-6" />
             </div>
             <div className="flex-1">
-              <h3 className="text-base font-semibold text-[var(--text-primary)]">
+              <h3 className="text-base font-semibold text-slate-900 dark:text-slate-100">
                 Documents Under Review
               </h3>
-              <p className="text-xs text-[var(--text-secondary)] mt-1">
+              <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
                 Our compliance team is verifying your submission. Verification typically takes between 12 to 24 hours. You will be notified once complete.
               </p>
-              <div className="mt-4 p-4 rounded-xl surface-2 border border-[var(--border-subtle)] text-xs">
-                <span className="text-[10px] text-[var(--text-muted)] uppercase font-mono block">Submitted Document</span>
-                <span className="font-semibold text-[var(--text-primary)] capitalize mt-0.5 block">
+              <div className="mt-4 p-4 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 text-xs">
+                <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">Submitted Document</span>
+                <span className="font-semibold text-slate-900 dark:text-slate-100 capitalize mt-0.5 block">
                   {kycRecord.idType.replace('_', ' ')} ({kycRecord.idNumberMasked})
                 </span>
-                <span className="text-[11px] text-[var(--text-muted)] mt-1 block">
+                <span className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 block">
                   Submitted on {new Date(kycRecord.createdAt).toLocaleString()}
                 </span>
               </div>
@@ -230,24 +230,24 @@ export const IdentityVerificationView: React.FC<IdentityVerificationViewProps> =
           )}
 
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="flex items-center justify-between border-b border-[var(--border-subtle)] pb-3">
-              <h3 className="text-sm font-semibold text-[var(--text-primary)] uppercase tracking-wider font-mono">
+            <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200">
                 Submit Government Identification
               </h3>
-              <span className="text-xs text-[var(--text-muted)] flex items-center gap-1">
-                <Lock className="w-3 h-3" /> 256-bit AES Storage
+              <span className="text-xs font-medium text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+                <Lock className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" /> 256-bit AES Encryption
               </span>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-medium text-[var(--text-secondary)] mb-1">
-                  Document Type *
+                <label className="block text-xs font-bold text-slate-800 dark:text-slate-200 mb-1.5">
+                  Document Type <span className="text-rose-500 font-bold">*</span>
                 </label>
                 <select
                   value={idType}
                   onChange={(e) => setIdType(e.target.value as any)}
-                  className="w-full px-3 py-2 rounded-xl text-sm surface-2 border border-[var(--border-subtle)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--primary)]"
+                  className="w-full px-3.5 py-2.5 rounded-xl text-xs sm:text-sm bg-white dark:bg-slate-900/90 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 dark:focus:border-sky-500 transition-all cursor-pointer"
                 >
                   <option value="passport">Passport</option>
                   <option value="national_id">National ID Card</option>
@@ -257,15 +257,15 @@ export const IdentityVerificationView: React.FC<IdentityVerificationViewProps> =
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-[var(--text-secondary)] mb-1">
-                  Document / Registration Number *
+                <label className="block text-xs font-bold text-slate-800 dark:text-slate-200 mb-1.5">
+                  Document / Registration Number <span className="text-rose-500 font-bold">*</span>
                 </label>
                 <input
                   type="text"
                   value={idNumber}
                   onChange={(e) => setIdNumber(e.target.value)}
                   placeholder="e.g. Z1234567 or DL-12345678"
-                  className="w-full px-3 py-2 rounded-xl text-sm font-mono surface-2 border border-[var(--border-subtle)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--primary)]"
+                  className="w-full px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-mono bg-white dark:bg-slate-900/90 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 dark:focus:border-sky-500 transition-all"
                   required
                 />
               </div>
@@ -273,10 +273,10 @@ export const IdentityVerificationView: React.FC<IdentityVerificationViewProps> =
 
             {/* Document Upload Area */}
             <div>
-              <label className="block text-xs font-medium text-[var(--text-secondary)] mb-2">
-                Upload Scanned Copy or High-Resolution Photo *
+              <label className="block text-xs font-bold text-slate-800 dark:text-slate-200 mb-2">
+                Upload Scanned Copy or High-Resolution Photo <span className="text-rose-500 font-bold">*</span>
               </label>
-              <div className="border-2 border-dashed border-[var(--border-subtle)] hover:border-[var(--primary)] rounded-2xl p-6 text-center transition-colors surface-2/50 relative">
+              <div className="border-2 border-dashed border-slate-300 dark:border-slate-700 hover:border-blue-600 dark:hover:border-sky-500 rounded-2xl p-7 text-center transition-all bg-slate-50/70 dark:bg-slate-900/50 hover:bg-blue-50/30 dark:hover:bg-sky-950/20 relative group cursor-pointer">
                 <input
                   type="file"
                   accept="image/jpeg,image/png,image/webp,application/pdf"
@@ -289,22 +289,22 @@ export const IdentityVerificationView: React.FC<IdentityVerificationViewProps> =
                   className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                 />
                 <div className="flex flex-col items-center justify-center">
-                  <div className="w-12 h-12 rounded-xl bg-[var(--surface-3)] flex items-center justify-center text-[var(--primary)] mb-3">
+                  <div className="w-12 h-12 rounded-2xl bg-blue-100 dark:bg-sky-950/60 text-blue-600 dark:text-sky-400 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform">
                     <Upload className="w-6 h-6" />
                   </div>
                   {selectedFileName ? (
                     <div>
-                      <p className="text-sm font-semibold text-[var(--primary)] flex items-center justify-center gap-1.5">
+                      <p className="text-sm font-semibold text-blue-600 dark:text-sky-400 flex items-center justify-center gap-1.5">
                         <FileCheck className="w-4 h-4" /> {selectedFileName}
                       </p>
-                      <p className="text-xs text-[var(--text-muted)] mt-1">Click to select a different file</p>
+                      <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Click to select a different file</p>
                     </div>
                   ) : (
                     <div>
-                      <p className="text-sm font-medium text-[var(--text-primary)]">
+                      <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">
                         Click or drag document to upload
                       </p>
-                      <p className="text-xs text-[var(--text-muted)] mt-1">
+                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
                         PNG, JPG, or PDF up to 10 MB. Both sides required for cards.
                       </p>
                     </div>
@@ -313,13 +313,13 @@ export const IdentityVerificationView: React.FC<IdentityVerificationViewProps> =
               </div>
             </div>
 
-            <div className="pt-4 border-t border-[var(--border-subtle)] flex items-center justify-end">
+            <div className="pt-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-end">
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="px-6 py-2.5 rounded-xl text-sm font-semibold bg-[var(--primary)] text-white hover:opacity-90 transition-opacity flex items-center gap-2"
+                className="px-6 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-blue-600 hover:bg-blue-700 text-white dark:bg-sky-500 dark:hover:bg-sky-400 dark:text-slate-950 dark:font-bold shadow-xs transition-all flex items-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50"
               >
-                {isSubmitting && <Loader2 className="w-4 h-4 animate-spin" />}
+                {isSubmitting && <Loader2 className="w-4 h-4 animate-spin text-white dark:text-slate-950" />}
                 {isSubmitting ? 'Uploading & Encrypting...' : 'Submit Documents for Verification'}
               </button>
             </div>

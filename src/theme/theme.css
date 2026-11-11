@@ -28,15 +28,15 @@
   --header: rgba(240, 240, 240, 0.88);
 
   --text-primary: #0A0F1D;
-  --text-secondary: #475569;
-  --text-tertiary: #64748B;
-  --text-muted: #71717A;
-  --text-disabled: #A1A1AA;
+  --text-secondary: #334155;
+  --text-tertiary: #475569;
+  --text-muted: #64748B;
+  --text-disabled: #94A3B8;
   --text-inverse: #FFFFFF;
 
-  --border: #D8D8DC;
-  --border-subtle: rgba(0, 0, 0, 0.05);
-  --border-strong: #A0A0A8;
+  --border: #CBD5E1;
+  --border-subtle: rgba(0, 0, 0, 0.08);
+  --border-strong: #64748B;
 
   /* Primary Interactive CTA (#105BFF) */
   --primary: #105BFF;
@@ -65,13 +65,13 @@
   --brand-primary-soft: rgba(16, 91, 255, 0.12);
   --brand-primary-foreground: #FFFFFF;
   --color-brand-primary: #105BFF;
-  --color-brand-secondary: #475569;
+  --color-brand-secondary: #334155;
   --color-brand-accent: #FF77BC;
   --color-brand-accent-hover: #F062AA;
   --color-brand-accent-light: rgba(255, 119, 188, 0.15);
 
   --color-brand-text: #0A0F1D;
-  --color-brand-muted: #71717A;
+  --color-brand-muted: #64748B;
   --color-brand-text-inverse: #FFFFFF;
 
   --color-surface: #F0F0F0;
@@ -103,16 +103,16 @@
   --input: #060E14;
   --header: rgba(2, 7, 10, 0.88);
 
-  --text-primary: #F4F7FA;
-  --text-secondary: #A0B0BF;
-  --text-tertiary: #6E7F8E;
-  --text-muted: #6E7F8E;
-  --text-disabled: #42505C;
+  --text-primary: #F8FAFC;
+  --text-secondary: #CBD5E1;
+  --text-tertiary: #94A3B8;
+  --text-muted: #94A3B8;
+  --text-disabled: #64748B;
   --text-inverse: #02070A;
 
-  --border: rgba(255, 255, 255, 0.08);
-  --border-subtle: rgba(255, 255, 255, 0.04);
-  --border-strong: rgba(255, 255, 255, 0.16);
+  --border: rgba(255, 255, 255, 0.12);
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-strong: rgba(255, 255, 255, 0.24);
 
   /* Primary Interactive CTA (#0297DE) */
   --primary: #0297DE;
@@ -141,13 +141,13 @@
   --brand-primary-soft: rgba(2, 151, 222, 0.15);
   --brand-primary-foreground: #FFFFFF;
   --color-brand-primary: #0297DE;
-  --color-brand-secondary: #A0B0BF;
+  --color-brand-secondary: #CBD5E1;
   --color-brand-accent: #FC734D;
   --color-brand-accent-hover: #EB633D;
   --color-brand-accent-light: rgba(252, 115, 77, 0.15);
 
-  --color-brand-text: #F4F7FA;
-  --color-brand-muted: #6E7F8E;
+  --color-brand-text: #F8FAFC;
+  --color-brand-muted: #94A3B8;
   --color-brand-text-inverse: #02070A;
 
   --color-surface: #02070A;

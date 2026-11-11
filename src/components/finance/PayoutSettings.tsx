@@ -198,12 +198,12 @@ export const PayoutSettings: React.FC<PayoutSettingsProps> = ({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <div className="flex items-center gap-2">
-              <h3 className="text-base font-bold text-[var(--text-primary)]">Legal Payout Identity</h3>
+              <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">Legal Payout Identity</h3>
               <Badge variant="neutral" size="sm">
                 Private & Encrypted
               </Badge>
             </div>
-            <p className="text-xs text-[var(--text-secondary)] mt-0.5">
+            <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">
               Legal name, address, and residency for tax compliance. Kept strictly separate from your public creator handle.
             </p>
           </div>
@@ -211,7 +211,7 @@ export const PayoutSettings: React.FC<PayoutSettingsProps> = ({
           {!isEditingProfile && (
             <button
               onClick={() => setIsEditingProfile(true)}
-              className="px-4 py-2 rounded-xl bg-[var(--surface-muted)] hover:bg-[var(--surface-elevated)] border border-[var(--border)] text-xs font-semibold cursor-pointer transition-all self-start sm:self-auto"
+              className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 border border-slate-300 dark:border-slate-700 text-xs font-semibold cursor-pointer transition-all self-start sm:self-auto shadow-xs active:scale-95"
             >
               Edit Identity
             </button>
@@ -239,7 +239,7 @@ export const PayoutSettings: React.FC<PayoutSettingsProps> = ({
           <form onSubmit={handleSaveProfile} className="space-y-4 pt-2">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1">
+                <label className="text-xs font-bold text-slate-800 dark:text-slate-200 block mb-1">
                   Full Legal Name *
                 </label>
                 <input
@@ -248,18 +248,18 @@ export const PayoutSettings: React.FC<PayoutSettingsProps> = ({
                   value={legalName}
                   onChange={(e) => setLegalName(e.target.value)}
                   placeholder="As shown on government ID"
-                  className="w-full min-h-[40px] px-3 rounded-xl bg-[var(--input)] border border-[var(--border)] text-xs focus:outline-none focus:border-[var(--accent)]"
+                  className="w-full min-h-[40px] px-3.5 rounded-xl bg-white dark:bg-slate-900/90 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 dark:focus:border-sky-500 transition-all"
                 />
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1">
+                <label className="text-xs font-bold text-slate-800 dark:text-slate-200 block mb-1">
                   Account Classification *
                 </label>
                 <select
                   value={accountType}
                   onChange={(e) => setAccountType(e.target.value as any)}
-                  className="w-full min-h-[40px] px-3 rounded-xl bg-[var(--input)] border border-[var(--border)] text-xs focus:outline-none focus:border-[var(--accent)]"
+                  className="w-full min-h-[40px] px-3.5 rounded-xl bg-white dark:bg-slate-900/90 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 dark:focus:border-sky-500 transition-all cursor-pointer"
                 >
                   <option value="individual">Individual / Sole Creator</option>
                   <option value="business">Registered Business / Agency</option>
@@ -268,7 +268,7 @@ export const PayoutSettings: React.FC<PayoutSettingsProps> = ({
 
               {accountType === 'business' && (
                 <div className="sm:col-span-2">
-                  <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1">
+                  <label className="text-xs font-bold text-slate-800 dark:text-slate-200 block mb-1">
                     Registered Business Name *
                   </label>
                   <input
@@ -277,13 +277,13 @@ export const PayoutSettings: React.FC<PayoutSettingsProps> = ({
                     value={businessName}
                     onChange={(e) => setBusinessName(e.target.value)}
                     placeholder="Legal corporate entity name"
-                    className="w-full min-h-[40px] px-3 rounded-xl bg-[var(--input)] border border-[var(--border)] text-xs focus:outline-none focus:border-[var(--accent)]"
+                    className="w-full min-h-[40px] px-3.5 rounded-xl bg-white dark:bg-slate-900/90 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 dark:focus:border-sky-500 transition-all"
                   />
                 </div>
               )}
 
               <div>
-                <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1">
+                <label className="text-xs font-bold text-slate-800 dark:text-slate-200 block mb-1">
                   Official Financial Email *
                 </label>
                 <input
@@ -292,12 +292,12 @@ export const PayoutSettings: React.FC<PayoutSettingsProps> = ({
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="billing@example.com"
-                  className="w-full min-h-[40px] px-3 rounded-xl bg-[var(--input)] border border-[var(--border)] text-xs focus:outline-none focus:border-[var(--accent)]"
+                  className="w-full min-h-[40px] px-3.5 rounded-xl bg-white dark:bg-slate-900/90 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 dark:focus:border-sky-500 transition-all"
                 />
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1">
+                <label className="text-xs font-bold text-slate-800 dark:text-slate-200 block mb-1">
                   Phone Number
                 </label>
                 <input
@@ -305,12 +305,12 @@ export const PayoutSettings: React.FC<PayoutSettingsProps> = ({
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   placeholder="+91 98765 43210"
-                  className="w-full min-h-[40px] px-3 rounded-xl bg-[var(--input)] border border-[var(--border)] text-xs focus:outline-none focus:border-[var(--accent)]"
+                  className="w-full min-h-[40px] px-3.5 rounded-xl bg-white dark:bg-slate-900/90 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 dark:focus:border-sky-500 transition-all"
                 />
               </div>
 
               <div className="sm:col-span-2">
-                <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1">
+                <label className="text-xs font-bold text-slate-800 dark:text-slate-200 block mb-1">
                   Residential / Business Address
                 </label>
                 <input
@@ -318,12 +318,12 @@ export const PayoutSettings: React.FC<PayoutSettingsProps> = ({
                   value={addressLine1}
                   onChange={(e) => setAddressLine1(e.target.value)}
                   placeholder="Street address line 1"
-                  className="w-full min-h-[40px] px-3 rounded-xl bg-[var(--input)] border border-[var(--border)] text-xs focus:outline-none focus:border-[var(--accent)]"
+                  className="w-full min-h-[40px] px-3.5 rounded-xl bg-white dark:bg-slate-900/90 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 dark:focus:border-sky-500 transition-all"
                 />
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1">
+                <label className="text-xs font-bold text-slate-800 dark:text-slate-200 block mb-1">
                   City
                 </label>
                 <input
@@ -331,12 +331,12 @@ export const PayoutSettings: React.FC<PayoutSettingsProps> = ({
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
                   placeholder="Mumbai"
-                  className="w-full min-h-[40px] px-3 rounded-xl bg-[var(--input)] border border-[var(--border)] text-xs focus:outline-none focus:border-[var(--accent)]"
+                  className="w-full min-h-[40px] px-3.5 rounded-xl bg-white dark:bg-slate-900/90 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 dark:focus:border-sky-500 transition-all"
                 />
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1">
+                <label className="text-xs font-bold text-slate-800 dark:text-slate-200 block mb-1">
                   State & Postal Code
                 </label>
                 <div className="grid grid-cols-2 gap-2">
@@ -345,31 +345,31 @@ export const PayoutSettings: React.FC<PayoutSettingsProps> = ({
                     value={state}
                     onChange={(e) => setState(e.target.value)}
                     placeholder="Maharashtra"
-                    className="w-full min-h-[40px] px-3 rounded-xl bg-[var(--input)] border border-[var(--border)] text-xs focus:outline-none focus:border-[var(--accent)]"
+                    className="w-full min-h-[40px] px-3.5 rounded-xl bg-white dark:bg-slate-900/90 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 dark:focus:border-sky-500 transition-all"
                   />
                   <input
                     type="text"
                     value={postalCode}
                     onChange={(e) => setPostalCode(e.target.value)}
                     placeholder="400001"
-                    className="w-full min-h-[40px] px-3 rounded-xl bg-[var(--input)] border border-[var(--border)] text-xs focus:outline-none focus:border-[var(--accent)]"
+                    className="w-full min-h-[40px] px-3.5 rounded-xl bg-white dark:bg-slate-900/90 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 dark:focus:border-sky-500 transition-all"
                   />
                 </div>
               </div>
             </div>
 
-            <div className="flex items-center justify-end gap-2 pt-4 border-t border-[var(--border)]">
+            <div className="flex items-center justify-end gap-2 pt-4 border-t border-slate-200 dark:border-slate-800">
               <button
                 type="button"
                 onClick={() => setIsEditingProfile(false)}
-                className="px-4 py-2 rounded-xl text-xs font-medium text-[var(--text-secondary)] hover:bg-[var(--surface-muted)] cursor-pointer"
+                className="px-4 py-2 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-200/60 dark:hover:bg-slate-800 cursor-pointer"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={isSavingProfile}
-                className="px-5 py-2 rounded-xl bg-[var(--primary)] hover:opacity-90 text-white text-xs font-bold transition-all cursor-pointer shadow-xs"
+                className="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white dark:bg-sky-500 dark:hover:bg-sky-400 dark:text-slate-950 dark:font-bold text-xs font-bold transition-all cursor-pointer shadow-xs active:scale-95 disabled:opacity-50"
               >
                 {isSavingProfile ? 'Saving...' : 'Save Legal Identity'}
               </button>
@@ -377,27 +377,27 @@ export const PayoutSettings: React.FC<PayoutSettingsProps> = ({
           </form>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs pt-2">
-            <div className="p-3.5 rounded-xl surface-2">
-              <span className="text-[10px] text-[var(--text-muted)] uppercase font-mono block">Legal Name</span>
-              <span className="font-semibold text-[var(--text-primary)] block mt-0.5">
+            <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800">
+              <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">Legal Name</span>
+              <span className="font-semibold text-slate-900 dark:text-slate-100 block mt-0.5">
                 {profile?.legalName || 'Not configured'}
               </span>
             </div>
-            <div className="p-3.5 rounded-xl surface-2">
-              <span className="text-[10px] text-[var(--text-muted)] uppercase font-mono block">Account Type</span>
-              <span className="font-semibold text-[var(--text-primary)] capitalize block mt-0.5">
+            <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800">
+              <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">Account Type</span>
+              <span className="font-semibold text-slate-900 dark:text-slate-100 capitalize block mt-0.5">
                 {profile?.accountType || 'Individual'}
               </span>
             </div>
-            <div className="p-3.5 rounded-xl surface-2">
-              <span className="text-[10px] text-[var(--text-muted)] uppercase font-mono block">Financial Email</span>
-              <span className="font-semibold text-[var(--text-primary)] block mt-0.5 truncate">
+            <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800">
+              <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">Financial Email</span>
+              <span className="font-semibold text-slate-900 dark:text-slate-100 block mt-0.5 truncate">
                 {profile?.email || 'Not configured'}
               </span>
             </div>
-            <div className="p-3.5 rounded-xl surface-2">
-              <span className="text-[10px] text-[var(--text-muted)] uppercase font-mono block">Country / Tax Base</span>
-              <span className="font-semibold text-[var(--text-primary)] block mt-0.5">
+            <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800">
+              <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">Country / Tax Base</span>
+              <span className="font-semibold text-slate-900 dark:text-slate-100 block mt-0.5">
                 {profile?.country === 'IN' ? 'India (IN)' : profile?.country || 'India (IN)'}
               </span>
             </div>
@@ -408,16 +408,16 @@ export const PayoutSettings: React.FC<PayoutSettingsProps> = ({
       {/* ------------------------------------------------------------- */}
       {/* 2. SUPPORTED PAYOUT METHODS (PayPal, Stripe Connect, UPI)     */}
       {/* ------------------------------------------------------------- */}
-      <div className="p-6 rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-xs space-y-6">
+      <div className="p-6 rounded-2xl bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 shadow-xs space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <div className="flex items-center gap-2">
-              <h3 className="text-base font-bold text-[var(--text-primary)]">Supported Payout Rails</h3>
+              <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">Supported Payout Rails</h3>
               <Badge variant="success" size="sm">
                 No Direct Bank Collection
               </Badge>
             </div>
-            <p className="text-xs text-[var(--text-secondary)] mt-0.5">
+            <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">
               Securely connect PayPal, Stripe Connect onboarding, or UPI for direct milestone disbursements.
             </p>
           </div>
@@ -425,9 +425,9 @@ export const PayoutSettings: React.FC<PayoutSettingsProps> = ({
           {!isAddingMethod && (
             <button
               onClick={() => setIsAddingMethod(true)}
-              className="px-4 py-2 rounded-xl bg-[var(--primary)] hover:opacity-90 text-white text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 self-start sm:self-auto shadow-xs"
+              className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white dark:bg-sky-500 dark:hover:bg-sky-400 dark:text-slate-950 dark:font-bold text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 self-start sm:self-auto shadow-xs active:scale-95"
             >
-              <Plus className="w-3.5 h-3.5" />
+              <Plus className="w-3.5 h-3.5 text-white dark:text-slate-950" />
               <span>Add Payout Method</span>
             </button>
           )}
@@ -454,13 +454,13 @@ export const PayoutSettings: React.FC<PayoutSettingsProps> = ({
         {isAddingMethod && (
           <form
             onSubmit={handleAddMethod}
-            className="p-4 rounded-xl surface-2 border border-[var(--border)] space-y-4"
+            className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 space-y-4"
           >
-            <h4 className="text-xs font-bold text-[var(--text-primary)] uppercase font-mono tracking-wider">
+            <h4 className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
               Configure New Payout Rail
             </h4>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
               {[
                 { id: 'upi', label: 'UPI (India Instant)', desc: 'VPA: user@okhdfcbank' },
                 { id: 'paypal', label: 'PayPal (Global)', desc: 'Email address' },
@@ -473,20 +473,20 @@ export const PayoutSettings: React.FC<PayoutSettingsProps> = ({
                     setSelectedProvider(p.id as any);
                     setMethodIdentifier('');
                   }}
-                  className={`p-3 rounded-xl border text-left cursor-pointer transition-all ${
+                  className={`p-3.5 rounded-xl border text-left cursor-pointer transition-all ${
                     selectedProvider === p.id
-                      ? 'border-[var(--accent)] bg-[var(--surface-elevated)] shadow-xs'
-                      : 'border-[var(--border)] hover:bg-[var(--surface-muted)]'
+                      ? 'border-blue-600 dark:border-sky-400 bg-blue-50/70 dark:bg-sky-950/40 shadow-xs'
+                      : 'border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900/40 hover:bg-slate-100 dark:hover:bg-slate-800'
                   }`}
                 >
-                  <span className="text-xs font-bold text-[var(--text-primary)] block">{p.label}</span>
-                  <span className="text-[10px] text-[var(--text-muted)] block mt-0.5">{p.desc}</span>
+                  <span className="text-xs font-bold text-slate-900 dark:text-slate-100 block">{p.label}</span>
+                  <span className="text-[11px] text-slate-600 dark:text-slate-400 block mt-0.5">{p.desc}</span>
                 </button>
               ))}
             </div>
 
             <div>
-              <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1">
+              <label className="text-xs font-bold text-slate-800 dark:text-slate-200 block mb-1.5">
                 {selectedProvider === 'paypal'
                   ? 'PayPal Account Email Address *'
                   : selectedProvider === 'upi'
@@ -505,9 +505,9 @@ export const PayoutSettings: React.FC<PayoutSettingsProps> = ({
                     ? 'creator@okaxis'
                     : 'creator@stripe.com'
                 }
-                className="w-full min-h-[40px] px-3 rounded-xl bg-[var(--input)] border border-[var(--border)] text-xs focus:outline-none focus:border-[var(--accent)]"
+                className="w-full min-h-[40px] px-3.5 rounded-xl bg-white dark:bg-slate-900/90 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 dark:focus:border-sky-500 transition-all"
               />
-              <span className="text-[10px] text-[var(--text-muted)] mt-1 block">
+              <span className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 block">
                 {selectedProvider === 'upi'
                   ? 'Must match standard UPI VPA format (e.g. handle@bank). Disbursements use the controlled manual verification queue.'
                   : selectedProvider === 'paypal'
@@ -516,18 +516,18 @@ export const PayoutSettings: React.FC<PayoutSettingsProps> = ({
               </span>
             </div>
 
-            <div className="flex items-center justify-end gap-2 pt-2 border-t border-[var(--border)]">
+            <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-200 dark:border-slate-800">
               <button
                 type="button"
                 onClick={() => setIsAddingMethod(false)}
-                className="px-4 py-2 rounded-xl text-xs font-medium text-[var(--text-secondary)] hover:bg-[var(--surface-muted)] cursor-pointer"
+                className="px-4 py-2 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-200/60 dark:hover:bg-slate-800 cursor-pointer"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={isSavingMethod}
-                className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-all cursor-pointer shadow-xs"
+                className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-all cursor-pointer shadow-xs active:scale-95 disabled:opacity-50"
               >
                 {isSavingMethod ? 'Validating...' : 'Save & Link Rail'}
               </button>
@@ -538,24 +538,24 @@ export const PayoutSettings: React.FC<PayoutSettingsProps> = ({
         {/* Existing Payout Methods List */}
         <div className="space-y-3">
           {methods.length === 0 ? (
-            <div className="p-8 text-center border border-dashed border-[var(--border)] rounded-xl text-xs text-[var(--text-muted)] space-y-1">
-              <CreditCard className="w-6 h-6 mx-auto text-zinc-500 opacity-40 mb-2" />
-              <span className="font-semibold text-[var(--text-secondary)] block">No Active Payout Methods</span>
-              <span>Add a verified PayPal, Stripe Connect, or UPI account to enable instant payout requests.</span>
+            <div className="p-8 text-center border border-dashed border-slate-300 dark:border-slate-700 rounded-2xl text-xs text-slate-500 dark:text-slate-400 space-y-1">
+              <CreditCard className="w-6 h-6 mx-auto text-slate-400 dark:text-slate-600 mb-2" />
+              <span className="font-semibold text-slate-800 dark:text-slate-200 block text-sm">No Active Payout Methods</span>
+              <span className="text-slate-600 dark:text-slate-400">Add a verified PayPal, Stripe Connect, or UPI account to enable instant payout requests.</span>
             </div>
           ) : (
             methods.map((m) => (
               <div
                 key={m.id}
-                className="p-4 rounded-xl surface-2 border border-[var(--border)] flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+                className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-[var(--surface-elevated)] border border-[var(--border)] flex items-center justify-center font-mono font-bold text-xs uppercase text-[var(--primary)]">
+                  <div className="w-10 h-10 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center font-bold text-xs uppercase text-blue-600 dark:text-sky-400">
                     {m.providerType.slice(0, 3)}
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-bold text-[var(--text-primary)]">
+                      <span className="text-xs font-bold text-slate-900 dark:text-slate-100">
                         {m.providerType === 'upi' ? 'UPI Virtual Payment Address' : m.providerType.toUpperCase()}
                       </span>
                       {m.isPreferred && (
@@ -570,7 +570,7 @@ export const PayoutSettings: React.FC<PayoutSettingsProps> = ({
                         {m.verificationStatus}
                       </Badge>
                     </div>
-                    <span className="text-xs font-mono text-[var(--text-secondary)] block mt-0.5">
+                    <span className="text-xs font-mono text-slate-600 dark:text-slate-300 block mt-0.5">
                       {m.identifier}
                     </span>
                   </div>
@@ -580,7 +580,7 @@ export const PayoutSettings: React.FC<PayoutSettingsProps> = ({
                   {!m.isPreferred && (
                     <button
                       onClick={() => handleSetPreferred(m.id)}
-                      className="px-3 py-1.5 rounded-lg text-[11px] font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-muted)] cursor-pointer"
+                      className="px-3 py-1.5 rounded-lg text-[11px] font-semibold text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white hover:bg-slate-200/60 dark:hover:bg-slate-800 cursor-pointer transition-all"
                     >
                       Make Preferred
                     </button>

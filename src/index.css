@@ -933,10 +933,10 @@ button:not(:disabled):active,
   --cos-surface: #08121A;
   --cos-surface-raised: #0E1C27;
   --cos-surface-recessed: #040A0F;
-  --cos-border: rgba(255, 255, 255, 0.08);
-  --cos-text: #F4F7FA;
-  --cos-text-secondary: #A0B0BF;
-  --cos-text-muted: #6E7F8E;
+  --cos-border: rgba(255, 255, 255, 0.12);
+  --cos-text: #F8FAFC;
+  --cos-text-secondary: #CBD5E1;
+  --cos-text-muted: #94A3B8;
   --cos-accent: #0297DE;
   --cos-accent-hover: #0283C2;
 }
