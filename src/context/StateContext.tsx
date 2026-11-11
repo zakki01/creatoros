@@ -16,16 +16,6 @@ import {
   OutreachStage,
 } from '../types';
 import {
-  INITIAL_CAMPAIGNS,
-  INITIAL_CREATORS,
-  INITIAL_ATTENTION_ITEMS,
-  INITIAL_CONTENT_SUBMISSIONS,
-  INITIAL_OUTREACH,
-  INITIAL_PAYMENTS,
-  INITIAL_SIMULATION_SCENARIOS,
-  INITIAL_NOTIFICATIONS,
-} from '../data/mockData';
-import {
   DEMO_CAMPAIGN,
   DEMO_CREATOR_PROFILE,
   DEMO_OUTREACH,
@@ -366,6 +356,8 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           postStatus: 'published',
         }));
         setSocialPosts(mappedPosts);
+      } else if (!isInitialDemo) {
+        setSocialPosts([]);
       }
 
       // 3. Real connections
@@ -381,6 +373,8 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           map[otherId] = c.status as ConnectionState;
         });
         setConnections(map);
+      } else if (!isInitialDemo) {
+        setConnections({});
       }
 
       // 4. Real campaigns
@@ -425,6 +419,8 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           brandGuidelines: c.description || '',
         }));
         setCampaigns(mappedCamps);
+      } else if (!isInitialDemo) {
+        setCampaigns([]);
       }
 
       // 5. Real creators roster from Supabase
@@ -471,24 +467,17 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
             live: 1000,
           },
           reliabilityMetrics: {
-            onTimeDelivery: 98,
-            briefCompliance: 96,
-            communication: 95,
-            contentQuality: 97,
-            campaignPerformance: 94,
-            responseReliability: 96,
+            onTimeDelivery: Number(cp.on_time_delivery_pct) || 0,
+            briefCompliance: Number(cp.brief_compliance_pct) || 0,
+            communication: Number(cp.communication_score) || 0,
+            contentQuality: Number(cp.quality_score) || 0,
+            campaignPerformance: Number(cp.performance_score) || 0,
+            responseReliability: Number(cp.response_score) || 0,
           },
           audienceBreakdown: {
-            topLocations: [
-              { city: 'Mumbai', pct: 45 },
-              { city: 'Bengaluru', pct: 30 },
-              { city: 'Delhi', pct: 25 },
-            ],
-            ageSplit: [
-              { range: '18-24', pct: 52 },
-              { range: '25-34', pct: 38 },
-            ],
-            genderSplit: { male: 50, female: 50, other: 0 },
+            topLocations: [],
+            ageSplit: [],
+            genderSplit: { male: 0, female: 0, other: 0 },
           },
           pastCampaignsCount: 0,
           testimonials: [],
@@ -499,6 +488,8 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           minimumRate: 100,
         }));
         setCreators(mappedCreators);
+      } else if (!isInitialDemo) {
+        setCreators([]);
       }
     } catch (err) {
       console.warn('Failed to load user data from Supabase:', err);
@@ -2259,21 +2250,21 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     localStorage.removeItem(`${STORAGE_KEY}_conversations`);
     localStorage.removeItem(`${STORAGE_KEY}_messages`);
     localStorage.removeItem(`${STORAGE_KEY}_posts`);
-    setCampaigns(INITIAL_CAMPAIGNS);
-    setCreators(INITIAL_CREATORS);
-    setAttentionItems(INITIAL_ATTENTION_ITEMS);
-    setSubmissions(INITIAL_CONTENT_SUBMISSIONS);
-    setOutreachItems(INITIAL_OUTREACH);
-    setPayments(INITIAL_PAYMENTS);
-    setNotifications(INITIAL_NOTIFICATIONS);
-    setSimulationScenarios(INITIAL_SIMULATION_SCENARIOS);
-    setTeamMembers(INITIAL_TEAM_MEMBERS);
-    setAuditLogs(INITIAL_AUDIT_LOGS);
-    setConversations(INITIAL_CONVERSATIONS);
-    setMessages(INITIAL_MESSAGES);
-    setSocialPosts(INITIAL_SOCIAL_POSTS);
-    setTrialDaysLeft(5);
-    setActiveCampaignId(INITIAL_CAMPAIGNS[0].id);
+    setCampaigns([]);
+    setCreators([]);
+    setAttentionItems([]);
+    setSubmissions([]);
+    setOutreachItems([]);
+    setPayments([]);
+    setNotifications([]);
+    setSimulationScenarios([]);
+    setTeamMembers([]);
+    setAuditLogs([]);
+    setConversations([]);
+    setMessages({});
+    setSocialPosts([]);
+    setTrialDaysLeft(0);
+    setActiveCampaignId('');
   };
 
   return (

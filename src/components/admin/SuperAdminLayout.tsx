@@ -20,6 +20,7 @@ import {
   LayoutGrid,
   Ticket,
   MessageSquare,
+  DollarSign,
 } from 'lucide-react';
 import { BrandLogo } from '../common/BrandLogo';
 import { useAppState } from '../../context/StateContext';
@@ -35,6 +36,7 @@ import { AdminSupportDesk } from '../support/AdminSupportDesk';
 import { AdminLiveMonitoringView } from './AdminLiveMonitoringView';
 import { AdminGodModeChatInspector } from './AdminGodModeChatInspector';
 import { AdminBetaWaitlistView } from './AdminBetaWaitlistView';
+import { AdminFinanceGovernance } from './AdminFinanceGovernance';
 import { DiscoverView } from '../common/DiscoverView';
 import { CommandPalette } from '../common/CommandPalette';
 import { NotificationDrawer } from '../common/NotificationDrawer';
@@ -52,13 +54,14 @@ const getTabFromPath = (path: string): string => {
   if (p.includes('/chat') || p.includes('/messages')) return 'chat-inspector';
   if (p.includes('/beta') || p.includes('/waitlist') || p.includes('/invites')) return 'beta-access';
   if (p.includes('/contracts')) return 'contracts';
+  if (p.includes('/finance') || p.includes('/payouts')) return 'finance';
   if (p.includes('/live') || p.includes('/broadcasts')) return 'live';
   if (p.includes('/support') || p.includes('/tickets')) return 'support';
   if (p.includes('/users') || p.includes('/creators') || p.includes('/brands')) return 'users';
   if (p.includes('/moderation') || p.includes('/content')) return 'moderation';
   if (p.includes('/reports')) return 'reports';
   if (p.includes('/discover') || p.includes('/campaigns')) return 'discover';
-  if (p.includes('/settings') || p.includes('/features') || p.includes('/payments')) return 'settings';
+  if (p.includes('/settings') || p.includes('/features')) return 'settings';
   if (p.includes('/logs') || p.includes('/audit')) return 'logs';
   return 'overview';
 };
@@ -68,6 +71,7 @@ const getPathFromTab = (tab: string): string => {
     case 'chat-inspector': return '/godmode/chat';
     case 'beta-access': return '/godmode/beta';
     case 'contracts': return '/godmode/contracts';
+    case 'finance': return '/godmode/finance';
     case 'live': return '/godmode/live';
     case 'support': return '/godmode/support';
     case 'users': return '/godmode/users';
@@ -132,6 +136,7 @@ export const SuperAdminLayout: React.FC<SuperAdminLayoutProps> = ({
     { id: 'beta-access', label: 'Beta Invites & Waitlist', icon: Ticket },
     { id: 'chat-inspector', label: 'Forensic Chat Inspector', icon: MessageSquare },
     { id: 'contracts', label: 'Commercial Contracts', icon: FileText },
+    { id: 'finance', label: 'Financial Governance', icon: DollarSign },
     { id: 'live', label: 'Live Broadcasts & Ledgers', icon: Radio },
     { id: 'support', label: 'Support Desk', icon: LifeBuoy },
     { id: 'users', label: 'User Governance', icon: Users },
@@ -332,6 +337,7 @@ export const SuperAdminLayout: React.FC<SuperAdminLayoutProps> = ({
           {activeTab === 'chat-inspector' && <AdminGodModeChatInspector />}
           {activeTab === 'live' && <AdminLiveMonitoringView />}
           {activeTab === 'contracts' && <AdminContractsGovernance />}
+          {activeTab === 'finance' && <AdminFinanceGovernance />}
           {activeTab === 'support' && <AdminSupportDesk />}
           {activeTab === 'users' && <AdminUsersView />}
           {activeTab === 'moderation' && <AdminModerationView />}

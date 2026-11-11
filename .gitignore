@@ -19,6 +19,12 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+# Temporary screenshots and scratch scripts
+/*.png
+scripts/inspect-*.cjs
+scripts/find-step*.cjs
+scripts/test-local-preview.cjs
+
 .vercel
 .next
 coverage
@@ -34,5 +40,11 @@ coverage
 *.njsproj
 *.sln
 *.sw?
+
+# Temporary screenshots and scratch scripts
+/*.png
+scripts/inspect-*.cjs
+scripts/find-step*.cjs
+scripts/test-local-preview.cjs
 
 .vercel
