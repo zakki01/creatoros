@@ -20,6 +20,7 @@ import { Button } from '../ui/Button';
 import { Badge } from '../ui/Badge';
 import { ReportCenterModal } from '../common/ReportCenterModal';
 import { useAppState } from '../../context/StateContext';
+import { CreatorFinanceCenter } from '../finance/CreatorFinanceCenter';
 
 interface Collaborator {
   id: string;
@@ -35,31 +36,15 @@ export const CreatorAdminWorkspace: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'team' | 'governance' | 'campaigns' | 'finance' | 'security'>('team');
   const [isReportCenterOpen, setIsReportCenterOpen] = useState(false);
 
-  // Collaborators
-  const [collaborators, setCollaborators] = useState<Collaborator[]>([
+  // Collaborators: Strictly the authenticated creator owner, zero fake seeded personas
+  const [collaborators, setCollaborators] = useState<Collaborator[]>(() => [
     {
-      id: 'collab-1',
+      id: authUser?.id || 'owner',
       name: userProfile.name || authUser?.name || 'Creator Owner',
       email: userProfile.email || authUser?.email || 'owner@creatoros.ai',
       role: 'Creator Owner',
       status: 'active',
       avatar: userProfile.avatarUrl || authUser?.avatarUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80',
-    },
-    {
-      id: 'collab-2',
-      name: 'Karan Varma',
-      email: 'karan@talentmgmt.in',
-      role: 'Manager / Agent',
-      status: 'active',
-      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&auto=format&fit=crop&q=80',
-    },
-    {
-      id: 'collab-3',
-      name: 'Tanvi Shah',
-      email: 'tanvi.cuts@gmail.com',
-      role: 'Editor & Videographer',
-      status: 'active',
-      avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&auto=format&fit=crop&q=80',
     },
   ]);
 
@@ -385,72 +370,13 @@ export const CreatorAdminWorkspace: React.FC = () => {
         </Card>
       )}
 
-      {/* Tab 4: Finance & Tax Invoicing */}
+      {/* Tab 4: Finance & Tax Invoicing (Full Editable Finance & Payout Center) */}
       {activeTab === 'finance' && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Card className="p-5 space-y-4">
-            <h3 className="text-sm font-bold text-[var(--text-primary)] font-display flex items-center gap-2">
-              <CreditCard className="w-4 h-4 text-emerald-500" />
-              <span>Verified Payout Channel</span>
-            </h3>
-            <div className="p-3.5 rounded-xl bg-[var(--surface-muted)] border border-[var(--border)] space-y-2 text-xs">
-              <div className="flex justify-between items-center">
-                <span className="text-[var(--text-muted)]">Direct Bank Payout</span>
-                <span className="text-emerald-500 font-mono flex items-center gap-1 font-semibold">
-                  <CheckCircle2 className="w-3.5 h-3.5" /> Verified
-                </span>
-              </div>
-              <p className="text-[var(--text-primary)] font-mono">HDFC Bank ••••• 4921</p>
-              <p className="text-[11px] text-[var(--text-muted)] font-mono">IFSC: HDFC0001892 • UPI: rohan@okhdfcbank</p>
-            </div>
-
-            <div className="p-3.5 rounded-xl bg-[var(--surface-muted)] border border-[var(--border)] space-y-2 text-xs">
-              <div className="flex justify-between items-center">
-                <span className="text-[var(--text-muted)]">PAN & GST Compliance</span>
-                <span className="text-emerald-500 font-mono flex items-center gap-1 font-semibold">
-                  <CheckCircle2 className="w-3.5 h-3.5" /> Compliant
-                </span>
-              </div>
-              <p className="text-[var(--text-primary)] font-mono">PAN: ABCPS••••R</p>
-              <p className="text-[11px] text-[var(--text-muted)] font-mono">GSTIN: 27AABCS9912Q1ZX (18% Invoicing)</p>
-            </div>
-          </Card>
-
-          <Card className="p-5 space-y-4">
-            <div className="flex items-center justify-between">
-              <h3 className="text-sm font-bold text-[var(--text-primary)] font-display flex items-center gap-2">
-                <FileCheck2 className="w-4 h-4 text-[var(--accent)]" />
-                <span>Tax Invoices & Withholding</span>
-              </h3>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setIsReportCenterOpen(true)}
-                className="text-xs border-[var(--border)] text-[var(--text-secondary)] cursor-pointer"
-              >
-                Export All
-              </Button>
-            </div>
-
-            <div className="space-y-2 text-xs">
-              {[
-                { no: 'INV-2026-089', brand: 'Aura Streetwear', amount: '₹35,000', date: 'Oct 02, 2026', status: 'Paid' },
-                { no: 'INV-2026-074', brand: 'Nike India', amount: '₹47,500', date: 'Sep 18, 2026', status: 'Paid' },
-                { no: 'INV-2026-061', brand: 'Puma Running', amount: '₹45,000', date: 'Aug 29, 2026', status: 'Paid' },
-              ].map((inv) => (
-                <div key={inv.no} className="p-3 rounded-xl bg-[var(--surface-muted)] border border-[var(--border)] flex items-center justify-between">
-                  <div>
-                    <span className="font-mono text-[var(--text-primary)] font-semibold block">{inv.no}</span>
-                    <span className="text-[11px] text-[var(--text-muted)]">{inv.brand} • {inv.date}</span>
-                  </div>
-                  <div className="text-right">
-                    <span className="font-mono font-bold text-[var(--text-primary)] block">{inv.amount}</span>
-                    <span className="text-[10px] text-emerald-500 font-mono font-semibold">{inv.status}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </Card>
+        <div className="pt-2">
+          <CreatorFinanceCenter
+            userId={authUser?.id || userProfile.id || 'owner'}
+            initialTab="payout_info"
+          />
         </div>
       )}
 
