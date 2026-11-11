@@ -194,7 +194,7 @@ export const EarningsHistoryView: React.FC<EarningsHistoryViewProps> = ({ userId
                     <td className="py-3 px-3 text-right">
                       <button
                         onClick={handleExportCSV}
-                        className="text-[var(--brand-primary)] hover:underline inline-flex items-center gap-1 text-[11px]"
+                        className="text-[var(--primary)] hover:underline inline-flex items-center gap-1 text-[11px]"
                       >
                         Receipt <ArrowUpRight className="w-3 h-3" />
                       </button>

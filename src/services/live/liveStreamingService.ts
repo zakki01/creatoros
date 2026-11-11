@@ -32,8 +32,8 @@ export type LiveRoomListener = (state: LiveRoomState) => void;
 class LiveStreamingServiceSingleton {
   private currentState: LiveRoomState = {
     roomId: 'room-studio-live-01',
-    hostId: 'cr-01',
-    hostName: 'Rohan Sharma',
+    hostId: 'cr-owner',
+    hostName: 'Studio Creator',
     isHost: true,
     connectionState: 'idle',
     networkQuality: 'excellent',

@@ -42,6 +42,7 @@ import { mediaPipeLandmarkerSingleton } from '../../../services/live/mediaPipeLa
 import { liveRecordingSingleton } from '../../../services/live/recordingService';
 import { liveKitSingleton } from '../../../services/live/liveKitService';
 import { LiveStreamingService } from '../../../services/live/liveStreamingService';
+import { virtualStudioFeedSingleton } from '../../../services/live/virtualStudioFeed';
 import { LiveCamera } from './LiveCamera';
 import { LiveScenePicker } from './LiveScenePicker';
 import { LiveReferencePanel } from './LiveReferencePanel';
@@ -73,6 +74,7 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
   // Stream pipeline (Single Source of Truth)
   const [rawCameraStream, setRawCameraStream] = useState<MediaStream | null>(null);
   const [processedStream, setProcessedStream] = useState<MediaStream | null>(null);
+  const [isVirtualFeed, setIsVirtualFeed] = useState(false);
 
   // Studio Settings & Customization
   const [activeScene, setActiveScene] = useState<LiveScene>(DEFAULT_SCENE);
@@ -84,6 +86,13 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
   const [facingMode, setFacingMode] = useState<'user' | 'environment'>('user');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [transportError, setTransportError] = useState<string | null>(null);
+
+  // Synchronize virtual feed aspect ratio
+  useEffect(() => {
+    if (isVirtualFeed) {
+      virtualStudioFeedSingleton.setAspectRatio(aspectRatio);
+    }
+  }, [aspectRatio, isVirtualFeed]);
 
   // Studio UI Navigation
   const [studioTab, setStudioTab] = useState<'effects' | 'scenes' | 'reference'>('effects');
@@ -159,15 +168,54 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
   // ---------------------------------------------------------------------------
   // 2. CAMERA & PROCESSED STREAM PIPELINE
   // ---------------------------------------------------------------------------
+  const startVirtualFeed = () => {
+    try {
+      if (rawCameraStream) {
+        rawCameraStream.getTracks().forEach((t) => t.stop());
+        setRawCameraStream(null);
+      }
+      compositorRef.current.stop();
+
+      const vStream = virtualStudioFeedSingleton.start(aspectRatio);
+      compositorRef.current.setSyntheticLandmarksProvider(() => virtualStudioFeedSingleton.getLandmarks());
+
+      const output = compositorRef.current.start(vStream, activeEffect, (landmarks) => {
+        setFaceDetected(Boolean(landmarks && landmarks.detected));
+        setFaceConfidence(landmarks ? landmarks.confidence : 0.98);
+      });
+
+      setProcessedStream(output);
+      setIsVirtualFeed(true);
+      setCameraState('camera_ready');
+      setErrorMessage(null);
+    } catch (err) {
+      console.error('[CreatorLiveStudio] Virtual feed start failed:', err);
+    }
+  };
+
+  const handleToggleVirtualFeed = () => {
+    if (isVirtualFeed) {
+      virtualStudioFeedSingleton.stop();
+      compositorRef.current.setSyntheticLandmarksProvider(null);
+      setIsVirtualFeed(false);
+      requestCamera();
+    } else {
+      startVirtualFeed();
+    }
+  };
+
   const requestCamera = async (targetFacingMode?: 'user' | 'environment') => {
     try {
       setErrorMessage(null);
       setCameraState('camera_requesting');
 
-      // Stop previous streams
+      // Stop previous streams & virtual feed
       if (rawCameraStream) {
         rawCameraStream.getTracks().forEach((t) => t.stop());
       }
+      virtualStudioFeedSingleton.stop();
+      compositorRef.current.setSyntheticLandmarksProvider(null);
+      setIsVirtualFeed(false);
       compositorRef.current.stop();
 
       const mode = targetFacingMode || facingMode;
@@ -191,13 +239,14 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
 
       setProcessedStream(output);
     } catch (err: any) {
-      console.error('[CreatorLiveStudio] Camera access error:', err);
+      console.warn('[CreatorLiveStudio] Physical camera unavailable, engaging Virtual Studio Feed:', err);
       setErrorMessage(
         err.name === 'NotAllowedError'
-          ? 'Camera permission denied. Please allow camera access in your browser to start streaming.'
-          : 'Unable to access camera device. Check your camera connection and try again.'
+          ? 'Camera permission denied in browser.'
+          : 'Unable to access physical camera.'
       );
-      setCameraState('camera_error');
+      // Seamlessly fall back to Virtual Studio Feed so studio is never broken or inactive
+      startVirtualFeed();
     }
   };
 
@@ -206,12 +255,16 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
       rawCameraStream.getTracks().forEach((t) => t.stop());
       setRawCameraStream(null);
     }
+    virtualStudioFeedSingleton.stop();
+    compositorRef.current.setSyntheticLandmarksProvider(null);
+    setIsVirtualFeed(false);
     compositorRef.current.stop();
     setProcessedStream(null);
     setCameraState('camera_idle');
   };
 
   const handleFlipCamera = async () => {
+    if (isVirtualFeed) return;
     const nextMode = facingMode === 'user' ? 'environment' : 'user';
     setFacingMode(nextMode);
     await requestCamera(nextMode);
@@ -221,6 +274,7 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
     if (rawCameraStream) {
       rawCameraStream.getTracks().forEach((t) => t.stop());
     }
+    virtualStudioFeedSingleton.stop();
     compositorRef.current.stop();
     liveRecordingSingleton.reset();
     liveKitSingleton.disconnect().catch(() => {});
@@ -671,6 +725,7 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
               recordingSeconds={recordingSeconds}
               transportError={transportError}
               onRetryTransport={handleToggleLive}
+              isVirtualFeed={isVirtualFeed}
               // Backward compatibility
               cameraStatus={cameraState === 'camera_ready' ? 'ready' : cameraState === 'camera_requesting' ? 'requesting' : 'idle'}
               transportStatus={transportState === 'transport_live' ? 'live' : transportState === 'transport_connecting' ? 'connecting' : 'unconfigured'}
@@ -692,8 +747,8 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
         <div className="grid grid-cols-[minmax(0,1fr)_340px] xl:grid-cols-[minmax(0,1fr)_360px] gap-4 h-full min-h-0 overflow-hidden">
           {/* Left Hero Workspace */}
           <div className="flex flex-col h-full min-h-0 overflow-hidden gap-2.5">
-            {/* HERO CAMERA VIEWPORT: Fills available workspace, aspect-ratio preserved */}
-            <div className="flex-1 flex items-center justify-center min-h-0 relative overflow-hidden bg-[var(--live-canvas,#090C10)] rounded-3xl border border-white/10 shadow-lg p-2">
+            {/* HERO CAMERA VIEWPORT: Fills available workspace, aspect-ratio preserved with spatial studio backlighting */}
+            <div className="flex-1 flex items-center justify-center min-h-0 relative overflow-hidden bg-[radial-gradient(ellipse_at_center,_rgba(16,91,255,0.08)_0%,_rgba(9,12,16,1)_80%)] rounded-3xl border border-white/15 shadow-2xl p-2 sm:p-4">
               <LiveCamera
                 displayStream={displayStream}
                 connectionState={isLive ? 'live' : 'idle'}
@@ -701,6 +756,8 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
                 aspectRatio={aspectRatio}
                 errorMessage={errorMessage}
                 onRequestCamera={requestCamera}
+                isVirtualFeed={isVirtualFeed}
+                onToggleVirtualFeed={handleToggleVirtualFeed}
               />
             </div>
 
@@ -709,7 +766,7 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
               <LiveControls
                 connectionState={isLive ? 'live' : 'idle'}
                 transportStatus={isLive ? 'live' : transportState === 'transport_connecting' ? 'connecting' : 'unconfigured'}
-                hasCamera={Boolean(rawCameraStream)}
+                hasCamera={Boolean(rawCameraStream || isVirtualFeed)}
                 isRecording={recordingState === 'recording'}
                 recordingSeconds={recordingSeconds}
                 aspectRatio={aspectRatio}
@@ -721,7 +778,7 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
                 onRetryTransport={handleToggleLive}
                 onToggleDrawer={() => setIsEffectsDrawerOpen(!isEffectsDrawerOpen)}
                 isDrawerOpen={isEffectsDrawerOpen}
-                onToggleCamera={rawCameraStream ? handleStopCamera : () => requestCamera()}
+                onToggleCamera={rawCameraStream || isVirtualFeed ? handleStopCamera : () => requestCamera()}
               />
             </div>
 

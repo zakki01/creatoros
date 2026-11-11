@@ -115,7 +115,7 @@ export const PayoutHistoryView: React.FC<PayoutHistoryViewProps> = ({ userId }) 
             </button>
             <button
               onClick={() => setIsModalOpen(true)}
-              className="px-4 py-2 rounded-xl text-xs font-semibold bg-[var(--brand-primary)] text-white hover:opacity-90 transition-opacity flex items-center gap-1.5"
+              className="px-4 py-2 rounded-xl text-xs font-semibold bg-[var(--primary)] text-white hover:opacity-90 transition-opacity flex items-center gap-1.5"
             >
               <ArrowDownLeft className="w-3.5 h-3.5" />
               Request Payout
@@ -125,7 +125,7 @@ export const PayoutHistoryView: React.FC<PayoutHistoryViewProps> = ({ userId }) 
 
         {isLoading ? (
           <div className="flex items-center justify-center p-12 text-[var(--text-secondary)]">
-            <Loader2 className="w-6 h-6 animate-spin mr-2 text-[var(--brand-primary)]" />
+            <Loader2 className="w-6 h-6 animate-spin mr-2 text-[var(--primary)]" />
             <span>Loading payout history...</span>
           </div>
         ) : requests.length === 0 ? (

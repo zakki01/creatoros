@@ -81,6 +81,11 @@ export class ARCompositor {
 
   // Smoothing filters for accessory anchors to eliminate high-frequency jitter
   private smoothedLandmarks: FaceLandmarks | null = null;
+  private syntheticLandmarksProvider: (() => FaceLandmarks | null) | null = null;
+
+  public setSyntheticLandmarksProvider(provider: (() => FaceLandmarks | null) | null): void {
+    this.syntheticLandmarksProvider = provider;
+  }
 
   constructor(options: ARCompositorOptions = {}) {
     this.canvas = document.createElement('canvas');
@@ -206,8 +211,10 @@ export class ARCompositor {
     // 1. Draw camera video frame to canvas
     ctx.drawImage(this.videoEl, 0, 0, width, height);
 
-    // 2. Detect face landmarks with MediaPipe
-    const detectedLandmarks = this.landmarker.detectVideoFrame(this.videoEl);
+    // 2. Detect face landmarks with MediaPipe (or fallback to synthetic provider)
+    const detectedLandmarks =
+      this.landmarker.detectVideoFrame(this.videoEl) ||
+      (this.syntheticLandmarksProvider ? this.syntheticLandmarksProvider() : null);
     this.smoothedLandmarks = this.smoothLandmarks(detectedLandmarks);
 
     if (this.onLandmarksCallback) {

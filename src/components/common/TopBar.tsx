@@ -60,7 +60,7 @@ export const TopBar: React.FC<TopBarProps> = ({
             className="shrink-0"
           />
           <div className="flex flex-col min-w-0">
-            <span className="font-semibold text-xs sm:text-sm text-[var(--text-primary)] truncate max-w-[130px] sm:max-w-[200px] tracking-tight leading-tight">
+            <span className="font-semibold text-xs sm:text-sm text-[var(--text-primary)] truncate max-w-[175px] sm:max-w-[240px] md:max-w-none tracking-tight leading-tight">
               {workspace.name}
             </span>
             <span className="text-[10px] text-[var(--text-muted)] font-normal leading-tight">
@@ -88,15 +88,17 @@ export const TopBar: React.FC<TopBarProps> = ({
         {/* Mobile & Tablet Search and All Apps Buttons */}
         <div className="flex items-center gap-0.5 lg:hidden">
           {onOpenAppsDrawer && (
-            <IconButton
-              aria-label="All Apps"
-              title="All Apps & Workspaces"
-              variant="ghost"
-              size="sm"
-              onClick={onOpenAppsDrawer}
-            >
-              <LayoutGrid className="w-4 h-4 text-[var(--primary)]" />
-            </IconButton>
+            <div className="hidden sm:flex">
+              <IconButton
+                aria-label="All Apps"
+                title="All Apps & Workspaces"
+                variant="ghost"
+                size="sm"
+                onClick={onOpenAppsDrawer}
+              >
+                <LayoutGrid className="w-4 h-4 text-[var(--primary)]" />
+              </IconButton>
+            </div>
           )}
           <IconButton
             aria-label="Search"

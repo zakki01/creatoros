@@ -67,16 +67,16 @@ export const CreatorFinanceCenter: React.FC<CreatorFinanceCenterProps> = ({
         <div className="flex items-center gap-2">
           <button
             onClick={() => setIsPayoutModalOpen(true)}
-            className="px-4 py-2 rounded-xl text-xs font-semibold bg-[var(--brand-primary)] text-white hover:opacity-90 transition-opacity flex items-center gap-1.5 shadow-sm"
+            className="px-4 py-2 rounded-xl text-xs font-semibold bg-[var(--primary)] text-white hover:bg-[var(--primary-hover)] transition-all flex items-center gap-1.5 shadow-sm active:scale-95 cursor-pointer"
           >
-            <DollarSign className="w-3.5 h-3.5" />
-            Request Payout
+            <DollarSign className="w-3.5 h-3.5 text-white" />
+            <span>Request Payout</span>
           </button>
         </div>
       </div>
 
       {/* Navigation Sub-Tabs */}
-      <div className="flex items-center gap-1.5 overflow-x-auto pb-1 border-b border-[var(--border-subtle)] scrollbar-none">
+      <div className="flex items-center gap-1.5 overflow-x-auto pb-2 border-b border-[var(--border)] scrollbar-none flex-nowrap -mx-1 px-1">
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -84,13 +84,13 @@ export const CreatorFinanceCenter: React.FC<CreatorFinanceCenterProps> = ({
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs font-medium whitespace-nowrap transition-all ${
+              className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-medium whitespace-nowrap transition-all cursor-pointer ${
                 isActive
-                  ? 'bg-[var(--brand-primary)] text-white shadow-sm font-semibold'
-                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-2)]'
+                  ? 'bg-[var(--primary)] text-white shadow-sm font-semibold'
+                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-muted)]'
               }`}
             >
-              <Icon className="w-3.5 h-3.5" />
+              <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-white' : 'text-[var(--text-muted)]'}`} />
               <span>{tab.label}</span>
             </button>
           );

@@ -60,6 +60,10 @@
   --live-canvas: #090C10;
 
   /* Brand and Palette Tokens */
+  --brand-primary: #105BFF;
+  --brand-primary-hover: #0D4BD9;
+  --brand-primary-soft: rgba(16, 91, 255, 0.12);
+  --brand-primary-foreground: #FFFFFF;
   --color-brand-primary: #105BFF;
   --color-brand-secondary: #475569;
   --color-brand-accent: #FF77BC;
@@ -132,6 +136,10 @@
   --live-canvas: #010406;
 
   /* Brand and Palette Tokens */
+  --brand-primary: #0297DE;
+  --brand-primary-hover: #0280BD;
+  --brand-primary-soft: rgba(2, 151, 222, 0.15);
+  --brand-primary-foreground: #FFFFFF;
   --color-brand-primary: #0297DE;
   --color-brand-secondary: #A0B0BF;
   --color-brand-accent: #FC734D;

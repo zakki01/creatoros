@@ -171,7 +171,7 @@ export const TaxInformationView: React.FC<TaxInformationViewProps> = ({ userId }
   if (isLoading) {
     return (
       <div className="flex items-center justify-center p-12 text-[var(--text-secondary)]">
-        <Loader2 className="w-6 h-6 animate-spin mr-2 text-[var(--brand-primary)]" />
+        <Loader2 className="w-6 h-6 animate-spin mr-2 text-[var(--primary)]" />
         <span>Loading tax records...</span>
       </div>
     );
@@ -263,7 +263,7 @@ export const TaxInformationView: React.FC<TaxInformationViewProps> = ({ userId }
                     setTaxResidency(e.target.value);
                   }
                 }}
-                className="w-full px-3 py-2 rounded-xl text-sm surface-2 border border-[var(--border-subtle)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--brand-primary)] disabled:opacity-70"
+                className="w-full px-3 py-2 rounded-xl text-sm surface-2 border border-[var(--border-subtle)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--primary)] disabled:opacity-70"
               >
                 <option value="IN">India (IN)</option>
                 <option value="US">United States (US)</option>
@@ -284,7 +284,7 @@ export const TaxInformationView: React.FC<TaxInformationViewProps> = ({ userId }
                 disabled={!isEditing}
                 value={classification}
                 onChange={(e) => setClassification(e.target.value as any)}
-                className="w-full px-3 py-2 rounded-xl text-sm surface-2 border border-[var(--border-subtle)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--brand-primary)] disabled:opacity-70"
+                className="w-full px-3 py-2 rounded-xl text-sm surface-2 border border-[var(--border-subtle)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--primary)] disabled:opacity-70"
               >
                 <option value="individual">Individual / Sole Proprietor</option>
                 <option value="business">Registered Business / Company / LLP</option>
@@ -301,7 +301,7 @@ export const TaxInformationView: React.FC<TaxInformationViewProps> = ({ userId }
                 value={legalBusinessName}
                 onChange={(e) => setLegalBusinessName(e.target.value)}
                 placeholder="e.g. Rahul Sharma or TechSparks Media LLP"
-                className="w-full px-3 py-2 rounded-xl text-sm surface-2 border border-[var(--border-subtle)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--brand-primary)] disabled:opacity-70"
+                className="w-full px-3 py-2 rounded-xl text-sm surface-2 border border-[var(--border-subtle)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--primary)] disabled:opacity-70"
                 required
               />
             </div>
@@ -323,7 +323,7 @@ export const TaxInformationView: React.FC<TaxInformationViewProps> = ({ userId }
                     <button
                       type="button"
                       onClick={() => setShowTaxId(!showTaxId)}
-                      className="text-[11px] text-[var(--brand-primary)] hover:underline flex items-center gap-1"
+                      className="text-[11px] text-[var(--primary)] hover:underline flex items-center gap-1"
                     >
                       {showTaxId ? <EyeOff className="w-3 h-3" /> : <Eye className="w-3 h-3" />}
                       {showTaxId ? 'Mask' : 'Reveal'}
@@ -338,7 +338,7 @@ export const TaxInformationView: React.FC<TaxInformationViewProps> = ({ userId }
                     onChange={(e) => setTaxId(e.target.value.toUpperCase())}
                     placeholder={country === 'IN' ? 'e.g. ABCDE1234F' : 'Tax ID Number'}
                     maxLength={country === 'IN' ? 10 : 30}
-                    className="w-full px-3 py-2 rounded-xl text-sm font-mono surface-2 border border-[var(--border-subtle)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--brand-primary)] uppercase disabled:opacity-70"
+                    className="w-full px-3 py-2 rounded-xl text-sm font-mono surface-2 border border-[var(--border-subtle)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--primary)] uppercase disabled:opacity-70"
                     required
                   />
                 </div>
@@ -361,7 +361,7 @@ export const TaxInformationView: React.FC<TaxInformationViewProps> = ({ userId }
                     onChange={(e) => setGstin(e.target.value.toUpperCase())}
                     placeholder="e.g. 27ABCDE1234F1Z5 (15 digits)"
                     maxLength={15}
-                    className="w-full px-3 py-2 rounded-xl text-sm font-mono surface-2 border border-[var(--border-subtle)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--brand-primary)] uppercase disabled:opacity-70"
+                    className="w-full px-3 py-2 rounded-xl text-sm font-mono surface-2 border border-[var(--border-subtle)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--primary)] uppercase disabled:opacity-70"
                   />
                   <p className="text-[11px] text-[var(--text-muted)] mt-1">
                     Leave blank if your annual turnover is below the GST registration threshold.
@@ -388,7 +388,7 @@ export const TaxInformationView: React.FC<TaxInformationViewProps> = ({ userId }
                   value={addressLine1}
                   onChange={(e) => setAddressLine1(e.target.value)}
                   placeholder="Street address, unit, building"
-                  className="w-full px-3 py-2 rounded-xl text-sm surface-2 border border-[var(--border-subtle)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--brand-primary)] disabled:opacity-70"
+                  className="w-full px-3 py-2 rounded-xl text-sm surface-2 border border-[var(--border-subtle)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--primary)] disabled:opacity-70"
                 />
               </div>
 
@@ -402,7 +402,7 @@ export const TaxInformationView: React.FC<TaxInformationViewProps> = ({ userId }
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
                   placeholder="City"
-                  className="w-full px-3 py-2 rounded-xl text-sm surface-2 border border-[var(--border-subtle)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--brand-primary)] disabled:opacity-70"
+                  className="w-full px-3 py-2 rounded-xl text-sm surface-2 border border-[var(--border-subtle)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--primary)] disabled:opacity-70"
                 />
               </div>
 
@@ -416,7 +416,7 @@ export const TaxInformationView: React.FC<TaxInformationViewProps> = ({ userId }
                   value={stateVal}
                   onChange={(e) => setStateVal(e.target.value)}
                   placeholder="State"
-                  className="w-full px-3 py-2 rounded-xl text-sm surface-2 border border-[var(--border-subtle)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--brand-primary)] disabled:opacity-70"
+                  className="w-full px-3 py-2 rounded-xl text-sm surface-2 border border-[var(--border-subtle)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--primary)] disabled:opacity-70"
                 />
               </div>
 
@@ -430,7 +430,7 @@ export const TaxInformationView: React.FC<TaxInformationViewProps> = ({ userId }
                   value={postalCode}
                   onChange={(e) => setPostalCode(e.target.value)}
                   placeholder="Postal Code"
-                  className="w-full px-3 py-2 rounded-xl text-sm surface-2 border border-[var(--border-subtle)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--brand-primary)] disabled:opacity-70"
+                  className="w-full px-3 py-2 rounded-xl text-sm surface-2 border border-[var(--border-subtle)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--primary)] disabled:opacity-70"
                 />
               </div>
             </div>
@@ -452,7 +452,7 @@ export const TaxInformationView: React.FC<TaxInformationViewProps> = ({ userId }
               <button
                 type="submit"
                 disabled={isSaving}
-                className="px-5 py-2 rounded-xl text-sm font-semibold bg-[var(--brand-primary)] text-white hover:opacity-90 transition-opacity flex items-center gap-2"
+                className="px-5 py-2 rounded-xl text-sm font-semibold bg-[var(--primary)] text-white hover:opacity-90 transition-opacity flex items-center gap-2"
               >
                 {isSaving && <Loader2 className="w-4 h-4 animate-spin" />}
                 {isSaving ? 'Verifying & Saving...' : 'Save Tax Information'}

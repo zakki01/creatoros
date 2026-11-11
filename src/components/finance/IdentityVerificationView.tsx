@@ -106,7 +106,7 @@ export const IdentityVerificationView: React.FC<IdentityVerificationViewProps> =
   if (isLoading) {
     return (
       <div className="flex items-center justify-center p-12 text-[var(--text-secondary)]">
-        <Loader2 className="w-6 h-6 animate-spin mr-2 text-[var(--brand-primary)]" />
+        <Loader2 className="w-6 h-6 animate-spin mr-2 text-[var(--primary)]" />
         <span>Loading verification status...</span>
       </div>
     );
@@ -247,7 +247,7 @@ export const IdentityVerificationView: React.FC<IdentityVerificationViewProps> =
                 <select
                   value={idType}
                   onChange={(e) => setIdType(e.target.value as any)}
-                  className="w-full px-3 py-2 rounded-xl text-sm surface-2 border border-[var(--border-subtle)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--brand-primary)]"
+                  className="w-full px-3 py-2 rounded-xl text-sm surface-2 border border-[var(--border-subtle)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--primary)]"
                 >
                   <option value="passport">Passport</option>
                   <option value="national_id">National ID Card</option>
@@ -265,7 +265,7 @@ export const IdentityVerificationView: React.FC<IdentityVerificationViewProps> =
                   value={idNumber}
                   onChange={(e) => setIdNumber(e.target.value)}
                   placeholder="e.g. Z1234567 or DL-12345678"
-                  className="w-full px-3 py-2 rounded-xl text-sm font-mono surface-2 border border-[var(--border-subtle)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--brand-primary)]"
+                  className="w-full px-3 py-2 rounded-xl text-sm font-mono surface-2 border border-[var(--border-subtle)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--primary)]"
                   required
                 />
               </div>
@@ -276,7 +276,7 @@ export const IdentityVerificationView: React.FC<IdentityVerificationViewProps> =
               <label className="block text-xs font-medium text-[var(--text-secondary)] mb-2">
                 Upload Scanned Copy or High-Resolution Photo *
               </label>
-              <div className="border-2 border-dashed border-[var(--border-subtle)] hover:border-[var(--brand-primary)] rounded-2xl p-6 text-center transition-colors surface-2/50 relative">
+              <div className="border-2 border-dashed border-[var(--border-subtle)] hover:border-[var(--primary)] rounded-2xl p-6 text-center transition-colors surface-2/50 relative">
                 <input
                   type="file"
                   accept="image/jpeg,image/png,image/webp,application/pdf"
@@ -289,12 +289,12 @@ export const IdentityVerificationView: React.FC<IdentityVerificationViewProps> =
                   className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                 />
                 <div className="flex flex-col items-center justify-center">
-                  <div className="w-12 h-12 rounded-xl bg-[var(--surface-3)] flex items-center justify-center text-[var(--brand-primary)] mb-3">
+                  <div className="w-12 h-12 rounded-xl bg-[var(--surface-3)] flex items-center justify-center text-[var(--primary)] mb-3">
                     <Upload className="w-6 h-6" />
                   </div>
                   {selectedFileName ? (
                     <div>
-                      <p className="text-sm font-semibold text-[var(--brand-primary)] flex items-center justify-center gap-1.5">
+                      <p className="text-sm font-semibold text-[var(--primary)] flex items-center justify-center gap-1.5">
                         <FileCheck className="w-4 h-4" /> {selectedFileName}
                       </p>
                       <p className="text-xs text-[var(--text-muted)] mt-1">Click to select a different file</p>
@@ -317,7 +317,7 @@ export const IdentityVerificationView: React.FC<IdentityVerificationViewProps> =
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="px-6 py-2.5 rounded-xl text-sm font-semibold bg-[var(--brand-primary)] text-white hover:opacity-90 transition-opacity flex items-center gap-2"
+                className="px-6 py-2.5 rounded-xl text-sm font-semibold bg-[var(--primary)] text-white hover:opacity-90 transition-opacity flex items-center gap-2"
               >
                 {isSubmitting && <Loader2 className="w-4 h-4 animate-spin" />}
                 {isSubmitting ? 'Uploading & Encrypting...' : 'Submit Documents for Verification'}

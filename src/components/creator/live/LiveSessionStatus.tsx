@@ -26,6 +26,7 @@ interface LiveSessionStatusProps {
   recordingSeconds: number;
   transportError?: string | null;
   onRetryTransport?: () => void;
+  isVirtualFeed?: boolean;
   // Backward compatibility props
   cameraStatus?: any;
   transportStatus?: any;
@@ -49,6 +50,7 @@ export const LiveSessionStatus: React.FC<LiveSessionStatusProps> = ({
   recordingSeconds,
   transportError,
   onRetryTransport,
+  isVirtualFeed = false,
   // Backward compatibility fallbacks
   cameraStatus,
   transportStatus,
@@ -86,40 +88,47 @@ export const LiveSessionStatus: React.FC<LiveSessionStatusProps> = ({
   return (
     <div className="flex flex-wrap items-center gap-2 px-3 py-1.5 rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-xs">
       {/* 1. Camera Status */}
-      <div
-        className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold ${
-          effectiveCamera === 'camera_ready'
-            ? 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/25'
-            : effectiveCamera === 'camera_requesting'
-            ? 'bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/30 animate-pulse'
-            : effectiveCamera === 'camera_idle'
-            ? 'bg-[var(--surface-muted)] text-[var(--text-secondary)] border border-[var(--border)]'
-            : 'bg-rose-500/10 text-rose-700 dark:text-rose-400 border border-rose-500/25'
-        }`}
-      >
-        <span
-          className={`w-1.5 h-1.5 rounded-full ${
+      {isVirtualFeed ? (
+        <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/25">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+          <span>Virtual Studio Feed</span>
+        </div>
+      ) : (
+        <div
+          className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold ${
             effectiveCamera === 'camera_ready'
-              ? 'bg-emerald-500'
+              ? 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/25'
               : effectiveCamera === 'camera_requesting'
-              ? 'bg-amber-400 animate-ping'
+              ? 'bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/30 animate-pulse'
               : effectiveCamera === 'camera_idle'
-              ? 'bg-zinc-400'
-              : 'bg-rose-500'
+              ? 'bg-[var(--surface-muted)] text-[var(--text-secondary)] border border-[var(--border)]'
+              : 'bg-rose-500/10 text-rose-700 dark:text-rose-400 border border-rose-500/25'
           }`}
-        />
-        <span>
-          {effectiveCamera === 'camera_ready'
-            ? 'Camera Ready'
-            : effectiveCamera === 'camera_requesting'
-            ? 'Requesting Cam...'
-            : effectiveCamera === 'camera_idle'
-            ? 'Standby — Offline'
-            : 'Camera Error'}
-        </span>
-      </div>
+        >
+          <span
+            className={`w-1.5 h-1.5 rounded-full ${
+              effectiveCamera === 'camera_ready'
+                ? 'bg-emerald-500'
+                : effectiveCamera === 'camera_requesting'
+                ? 'bg-amber-400 animate-ping'
+                : effectiveCamera === 'camera_idle'
+                ? 'bg-zinc-400'
+                : 'bg-rose-500'
+            }`}
+          />
+          <span>
+            {effectiveCamera === 'camera_ready'
+              ? 'Camera Ready'
+              : effectiveCamera === 'camera_requesting'
+              ? 'Requesting Cam...'
+              : effectiveCamera === 'camera_idle'
+              ? 'Standby — Offline'
+              : 'Camera Standby'}
+          </span>
+        </div>
+      )}
 
-      {/* 2. Media Transport Status (PREVIEW -> CONNECTING -> LIVE / LIVE TRANSPORT UNAVAILABLE) */}
+      {/* 2. Media Transport Status (PREVIEW -> CONNECTING -> LIVE / STANDBY) */}
       <div
         className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold ${
           isLive
@@ -128,9 +137,9 @@ export const LiveSessionStatus: React.FC<LiveSessionStatusProps> = ({
             ? 'bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-500/35'
             : effectiveTransport === 'transport_error'
             ? 'bg-rose-500/15 text-rose-700 dark:text-rose-400 border border-rose-500/30'
-            : effectiveCamera === 'camera_ready'
+            : effectiveCamera === 'camera_ready' || isVirtualFeed
             ? 'bg-sky-500/10 text-[var(--primary)] dark:text-[var(--primary)] border border-sky-500/25'
-            : 'bg-amber-500/10 text-amber-800 dark:text-amber-300 border border-amber-500/30'
+            : 'bg-[var(--surface-muted)] text-[var(--text-secondary)] border border-[var(--border)]'
         }`}
       >
         <span
@@ -141,21 +150,21 @@ export const LiveSessionStatus: React.FC<LiveSessionStatusProps> = ({
               ? 'bg-amber-400 animate-ping'
               : effectiveTransport === 'transport_error'
               ? 'bg-rose-600'
-              : effectiveCamera === 'camera_ready'
+              : effectiveCamera === 'camera_ready' || isVirtualFeed
               ? 'bg-[var(--primary)]'
-              : 'bg-amber-500'
+              : 'bg-zinc-400'
           }`}
         />
         <span>
           {isLive
             ? 'LIVE'
             : effectiveTransport === 'transport_connecting'
-            ? 'CONNECTING'
+            ? 'CONNECTING...'
             : effectiveTransport === 'transport_error'
-            ? 'LIVE TRANSPORT UNAVAILABLE'
-            : effectiveCamera === 'camera_ready'
-            ? 'PREVIEW'
-            : 'LIVE TRANSPORT UNAVAILABLE'}
+            ? 'TRANSPORT OFFLINE'
+            : effectiveCamera === 'camera_ready' || isVirtualFeed
+            ? 'STUDIO PREVIEW'
+            : 'STUDIO STANDBY'}
         </span>
 
         {effectiveTransport === 'transport_error' && onRetryTransport && (

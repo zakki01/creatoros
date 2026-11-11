@@ -116,7 +116,7 @@ export const CreatorAdminWorkspace: React.FC = () => {
       </div>
 
       {/* Admin Tabs */}
-      <div className="flex items-center gap-1.5 p-1 bg-[var(--surface-muted)] rounded-xl border border-[var(--border)] overflow-x-auto">
+      <div className="flex items-center gap-1.5 p-1 bg-[var(--surface-muted)] rounded-2xl border border-[var(--border)] overflow-x-auto scrollbar-none flex-nowrap shadow-xs">
         {[
           { id: 'team', label: `Team & Collaborators (${collaborators.length})`, icon: Users },
           { id: 'governance', label: 'Content Governance', icon: Sliders },
@@ -130,10 +130,10 @@ export const CreatorAdminWorkspace: React.FC = () => {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as any)}
-              className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-medium whitespace-nowrap transition-all cursor-pointer ${
+              className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-medium whitespace-nowrap transition-all cursor-pointer ${
                 isActive
-                  ? 'bg-[var(--accent)] text-white font-semibold border border-[var(--border)] shadow-sm'
-                  : 'text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-elevated)]'
+                  ? 'bg-[var(--primary)] text-white font-semibold shadow-xs'
+                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-elevated)]'
               }`}
             >
               <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-white' : 'text-[var(--text-muted)]'}`} />
