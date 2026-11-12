@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
-import { Sparkles, Check, Upload, Sliders } from 'lucide-react';
+import { Sparkles, Check, Upload, Sliders, RotateCcw } from 'lucide-react';
 import { LiveScene } from '../../../types';
-import { LIVE_SCENES } from '../../../services/live/scenesConfig';
+import { DEFAULT_SCENE, LIVE_SCENES } from '../../../services/live/scenesConfig';
 
 interface LiveScenePickerProps {
   selectedScene: LiveScene;
@@ -86,6 +86,18 @@ export const LiveScenePicker: React.FC<LiveScenePickerProps> = ({
           <span>Filters & AI Scenes</span>
         </label>
         <div className="flex items-center gap-2">
+          {selectedScene.id !== DEFAULT_SCENE.id && (
+            <button
+              type="button"
+              onClick={() => onSelectScene(DEFAULT_SCENE)}
+              disabled={disabled}
+              className="flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-mono text-rose-400 hover:text-white bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 transition-colors cursor-pointer shadow-xs"
+              title="Reset to default clean camera view"
+            >
+              <RotateCcw className="w-3 h-3" />
+              <span>Cancel Filter</span>
+            </button>
+          )}
           <input
             ref={fileInputRef}
             type="file"
@@ -116,7 +128,7 @@ export const LiveScenePicker: React.FC<LiveScenePickerProps> = ({
             <button
               key={scene.id}
               disabled={disabled}
-              onClick={() => onSelectScene(scene)}
+              onClick={() => onSelectScene(isSelected && scene.id !== DEFAULT_SCENE.id ? DEFAULT_SCENE : scene)}
               className={`group relative overflow-hidden rounded-2xl text-left transition-all duration-200 flex flex-col justify-between ${
                 isSelected
                   ? 'bg-[var(--accent)]/10 border-[var(--accent)]/50 ring-1 ring-[var(--accent)]/20 shadow-xs -translate-y-0.5'

@@ -9,6 +9,7 @@ import {
   ArrowRight,
   Eye,
   Video,
+  ArrowLeft,
 } from 'lucide-react';
 import { useAppState } from '../../context/StateContext';
 import { getSafeCurrentCreator } from '../../data/demoFixtures';
@@ -24,7 +25,7 @@ export const CreatorDeliverables: React.FC<{
   onOpenSubmissionModal,
   onNavigate,
 }) => {
-  const { submissions, creators, userProfile, authUser } = useAppState();
+  const { submissions, creators, userProfile, authUser, goBack } = useAppState();
   const currentCreator = getSafeCurrentCreator(creators, userProfile, authUser);
   const isDemo = Boolean(authUser?.is_demo || authUser?.isDemo);
 
@@ -52,6 +53,15 @@ export const CreatorDeliverables: React.FC<{
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex items-center gap-2.5">
+          <button
+            type="button"
+            onClick={goBack}
+            aria-label="Back"
+            className="p-1.5 -ml-1 rounded-xl border border-[var(--border)] bg-[var(--surface)] hover:bg-[var(--surface-muted)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-all cursor-pointer shadow-xs group shrink-0"
+            title="Go back"
+          >
+            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
+          </button>
           <h1 className="text-xl sm:text-2xl font-bold text-[var(--text-primary)] font-display tracking-tight">
             Content
           </h1>

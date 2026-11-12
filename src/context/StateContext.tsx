@@ -187,6 +187,9 @@ interface StateContextType {
   setAuthTab: (tab: AuthTab) => void;
   creatorActiveTab: string;
   setCreatorActiveTab: (tab: string) => void;
+  navigationHistory: string[];
+  canGoBack: boolean;
+  goBack: () => void;
   login: (user: AuthUser, initialCreatorTab?: string) => void;
   logout: () => void;
   loginAsDemo: (role?: UserRole, initialCreatorTab?: string) => void;
@@ -256,12 +259,59 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
   });
 
+  const [navigationHistory, setNavigationHistory] = useState<string[]>([]);
+
   const setCreatorActiveTab = (tab: string) => {
-    setCreatorActiveTabState(tab);
+    setCreatorActiveTabState((prev) => {
+      if (prev && prev !== tab) {
+        setNavigationHistory((hist) => [...hist.slice(-25), prev]);
+      }
+      return tab;
+    });
     try {
       localStorage.setItem('creatoros_creator_active_tab', tab);
+      if (typeof window !== 'undefined' && window.history?.pushState) {
+        window.history.pushState({ tab }, '', `?tab=${encodeURIComponent(tab)}`);
+      }
     } catch {}
   };
+
+  const goBack = () => {
+    setNavigationHistory((prev) => {
+      if (prev.length === 0) {
+        setCreatorActiveTabState('home');
+        try {
+          localStorage.setItem('creatoros_creator_active_tab', 'home');
+          if (typeof window !== 'undefined' && window.history?.pushState) {
+            window.history.pushState({ tab: 'home' }, '', '?tab=home');
+          }
+        } catch {}
+        return [];
+      }
+      const nextHistory = [...prev];
+      const previousTab = nextHistory.pop() || 'home';
+      setCreatorActiveTabState(previousTab);
+      try {
+        localStorage.setItem('creatoros_creator_active_tab', previousTab);
+        if (typeof window !== 'undefined' && window.history?.pushState) {
+          window.history.pushState({ tab: previousTab }, '', `?tab=${encodeURIComponent(previousTab)}`);
+        }
+      } catch {}
+      return nextHistory;
+    });
+  };
+
+  const canGoBack = navigationHistory.length > 0 || (creatorActiveTab !== 'home');
+
+  useEffect(() => {
+    const handlePopState = (event: PopStateEvent) => {
+      if (event.state?.tab) {
+        setCreatorActiveTabState(event.state.tab);
+      }
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
 
   const [role, setRoleState] = useState<UserRole>(() => {
     const session = AuthService.getStoredSession();
@@ -2343,6 +2393,9 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         setAuthTab,
         creatorActiveTab,
         setCreatorActiveTab,
+        navigationHistory,
+        canGoBack,
+        goBack,
         login,
         logout,
         loginAsDemo,

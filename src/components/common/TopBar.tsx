@@ -9,6 +9,7 @@ import {
   LogOut,
   User,
   LayoutGrid,
+  ArrowLeft,
 } from 'lucide-react';
 import { useAppState } from '../../context/StateContext';
 import { IconButton } from '../ui/IconButton';
@@ -42,6 +43,8 @@ export const TopBar: React.FC<TopBarProps> = ({
     trialDaysLeft,
     setIsProModalOpen,
     totalUnreadMessages,
+    canGoBack,
+    goBack,
   } = useAppState();
 
   const unreadNotificationsCount = notifications.filter(
@@ -50,8 +53,21 @@ export const TopBar: React.FC<TopBarProps> = ({
 
   return (
     <header className="sticky top-0 z-30 w-full h-14 border-b border-[var(--border)] bg-[var(--header)] text-[var(--text-primary)] backdrop-blur-2xl shadow-xs px-3 sm:px-6 flex items-center justify-between gap-2 sm:gap-4 shrink-0">
-      {/* Left: Workspace Identifier */}
+      {/* Left: Back Arrow & Workspace Identifier */}
       <div className="flex items-center gap-2.5 sm:gap-3.5 min-w-0">
+        {canGoBack && (
+          <button
+            type="button"
+            onClick={goBack}
+            aria-label="Back to previous page"
+            className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl border border-[var(--border)] bg-[var(--surface-muted)] hover:bg-[var(--surface)] text-xs font-semibold text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-all cursor-pointer shadow-xs group shrink-0"
+            title="Go back to previous screen"
+          >
+            <ArrowLeft className="w-3.5 h-3.5 text-[var(--text-muted)] group-hover:text-[var(--text-primary)] group-hover:-translate-x-0.5 transition-transform" />
+            <span className="hidden sm:inline">Back</span>
+          </button>
+        )}
+
         <div className="flex items-center gap-2.5 min-w-0">
           <Avatar
             src={workspace.avatarUrl}

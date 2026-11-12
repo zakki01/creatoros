@@ -7,7 +7,9 @@ import {
   DollarSign,
   History,
   Lock,
+  ArrowLeft,
 } from 'lucide-react';
+import { useAppState } from '../../context/StateContext';
 import { FinanceOverview } from './FinanceOverview';
 import { PayoutSettings } from './PayoutSettings';
 import { TaxInformationView } from './TaxInformationView';
@@ -34,6 +36,7 @@ export const CreatorFinanceCenter: React.FC<CreatorFinanceCenterProps> = ({
   userId,
   initialTab = 'overview',
 }) => {
+  const { goBack } = useAppState();
   const [activeTab, setActiveTab] = useState<FinanceTab>(initialTab);
   const [isPayoutModalOpen, setIsPayoutModalOpen] = useState(false);
 
@@ -51,7 +54,16 @@ export const CreatorFinanceCenter: React.FC<CreatorFinanceCenterProps> = ({
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2.5">
+            <button
+              type="button"
+              onClick={goBack}
+              aria-label="Back"
+              className="p-1.5 -ml-1 rounded-xl border border-[var(--border)] bg-[var(--surface)] hover:bg-[var(--surface-muted)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-all cursor-pointer shadow-xs group shrink-0"
+              title="Go back"
+            >
+              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
+            </button>
             <h1 className="text-xl sm:text-2xl font-bold text-[var(--text-primary)] font-display tracking-tight">
               Finance & Payout Center
             </h1>

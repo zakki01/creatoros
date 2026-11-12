@@ -29,6 +29,12 @@ import {
   Film,
   ArrowRightLeft,
   Upload,
+  Users,
+  UserPlus,
+  UserX,
+  Columns,
+  SquareSplitVertical,
+  RotateCcw,
 } from 'lucide-react';
 import {
   AspectRatio,
@@ -66,6 +72,7 @@ import { LiveAudioMixer } from './LiveAudioMixer';
 import { LiveDeviceSettingsModal } from './LiveDeviceSettingsModal';
 import { LiveSourcesDock, StudioLayer } from './LiveSourcesDock';
 import { LiveScenesDock, StudioSceneMode } from './LiveScenesDock';
+import { LiveCoHostModal, CoHostGuest } from './LiveCoHostModal';
 import { useAppState } from '../../../context/StateContext';
 
 interface CreatorLiveStudioProps {
@@ -178,6 +185,42 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
   const [recordedClip, setRecordedClip] = useState<LiveRecordedClip | null>(null);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [isConfigureModalOpen, setIsConfigureModalOpen] = useState(false);
+
+  // Split-Screen & Co-Host Collab States
+  const [coHost, setCoHost] = useState<CoHostGuest | null>(null);
+  const [coHostVideoError, setCoHostVideoError] = useState(false);
+  const [isCoHostModalOpen, setIsCoHostModalOpen] = useState(false);
+  const [splitLayout, setSplitLayout] = useState<'side-by-side' | 'top-bottom' | 'pip'>('side-by-side');
+
+  const handleConnectCoHost = (guest: CoHostGuest) => {
+    setCoHost(guest);
+    setCoHostVideoError(false);
+    setIsCoHostModalOpen(false);
+    LiveStreamingService.sendMessage(
+      'sys-collab',
+      'System',
+      `🎉 ${guest.name} joined the stream as Co-Host! Split-screen active.`,
+      'system'
+    );
+    setViewerCount((prev) => prev + 342);
+  };
+
+  const handleDisconnectCoHost = () => {
+    if (coHost) {
+      LiveStreamingService.sendMessage(
+        'sys-collab',
+        'System',
+        `👋 ${coHost.name} disconnected from split-screen.`,
+        'system'
+      );
+    }
+    setCoHost(null);
+  };
+
+  const handleToggleCoHostMute = () => {
+    if (!coHost) return;
+    setCoHost((prev) => (prev ? { ...prev, isMuted: !prev.isMuted } : null));
+  };
 
   // Pipeline Refs
   const compositorRef = useRef<ARCompositor>(new ARCompositor());
@@ -679,16 +722,109 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
       {/* 1. MOBILE CAMERA-FIRST 100DVH SOCIAL CAMERA (Instagram / TikTok Model)     */}
       {/* ========================================================================= */}
       <div className="block lg:hidden fixed inset-0 z-50 w-full h-[100dvh] bg-black overflow-hidden select-none flex flex-col justify-between text-white">
-        {/* Full-bleed Processed Camera Stream */}
-        <video
-          ref={mobileVideoRef}
-          autoPlay
-          playsInline
-          muted
-          className={`absolute inset-0 w-full h-full object-cover transform ${
-            facingMode === 'user' ? '-scale-x-100' : ''
-          }`}
-        />
+        {/* Full-bleed Processed Camera Stream or Split Screen Co-Host View */}
+        {coHost ? (
+          <div className="absolute inset-0 w-full h-full flex flex-col z-0">
+            {/* Top: Host Video */}
+            <div className="relative flex-1 w-full bg-black overflow-hidden border-b-2 border-purple-500/40">
+              <video
+                ref={mobileVideoRef}
+                autoPlay
+                playsInline
+                muted
+                className={`w-full h-full object-cover transform ${
+                  facingMode === 'user' ? '-scale-x-100' : ''
+                }`}
+              />
+              <div className="absolute bottom-2 left-2 z-10 px-2 py-0.5 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-[10px] font-bold text-white flex items-center gap-1.5 shadow-md">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                <span>You (Host)</span>
+              </div>
+            </div>
+
+            {/* Bottom: Co-Host Guest Video */}
+            <div className="relative flex-1 w-full bg-zinc-950 overflow-hidden flex items-center justify-center">
+              {coHost.videoStreamUrl && !coHostVideoError ? (
+                <video
+                  src={coHost.videoStreamUrl}
+                  autoPlay
+                  loop
+                  muted={coHost.isMuted}
+                  playsInline
+                  onError={() => setCoHostVideoError(true)}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-b from-purple-950/60 via-zinc-950 to-black p-4 text-center">
+                  <div className="relative">
+                    <img
+                      src={coHost.avatar}
+                      alt={coHost.name}
+                      className="w-20 h-20 rounded-full border-2 border-purple-400 object-cover shadow-2xl ring-4 ring-purple-500/20"
+                    />
+                    {!coHost.isMuted && (
+                      <span className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-emerald-500 border-2 border-black flex items-center justify-center">
+                        <span className="w-2 h-2 rounded-full bg-white animate-ping" />
+                      </span>
+                    )}
+                  </div>
+                  <h4 className="mt-2.5 text-sm font-bold text-white tracking-tight">{coHost.name}</h4>
+                  <span className="text-[11px] text-purple-300 font-medium">{coHost.role}</span>
+                  {!coHost.isMuted ? (
+                    <div className="mt-3 flex items-center gap-1">
+                      <span className="w-1 h-3 rounded-full bg-emerald-400 animate-pulse" />
+                      <span className="w-1 h-5 rounded-full bg-emerald-400 animate-pulse delay-75" />
+                      <span className="w-1 h-2 rounded-full bg-emerald-400 animate-pulse delay-150" />
+                      <span className="w-1 h-4 rounded-full bg-emerald-400 animate-pulse delay-100" />
+                      <span className="text-[10px] text-emerald-300 font-mono ml-1">Live Audio</span>
+                    </div>
+                  ) : (
+                    <span className="mt-2 text-[10px] text-rose-400 font-mono">Microphone Muted</span>
+                  )}
+                </div>
+              )}
+              {/* Co-Host Badges & Controls */}
+              <div className="absolute bottom-2 left-2 z-10 px-2.5 py-1 rounded-full bg-black/70 backdrop-blur-md border border-purple-500/40 text-[10px] font-bold text-white flex items-center gap-1.5 shadow-lg">
+                <span className="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse" />
+                <span className="truncate max-w-[120px]">{coHost.name}</span>
+                <span className="text-[9px] text-purple-300 font-mono">CO-HOST</span>
+              </div>
+
+              <div className="absolute bottom-2 right-2 z-10 flex items-center gap-1.5">
+                <button
+                  type="button"
+                  onClick={handleToggleCoHostMute}
+                  className={`p-1.5 rounded-full backdrop-blur-md border text-xs cursor-pointer ${
+                    coHost.isMuted
+                      ? 'bg-rose-600/80 border-rose-400 text-white'
+                      : 'bg-black/60 border-white/20 text-white'
+                  }`}
+                  title={coHost.isMuted ? 'Unmute Guest' : 'Mute Guest'}
+                >
+                  {coHost.isMuted ? <MicOff className="w-3.5 h-3.5" /> : <Mic className="w-3.5 h-3.5" />}
+                </button>
+                <button
+                  type="button"
+                  onClick={handleDisconnectCoHost}
+                  className="p-1.5 rounded-full bg-rose-600 hover:bg-rose-500 text-white border border-rose-400 text-xs cursor-pointer shadow-md"
+                  title="Disconnect Co-Host"
+                >
+                  <UserX className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <video
+            ref={mobileVideoRef}
+            autoPlay
+            playsInline
+            muted
+            className={`absolute inset-0 w-full h-full object-cover transform ${
+              facingMode === 'user' ? '-scale-x-100' : ''
+            }`}
+          />
+        )}
 
         {/* Top Floating Glass Header (FIXED: NO DUPLICATE PREVIEW BADGES) */}
         <div className="relative z-20 p-4 pt-safe flex items-center justify-between">
@@ -772,6 +908,21 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
             }`}
           >
             <Wand2 className="w-5 h-5" />
+          </button>
+
+          {/* Split Screen / Co-Host Collab Trigger */}
+          <button
+            type="button"
+            onClick={() => setIsCoHostModalOpen(true)}
+            aria-label="Split Screen Co-Host"
+            className={`w-11 h-11 rounded-full backdrop-blur-md border flex items-center justify-center active:scale-90 transition-transform shadow-md cursor-pointer ${
+              coHost
+                ? 'bg-purple-600 border-purple-400 text-white ring-2 ring-purple-400 animate-pulse'
+                : 'bg-black/50 border-white/15 text-white'
+            }`}
+            title={coHost ? `Co-Host: ${coHost.name}` : 'Connect Co-Host / Split Screen'}
+          >
+            <Users className="w-5 h-5 text-purple-300" />
           </button>
 
           <button
@@ -1091,6 +1242,22 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
               <span>{showStudioDock ? 'Hide Tools' : 'Studio Tools'}</span>
             </button>
 
+            {/* Split Screen / Co-Host Collab Trigger */}
+            <button
+              type="button"
+              onClick={() => setIsCoHostModalOpen(true)}
+              className={`px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 border transition-all cursor-pointer ${
+                coHost
+                  ? 'bg-purple-100 dark:bg-purple-600/25 text-purple-800 dark:text-purple-200 border-purple-300 dark:border-purple-500/50 shadow-xs ring-1 ring-purple-500/30 font-bold'
+                  : 'bg-[var(--surface-muted)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] border-[var(--border)]'
+              }`}
+              title="Split Screen / Connect Co-Host"
+            >
+              <Users className="w-3.5 h-3.5 text-purple-600 dark:text-purple-400" />
+              <span>{coHost ? coHost.name : 'Split Screen'}</span>
+              {coHost && <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />}
+            </button>
+
             <button
               type="button"
               onClick={() => setIsDeviceSettingsOpen(true)}
@@ -1181,24 +1348,152 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
                 </div>
               </div>
             ) : (
-              /* SINGLE HERO VIEWPORT */
+              /* SINGLE HERO VIEWPORT OR SPLIT SCREEN CO-HOST VIEWPORT */
               <div className="flex-1 flex items-center justify-center min-h-0 relative overflow-hidden bg-[radial-gradient(ellipse_at_center,_rgba(14,165,233,0.08)_0%,_rgba(9,12,16,1)_80%)] rounded-3xl border border-zinc-800 shadow-2xl p-2 sm:p-3">
-                <LiveCamera
-                  displayStream={displayStream}
-                  connectionState={isLive ? 'live' : 'idle'}
-                  activeScene={activeScene}
-                  aspectRatio={aspectRatio}
-                  errorMessage={errorMessage}
-                  onRequestCamera={requestCamera}
-                  isVirtualFeed={isVirtualFeed}
-                  onToggleVirtualFeed={handleToggleVirtualFeed}
-                  screenStream={screenStream}
-                  isScreenSharing={isScreenSharing}
-                  showChatOverlay={showChatOverlay}
-                  showGoalOverlay={showGoalOverlay}
-                  showWatermark={showWatermark}
-                  sceneMode={currentStudioScene}
-                />
+                {coHost ? (
+                  /* SPLIT SCREEN CO-HOST VIEWPORT (Dual Side-by-Side or Top-Bottom) */
+                  <div className={`w-full h-full flex ${splitLayout === 'top-bottom' ? 'flex-col' : 'flex-row'} gap-2 sm:gap-3 items-center justify-center min-h-0 relative`}>
+                    {/* Left/Top: Host Stream */}
+                    <div className="relative flex-1 w-full h-full min-h-0 flex items-center justify-center rounded-2xl overflow-hidden border border-zinc-800 bg-black shadow-lg">
+                      <LiveCamera
+                        displayStream={displayStream}
+                        connectionState={isLive ? 'live' : 'idle'}
+                        activeScene={activeScene}
+                        aspectRatio={aspectRatio}
+                        errorMessage={errorMessage}
+                        onRequestCamera={requestCamera}
+                        isVirtualFeed={isVirtualFeed}
+                        onToggleVirtualFeed={handleToggleVirtualFeed}
+                        screenStream={screenStream}
+                        isScreenSharing={isScreenSharing}
+                        showChatOverlay={showChatOverlay}
+                        showGoalOverlay={showGoalOverlay}
+                        showWatermark={showWatermark}
+                        sceneMode={currentStudioScene}
+                      />
+                      <div className="absolute top-3 left-3 z-20 px-2.5 py-1 rounded-full bg-black/75 backdrop-blur-md border border-white/20 text-xs font-bold text-white flex items-center gap-1.5 shadow-md">
+                        <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                        <span>You (Host)</span>
+                      </div>
+                    </div>
+
+                    {/* Right/Bottom: Co-Host Guest Stream */}
+                    <div className="relative flex-1 w-full h-full min-h-0 flex items-center justify-center rounded-2xl overflow-hidden border border-purple-500/50 bg-zinc-950 shadow-xl group">
+                      {coHost.videoStreamUrl && !coHostVideoError ? (
+                        <video
+                          src={coHost.videoStreamUrl}
+                          autoPlay
+                          loop
+                          muted={coHost.isMuted}
+                          playsInline
+                          onError={() => setCoHostVideoError(true)}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-purple-950/60 via-zinc-950 to-black p-6 text-center">
+                          <div className="relative">
+                            <img
+                              src={coHost.avatar}
+                              alt={coHost.name}
+                              className="w-28 h-28 rounded-full border-4 border-purple-400 object-cover shadow-2xl ring-8 ring-purple-500/20"
+                            />
+                            {!coHost.isMuted && (
+                              <span className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-emerald-500 border-2 border-black flex items-center justify-center">
+                                <span className="w-3 h-3 rounded-full bg-white animate-ping" />
+                              </span>
+                            )}
+                          </div>
+                          <h4 className="mt-3.5 text-lg font-bold text-white tracking-tight">{coHost.name}</h4>
+                          <span className="text-xs text-purple-300 font-medium">{coHost.role}</span>
+                          <span className="mt-0.5 text-xs font-mono text-zinc-400">{coHost.handle}</span>
+                          {!coHost.isMuted ? (
+                            <div className="mt-4 flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30">
+                              <span className="w-1 h-3 rounded-full bg-emerald-400 animate-pulse" />
+                              <span className="w-1 h-6 rounded-full bg-emerald-400 animate-pulse delay-75" />
+                              <span className="w-1 h-4 rounded-full bg-emerald-400 animate-pulse delay-150" />
+                              <span className="w-1 h-5 rounded-full bg-emerald-400 animate-pulse delay-100" />
+                              <span className="text-[11px] text-emerald-300 font-mono font-bold ml-1.5">WebRTC Voice Connected</span>
+                            </div>
+                          ) : (
+                            <div className="mt-4 px-3 py-1 rounded-full bg-rose-500/10 border border-rose-500/30 text-[11px] text-rose-300 font-mono">
+                              Guest Mic Muted
+                            </div>
+                          )}
+                        </div>
+                      )}
+
+                      {/* Co-Host Floating Header Badge */}
+                      <div className="absolute top-3 left-3 z-20 px-3 py-1 rounded-full bg-purple-950/80 backdrop-blur-md border border-purple-500/50 text-xs font-bold text-white flex items-center gap-2 shadow-lg">
+                        <span className="w-2 h-2 rounded-full bg-purple-400 animate-pulse" />
+                        <span>{coHost.name}</span>
+                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-purple-600/60 text-purple-200 uppercase font-mono">
+                          CO-HOST
+                        </span>
+                      </div>
+
+                      {/* Co-Host Audio & Disconnect Controls Overlay */}
+                      <div className="absolute top-3 right-3 z-20 flex items-center gap-1.5">
+                        <button
+                          type="button"
+                          onClick={handleToggleCoHostMute}
+                          className={`p-2 rounded-xl backdrop-blur-md border text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
+                            coHost.isMuted
+                              ? 'bg-rose-600/90 border-rose-500 text-white'
+                              : 'bg-black/75 hover:bg-black/90 border-white/20 text-white'
+                          }`}
+                          title={coHost.isMuted ? 'Unmute Guest Mic' : 'Mute Guest Mic'}
+                        >
+                          {coHost.isMuted ? (
+                            <>
+                              <MicOff className="w-3.5 h-3.5 text-rose-300" />
+                              <span className="text-[10px] hidden sm:inline">Muted</span>
+                            </>
+                          ) : (
+                            <>
+                              <Mic className="w-3.5 h-3.5 text-emerald-400" />
+                              <span className="text-[10px] hidden sm:inline">Guest Live</span>
+                            </>
+                          )}
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => setIsCoHostModalOpen(true)}
+                          className="p-2 rounded-xl bg-black/75 hover:bg-black/90 border border-white/20 text-white transition-all cursor-pointer"
+                          title="Change Split Screen Layout"
+                        >
+                          <Columns className="w-3.5 h-3.5 text-sky-400" />
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={handleDisconnectCoHost}
+                          className="p-2 rounded-xl bg-rose-600/90 hover:bg-rose-600 border border-rose-500 text-white transition-all cursor-pointer shadow-md"
+                          title="Disconnect Co-Host"
+                        >
+                          <UserX className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <LiveCamera
+                    displayStream={displayStream}
+                    connectionState={isLive ? 'live' : 'idle'}
+                    activeScene={activeScene}
+                    aspectRatio={aspectRatio}
+                    errorMessage={errorMessage}
+                    onRequestCamera={requestCamera}
+                    isVirtualFeed={isVirtualFeed}
+                    onToggleVirtualFeed={handleToggleVirtualFeed}
+                    screenStream={screenStream}
+                    isScreenSharing={isScreenSharing}
+                    showChatOverlay={showChatOverlay}
+                    showGoalOverlay={showGoalOverlay}
+                    showWatermark={showWatermark}
+                    sceneMode={currentStudioScene}
+                  />
+                )}
 
                 {/* Floating Glass Control Overlay (No vertical space wasted below camera) */}
                 <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 px-3.5 py-1.5 rounded-2xl bg-zinc-950/85 backdrop-blur-md border border-zinc-800 shadow-2xl transition-all">
@@ -1261,6 +1556,20 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
                     title="Filters & AR Effects"
                   >
                     <Wand2 className="w-3.5 h-3.5 text-purple-400" />
+                  </button>
+
+                  {/* Split Screen / Co-Host Collab Trigger */}
+                  <button
+                    type="button"
+                    onClick={() => setIsCoHostModalOpen(true)}
+                    className={`p-2 rounded-xl transition-all cursor-pointer ${
+                      coHost
+                        ? 'bg-purple-600/30 text-purple-300 border border-purple-500/50 shadow-xs'
+                        : 'bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white border border-zinc-700/60'
+                    }`}
+                    title={coHost ? `Co-Host: ${coHost.name}` : 'Split-Screen Co-Host Collab'}
+                  >
+                    <Users className="w-3.5 h-3.5 text-purple-400" />
                   </button>
 
                   {/* Hardware Device Settings Modal */}
@@ -1362,6 +1671,20 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
             </div>
 
             <div className="flex items-center gap-2">
+              {(activeEffect.id !== 'eff-none' || activeScene.id !== DEFAULT_SCENE.id) && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    handleSelectEffect(CREATOROS_EFFECTS_CATALOG[0]);
+                    setActiveScene(DEFAULT_SCENE);
+                  }}
+                  className="px-2.5 py-1 rounded-lg text-[10px] font-mono text-rose-400 hover:text-white bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 flex items-center gap-1 cursor-pointer transition-colors"
+                  title="Cancel and remove all active effects & color grading"
+                >
+                  <RotateCcw className="w-3 h-3" />
+                  <span>Cancel Filters</span>
+                </button>
+              )}
               <button
                 type="button"
                 onClick={() => setIsDeviceSettingsOpen(true)}
@@ -1370,6 +1693,15 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
               >
                 <Settings2 className="w-3 h-3 text-sky-400" />
                 <span>Device Config</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowStudioDock(false)}
+                className="p-1.5 rounded-lg text-zinc-400 hover:text-white bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 flex items-center justify-center cursor-pointer transition-colors"
+                title="Close studio dock"
+                aria-label="Close studio dock"
+              >
+                <X className="w-4 h-4" />
               </button>
             </div>
           </div>
@@ -1412,6 +1744,22 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
             {/* PANEL 4: AR Effects & Beauty */}
             {studioDockTab === 'effects' && (
               <div className="space-y-3 p-1">
+                <div className="flex items-center justify-between pb-1 border-b border-zinc-800/60">
+                  <span className="text-[11px] font-mono text-zinc-400">
+                    Active Effect: <strong className="text-white">{activeEffect.name}</strong>
+                  </span>
+                  {activeEffect.id !== 'eff-none' && (
+                    <button
+                      type="button"
+                      onClick={() => handleSelectEffect(CREATOROS_EFFECTS_CATALOG[0])}
+                      className="text-[11px] text-rose-400 hover:text-rose-300 font-medium flex items-center gap-1 cursor-pointer px-2 py-0.5 rounded-md hover:bg-rose-500/10 transition-colors"
+                      title="Clear / Remove active filter"
+                    >
+                      <X className="w-3 h-3" />
+                      <span>Remove Filter</span>
+                    </button>
+                  )}
+                </div>
                 <div className="grid grid-cols-6 gap-2">
                   {CREATOROS_EFFECTS_CATALOG.map((eff) => {
                     const isSelected = activeEffect.id === eff.id;
@@ -1419,7 +1767,7 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
                       <button
                         key={eff.id}
                         type="button"
-                        onClick={() => handleSelectEffect(eff)}
+                        onClick={() => handleSelectEffect(isSelected ? CREATOROS_EFFECTS_CATALOG[0] : eff)}
                         className={`p-2 rounded-xl flex flex-col items-center gap-1 text-center border transition-all cursor-pointer ${
                           isSelected
                             ? 'bg-purple-600/20 border-purple-500 text-white shadow-xs font-semibold'
@@ -1524,6 +1872,17 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
         onChangeResolution={handleChangeResolution}
         currentFps={currentFps}
         onChangeFps={handleChangeFps}
+      />
+
+      {/* Live Co-Host & Split-Screen Collab Modal */}
+      <LiveCoHostModal
+        isOpen={isCoHostModalOpen}
+        onClose={() => setIsCoHostModalOpen(false)}
+        currentCoHost={coHost}
+        onConnectCoHost={handleConnectCoHost}
+        onDisconnectCoHost={handleDisconnectCoHost}
+        splitLayout={splitLayout}
+        onChangeSplitLayout={setSplitLayout}
       />
     </>
   );
