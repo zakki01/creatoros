@@ -11,6 +11,7 @@ import {
   Radio,
   X,
   Send,
+  Heart,
   Share2,
   Sliders,
   CheckCircle,
@@ -144,6 +145,29 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
   const [isEffectsDrawerOpen, setIsEffectsDrawerOpen] = useState(false);
   const [mobileDrawer, setMobileDrawer] = useState<'none' | 'effects' | 'gifts' | 'chat'>('none');
   const [newCommentText, setNewCommentText] = useState('');
+
+  // Floating Heart Reactions Stream
+  interface FloatingHeartItem {
+    id: number;
+    x: number;
+    color: string;
+    emoji: string;
+  }
+  const [floatingHearts, setFloatingHearts] = useState<FloatingHeartItem[]>([]);
+
+  const handleSpawnHeart = () => {
+    const id = Date.now() + Math.random();
+    const x = Math.floor(Math.random() * 60) - 30;
+    const emojis = ['💖', '❤️', '🔥', '✨', '🎉', '🥰', '👏', '💗'];
+    const emoji = emojis[Math.floor(Math.random() * emojis.length)];
+    const colors = ['#f43f5e', '#ec4899', '#d946ef', '#ef4444', '#f59e0b'];
+    const color = colors[Math.floor(Math.random() * colors.length)];
+
+    setFloatingHearts((prev) => [...prev.slice(-15), { id, x, color, emoji }]);
+    setTimeout(() => {
+      setFloatingHearts((prev) => prev.filter((h) => h.id !== id));
+    }, 1800);
+  };
 
   // Cost Protection & Timers
   const maxSessionDurationSec = 3600; // 1 hour max session
@@ -711,25 +735,18 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
               </div>
             )}
 
-            {/* Single Honest Status Pill */}
-            <div className="flex items-center gap-1.5 bg-black/50 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/15 text-[10px] font-mono shadow-md">
-              {transportState === 'transport_live' ? (
-                <span className="text-emerald-400 font-semibold flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  ON AIR
-                </span>
-              ) : transportState === 'transport_connecting' ? (
-                <span className="text-amber-400 font-semibold flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping" />
-                  CONNECTING
-                </span>
-              ) : (
-                <span className="text-zinc-300 font-medium flex items-center gap-1">
-                  <Radio className="w-3 h-3 text-zinc-400" />
-                  PREVIEW
-                </span>
-              )}
-            </div>
+            {/* Status Pill - only shown when actively broadcasting or connecting (no redundant preview badge) */}
+            {isLive ? (
+              <div className="flex items-center gap-1.5 bg-rose-600/90 text-white px-3 py-1.5 rounded-full shadow-md text-[10px] font-bold tracking-wider animate-pulse">
+                <Radio className="w-3 h-3" />
+                <span>ON AIR</span>
+              </div>
+            ) : transportState === 'transport_connecting' ? (
+              <div className="flex items-center gap-1.5 bg-amber-500/80 text-white px-3 py-1.5 rounded-full shadow-md text-[10px] font-bold">
+                <span className="w-1.5 h-1.5 rounded-full bg-white animate-ping" />
+                <span>CONNECTING</span>
+              </div>
+            ) : null}
           </div>
         </div>
 
@@ -814,6 +831,21 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
             ))}
           </div>
 
+          {/* Floating Hearts Reaction Stream */}
+          <div className="absolute right-6 bottom-20 z-30 pointer-events-none flex flex-col items-center">
+            {floatingHearts.map((h) => (
+              <div
+                key={h.id}
+                style={{
+                  transform: `translateX(${h.x}px)`,
+                }}
+                className="absolute bottom-0 text-3xl animate-float-heart select-none drop-shadow-md"
+              >
+                {h.emoji}
+              </div>
+            ))}
+          </div>
+
           {/* Comment Composer & Live Controls Row */}
           <div className="flex items-center gap-2">
             <form onSubmit={handleSendMobileComment} className="flex-1 flex items-center gap-2">
@@ -838,7 +870,7 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
               type="button"
               onClick={handleToggleLive}
               aria-label="Go Live CTA"
-              className={`px-4 py-2.5 rounded-full font-bold text-xs flex items-center gap-1.5 shadow-lg active:scale-95 transition-transform cursor-pointer shrink-0 ${
+              className={`px-3.5 py-2.5 rounded-full font-bold text-xs flex items-center gap-1.5 shadow-lg active:scale-95 transition-transform cursor-pointer shrink-0 ${
                 isLive
                   ? 'bg-rose-600 hover:bg-rose-700 text-white'
                   : 'bg-emerald-600 hover:bg-emerald-700 text-white'
@@ -846,6 +878,17 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
             >
               <Radio className="w-3.5 h-3.5" />
               <span>{isLive ? 'End Live' : 'Go Live'}</span>
+            </button>
+
+            {/* Floating Heart / Reaction Button */}
+            <button
+              type="button"
+              onClick={handleSpawnHeart}
+              aria-label="Send Heart Reaction"
+              className="w-10 h-10 rounded-full bg-gradient-to-tr from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 border border-pink-300/40 backdrop-blur-md flex items-center justify-center text-white active:scale-125 transition-all shadow-lg cursor-pointer shrink-0"
+              title="Send Heart Reaction"
+            >
+              <Heart className="w-5 h-5 fill-white text-white drop-shadow" />
             </button>
           </div>
         </div>

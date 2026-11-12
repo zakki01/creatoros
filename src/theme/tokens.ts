@@ -174,7 +174,7 @@ export const tokens = {
   },
 
   typography: {
-    fontFamily: "'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+    fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'SF Pro', 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif",
   },
 } as const;
 
