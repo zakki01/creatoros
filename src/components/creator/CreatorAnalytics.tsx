@@ -124,10 +124,10 @@ export const CreatorAnalytics: React.FC = () => {
             </div>
             <div>
               <h3 className="text-sm font-semibold text-[var(--text-primary)] font-display">
-                Build your performance history
+                Analytics Vault
               </h3>
-              <p className="text-xs text-[var(--text-secondary)] mt-0.5 max-w-xl">
-                Publish content, engage audiences, and complete brand campaigns to unlock real-time audience reach analytics, conversions, and earnings velocity.
+              <p className="text-xs text-[var(--text-secondary)] mt-0.5">
+                Metrics update automatically as you publish content and complete brand campaigns.
               </p>
             </div>
           </div>

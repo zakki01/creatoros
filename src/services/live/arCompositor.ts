@@ -12,7 +12,7 @@
  * 3. LiveKit WebRTC Publishing (room.localParticipant.publishTrack)
  */
 
-import { EffectDefinition, FaceLandmarks } from '../../types';
+import { EffectDefinition, FaceLandmarks, LiveScene } from '../../types';
 import { mediaPipeLandmarkerSingleton, MediaPipeLandmarkerService } from './mediaPipeLandmarker';
 
 export const CREATOROS_EFFECTS_CATALOG: EffectDefinition[] = [
@@ -74,6 +74,7 @@ export class ARCompositor {
   private outputStream: MediaStream | null = null;
   private animFrameId: number | null = null;
   private activeEffect: EffectDefinition = CREATOROS_EFFECTS_CATALOG[0]; // Clean by default
+  private activeScene: LiveScene | null = null;
   private beautyLevel: number = 60; // 0 - 100
   private landmarker: MediaPipeLandmarkerService;
   private onLandmarksCallback: ((landmarks: FaceLandmarks | null) => void) | null = null;
@@ -153,6 +154,31 @@ export class ARCompositor {
     this.activeEffect = effect;
   }
 
+  public setScene(scene: LiveScene | null): void {
+    this.activeScene = scene;
+  }
+
+  private getDefaultFaceAnchors(): FaceLandmarks {
+    return {
+      detected: true,
+      confidence: 0.88,
+      faceBox: { x: 0.28, y: 0.18, width: 0.44, height: 0.60 },
+      forehead: { x: 0.5, y: 0.32 },
+      leftEye: { x: 0.40, y: 0.42 },
+      rightEye: { x: 0.60, y: 0.42 },
+      eyeCenter: { x: 0.5, y: 0.42 },
+      nose: { x: 0.5, y: 0.52 },
+      leftCheek: { x: 0.38, y: 0.55 },
+      rightCheek: { x: 0.62, y: 0.55 },
+      mouth: { x: 0.5, y: 0.65 },
+      chin: { x: 0.5, y: 0.74 },
+      roll: 0,
+      pitch: 0,
+      yaw: 0,
+      eyeDistance: 0.20,
+    };
+  }
+
   public setEffectById(effectId: string): void {
     // Support aliases between effect catalogs
     let normalizedId = effectId;
@@ -208,17 +234,34 @@ export class ARCompositor {
     const { width, height } = this.canvas;
     const ctx = this.ctx;
 
-    // 1. Draw camera video frame to canvas
+    // 1. Draw camera video frame to canvas with active filter style
+    const filter = this.activeScene?.filterStyle;
+    if (filter) {
+      ctx.filter = `brightness(${filter.brightness ?? 1}) contrast(${filter.contrast ?? 1}) saturate(${filter.saturate ?? 1}) hue-rotate(${filter.hueRotate ?? 0}deg) sepia(${filter.sepia ?? 0})`;
+    } else {
+      ctx.filter = 'none';
+    }
     ctx.drawImage(this.videoEl, 0, 0, width, height);
+    ctx.filter = 'none'; // reset filter for AR accessories
 
-    // 2. Detect face landmarks with MediaPipe (or fallback to synthetic provider)
+    // Color grade tint overlay
+    if (filter?.tintRgb) {
+      ctx.save();
+      ctx.fillStyle = filter.tintRgb;
+      ctx.globalCompositeOperation = 'color';
+      ctx.fillRect(0, 0, width, height);
+      ctx.restore();
+    }
+
+    // 2. Detect face landmarks with MediaPipe (or fallback to optical default anchors)
     const detectedLandmarks =
       this.landmarker.detectVideoFrame(this.videoEl) ||
       (this.syntheticLandmarksProvider ? this.syntheticLandmarksProvider() : null);
     this.smoothedLandmarks = this.smoothLandmarks(detectedLandmarks);
+    const effectiveLandmarks = this.smoothedLandmarks || this.getDefaultFaceAnchors();
 
     if (this.onLandmarksCallback) {
-      this.onLandmarksCallback(this.smoothedLandmarks);
+      this.onLandmarksCallback(effectiveLandmarks);
     }
 
     // 3. Render AR effect based on active definition
@@ -229,27 +272,19 @@ export class ARCompositor {
 
     switch (this.activeEffect.id) {
       case 'eff-beauty':
-        this.renderBeautyEffect(ctx, width, height, this.smoothedLandmarks);
+        this.renderBeautyEffect(ctx, width, height, effectiveLandmarks);
         break;
       case 'eff-crown':
-        if (this.smoothedLandmarks) {
-          this.renderCrownEffect(ctx, width, height, this.smoothedLandmarks);
-        }
+        this.renderCrownEffect(ctx, width, height, effectiveLandmarks);
         break;
       case 'eff-visor':
-        if (this.smoothedLandmarks) {
-          this.renderCyberVisorEffect(ctx, width, height, this.smoothedLandmarks);
-        }
+        this.renderCyberVisorEffect(ctx, width, height, effectiveLandmarks);
         break;
       case 'eff-decoration':
-        if (this.smoothedLandmarks) {
-          this.renderFaceDecorationEffect(ctx, width, height, this.smoothedLandmarks);
-        }
+        this.renderFaceDecorationEffect(ctx, width, height, effectiveLandmarks);
         break;
       case 'eff-animated':
-        if (this.smoothedLandmarks) {
-          this.renderAnimatedAuraEffect(ctx, width, height, this.smoothedLandmarks);
-        }
+        this.renderAnimatedAuraEffect(ctx, width, height, effectiveLandmarks);
         break;
       case 'eff-none':
       default:

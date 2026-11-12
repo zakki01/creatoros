@@ -204,7 +204,7 @@ export const PayoutSettings: React.FC<PayoutSettingsProps> = ({
               </Badge>
             </div>
             <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">
-              Legal name, address, and residency for tax compliance. Kept strictly separate from your public creator handle.
+              Official legal details for tax compliance and payout verification.
             </p>
           </div>
 
@@ -418,7 +418,7 @@ export const PayoutSettings: React.FC<PayoutSettingsProps> = ({
               </Badge>
             </div>
             <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">
-              Securely connect PayPal, Stripe Connect onboarding, or UPI for direct milestone disbursements.
+              Connect PayPal, Stripe Connect onboarding, or UPI for direct settlement.
             </p>
           </div>
 

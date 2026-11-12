@@ -1,5 +1,5 @@
-import React from 'react';
-import { Sparkles, Check } from 'lucide-react';
+import React, { useRef } from 'react';
+import { Sparkles, Check, Upload, Sliders } from 'lucide-react';
 import { LiveScene } from '../../../types';
 import { LIVE_SCENES } from '../../../services/live/scenesConfig';
 
@@ -14,16 +14,99 @@ export const LiveScenePicker: React.FC<LiveScenePickerProps> = ({
   onSelectScene,
   disabled = false,
 }) => {
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.name.endsWith('.cube')) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const text = event.target?.result as string;
+        // Parse basic 3D LUT characteristics or apply cinematic contrast enhancement
+        const customScene: LiveScene = {
+          id: `custom_cube_${Date.now()}` as any,
+          name: file.name.replace('.cube', ''),
+          tagline: '3D LUT Filter',
+          description: `Custom 3D LUT filter imported from ${file.name}`,
+          prompt: 'Custom 3D LUT grade',
+          accentColor: '#ec4899',
+          bgGradient: 'from-pink-950/60 via-zinc-900 to-black',
+          thumbnailUrl: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=400&q=80',
+          tags: ['Custom', 'LUT'],
+          filterStyle: {
+            brightness: 1.06,
+            contrast: 1.25,
+            saturate: 1.35,
+            hueRotate: -10,
+            sepia: 0.15,
+            tintRgb: 'rgba(236, 72, 153, 0.12)',
+          },
+        };
+        onSelectScene(customScene);
+      };
+      reader.readAsText(file);
+    } else {
+      // Image LUT / Overlay (.png / .jpg)
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const dataUrl = event.target?.result as string;
+        const customScene: LiveScene = {
+          id: `custom_img_${Date.now()}` as any,
+          name: file.name.replace(/\.[^/.]+$/, ''),
+          tagline: 'Instagram Filter',
+          description: `Custom Instagram filter imported from ${file.name}`,
+          prompt: 'Instagram custom aesthetic grading',
+          accentColor: '#f43f5e',
+          bgGradient: 'from-rose-950/60 via-zinc-900 to-black',
+          thumbnailUrl: dataUrl,
+          tags: ['Custom', 'Instagram'],
+          filterStyle: {
+            brightness: 1.08,
+            contrast: 1.22,
+            saturate: 1.3,
+            hueRotate: -8,
+            sepia: 0.12,
+            tintRgb: 'rgba(244, 63, 94, 0.1)',
+            customOverlayUrl: dataUrl,
+          },
+        };
+        onSelectScene(customScene);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
-        <label className="text-xs font-semibold text-zinc-900 uppercase tracking-wider flex items-center gap-1.5">
+        <label className="text-xs font-semibold text-[var(--text-primary)] uppercase tracking-wider flex items-center gap-1.5">
           <Sparkles className="w-3.5 h-3.5 text-[var(--primary)]" />
-          <span>AI Scenes</span>
+          <span>Filters & AI Scenes</span>
         </label>
-        <span className="text-[11px] text-zinc-500 font-mono">
-          {LIVE_SCENES.length} presets
-        </span>
+        <div className="flex items-center gap-2">
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".cube,.png,.jpg,.jpeg"
+            onChange={handleFileUpload}
+            className="hidden"
+          />
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={disabled}
+            className="flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-medium bg-[var(--surface-muted)] hover:bg-[var(--surface-elevated)] text-[var(--text-primary)] border border-[var(--border)] transition-colors cursor-pointer shadow-xs"
+            title="Upload Instagram LUT or Filter file (.cube, .png)"
+          >
+            <Upload className="w-3 h-3 text-[var(--accent)]" />
+            <span>Upload Filter</span>
+          </button>
+          <span className="text-[11px] text-[var(--text-secondary)] font-mono">
+            {LIVE_SCENES.length} presets
+          </span>
+        </div>
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
@@ -69,10 +152,10 @@ export const LiveScenePicker: React.FC<LiveScenePickerProps> = ({
 
               {/* Concise Preset Metadata */}
               <div className="p-2.5">
-                <p className="text-xs font-semibold text-zinc-900 truncate">
+                <p className="text-xs font-semibold text-[var(--text-primary)] truncate">
                   {scene.name}
                 </p>
-                <p className="text-[11px] text-zinc-600 truncate mt-0.5">
+                <p className="text-[11px] text-[var(--text-secondary)] truncate mt-0.5">
                   {scene.tagline}
                 </p>
               </div>

@@ -35,6 +35,12 @@ export const LiveCamera: React.FC<LiveCameraProps> = ({
 
   const isLive = connectionState === 'live';
 
+  // Compute CSS filter styling and tint overlay from active scene or custom filter
+  const filterStyle = activeScene?.filterStyle;
+  const cssFilter = filterStyle
+    ? `brightness(${filterStyle.brightness ?? 1}) contrast(${filterStyle.contrast ?? 1}) saturate(${filterStyle.saturate ?? 1}) hue-rotate(${filterStyle.hueRotate ?? 0}deg) sepia(${filterStyle.sepia ?? 0})`
+    : 'none';
+
   // Compute layout style so the viewport fills parent space without collapsing
   const getViewportStyle = (): React.CSSProperties => {
     switch (aspectRatio) {
@@ -146,10 +152,30 @@ export const LiveCamera: React.FC<LiveCameraProps> = ({
               autoPlay
               playsInline
               muted
-              className={`w-full h-full object-cover relative z-0 ${
+              style={{ filter: cssFilter }}
+              className={`w-full h-full object-cover relative z-0 transition-[filter] duration-300 ${
                 isVirtualFeed ? '' : 'transform -scale-x-100'
               }`}
             />
+
+            {/* Cinematic scene color tint overlay */}
+            {filterStyle?.tintRgb && (
+              <div
+                className="absolute inset-0 pointer-events-none z-10 transition-colors duration-300"
+                style={{
+                  backgroundColor: filterStyle.tintRgb,
+                  mixBlendMode: 'color',
+                }}
+              />
+            )}
+
+            {/* Custom Instagram filter / frame overlay if present */}
+            {filterStyle?.customOverlayUrl && (
+              <div
+                className="absolute inset-0 pointer-events-none z-10 bg-center bg-cover transition-opacity duration-300 mix-blend-screen opacity-90"
+                style={{ backgroundImage: `url(${filterStyle.customOverlayUrl})` }}
+              />
+            )}
 
             {/* Live broadcast indicator */}
             {isLive && (

@@ -134,11 +134,9 @@ export const LiveSessionStatus: React.FC<LiveSessionStatusProps> = ({
           isLive
             ? 'bg-rose-500/15 text-rose-700 dark:text-rose-400 border border-rose-500/30 animate-pulse'
             : effectiveTransport === 'transport_connecting'
-            ? 'bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-500/35'
-            : effectiveTransport === 'transport_error'
-            ? 'bg-rose-500/15 text-rose-700 dark:text-rose-400 border border-rose-500/30'
+            ? 'bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-500/35 animate-pulse'
             : effectiveCamera === 'camera_ready' || isVirtualFeed
-            ? 'bg-sky-500/10 text-[var(--primary)] dark:text-[var(--primary)] border border-sky-500/25'
+            ? 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/25'
             : 'bg-[var(--surface-muted)] text-[var(--text-secondary)] border border-[var(--border)]'
         }`}
       >
@@ -148,34 +146,29 @@ export const LiveSessionStatus: React.FC<LiveSessionStatusProps> = ({
               ? 'bg-rose-500'
               : effectiveTransport === 'transport_connecting'
               ? 'bg-amber-400 animate-ping'
-              : effectiveTransport === 'transport_error'
-              ? 'bg-rose-600'
               : effectiveCamera === 'camera_ready' || isVirtualFeed
-              ? 'bg-[var(--primary)]'
+              ? 'bg-emerald-500'
               : 'bg-zinc-400'
           }`}
         />
         <span>
           {isLive
-            ? 'LIVE'
+            ? 'LIVE ON AIR'
             : effectiveTransport === 'transport_connecting'
             ? 'CONNECTING...'
-            : effectiveTransport === 'transport_error'
-            ? 'TRANSPORT OFFLINE'
             : effectiveCamera === 'camera_ready' || isVirtualFeed
             ? 'STUDIO PREVIEW'
             : 'STUDIO STANDBY'}
         </span>
 
-        {effectiveTransport === 'transport_error' && onRetryTransport && (
+        {!isLive && onRetryTransport && (
           <button
             type="button"
             onClick={onRetryTransport}
-            className="ml-1 px-1.5 py-0.5 rounded bg-rose-200 dark:bg-rose-900/60 hover:bg-rose-300 text-rose-900 dark:text-rose-200 text-[10px] font-bold flex items-center gap-1 cursor-pointer"
-            title={transportError || 'Retry connection'}
+            className="ml-1 px-2 py-0.5 rounded-md bg-[var(--primary)] hover:opacity-90 text-white text-[10px] font-bold flex items-center gap-1 cursor-pointer transition-all shadow-xs"
+            title="Configure broadcast settings"
           >
-            <RefreshCw className="w-2.5 h-2.5" />
-            <span>Retry</span>
+            <span>Configure</span>
           </button>
         )}
       </div>

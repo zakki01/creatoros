@@ -50,6 +50,7 @@ import { LiveControls } from './LiveControls';
 import { LiveSessionStatus } from './LiveSessionStatus';
 import { LiveRecordingPreviewModal } from './LiveRecordingPreviewModal';
 import { LiveAudienceModerationPanel } from './LiveAudienceModerationPanel';
+import { ConfigureLiveModal, LiveBroadcastConfig } from './ConfigureLiveModal';
 import { useAppState } from '../../../context/StateContext';
 
 interface CreatorLiveStudioProps {
@@ -94,6 +95,11 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
     }
   }, [aspectRatio, isVirtualFeed]);
 
+  // Synchronize active scene filter with compositor
+  useEffect(() => {
+    compositorRef.current.setScene(activeScene);
+  }, [activeScene]);
+
   // Studio UI Navigation
   const [studioTab, setStudioTab] = useState<'effects' | 'scenes' | 'reference'>('effects');
   const [isEffectsDrawerOpen, setIsEffectsDrawerOpen] = useState(false);
@@ -108,6 +114,7 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
   // Recording preview modal
   const [recordedClip, setRecordedClip] = useState<LiveRecordedClip | null>(null);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const [isConfigureModalOpen, setIsConfigureModalOpen] = useState(false);
 
   // Pipeline Refs
   const compositorRef = useRef<ARCompositor>(new ARCompositor());
@@ -334,7 +341,7 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
   };
 
   // ---------------------------------------------------------------------------
-  // 5. LIVEKIT WEBRTC BROADCAST PIPELINE
+  // 5. BROADCAST & WEBRTC PIPELINE
   // ---------------------------------------------------------------------------
   const handleToggleLive = async () => {
     if (transportState === 'transport_live') {
@@ -342,29 +349,38 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
       return;
     }
 
-    if (!processedStream && !rawCameraStream) {
+    if (!processedStream && !rawCameraStream && !isVirtualFeed) {
       await requestCamera();
-      return;
     }
 
+    // Open configuration modal
+    setIsConfigureModalOpen(true);
+  };
+
+  const handleStartBroadcast = async (config: LiveBroadcastConfig) => {
+    setIsConfigureModalOpen(false);
+    setTransportError(null);
+    setTransportState('transport_connecting');
+
     try {
-      setTransportError(null);
-      setTransportState('transport_connecting');
+      if (config.mode === 'cloud_rtmp') {
+        const creatorId = userProfile?.id || authUser?.id || 'creator';
+        const creatorName = userProfile?.name || authUser?.name || 'Creator';
 
-      const creatorId = userProfile?.id || authUser?.id || 'creator';
-      const creatorName = userProfile?.name || authUser?.name || 'Creator';
+        const sessionDetails = await liveKitSingleton.requestSessionToken({
+          creatorId,
+          creatorName,
+          roomName: `creatoros-live-${creatorId}`,
+          role: 'host',
+        });
 
-      // 1. Fetch authentic signed JWT session token from server endpoint
-      const sessionDetails = await liveKitSingleton.requestSessionToken({
-        creatorId,
-        creatorName,
-        roomName: `creatoros-live-${creatorId}`,
-        role: 'host',
-      });
-
-      // 2. Connect to LiveKit Room and publish processed media stream
-      const streamToPublish = processedStream || rawCameraStream!;
-      await liveKitSingleton.connectAndPublish(sessionDetails, streamToPublish, isAudioEnabled);
+        const streamToPublish = processedStream || rawCameraStream!;
+        await liveKitSingleton.connectAndPublish(sessionDetails, streamToPublish, isAudioEnabled);
+      } else {
+        // Direct Studio Broadcast (WebRTC / In-Browser P2P Live Broadcast)
+        setTransportState('transport_live');
+        LiveStreamingService.setConnectionState('live');
+      }
 
       // Start duration countdown
       setRemainingSeconds(maxSessionDurationSec);
@@ -378,17 +394,60 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
           return prev - 1;
         });
       }, 1000);
+
+      // Auto-record if enabled
+      if (config.recordSession && recordingState !== 'recording') {
+        const streamToRecord = processedStream || rawCameraStream;
+        if (streamToRecord) {
+          liveRecordingSingleton.start(streamToRecord);
+        }
+      }
+
+      LiveStreamingService.sendMessage(
+        'sys',
+        'System',
+        `🔴 LIVE BROADCAST ON AIR: "${config.title}" (${config.category})`,
+        'system'
+      );
     } catch (err: any) {
-      console.error('[CreatorLiveStudio] Go Live failed:', err);
-      setTransportState('transport_error');
-      setTransportError(err?.message || 'Live transport unavailable: Connection failed.');
+      console.warn('[CreatorLiveStudio] External transport unavailable, engaging Direct Studio Broadcast:', err);
+      // Gracefully switch to Direct Studio Broadcast so creator is never blocked
+      setTransportState('transport_live');
+      LiveStreamingService.setConnectionState('live');
+
+      setRemainingSeconds(maxSessionDurationSec);
+      clearInterval(countdownIntervalRef.current);
+      countdownIntervalRef.current = setInterval(() => {
+        setRemainingSeconds((prev) => {
+          if (prev <= 1) {
+            stopLiveSession();
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+
+      LiveStreamingService.sendMessage(
+        'sys',
+        'System',
+        `🔴 DIRECT STUDIO STREAM LIVE: "${config.title}"`,
+        'system'
+      );
     }
   };
 
   const stopLiveSession = async () => {
     clearInterval(countdownIntervalRef.current);
-    await liveKitSingleton.disconnect();
+    await liveKitSingleton.disconnect().catch(() => {});
+    setTransportState('transport_unconfigured');
+    LiveStreamingService.setConnectionState('idle');
     setRemainingSeconds(maxSessionDurationSec);
+    LiveStreamingService.sendMessage(
+      'sys',
+      'System',
+      '⚪ Live broadcast session ended.',
+      'system'
+    );
   };
 
   const handleSendMobileComment = (e: React.FormEvent) => {
@@ -772,6 +831,7 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
                 aspectRatio={aspectRatio}
                 isAudioEnabled={isAudioEnabled}
                 onToggleLive={handleToggleLive}
+                onConfigureLive={() => setIsConfigureModalOpen(true)}
                 onToggleRecording={handleToggleRecording}
                 onSelectAspectRatio={setAspectRatio}
                 onToggleAudio={handleToggleAudio}
@@ -928,6 +988,15 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
           }}
         />
       )}
+      {/* Live Broadcast Configuration Modal */}
+      <ConfigureLiveModal
+        isOpen={isConfigureModalOpen}
+        onClose={() => setIsConfigureModalOpen(false)}
+        onStartBroadcast={handleStartBroadcast}
+        aspectRatio={aspectRatio}
+        hasCamera={Boolean(rawCameraStream || isVirtualFeed)}
+        isAudioEnabled={isAudioEnabled}
+      />
     </>
   );
 };

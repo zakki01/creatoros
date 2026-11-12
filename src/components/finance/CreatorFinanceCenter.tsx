@@ -59,8 +59,8 @@ export const CreatorFinanceCenter: React.FC<CreatorFinanceCenterProps> = ({
               Escrow Protected
             </Badge>
           </div>
-          <p className="text-xs text-[var(--text-secondary)] mt-1">
-            Compliant global creator financial settlement via PayPal, Stripe Connect, and UPI.
+          <p className="text-xs text-[var(--text-secondary)] mt-0.5">
+            Settlement vault via PayPal, Stripe Connect, and UPI.
           </p>
         </div>
 

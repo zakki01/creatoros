@@ -12,6 +12,7 @@ interface LiveControlsProps {
   aspectRatio: AspectRatio;
   isAudioEnabled: boolean;
   onToggleLive: () => void;
+  onConfigureLive?: () => void;
   onToggleRecording: () => void;
   onSelectAspectRatio: (aspect: AspectRatio) => void;
   onToggleAudio: () => void;
@@ -30,6 +31,7 @@ export const LiveControls: React.FC<LiveControlsProps> = ({
   aspectRatio,
   isAudioEnabled,
   onToggleLive,
+  onConfigureLive,
   onToggleRecording,
   onSelectAspectRatio,
   onToggleAudio,
@@ -160,14 +162,14 @@ export const LiveControls: React.FC<LiveControlsProps> = ({
         ) : isUnconfigured ? (
           <button
             type="button"
-            onClick={onToggleLive}
+            onClick={onConfigureLive || onToggleLive}
             disabled={!hasCamera || isConnecting}
             className={`flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold depth-btn-primary text-white transition-all cursor-pointer ${
               !hasCamera ? 'opacity-50 cursor-not-allowed' : ''
             }`}
-            title="Configure Live transport or preview locally"
+            title="Configure Live broadcast settings"
           >
-            <Settings2 className="w-3.5 h-3.5 text-amber-300" />
+            <Settings2 className="w-3.5 h-3.5 text-white" />
             <span>Configure Live</span>
           </button>
         ) : (

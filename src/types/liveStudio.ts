@@ -79,7 +79,14 @@ export type LiveSceneId =
   | 'luxury'
   | 'fashion'
   | 'music_video'
-  | 'gaming';
+  | 'gaming'
+  | 'golden_hour'
+  | 'teal_orange'
+  | 'vhs_retro'
+  | 'noir_film'
+  | 'anime_pop'
+  | 'custom_uploaded'
+  | (string & {});
 
 export interface SceneFilterStyle {
   brightness: number;
@@ -88,6 +95,7 @@ export interface SceneFilterStyle {
   hueRotate: number;
   sepia: number;
   tintRgb?: string;
+  customOverlayUrl?: string;
 }
 
 export interface LiveScene {

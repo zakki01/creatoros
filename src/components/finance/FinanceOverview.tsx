@@ -70,6 +70,7 @@ export const FinanceOverview: React.FC<FinanceOverviewProps> = ({
   const preferredMethod = paymentMethods.find((m) => m.isPreferred) || paymentMethods[0];
   const isKycVerified = kycRecord && kycRecord.status === 'VERIFIED';
   const isTaxVerified = taxProfile && taxProfile.verificationStatus === 'verified';
+  const currencySymbol = balances.currency === 'USD' ? '$' : '₹';
 
   return (
     <div className="space-y-6 animate-fade-in font-sans">
@@ -93,10 +94,7 @@ export const FinanceOverview: React.FC<FinanceOverviewProps> = ({
               </Badge>
             </div>
             <p className="text-3xl sm:text-4xl font-bold font-mono text-slate-900 dark:text-slate-100 tracking-tight mt-1">
-              ${balances.availableBalance.toLocaleString()}
-            </p>
-            <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
-              Cleared milestone earnings ready for disbursement.
+              {currencySymbol}{balances.availableBalance.toLocaleString()}
             </p>
           </div>
 
@@ -118,11 +116,8 @@ export const FinanceOverview: React.FC<FinanceOverviewProps> = ({
               Pending / In Escrow
             </span>
             <p className="text-lg font-bold font-mono text-amber-600 dark:text-amber-400 mt-0.5">
-              ${balances.pendingBalance.toLocaleString()}
+              {currencySymbol}{balances.pendingBalance.toLocaleString()}
             </p>
-            <span className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 block">
-              Awaiting milestone approval
-            </span>
           </div>
 
           <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800">
@@ -130,15 +125,12 @@ export const FinanceOverview: React.FC<FinanceOverviewProps> = ({
               Processing Disbursements
             </span>
             <p className="text-lg font-bold font-mono text-slate-900 dark:text-slate-100 mt-0.5">
-              $
+              {currencySymbol}
               {payoutRequests
                 .filter((p) => p.status === 'PAYOUT_PROCESSING' || p.status === 'PAYOUT_PENDING')
                 .reduce((sum, p) => sum + p.amount, 0)
                 .toLocaleString()}
             </p>
-            <span className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 block">
-              In transit to payment rail
-            </span>
           </div>
 
           <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800">
@@ -146,11 +138,8 @@ export const FinanceOverview: React.FC<FinanceOverviewProps> = ({
               Lifetime Earned
             </span>
             <p className="text-lg font-bold font-mono text-emerald-600 dark:text-emerald-400 mt-0.5">
-              ${balances.lifetimeEarnings.toLocaleString()}
+              {currencySymbol}{balances.lifetimeEarnings.toLocaleString()}
             </p>
-            <span className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 block">
-              Total historical settlement
-            </span>
           </div>
         </div>
       </SpatialCard>

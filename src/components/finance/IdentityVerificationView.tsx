@@ -143,7 +143,7 @@ export const IdentityVerificationView: React.FC<IdentityVerificationViewProps> =
               {getStatusBadge(kycRecord?.status || 'NOT_STARTED')}
             </div>
             <p className="text-xs text-[var(--text-secondary)] mt-0.5">
-              Required by international anti-money laundering (AML) and financial compliance laws before processing payouts.
+              Government ID verification for compliance and instant payouts.
             </p>
           </div>
         </div>

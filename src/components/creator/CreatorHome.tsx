@@ -360,36 +360,25 @@ export const CreatorHome: React.FC<CreatorHomeProps> = ({
           surface={1}
           tilt
           glare
+          glowColor="indigo"
           onClick={() => onNavigate('content')}
           className="p-5 flex flex-col justify-between space-y-3 shadow-sm"
         >
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-mono uppercase tracking-wider text-[var(--text-muted)] font-semibold">
+            <span className="text-[11px] font-mono uppercase tracking-wider text-indigo-500 dark:text-indigo-400 font-semibold">
               Content Pipeline
             </span>
-            <Film className="w-4 h-4 text-[var(--text-muted)]" />
+            <Film className="w-4 h-4 text-indigo-500" />
           </div>
-          <div className="grid grid-cols-3 gap-2 pt-0.5 text-center">
-            <div className="p-2 rounded-xl bg-[var(--surface-muted)] border border-[var(--border)]">
-              <span className="text-base font-bold font-mono text-[var(--text-primary)]">
-                {draftsCount}
-              </span>
-              <p className="text-[10px] text-[var(--text-muted)]">Drafts</p>
-            </div>
-            <div className="p-2 rounded-xl bg-amber-500/10 border border-amber-500/25">
-              <span className="text-base font-bold font-mono text-amber-500 dark:text-amber-400">
-                {pendingApprovalCount}
-              </span>
-              <p className="text-[10px] text-amber-500 dark:text-amber-400">Pending</p>
-            </div>
-            <div className="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/25">
-              <span className="text-base font-bold font-mono text-emerald-500 dark:text-emerald-400">
-                {approvedCount}
-              </span>
-              <p className="text-[10px] text-emerald-500 dark:text-emerald-400">Approved</p>
-            </div>
+          <div>
+            <h3 className="text-2xl font-bold text-[var(--text-primary)] font-mono">
+              {draftsCount + pendingApprovalCount + approvedCount} Active
+            </h3>
+            <p className="text-xs text-[var(--text-secondary)] mt-0.5 truncate">
+              {draftsCount} drafts · {pendingApprovalCount} pending · {approvedCount} approved
+            </p>
           </div>
-          <div className="flex items-center text-xs text-[var(--text-secondary)] font-medium gap-1">
+          <div className="flex items-center text-xs text-indigo-500 dark:text-indigo-400 font-medium gap-1 pt-1">
             <span>Deliverables →</span>
           </div>
         </SpatialCard>
