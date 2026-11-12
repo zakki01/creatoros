@@ -81,9 +81,6 @@ export const LiveDeviceSettingsModal: React.FC<LiveDeviceSettingsModalProps> = (
               <h3 className="text-sm font-bold text-white font-display">
                 Studio Device & Stream Configuration
               </h3>
-              <p className="text-xs text-zinc-400">
-                Configure input devices, audio check, and streaming output format.
-              </p>
             </div>
           </div>
 
@@ -180,15 +177,10 @@ export const LiveDeviceSettingsModal: React.FC<LiveDeviceSettingsModalProps> = (
 
               {/* Virtual Studio Feed Option */}
               <div className="p-4 rounded-2xl bg-zinc-900/60 border border-zinc-800 flex items-center justify-between gap-4">
-                <div className="space-y-0.5">
-                  <span className="font-semibold text-white flex items-center gap-1.5">
-                    <Sparkles className="w-3.5 h-3.5 text-purple-400" />
-                    <span>Virtual Studio Feed</span>
-                  </span>
-                  <p className="text-[11px] text-zinc-400">
-                    Use high-fidelity animated avatar & synthetic face tracking when physical webcam is busy.
-                  </p>
-                </div>
+                <span className="font-semibold text-white flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-purple-400" />
+                  <span>Virtual Studio Feed</span>
+                </span>
                 <button
                   type="button"
                   onClick={onToggleVirtualFeed}
@@ -205,15 +197,10 @@ export const LiveDeviceSettingsModal: React.FC<LiveDeviceSettingsModalProps> = (
               {/* Screen Share Source */}
               {onStartScreenShare && (
                 <div className="p-4 rounded-2xl bg-zinc-900/60 border border-zinc-800 flex items-center justify-between gap-4">
-                  <div className="space-y-0.5">
-                    <span className="font-semibold text-white flex items-center gap-1.5">
-                      <Monitor className="w-3.5 h-3.5 text-sky-400" />
-                      <span>Screen / Window Sharing</span>
-                    </span>
-                    <p className="text-[11px] text-zinc-400">
-                      Capture high-frame-rate desktop screen or specific application window.
-                    </p>
-                  </div>
+                  <span className="font-semibold text-white flex items-center gap-1.5">
+                    <Monitor className="w-3.5 h-3.5 text-sky-400" />
+                    <span>Screen / Window Sharing</span>
+                  </span>
                   <button
                     type="button"
                     onClick={onStartScreenShare}
@@ -292,14 +279,10 @@ export const LiveDeviceSettingsModal: React.FC<LiveDeviceSettingsModalProps> = (
                   </div>
                   <div className="flex justify-between text-[9px] font-mono text-zinc-500">
                     <span>Silent</span>
-                    <span>Optimal Talking Range</span>
+                    <span>Optimal</span>
                     <span>Peak</span>
                   </div>
                 </div>
-
-                <p className="text-[11px] text-zinc-400 leading-relaxed">
-                  Speak into your microphone. The green bar should comfortably bounce in the middle zone for clear, distortion-free creator audio.
-                </p>
               </div>
             </div>
           )}
@@ -323,10 +306,7 @@ export const LiveDeviceSettingsModal: React.FC<LiveDeviceSettingsModalProps> = (
                           : 'bg-zinc-900 border-zinc-800 text-zinc-400 hover:text-white'
                       }`}
                     >
-                      <span className="block text-xs">{res}</span>
-                      <span className="block text-[10px] text-zinc-500 font-mono mt-0.5">
-                        {res === '1080p' ? 'Full HD 1080p' : res === '720p' ? 'Standard HD' : 'Bandwidth Saver'}
-                      </span>
+                      <span className="block text-xs font-bold">{res}</span>
                     </button>
                   ))}
                 </div>
@@ -348,10 +328,7 @@ export const LiveDeviceSettingsModal: React.FC<LiveDeviceSettingsModalProps> = (
                           : 'bg-zinc-900 border-zinc-800 text-zinc-400 hover:text-white'
                       }`}
                     >
-                      <span className="block text-xs">{fps} FPS</span>
-                      <span className="block text-[10px] text-zinc-500 font-mono mt-0.5">
-                        {fps === 60 ? 'Ultra Smooth Gaming/Live' : 'Standard Broadcast'}
-                      </span>
+                      <span className="block text-xs font-bold">{fps} FPS</span>
                     </button>
                   ))}
                 </div>

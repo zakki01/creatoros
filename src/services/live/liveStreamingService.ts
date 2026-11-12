@@ -39,16 +39,7 @@ class LiveStreamingServiceSingleton {
     networkQuality: 'excellent',
     viewerCount: 0,
     participants: [],
-    messages: [
-      {
-        id: 'msg-live-1',
-        senderId: 'sys-01',
-        senderName: 'CreatorOS Studio',
-        content: 'Broadcasting workspace initialized. Connect LiveKit to stream worldwide.',
-        type: 'system',
-        timestamp: 'Just now',
-      },
-    ],
+    messages: [],
     activeEffect: AR_EFFECTS_CATALOG[0],
   };
 

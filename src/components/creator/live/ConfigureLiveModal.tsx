@@ -85,7 +85,6 @@ export const ConfigureLiveModal: React.FC<ConfigureLiveModalProps> = ({
             </div>
             <div>
               <h2 className="text-base font-bold text-[var(--text-primary)]">Configure Live Broadcast</h2>
-              <p className="text-xs text-[var(--text-secondary)]">Set your broadcast mode, channel title, and audience rules.</p>
             </div>
           </div>
           <button

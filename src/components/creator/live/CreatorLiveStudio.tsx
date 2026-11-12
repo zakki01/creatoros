@@ -15,6 +15,7 @@ import {
   Sliders,
   CheckCircle,
   Video,
+  Camera,
   AlertTriangle,
   RefreshCw,
   SlidersHorizontal,
@@ -104,6 +105,7 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
   const [screenStream, setScreenStream] = useState<MediaStream | null>(null);
 
   // Streamlabs Desktop Dock & Studio Mode States
+  const [showStudioDock, setShowStudioDock] = useState(false);
   const [isStudioMode, setIsStudioMode] = useState(false);
   const [currentStudioScene, setCurrentStudioScene] = useState<StudioSceneMode>('main_cam');
   const [studioDockTab, setStudioDockTab] = useState<'mixer' | 'sources' | 'scenes' | 'effects' | 'filters'>('mixer');
@@ -1002,6 +1004,50 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
               isRecording={recordingState === 'recording'}
             />
 
+            {/* Quick Record Button */}
+            <button
+              type="button"
+              onClick={handleToggleRecording}
+              className={`px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 border transition-all cursor-pointer ${
+                recordingState === 'recording'
+                  ? 'bg-rose-500/20 text-rose-400 border-rose-500/40 animate-pulse'
+                  : 'bg-[var(--surface-muted)] text-[var(--text-secondary)] hover:text-white border-[var(--border)]'
+              }`}
+              title="Record broadcast session"
+            >
+              <span className={`w-2 h-2 rounded-full ${recordingState === 'recording' ? 'bg-rose-500 animate-ping' : 'bg-zinc-400'}`} />
+              <span>{recordingState === 'recording' ? `${recordingSeconds}s` : 'Record'}</span>
+            </button>
+
+            {/* Go Live / End Stream Main Button */}
+            <button
+              type="button"
+              onClick={handleToggleLive}
+              className={`px-4 py-1.5 rounded-xl text-xs font-bold font-display flex items-center gap-1.5 transition-all shadow-md active:scale-95 cursor-pointer ${
+                isLive
+                  ? 'bg-rose-600 hover:bg-rose-500 text-white animate-pulse'
+                  : 'bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold'
+              }`}
+            >
+              <Radio className="w-3.5 h-3.5" />
+              <span>{isLive ? 'End Stream' : 'Go Live'}</span>
+            </button>
+
+            {/* Studio Tools Toggle */}
+            <button
+              type="button"
+              onClick={() => setShowStudioDock(!showStudioDock)}
+              className={`px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 border transition-all cursor-pointer ${
+                showStudioDock
+                  ? 'bg-sky-500/20 text-sky-400 border-sky-500/40'
+                  : 'bg-[var(--surface-muted)] text-[var(--text-secondary)] hover:text-white border-[var(--border)]'
+              }`}
+              title="Toggle Audio Mixer & Advanced Streamlabs Tools"
+            >
+              <Sliders className="w-3.5 h-3.5" />
+              <span>{showStudioDock ? 'Hide Tools' : 'Studio Tools'}</span>
+            </button>
+
             <button
               type="button"
               onClick={() => setIsDeviceSettingsOpen(true)}
@@ -1023,9 +1069,9 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
         </div>
 
         {/* Central Grid: Main Canvas (or Dual Monitor) + Right Audience Rail */}
-        <div className="grid grid-cols-[minmax(0,1fr)_340px] xl:grid-cols-[minmax(0,1fr)_360px] gap-3 h-full min-h-0 overflow-hidden">
+        <div className="flex-1 grid grid-cols-[minmax(0,1fr)_340px] xl:grid-cols-[minmax(0,1fr)_380px] gap-3 h-full min-h-0 overflow-hidden">
           {/* Main Monitor Viewport */}
-          <div className="flex flex-col h-full min-h-0 overflow-hidden gap-2">
+          <div className="flex flex-col h-full min-h-0 overflow-hidden relative">
             {isStudioMode ? (
               /* DUAL STUDIO MODE: PREVIEW (LEFT) + TRANSITION + PROGRAM (RIGHT) */
               <div className="flex-1 grid grid-cols-[1fr_auto_1fr] gap-3 items-center min-h-0 overflow-hidden bg-zinc-950/80 rounded-3xl border border-zinc-800 p-3 shadow-2xl">
@@ -1110,29 +1156,82 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
                   showWatermark={showWatermark}
                   sceneMode={currentStudioScene}
                 />
+
+                {/* Floating Glass Control Overlay (No vertical space wasted below camera) */}
+                <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 px-3.5 py-1.5 rounded-2xl bg-zinc-950/85 backdrop-blur-md border border-zinc-800 shadow-2xl transition-all">
+                  {/* Aspect Ratio Selector */}
+                  <div className="flex items-center gap-1 bg-zinc-900/90 p-0.5 rounded-xl border border-zinc-800">
+                    {(['9:16', '16:9', '1:1'] as const).map((r) => (
+                      <button
+                        key={r}
+                        type="button"
+                        onClick={() => setAspectRatio(r)}
+                        className={`px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold transition-all cursor-pointer ${
+                          aspectRatio === r
+                            ? 'bg-sky-500 text-slate-950 shadow-xs'
+                            : 'text-zinc-400 hover:text-white'
+                        }`}
+                      >
+                        {r}
+                      </button>
+                    ))}
+                  </div>
+
+                  <div className="h-4 w-px bg-zinc-800" />
+
+                  {/* Camera Toggle */}
+                  <button
+                    type="button"
+                    onClick={rawCameraStream || isVirtualFeed ? handleStopCamera : () => requestCamera()}
+                    className={`p-2 rounded-xl transition-all cursor-pointer ${
+                      rawCameraStream || isVirtualFeed
+                        ? 'bg-zinc-900 hover:bg-zinc-800 text-white border border-zinc-700/60'
+                        : 'bg-rose-500/20 text-rose-400 border border-rose-500/30'
+                    }`}
+                    title={rawCameraStream || isVirtualFeed ? 'Turn Off Camera' : 'Turn On Camera'}
+                  >
+                    <Camera className="w-3.5 h-3.5" />
+                  </button>
+
+                  {/* Microphone Toggle */}
+                  <button
+                    type="button"
+                    onClick={handleToggleAudio}
+                    className={`p-2 rounded-xl transition-all cursor-pointer ${
+                      isAudioEnabled
+                        ? 'bg-zinc-900 hover:bg-zinc-800 text-white border border-zinc-700/60'
+                        : 'bg-rose-500/20 text-rose-400 border border-rose-500/30'
+                    }`}
+                    title={isAudioEnabled ? 'Mute Microphone' : 'Unmute Microphone'}
+                  >
+                    {isAudioEnabled ? <Mic className="w-3.5 h-3.5" /> : <MicOff className="w-3.5 h-3.5" />}
+                  </button>
+
+                  {/* AR Effects / Filters */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowStudioDock(true);
+                      setStudioDockTab('effects');
+                    }}
+                    className="p-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white border border-zinc-700/60 transition-all cursor-pointer"
+                    title="Filters & AR Effects"
+                  >
+                    <Wand2 className="w-3.5 h-3.5 text-purple-400" />
+                  </button>
+
+                  {/* Hardware Device Settings Modal */}
+                  <button
+                    type="button"
+                    onClick={() => setIsDeviceSettingsOpen(true)}
+                    className="p-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white border border-zinc-700/60 transition-all cursor-pointer"
+                    title="Hardware Audio & Video Devices"
+                  >
+                    <Settings2 className="w-3.5 h-3.5 text-sky-400" />
+                  </button>
+                </div>
               </div>
             )}
-
-            {/* Quick Live Controls Row */}
-            <div className="shrink-0 flex items-center justify-center">
-              <LiveControls
-                connectionState={isLive ? 'live' : 'idle'}
-                transportStatus={isLive ? 'live' : transportState === 'transport_connecting' ? 'connecting' : 'unconfigured'}
-                hasCamera={Boolean(rawCameraStream || isVirtualFeed)}
-                isRecording={recordingState === 'recording'}
-                recordingSeconds={recordingSeconds}
-                aspectRatio={aspectRatio}
-                isAudioEnabled={isAudioEnabled}
-                onToggleLive={handleToggleLive}
-                onConfigureLive={() => setIsConfigureModalOpen(true)}
-                onOpenDeviceSettings={() => setIsDeviceSettingsOpen(true)}
-                onToggleRecording={handleToggleRecording}
-                onSelectAspectRatio={setAspectRatio}
-                onToggleAudio={handleToggleAudio}
-                onRetryTransport={handleToggleLive}
-                onToggleCamera={rawCameraStream || isVirtualFeed ? handleStopCamera : () => requestCamera()}
-              />
-            </div>
           </div>
 
           {/* Right Rail: Full-Height Audience & Moderation Panel */}
@@ -1146,9 +1245,10 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
         </div>
 
         {/* ========================================================================= */}
-        {/* 3. MODULAR STREAMLABS DESKTOP DOCK (Mixer, Sources, Scenes, AR & Filters) */}
+        {/* 3. MODULAR STREAMLABS DESKTOP DOCK (Hidden by default; toggled via header) */}
         {/* ========================================================================= */}
-        <div className="shrink-0 bg-zinc-950/90 backdrop-blur-xl border border-zinc-800 rounded-2xl p-2.5 shadow-xl space-y-2">
+        {showStudioDock && (
+          <div className="shrink-0 bg-zinc-950/90 backdrop-blur-xl border border-zinc-800 rounded-2xl p-2.5 shadow-xl space-y-2 animate-in fade-in">
           {/* Dock Tab Selector */}
           <div className="flex items-center justify-between border-b border-zinc-800/80 pb-2 px-1">
             <div className="flex items-center gap-1 overflow-x-auto scrollbar-none">
@@ -1333,6 +1433,7 @@ export const CreatorLiveStudio: React.FC<CreatorLiveStudioProps> = ({ onExit }) 
             )}
           </div>
         </div>
+      )}
       </div>
 
       {/* Recording Preview Modal */}
