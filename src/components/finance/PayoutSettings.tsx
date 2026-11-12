@@ -8,6 +8,7 @@ import {
   AlertCircle,
   ExternalLink,
   ShieldAlert,
+  ShieldCheck,
   Loader2,
   Lock,
 } from 'lucide-react';
@@ -536,6 +537,13 @@ export const PayoutSettings: React.FC<PayoutSettingsProps> = ({
         )}
 
         {/* Existing Payout Methods List */}
+        <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 text-[11px] text-slate-600 dark:text-slate-300 flex items-center justify-between">
+          <span className="flex items-center gap-1.5">
+            <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0" />
+            <span><strong>Multi-Account Allowed:</strong> You may safely link and use the same payment method (UPI, Bank, Card, PayPal) across other accounts you manage.</span>
+          </span>
+        </div>
+
         <div className="space-y-3">
           {methods.length === 0 ? (
             <div className="p-8 text-center border border-dashed border-slate-300 dark:border-slate-700 rounded-2xl text-xs text-slate-500 dark:text-slate-400 space-y-1">

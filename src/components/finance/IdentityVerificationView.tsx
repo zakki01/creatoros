@@ -11,6 +11,7 @@ import {
   AlertTriangle,
   Loader2,
   FileText,
+  BadgeCheck,
 } from 'lucide-react';
 import { SpatialCard } from '../ui/SpatialCard';
 import { Badge } from '../ui/Badge';
@@ -19,12 +20,14 @@ import {
   IdentityVerificationRecord,
   IdentityVerificationStatus,
 } from '../../services/financeService';
+import { useAppState } from '../../context/StateContext';
 
 interface IdentityVerificationViewProps {
   userId: string;
 }
 
 export const IdentityVerificationView: React.FC<IdentityVerificationViewProps> = ({ userId }) => {
+  const { role, trialDaysLeft } = useAppState();
   const [kycRecord, setKycRecord] = useState<IdentityVerificationRecord | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -68,6 +71,7 @@ export const IdentityVerificationView: React.FC<IdentityVerificationViewProps> =
         idType,
         idNumber: idNumber.trim(),
         documentPath: selectedFileName ? `kyc/${userId}/${selectedFileName}` : undefined,
+        role: role === 'business' ? 'brand' : 'creator',
       });
 
       if (result.success && result.record) {
@@ -148,6 +152,53 @@ export const IdentityVerificationView: React.FC<IdentityVerificationViewProps> =
           </div>
         </div>
       </SpatialCard>
+
+      {/* 7-Day Trial Account Confirmation State */}
+      {kycRecord?.status !== 'VERIFIED' ? (
+        <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-start gap-3.5">
+          <Clock className="w-5 h-5 text-amber-500 mt-0.5 shrink-0" />
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider font-mono">
+                7-Day Full Access Trial ({trialDaysLeft > 0 ? `${trialDaysLeft} Days Remaining` : 'Trial Concluded'})
+              </span>
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-500/20 text-amber-600 dark:text-amber-400">
+                Verification Required
+              </span>
+            </div>
+            <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
+              Your account is currently active under our 7-Day Trial. Submit government ID verification (Passport, National ID, Aadhaar, or Driver&apos;s License) before your trial concludes to permanently confirm your account and enable continuous milestone escrow settlements.
+            </p>
+          </div>
+        </div>
+      ) : (
+        <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center gap-3.5">
+          <BadgeCheck className="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0" />
+          <div>
+            <span className="text-xs font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider font-mono block">
+              Account Fully Confirmed
+            </span>
+            <span className="text-xs text-slate-700 dark:text-slate-300">
+              Government ID verified. Your account is permanently confirmed with full settlement rights.
+            </span>
+          </div>
+        </div>
+      )}
+
+      {/* Cross-Role & Payment Rail Policy Explainer */}
+      <div className="p-3.5 rounded-xl bg-sky-500/10 border border-sky-500/20 text-xs text-sky-700 dark:text-sky-300 flex items-start gap-2.5">
+        <ShieldCheck className="w-4 h-4 text-sky-600 dark:text-sky-400 shrink-0 mt-0.5" />
+        <div className="space-y-0.5">
+          <span className="font-semibold block text-slate-900 dark:text-slate-100">
+            Account Integrity &amp; Payment Rails Policy
+          </span>
+          <p className="text-[11px] text-slate-600 dark:text-slate-300 leading-relaxed">
+            • <strong>Shared Payment Methods:</strong> You may link the same payout rail (Bank account, UPI ID, PayPal, or card) across multiple creator or agency accounts you manage.
+            <br />
+            • <strong>Strict Cross-Role Policy:</strong> The same government ID cannot be registered across both a Brand and a Creator account.
+          </p>
+        </div>
+      </div>
 
       {/* Active Verified State Display */}
       {kycRecord?.status === 'VERIFIED' && (

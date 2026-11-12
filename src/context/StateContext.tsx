@@ -763,13 +763,13 @@ export const StateProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     return {} as Record<string, ConnectionState>;
   });
 
-  // Pro Tier Trial & Subscription State (Truthful, non-defaulted)
+  // 7-Day Full Access Trial for Account Confirmation & Pro Features
   const [trialDaysLeft, setTrialDaysLeft] = useState<number>(() => {
     try {
       const saved = localStorage.getItem(`${STORAGE_KEY}_trial_days`);
-      return saved !== null ? parseInt(saved, 10) : 0;
+      return saved !== null ? parseInt(saved, 10) : 7;
     } catch {
-      return 0;
+      return 7;
     }
   });
   const [isProModalOpen, setIsProModalOpen] = useState<boolean>(false);

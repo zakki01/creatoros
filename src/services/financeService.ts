@@ -648,19 +648,75 @@ export class FinanceService {
     }
   }
 
+  /**
+   * Enforces strict duplicate account policy:
+   * The same government ID cannot be shared across both Brand and Creator accounts.
+   */
+  static validateCrossRoleIdentity(
+    idNumber: string,
+    role: 'creator' | 'brand' | 'business' = 'creator',
+    currentUserId?: string
+  ): { allowed: boolean; existingRole?: string; error?: string } {
+    if (!idNumber) return { allowed: true };
+    const normalizedId = idNumber.trim().toUpperCase();
+    const normalizedRole: 'creator' | 'brand' = role === 'business' ? 'brand' : role;
+
+    try {
+      const rawRegistry = localStorage.getItem(`${STORAGE_PREFIX}identity_registry`);
+      const registry: Record<string, { role: 'creator' | 'brand'; userId: string; idType: string }> = rawRegistry
+        ? JSON.parse(rawRegistry)
+        : {};
+
+      const existing = registry[normalizedId];
+      if (existing && existing.userId !== currentUserId && existing.role !== normalizedRole) {
+        return {
+          allowed: false,
+          existingRole: existing.role,
+          error: `Strict Policy Restriction: This government ID is already registered to an active ${existing.role.toUpperCase()} account. To prevent conflicts of interest and fraudulent double-dealing, the same ID cannot be used across both Creator and Brand accounts.`,
+        };
+      }
+
+      return { allowed: true };
+    } catch {
+      return { allowed: true };
+    }
+  }
+
   static async submitIdentityVerification(
     userId: string,
     submission: {
       idType: 'passport' | 'national_id' | 'driving_license' | 'aadhaar';
       documentPath?: string;
       idNumber: string;
+      role?: 'creator' | 'brand' | 'business';
     }
   ): Promise<{ success: boolean; record?: IdentityVerificationRecord; error?: string }> {
     if (!submission.idNumber || submission.idNumber.trim().length < 4) {
       return { success: false, error: 'Valid identification number is required.' };
     }
 
+    const normalizedRole = submission.role === 'business' ? 'brand' : submission.role || 'creator';
+
+    // 1. Strict Duplicate Account Check across Brand and Creator roles
+    const validation = this.validateCrossRoleIdentity(submission.idNumber, normalizedRole, userId);
+    if (!validation.allowed) {
+      return { success: false, error: validation.error };
+    }
+
     const masked = `${submission.idNumber.slice(0, 2)}****${submission.idNumber.slice(-2)}`;
+
+    // 2. Register in identity registry to enforce cross-role uniqueness
+    try {
+      const rawRegistry = localStorage.getItem(`${STORAGE_PREFIX}identity_registry`);
+      const registry = rawRegistry ? JSON.parse(rawRegistry) : {};
+      registry[submission.idNumber.trim().toUpperCase()] = {
+        role: normalizedRole,
+        userId,
+        idType: submission.idType,
+        registeredAt: new Date().toISOString(),
+      };
+      localStorage.setItem(`${STORAGE_PREFIX}identity_registry`, JSON.stringify(registry));
+    } catch {}
 
     const payload = {
       user_id: userId,

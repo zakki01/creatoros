@@ -265,4 +265,58 @@ describe('FinanceService Unit Tests', () => {
       expect(updated?.failureReason).toBe('VPA does not accept business nodal payments');
     });
   });
+
+  describe('Multi-Account Payment Rails & Strict Cross-Role Identity Policy', () => {
+    it('allows linking and reusing the same payment rail across multiple distinct accounts', async () => {
+      const userA = 'creator_acc_101';
+      const userB = 'agency_acc_202';
+      const sharedUpi = 'agency.finance@okhdfcbank';
+
+      const resA = await FinanceService.addPaymentMethod(userA, {
+        providerType: 'upi',
+        identifier: sharedUpi,
+      });
+      expect(resA.success).toBe(true);
+
+      const resB = await FinanceService.addPaymentMethod(userB, {
+        providerType: 'upi',
+        identifier: sharedUpi,
+      });
+      expect(resB.success).toBe(true);
+
+      const methodsA = await FinanceService.getPaymentMethods(userA);
+      const methodsB = await FinanceService.getPaymentMethods(userB);
+
+      expect(methodsA.some((m) => m.identifier === sharedUpi)).toBe(true);
+      expect(methodsB.some((m) => m.identifier === sharedUpi)).toBe(true);
+    });
+
+    it('enforces strict duplicate account policy preventing same Government ID across Brand and Creator roles', async () => {
+      const creatorUserId = 'creator_usr_777';
+      const brandUserId = 'brand_usr_888';
+      const passportId = 'Z1234567';
+
+      // 1. Creator registers passport
+      const creatorSubmit = await FinanceService.submitIdentityVerification(creatorUserId, {
+        idType: 'passport',
+        idNumber: passportId,
+        role: 'creator',
+      });
+      expect(creatorSubmit.success).toBe(true);
+
+      // 2. Brand tries to register the SAME passport -> BLOCKED by cross-role conflict of interest policy
+      const brandSubmit = await FinanceService.submitIdentityVerification(brandUserId, {
+        idType: 'passport',
+        idNumber: passportId,
+        role: 'brand',
+      });
+      expect(brandSubmit.success).toBe(false);
+      expect(brandSubmit.error).toContain('Strict Policy Restriction');
+      expect(brandSubmit.error).toContain('CREATOR');
+
+      // 3. Another Creator account under the same creator role or same user is permitted
+      const validationSameRole = FinanceService.validateCrossRoleIdentity(passportId, 'creator', 'another_creator');
+      expect(validationSameRole.allowed).toBe(true);
+    });
+  });
 });
