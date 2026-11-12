@@ -13,6 +13,7 @@ interface LiveControlsProps {
   isAudioEnabled: boolean;
   onToggleLive: () => void;
   onConfigureLive?: () => void;
+  onOpenDeviceSettings?: () => void;
   onToggleRecording: () => void;
   onSelectAspectRatio: (aspect: AspectRatio) => void;
   onToggleAudio: () => void;
@@ -32,6 +33,7 @@ export const LiveControls: React.FC<LiveControlsProps> = ({
   isAudioEnabled,
   onToggleLive,
   onConfigureLive,
+  onOpenDeviceSettings,
   onToggleRecording,
   onSelectAspectRatio,
   onToggleAudio,
@@ -103,6 +105,19 @@ export const LiveControls: React.FC<LiveControlsProps> = ({
             <MicOff className="w-4 h-4" />
           )}
         </button>
+
+        {/* Device Settings & Audio Check */}
+        {onOpenDeviceSettings && (
+          <button
+            type="button"
+            onClick={onOpenDeviceSettings}
+            aria-label="Device & Audio Settings"
+            title="Configure Camera, Mic & Stream Quality"
+            className="p-2 rounded-xl bg-[var(--surface-muted)] hover:bg-[var(--surface)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] border border-[var(--border)] transition-all cursor-pointer"
+          >
+            <Settings2 className="w-4 h-4" />
+          </button>
+        )}
 
         {/* AR Effects Drawer Toggle */}
         {onToggleDrawer && (

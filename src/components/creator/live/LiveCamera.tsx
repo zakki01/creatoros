@@ -1,8 +1,20 @@
 import React, { useEffect, useRef } from 'react';
-import { Sparkles, Camera, AlertCircle, RefreshCw, Wand2, Video } from 'lucide-react';
+import {
+  Sparkles,
+  Camera,
+  AlertCircle,
+  RefreshCw,
+  Wand2,
+  Video,
+  Monitor,
+  MessageSquare,
+  Trophy,
+  Clock,
+} from 'lucide-react';
 import { AspectRatio, LiveConnectionState, LiveScene } from '../../../types';
+import { StudioSceneMode } from './LiveScenesDock';
 
-interface LiveCameraProps {
+export interface LiveCameraProps {
   displayStream: MediaStream | null;
   connectionState: LiveConnectionState;
   activeScene: LiveScene;
@@ -12,6 +24,13 @@ interface LiveCameraProps {
   isVirtualFeed?: boolean;
   onToggleVirtualFeed?: () => void;
   className?: string;
+  // Streamlabs Extensions
+  screenStream?: MediaStream | null;
+  isScreenSharing?: boolean;
+  showChatOverlay?: boolean;
+  showGoalOverlay?: boolean;
+  showWatermark?: boolean;
+  sceneMode?: StudioSceneMode;
 }
 
 export const LiveCamera: React.FC<LiveCameraProps> = ({
@@ -24,14 +43,31 @@ export const LiveCamera: React.FC<LiveCameraProps> = ({
   isVirtualFeed = false,
   onToggleVirtualFeed,
   className = '',
+  screenStream = null,
+  isScreenSharing = false,
+  showChatOverlay = true,
+  showGoalOverlay = true,
+  showWatermark = true,
+  sceneMode = 'main_cam',
 }) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const screenVideoRef = useRef<HTMLVideoElement | null>(null);
+  const pipVideoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
     if (videoRef.current && displayStream) {
       videoRef.current.srcObject = displayStream;
     }
+    if (pipVideoRef.current && displayStream) {
+      pipVideoRef.current.srcObject = displayStream;
+    }
   }, [displayStream]);
+
+  useEffect(() => {
+    if (screenVideoRef.current && screenStream) {
+      screenVideoRef.current.srcObject = screenStream;
+    }
+  }, [screenStream]);
 
   const isLive = connectionState === 'live';
 
@@ -69,34 +105,21 @@ export const LiveCamera: React.FC<LiveCameraProps> = ({
     }
   };
 
-  return (
-    <div className={`w-full h-full flex items-center justify-center relative overflow-hidden select-none p-1 sm:p-2 ${className}`}>
-      {/* Studio Monitor Bezel Container */}
-      <div
-        data-testid="hero-camera-monitor"
-        className={`relative rounded-3xl overflow-hidden bg-[var(--live-canvas,#090C10)] border border-white/15 shadow-[0_24px_60px_-15px_rgba(0,0,0,0.7),inset_0_1px_0_0_rgba(255,255,255,0.15)] flex items-center justify-center transition-all duration-300 ${
-          aspectRatio === '16:9' ? 'aspect-[16/9]' : aspectRatio === '1:1' ? 'aspect-square' : 'aspect-[9/16]'
-        }`}
-        style={getViewportStyle()}
-      >
-        {/* Subtle scene backdrop when camera stream is not active */}
-        {!displayStream && activeScene?.thumbnailUrl && (
-          <img
-            src={activeScene.thumbnailUrl}
-            alt={activeScene.name}
-            className="absolute inset-0 w-full h-full object-cover opacity-20 blur-sm scale-105 pointer-events-none"
-          />
-        )}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/70 pointer-events-none z-10" />
+  const isIntermission = sceneMode === 'intermission';
+  const isScreenMode = (isScreenSharing && Boolean(screenStream)) || sceneMode === 'screen_pip';
 
-        {/* Top Monitor Bezel Overlay */}
-        <div className="absolute top-3 left-3 right-3 z-20 flex items-center justify-between">
+  return (
+    <div className={`w-full h-full flex items-center justify-center ${className}`}>
+      <div
+        style={getViewportStyle()}
+        className="relative bg-zinc-950 rounded-2xl overflow-hidden border border-white/10 shadow-2xl flex items-center justify-center group"
+      >
+        {/* Top Viewport HUD Overlays */}
+        <div className="absolute top-3 inset-x-3 z-30 flex items-center justify-between pointer-events-auto">
           <div className="flex items-center gap-2">
-            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-black/65 backdrop-blur-xl border border-white/15 text-white shadow-sm pointer-events-none">
-              <Sparkles
-                className="w-3.5 h-3.5 text-[var(--primary)]"
-                style={{ color: activeScene?.accentColor || 'var(--primary)' }}
-              />
+            {/* Active Preset Tag */}
+            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-black/65 backdrop-blur-xl text-white border border-white/15 shadow-sm">
+              <Sparkles className="w-3 h-3 text-amber-400" />
               <span>{activeScene?.name || 'Studio Feed'}</span>
             </div>
 
@@ -125,27 +148,93 @@ export const LiveCamera: React.FC<LiveCameraProps> = ({
                 )}
               </button>
             )}
+
+            {isScreenMode && (
+              <div className="flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-mono bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                <Monitor className="w-3 h-3" />
+                <span>Screen Share</span>
+              </div>
+            )}
           </div>
 
           <div className="flex items-center gap-2">
             <div className="px-2.5 py-1 rounded-full text-[10px] font-mono uppercase bg-black/65 backdrop-blur-xl text-zinc-200 border border-white/15 pointer-events-none">
               {aspectRatio}
             </div>
-            {isLive ? (
+            {isLive && (
               <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-500/80 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-wider animate-pulse pointer-events-none">
                 <span className="w-1.5 h-1.5 rounded-full bg-white" />
                 <span>ON AIR</span>
-              </div>
-            ) : (
-              <div className="px-2.5 py-1 rounded-full text-[10px] font-mono bg-black/50 backdrop-blur-md text-zinc-400 border border-white/10 pointer-events-none">
-                PREVIEW
               </div>
             )}
           </div>
         </div>
 
-        {/* Real / Virtual Camera Stream Viewport */}
-        {displayStream ? (
+        {/* Streamlabs Goal Widget Overlay (Top Center) */}
+        {showGoalOverlay && !isIntermission && (
+          <div className="absolute top-12 left-1/2 -translate-x-1/2 z-20 pointer-events-none">
+            <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-amber-500/30 shadow-md">
+              <Trophy className="w-3 h-3 text-amber-400 shrink-0" />
+              <div className="flex items-center gap-2 text-[10px] font-mono">
+                <span className="text-zinc-200 font-semibold">Follower Goal:</span>
+                <div className="w-16 h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+                  <div className="w-4/5 h-full bg-amber-400 rounded-full" />
+                </div>
+                <span className="text-amber-400 font-bold">85 / 100</span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* INTERMISSION / BRB SCENE OVERLAY */}
+        {isIntermission ? (
+          <div className="relative z-10 w-full h-full flex flex-col items-center justify-center p-6 text-center bg-radial from-purple-950/60 via-zinc-950 to-black space-y-4 animate-fade-in">
+            <div className="w-16 h-16 rounded-3xl bg-purple-500/20 border border-purple-500/40 text-purple-400 flex items-center justify-center animate-pulse shadow-2xl">
+              <Clock className="w-8 h-8" />
+            </div>
+            <div className="space-y-1">
+              <h2 className="text-lg font-bold text-white font-display">
+                Starting Soon / Intermission
+              </h2>
+              <p className="text-xs text-zinc-400 max-w-xs font-mono">
+                Stream will resume shortly. Stay tuned for live updates.
+              </p>
+            </div>
+            <div className="px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-mono text-white">
+              00 : 03 : 45
+            </div>
+          </div>
+        ) : isScreenMode && screenStream ? (
+          /* SCREEN SHARE + PIP VIEW */
+          <div className="relative w-full h-full overflow-hidden">
+            {/* Screen Video Feed (Background / Main) */}
+            <video
+              ref={screenVideoRef}
+              autoPlay
+              playsInline
+              muted
+              className="w-full h-full object-contain bg-black"
+            />
+
+            {/* PiP Floating Webcam (Bottom Right) */}
+            {displayStream && (
+              <div className="absolute bottom-4 right-4 z-20 w-36 sm:w-44 aspect-video rounded-xl overflow-hidden border-2 border-sky-400/80 shadow-2xl bg-zinc-950">
+                <video
+                  ref={pipVideoRef}
+                  autoPlay
+                  playsInline
+                  muted
+                  style={{ filter: cssFilter }}
+                  className={`w-full h-full object-cover ${isVirtualFeed ? '' : 'transform -scale-x-100'}`}
+                />
+                <div className="absolute bottom-1 left-1.5 text-[8px] font-mono bg-black/70 px-1.5 py-0.5 rounded text-white border border-white/10">
+                  Host Cam
+                </div>
+              </div>
+            )}
+          </div>
+        ) : displayStream ? (
+          /* REGULAR WEBCAM / VIRTUAL FEED VIEWPORT */
           <>
             <video
               ref={videoRef}
@@ -176,14 +265,6 @@ export const LiveCamera: React.FC<LiveCameraProps> = ({
                 style={{ backgroundImage: `url(${filterStyle.customOverlayUrl})` }}
               />
             )}
-
-            {/* Live broadcast indicator */}
-            {isLive && (
-              <div className="absolute bottom-3.5 left-3.5 z-20 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/75 backdrop-blur-md border border-emerald-500/35 text-[10px] font-mono text-emerald-400 pointer-events-none">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                <span>BROADCASTING</span>
-              </div>
-            )}
           </>
         ) : errorMessage ? (
           /* Camera Error / Fallback State */
@@ -208,45 +289,39 @@ export const LiveCamera: React.FC<LiveCameraProps> = ({
                 <button
                   type="button"
                   onClick={onToggleVirtualFeed}
-                  className="flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold text-white bg-[var(--primary)] hover:opacity-90 shadow-md transition-all cursor-pointer w-full sm:w-auto"
+                  className="flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-white bg-purple-600 hover:bg-purple-500 transition-all cursor-pointer w-full sm:w-auto shadow-sm"
                 >
                   <Wand2 className="w-3.5 h-3.5" />
-                  <span>Use Virtual Studio Feed</span>
+                  <span>Use Virtual Feed</span>
                 </button>
               )}
             </div>
           </div>
         ) : (
-          /* Normal Camera Standby State */
-          <div className="relative z-20 flex flex-col items-center justify-center text-center p-6 space-y-3.5 max-w-sm">
-            <div className="w-16 h-16 rounded-3xl bg-white/5 border border-white/10 flex items-center justify-center text-zinc-300 shadow-inner">
-              <Camera className="w-8 h-8 text-[var(--primary)]" />
+          /* Camera Initializing */
+          <div className="relative z-20 flex flex-col items-center justify-center text-center p-6 space-y-2">
+            <div className="w-10 h-10 rounded-xl bg-white/10 text-white flex items-center justify-center animate-pulse">
+              <Video className="w-5 h-5" />
             </div>
-            <div className="space-y-1">
-              <h3 className="text-sm font-semibold text-white tracking-tight">Studio Monitor Ready</h3>
-              <p className="text-xs text-zinc-400">
-                {activeScene ? `${activeScene.name} · ${activeScene.tagline}` : 'Enable camera or start virtual stream'}
-              </p>
+            <span className="text-xs font-mono text-zinc-400">Requesting Camera Feed...</span>
+          </div>
+        )}
+
+        {/* Streamlabs Live Chat Overlay (Bottom Left on Canvas) */}
+        {showChatOverlay && !isIntermission && (
+          <div className="absolute bottom-3 left-3 z-20 pointer-events-none max-w-[70%] space-y-1">
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-[10px] text-white">
+              <MessageSquare className="w-3 h-3 text-sky-400" />
+              <span className="font-semibold text-sky-300">Live Chatbox Widget</span>
             </div>
-            <div className="flex flex-col sm:flex-row items-center gap-2 pt-1">
-              <button
-                type="button"
-                onClick={onRequestCamera}
-                className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold text-white bg-[var(--primary)] hover:opacity-90 transition-all cursor-pointer shadow-md hover:scale-105 active:scale-95"
-              >
-                <Camera className="w-3.5 h-3.5" />
-                <span>Enable Camera</span>
-              </button>
-              {onToggleVirtualFeed && (
-                <button
-                  type="button"
-                  onClick={onToggleVirtualFeed}
-                  className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold text-white bg-white/10 hover:bg-white/20 border border-white/15 transition-all cursor-pointer shadow-md hover:scale-105 active:scale-95"
-                >
-                  <Wand2 className="w-3.5 h-3.5 text-purple-300" />
-                  <span>Virtual Studio Feed</span>
-                </button>
-              )}
+          </div>
+        )}
+
+        {/* CreatorOS Watermark (Bottom Right) */}
+        {showWatermark && !isIntermission && (
+          <div className="absolute bottom-3 right-3 z-20 pointer-events-none">
+            <div className="px-2 py-0.5 rounded-md bg-black/50 backdrop-blur-md border border-white/10 text-[9px] font-mono text-zinc-400">
+              CreatorOS Studio
             </div>
           </div>
         )}

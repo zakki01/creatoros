@@ -226,7 +226,7 @@ export const CreatorLayout: React.FC = () => {
             />
           )}
 
-          {activeTab === 'content' && (
+          {(activeTab === 'content' || activeTab === 'create') && (
             <CreatorDeliverables
               onOpenSubmissionModal={() => setIsSubmissionModalOpen(true)}
               onNavigate={handleNavigate}
@@ -235,7 +235,12 @@ export const CreatorLayout: React.FC = () => {
 
           {activeTab === 'discover' && <DiscoverView />}
 
-          {activeTab === 'analytics' && <CreatorAnalytics />}
+          {activeTab === 'analytics' && (
+            <CreatorAnalytics
+              onNavigate={handleNavigate}
+              onOpenSubmissionModal={() => setIsSubmissionModalOpen(true)}
+            />
+          )}
 
           {activeTab === 'earnings' && <CreatorPayments />}
 

@@ -23,7 +23,15 @@ import {
   exportCreatorAnalyticsKit,
 } from '../../services/analyticsService';
 
-export const CreatorAnalytics: React.FC = () => {
+export interface CreatorAnalyticsProps {
+  onNavigate?: (tab: string) => void;
+  onOpenSubmissionModal?: () => void;
+}
+
+export const CreatorAnalytics: React.FC<CreatorAnalyticsProps> = ({
+  onNavigate,
+  onOpenSubmissionModal,
+}) => {
   const {
     creators,
     userProfile,
@@ -32,6 +40,14 @@ export const CreatorAnalytics: React.FC = () => {
     payments,
     setCreatorActiveTab,
   } = useAppState();
+
+  const handleNavigate = (tab: string) => {
+    if (onNavigate) {
+      onNavigate(tab);
+    } else {
+      setCreatorActiveTab(tab);
+    }
+  };
 
   const creator = getSafeCurrentCreator(creators, userProfile, authUser);
   const toast = useToast();
@@ -134,7 +150,13 @@ export const CreatorAnalytics: React.FC = () => {
           <div className="flex items-center gap-2.5 w-full sm:w-auto shrink-0">
             <button
               type="button"
-              onClick={() => setCreatorActiveTab('create')}
+              onClick={() => {
+                if (onOpenSubmissionModal) {
+                  onOpenSubmissionModal();
+                } else {
+                  handleNavigate('content');
+                }
+              }}
               className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-[var(--primary)] text-white hover:bg-[var(--primary-hover)] transition-all cursor-pointer shadow-sm active:scale-95"
             >
               <PlusCircle className="w-3.5 h-3.5" />
@@ -142,7 +164,7 @@ export const CreatorAnalytics: React.FC = () => {
             </button>
             <button
               type="button"
-              onClick={() => setCreatorActiveTab('campaigns')}
+              onClick={() => handleNavigate('campaigns')}
               className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-[var(--surface)] text-[var(--text-primary)] border border-[var(--border)] hover:bg-[var(--surface-muted)] transition-all cursor-pointer shadow-sm active:scale-95"
             >
               <Compass className="w-3.5 h-3.5" />
