@@ -4,6 +4,8 @@
  * and confirmation link validation for Email, Phone, and Payout Method 2FA authorization.
  */
 
+import { supabase, isSupabaseConfigured } from './supabaseClient';
+
 export type OtpPurpose =
   | 'email_verification'
   | 'phone_verification'
@@ -164,6 +166,149 @@ export class OtpVerificationService {
     this.clearOtpRecord(normalizedTarget);
 
     return { success: true };
+  }
+
+  /**
+   * Asynchronous Real Provider OTP Dispatch:
+   * Triggers real email or SMS OTP via Supabase Auth when available,
+   * while maintaining full compatibility with the local secure store.
+   */
+  static async sendOtpAsync(
+    target: string,
+    purpose: OtpPurpose = 'email_verification'
+  ): Promise<{
+    success: boolean;
+    isRealProvider?: boolean;
+    code?: string;
+    link?: string;
+    expiresAt?: number;
+    error?: string;
+    providerNote?: string;
+  }> {
+    const normalizedTarget = target.trim().toLowerCase();
+    if (!normalizedTarget) {
+      return { success: false, error: 'Recipient email or phone number is required.' };
+    }
+
+    let realProviderSent = false;
+    let providerNote: string | undefined;
+
+    if (isSupabaseConfigured()) {
+      const isEmail = normalizedTarget.includes('@');
+      try {
+        if (isEmail) {
+          if (purpose === 'email_verification') {
+            const { error } = await supabase.auth.resend({
+              type: 'signup',
+              email: normalizedTarget,
+            });
+            if (!error) {
+              realProviderSent = true;
+              providerNote = 'Real verification email dispatched via Supabase SMTP.';
+            }
+          } else {
+            const { error } = await supabase.auth.signInWithOtp({
+              email: normalizedTarget,
+              options: { shouldCreateUser: false },
+            });
+            if (!error) {
+              realProviderSent = true;
+              providerNote = 'Real OTP email dispatched via Supabase.';
+            }
+          }
+        } else {
+          // Phone SMS OTP via Supabase Phone Provider
+          const { error } = await supabase.auth.signInWithOtp({
+            phone: normalizedTarget,
+          });
+          if (!error) {
+            realProviderSent = true;
+            providerNote = 'Real SMS OTP dispatched via carrier gateway.';
+          } else if (error.message?.includes('Unsupported phone provider')) {
+            providerNote = 'Supabase Phone Provider (Twilio/MessageBird) not configured. Using secure dev simulation.';
+          }
+        }
+      } catch (err: any) {
+        console.warn('[OtpVerificationService] Real provider dispatch warning:', err?.message);
+      }
+    }
+
+    // Always record in local store as well so users can test immediately
+    const local = this.sendOtp(normalizedTarget, purpose);
+    return {
+      ...local,
+      isRealProvider: realProviderSent,
+      providerNote,
+    };
+  }
+
+  /**
+   * Asynchronous Real Provider OTP Verification:
+   * Validates the 6-digit code against live Supabase Auth first,
+   * falling back to local verification for dev/demo testing.
+   */
+  static async verifyOtpAsync(
+    target: string,
+    inputCode: string,
+    purpose: OtpPurpose = 'email_verification'
+  ): Promise<{ success: boolean; isRealProvider?: boolean; session?: any; error?: string }> {
+    const normalizedTarget = target.trim().toLowerCase();
+    const normalizedCode = inputCode.trim();
+
+    if (!normalizedCode) {
+      return { success: false, error: 'Please enter the 6-digit verification code.' };
+    }
+
+    if (isSupabaseConfigured()) {
+      const isEmail = normalizedTarget.includes('@');
+      try {
+        if (isEmail) {
+          // 1. Try Signup Token verification
+          const { data, error } = await supabase.auth.verifyOtp({
+            email: normalizedTarget,
+            token: normalizedCode,
+            type: purpose === 'email_verification' ? 'signup' : 'email',
+          });
+          if (!error && data.user) {
+            this.markTargetVerified(normalizedTarget, purpose);
+            this.clearOtpRecord(normalizedTarget);
+            return { success: true, isRealProvider: true, session: data.session };
+          }
+
+          // 2. Fallback to magiclink/email OTP if signup type returned error
+          if (purpose === 'email_verification') {
+            const retry = await supabase.auth.verifyOtp({
+              email: normalizedTarget,
+              token: normalizedCode,
+              type: 'email',
+            });
+            if (!retry.error && retry.data.user) {
+              this.markTargetVerified(normalizedTarget, purpose);
+              this.clearOtpRecord(normalizedTarget);
+              return { success: true, isRealProvider: true, session: retry.data.session };
+            }
+          }
+        } else {
+          // Phone SMS OTP verification
+          const { data, error } = await supabase.auth.verifyOtp({
+            phone: normalizedTarget,
+            token: normalizedCode,
+            type: 'sms',
+          });
+          if (!error && data.user) {
+            this.markTargetVerified(normalizedTarget, purpose);
+            this.clearOtpRecord(normalizedTarget);
+            return { success: true, isRealProvider: true, session: data.session };
+          }
+        }
+      } catch (err: any) {
+        console.warn('[OtpVerificationService] Supabase verifyOtp error:', err?.message);
+      }
+    }
+
+    // Fall back to local store validation
+    const local = this.verifyOtp(normalizedTarget, normalizedCode);
+    return { ...local, isRealProvider: false };
   }
 
   /**

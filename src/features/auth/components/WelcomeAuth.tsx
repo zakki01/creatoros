@@ -246,16 +246,20 @@ export const WelcomeAuth: React.FC<WelcomeAuthProps> = ({
     setIsVerifyingPendingOtp(true);
     setPendingOtpError(null);
     try {
-      const res = OtpVerificationService.verifyOtp(verificationPendingEmail, code);
+      const res = await OtpVerificationService.verifyOtpAsync(
+        verificationPendingEmail,
+        code,
+        'email_verification'
+      );
       if (res.success) {
         setPendingOtpSuccess(true);
         OtpVerificationService.markTargetVerified(verificationPendingEmail, 'email_verification');
 
         const authUser = {
-          id: `usr_${Date.now()}`,
+          id: res.session?.user?.id || `usr_${Date.now()}`,
           email: verificationPendingEmail,
           role: selectedRole,
-          name: name || 'CreatorOS User',
+          name: name || res.session?.user?.user_metadata?.name || 'CreatorOS User',
           handle: `@${(name || 'user').toLowerCase().replace(/[^a-z0-9_]/g, '') || 'creator'}`,
           avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150',
           provider: 'email' as const,

@@ -54,4 +54,15 @@ describe('OtpVerificationService', () => {
     OtpVerificationService.revokeVerification(target);
     expect(OtpVerificationService.isTargetVerified(target)).toBe(false);
   });
+
+  it('supports asynchronous OTP dispatch and verification with provider fallback', async () => {
+    const target = 'async.test@creatoros.ai';
+    const sendRes = await OtpVerificationService.sendOtpAsync(target, 'email_verification');
+    expect(sendRes.success).toBe(true);
+    expect(sendRes.code).toBeDefined();
+
+    const verifyRes = await OtpVerificationService.verifyOtpAsync(target, sendRes.code!, 'email_verification');
+    expect(verifyRes.success).toBe(true);
+    expect(OtpVerificationService.isTargetVerified(target)).toBe(true);
+  });
 });

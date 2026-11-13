@@ -121,7 +121,7 @@ export const OtpVerificationModal: React.FC<OtpVerificationModalProps> = ({
     }
   };
 
-  const handleVerify = (codeToVerify?: string) => {
+  const handleVerify = async (codeToVerify?: string) => {
     const code = codeToVerify || digits.join('');
     if (code.length < 6) {
       setErrorMessage('Please enter all 6 digits of your verification code.');
@@ -132,7 +132,7 @@ export const OtpVerificationModal: React.FC<OtpVerificationModalProps> = ({
     setErrorMessage(null);
 
     try {
-      const res = OtpVerificationService.verifyOtp(target, code);
+      const res = await OtpVerificationService.verifyOtpAsync(target, code, purpose);
       if (res.success) {
         setIsSuccess(true);
         setTimeout(() => {
@@ -149,14 +149,14 @@ export const OtpVerificationModal: React.FC<OtpVerificationModalProps> = ({
     }
   };
 
-  const handleResend = () => {
+  const handleResend = async () => {
     if (!canResend || isResending) return;
     setIsResending(true);
     setErrorMessage(null);
     setDigits(['', '', '', '', '', '']);
 
     try {
-      const res = OtpVerificationService.sendOtp(target, purpose);
+      const res = await OtpVerificationService.sendOtpAsync(target, purpose);
       if (res.success && res.code) {
         setSimulatedCode(res.code);
         setConfirmationLink(res.link || null);
