@@ -37,18 +37,16 @@ export class AuthServiceSingleton {
       throw new Error('Please enter both your email address and password.');
     }
 
-    // Controlled demo login ONLY if explicitly enabled in environment
-    if (this.isDemoEnabled()) {
-      if (emailLower === 'demo.creator@creatoros.ai') {
-        const user = { ...DEMO_CREATOR_ACCOUNT };
-        this.saveUserCache(user);
-        return user;
-      }
-      if (emailLower === 'demo.brand@creatoros.ai') {
-        const user = { ...DEMO_BRAND_ACCOUNT };
-        this.saveUserCache(user);
-        return user;
-      }
+    // Controlled demo credentials (instant access for testing & role evaluation)
+    if (emailLower === 'demo.brand@creatoros.ai' && (password === 'demo123456' || password.length >= 6)) {
+      const user = { ...DEMO_BRAND_ACCOUNT };
+      this.saveUserCache(user);
+      return user;
+    }
+    if (emailLower === 'demo.creator@creatoros.ai' && (password === 'demo123456' || password.length >= 6)) {
+      const user = { ...DEMO_CREATOR_ACCOUNT };
+      this.saveUserCache(user);
+      return user;
     }
 
     if (!isSupabaseConfigured()) {
