@@ -76,6 +76,37 @@ export class AuthServiceSingleton {
   }
 
   /**
+   * Helper to check if an account or identity already exists
+   * Enforces strict duplicate account policy: Never allow multiple profiles with same IDs/email
+   */
+  checkIdentityExists(emailOrId: string): { exists: boolean; message?: string } {
+    const normalized = emailOrId.trim().toLowerCase();
+    const registry = this.getRegisteredAccountsRegistry();
+    if (registry[normalized]) {
+      return {
+        exists: true,
+        message: 'Strict Policy Violation: An account is already registered with this identity/email. Multiple profile creation with the same identification is strictly prohibited.',
+      };
+    }
+    return { exists: false };
+  }
+
+  getRegisteredAccountsRegistry(): Record<string, { email: string; role: string; name: string; registeredAt: string }> {
+    try {
+      const raw = localStorage.getItem('creatoros_accounts_registry');
+      return raw ? JSON.parse(raw) : {};
+    } catch {
+      return {};
+    }
+  }
+
+  saveRegisteredAccountsRegistry(registry: Record<string, any>): void {
+    try {
+      localStorage.setItem('creatoros_accounts_registry', JSON.stringify(registry));
+    } catch {}
+  }
+
+  /**
    * Real Supabase Email Registration
    */
   async signUpWithEmail(credentials: SignUpCredentials): Promise<SignUpResult> {
@@ -89,6 +120,12 @@ export class AuthServiceSingleton {
     }
     if (password.length < 6) {
       throw new Error('Password must be at least 6 characters long.');
+    }
+
+    // Strict Anti-Duplication Enforcement
+    const check = this.checkIdentityExists(emailLower);
+    if (check.exists) {
+      throw new Error(check.message);
     }
 
     if (!isSupabaseConfigured()) {
@@ -117,6 +154,16 @@ export class AuthServiceSingleton {
     if (error) {
       throw new Error(error.message || 'Account registration failed.');
     }
+
+    // Record in local account registry
+    const registry = this.getRegisteredAccountsRegistry();
+    registry[emailLower] = {
+      email: emailLower,
+      role,
+      name,
+      registeredAt: new Date().toISOString(),
+    };
+    this.saveRegisteredAccountsRegistry(registry);
 
     // Check if email confirmation is required (session will be null)
     if (data.user && !data.session) {

@@ -18,6 +18,8 @@ import {
   FinanceService,
   PayoutProviderType,
 } from '../../services/financeService';
+import { OtpVerificationService } from '../../services/otpVerificationService';
+import { OtpVerificationModal } from '../common/OtpVerificationModal';
 import { Badge } from '../ui/Badge';
 
 interface PayoutSettingsProps {
@@ -108,6 +110,24 @@ export const PayoutSettings: React.FC<PayoutSettingsProps> = ({
   const [isSavingMethod, setIsSavingMethod] = useState(false);
   const [methodFeedback, setMethodFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
 
+  // OTP Verification Modal State
+  const [otpModal, setOtpModal] = useState<{
+    isOpen: boolean;
+    target: string;
+    type: 'email' | 'phone';
+    purpose: any;
+    title: string;
+    subtitle?: string;
+    onSuccessAction: () => Promise<void> | void;
+  }>({
+    isOpen: false,
+    target: '',
+    type: 'email',
+    purpose: 'email_verification',
+    title: '',
+    onSuccessAction: () => {},
+  });
+
   // Delete Confirmation State
   const [methodToDelete, setMethodToDelete] = useState<UserPaymentMethod | null>(null);
 
@@ -145,31 +165,106 @@ export const PayoutSettings: React.FC<PayoutSettingsProps> = ({
     }
   };
 
-  // Add Method Handler
+  // Add Method Form Submission -> Mandatory 2FA OTP Gate
   const handleAddMethod = async (e: React.FormEvent) => {
     e.preventDefault();
     setMethodFeedback(null);
-    setIsSavingMethod(true);
 
-    try {
-      const res = await FinanceService.addPaymentMethod(userId, {
-        providerType: selectedProvider,
-        identifier: methodIdentifier,
-        isPreferred: methods.length === 0,
-      });
-
-      if (res.success) {
-        setMethodFeedback({ type: 'success', message: 'Payout method added successfully.' });
-        setIsAddingMethod(false);
-        setMethodIdentifier('');
-        handleDataRefresh();
-        setTimeout(() => setMethodFeedback(null), 4000);
-      } else {
-        setMethodFeedback({ type: 'error', message: res.error || 'Failed to add method.' });
-      }
-    } finally {
-      setIsSavingMethod(false);
+    const trimmedIdent = methodIdentifier.trim();
+    if (!trimmedIdent) {
+      setMethodFeedback({ type: 'error', message: 'Please enter a valid payout rail identifier.' });
+      return;
     }
+
+    // Format validation
+    if (selectedProvider === 'paypal' && !FinanceService.validateEmail(trimmedIdent)) {
+      setMethodFeedback({ type: 'error', message: 'Please enter a valid PayPal account email address.' });
+      return;
+    }
+    if (selectedProvider === 'upi' && !FinanceService.validateUPI(trimmedIdent)) {
+      setMethodFeedback({ type: 'error', message: 'Please enter a valid UPI VPA (e.g. handle@bank).' });
+      return;
+    }
+
+    const verificationTarget = profile?.email || email || trimmedIdent;
+
+    // Open OTP Verification Modal for 2-Factor Payout Rail Authorization
+    setOtpModal({
+      isOpen: true,
+      target: verificationTarget,
+      type: 'email',
+      purpose: 'payout_method',
+      title: 'Authorize Payout Rail with OTP',
+      subtitle: `To protect against unauthorized payout rerouting, enter the 6-digit security code dispatched to ${verificationTarget} to link ${trimmedIdent}.`,
+      onSuccessAction: async () => {
+        setIsSavingMethod(true);
+        try {
+          const res = await FinanceService.addPaymentMethod(userId, {
+            providerType: selectedProvider,
+            identifier: trimmedIdent,
+            isPreferred: methods.length === 0,
+            isOtpVerified: true,
+          });
+
+          if (res.success) {
+            setMethodFeedback({
+              type: 'success',
+              message: 'Payout method verified and linked successfully with 2-Factor Authorization.',
+            });
+            setIsAddingMethod(false);
+            setMethodIdentifier('');
+            handleDataRefresh();
+            setTimeout(() => setMethodFeedback(null), 5000);
+          } else {
+            setMethodFeedback({ type: 'error', message: res.error || 'Failed to link payout method.' });
+          }
+        } finally {
+          setIsSavingMethod(false);
+        }
+      },
+    });
+  };
+
+  // Direct Email OTP Verification
+  const handleVerifyEmail = (emailTarget: string) => {
+    if (!emailTarget) return;
+    setOtpModal({
+      isOpen: true,
+      target: emailTarget,
+      type: 'email',
+      purpose: 'email_verification',
+      title: 'Verify Financial Email Address',
+      subtitle: `Enter the 6-digit verification code dispatched to ${emailTarget} to confirm official financial communications.`,
+      onSuccessAction: () => {
+        setProfileFeedback({
+          type: 'success',
+          message: 'Financial email verified successfully with OTP confirmation.',
+        });
+        handleDataRefresh();
+        setTimeout(() => setProfileFeedback(null), 4000);
+      },
+    });
+  };
+
+  // Direct Phone OTP Verification
+  const handleVerifyPhone = (phoneTarget: string) => {
+    if (!phoneTarget) return;
+    setOtpModal({
+      isOpen: true,
+      target: phoneTarget,
+      type: 'phone',
+      purpose: 'phone_verification',
+      title: 'Verify Phone Number via SMS OTP',
+      subtitle: `Enter the 6-digit SMS verification code sent to ${phoneTarget} to secure your payout settlements.`,
+      onSuccessAction: () => {
+        setProfileFeedback({
+          type: 'success',
+          message: 'Phone number verified successfully with OTP confirmation.',
+        });
+        handleDataRefresh();
+        setTimeout(() => setProfileFeedback(null), 4000);
+      },
+    });
   };
 
   // Set Preferred Method
@@ -377,10 +472,10 @@ export const PayoutSettings: React.FC<PayoutSettingsProps> = ({
             </div>
           </form>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs pt-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5 text-xs pt-2">
             <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800">
               <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">Legal Name</span>
-              <span className="font-semibold text-slate-900 dark:text-slate-100 block mt-0.5">
+              <span className="font-semibold text-slate-900 dark:text-slate-100 block mt-0.5 truncate">
                 {profile?.legalName || 'Not configured'}
               </span>
             </div>
@@ -391,9 +486,45 @@ export const PayoutSettings: React.FC<PayoutSettingsProps> = ({
               </span>
             </div>
             <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800">
-              <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">Financial Email</span>
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">Financial Email</span>
+                {profile?.email && OtpVerificationService.isTargetVerified(profile.email) ? (
+                  <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-0.5">
+                    <CheckCircle2 className="w-3 h-3" /> Verified
+                  </span>
+                ) : profile?.email ? (
+                  <button
+                    type="button"
+                    onClick={() => handleVerifyEmail(profile.email)}
+                    className="text-[10px] font-bold text-blue-600 dark:text-sky-400 hover:underline cursor-pointer"
+                  >
+                    Verify OTP
+                  </button>
+                ) : null}
+              </div>
               <span className="font-semibold text-slate-900 dark:text-slate-100 block mt-0.5 truncate">
                 {profile?.email || 'Not configured'}
+              </span>
+            </div>
+            <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800">
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">Phone Number</span>
+                {profile?.phone && OtpVerificationService.isTargetVerified(profile.phone) ? (
+                  <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-0.5">
+                    <CheckCircle2 className="w-3 h-3" /> Verified
+                  </span>
+                ) : profile?.phone ? (
+                  <button
+                    type="button"
+                    onClick={() => handleVerifyPhone(profile.phone!)}
+                    className="text-[10px] font-bold text-blue-600 dark:text-sky-400 hover:underline cursor-pointer"
+                  >
+                    Verify OTP
+                  </button>
+                ) : null}
+              </div>
+              <span className="font-semibold text-slate-900 dark:text-slate-100 block mt-0.5 truncate">
+                {profile?.phone || 'Not configured'}
               </span>
             </div>
             <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800">
@@ -536,11 +667,13 @@ export const PayoutSettings: React.FC<PayoutSettingsProps> = ({
           </form>
         )}
 
-        {/* Existing Payout Methods List */}
-        <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 text-[11px] text-slate-600 dark:text-slate-300 flex items-center justify-between">
-          <span className="flex items-center gap-1.5">
+        {/* Strict 2FA Payout Protection Notice */}
+        <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 text-[11px] text-slate-700 dark:text-slate-300 flex items-center justify-between">
+          <span className="flex items-center gap-2">
             <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0" />
-            <span><strong>Multi-Account Allowed:</strong> You may safely link and use the same payment method (UPI, Bank, Card, PayPal) across other accounts you manage.</span>
+            <span>
+              <strong>Strict 2FA Payout Protection:</strong> Every payout rail requires one-time OTP verification sent to your registered financial email or phone before being activated. Payout rails cannot be claimed across multiple accounts without verified ownership.
+            </span>
           </span>
         </div>
 
@@ -640,6 +773,19 @@ export const PayoutSettings: React.FC<PayoutSettingsProps> = ({
           </div>
         </div>
       )}
+      {/* 2-Factor OTP Authorization Modal */}
+      <OtpVerificationModal
+        isOpen={otpModal.isOpen}
+        onClose={() => setOtpModal((prev) => ({ ...prev, isOpen: false }))}
+        target={otpModal.target}
+        type={otpModal.type}
+        purpose={otpModal.purpose}
+        title={otpModal.title}
+        subtitle={otpModal.subtitle}
+        onVerified={async () => {
+          await otpModal.onSuccessAction();
+        }}
+      />
     </div>
   );
 };

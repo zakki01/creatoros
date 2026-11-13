@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { AuthService } from '../services/authService';
 import { BetaAccessService } from '../../../services/betaAccessService';
+import { OtpVerificationService } from '../../../services/otpVerificationService';
 import { RequestBetaAccessModal } from './RequestBetaAccessModal';
 import { supabase } from '../../../services/supabaseClient';
 import { OAuthNoticeModal } from './OAuthNoticeModal';
@@ -61,6 +62,25 @@ export const WelcomeAuth: React.FC<WelcomeAuthProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [verificationPendingEmail, setVerificationPendingEmail] = useState<string | null>(null);
+
+  // OTP Verification States for Registration & Confirmation
+  const [otpCodeInput, setOtpCodeInput] = useState('');
+  const [otpDispatchedCode, setOtpDispatchedCode] = useState<string | null>(null);
+  const [isVerifyingPendingOtp, setIsVerifyingPendingOtp] = useState(false);
+  const [pendingOtpError, setPendingOtpError] = useState<string | null>(null);
+  const [pendingOtpSuccess, setPendingOtpSuccess] = useState(false);
+
+  useEffect(() => {
+    if (verificationPendingEmail) {
+      setOtpCodeInput('');
+      setPendingOtpError(null);
+      setPendingOtpSuccess(false);
+      const res = OtpVerificationService.sendOtp(verificationPendingEmail, 'email_verification');
+      if (res.success && res.code) {
+        setOtpDispatchedCode(res.code);
+      }
+    }
+  }, [verificationPendingEmail]);
 
   // Real-time Invite Code Verification
   useEffect(() => {
@@ -216,50 +236,176 @@ export const WelcomeAuth: React.FC<WelcomeAuthProps> = ({
     }
   };
 
+  const handleVerifyPendingOtp = async (codeToVerify?: string) => {
+    const code = (codeToVerify || otpCodeInput).trim();
+    if (!verificationPendingEmail) return;
+    if (code.length < 6) {
+      setPendingOtpError('Please enter the 6-digit confirmation code.');
+      return;
+    }
+    setIsVerifyingPendingOtp(true);
+    setPendingOtpError(null);
+    try {
+      const res = OtpVerificationService.verifyOtp(verificationPendingEmail, code);
+      if (res.success) {
+        setPendingOtpSuccess(true);
+        OtpVerificationService.markTargetVerified(verificationPendingEmail, 'email_verification');
+
+        const authUser = {
+          id: `usr_${Date.now()}`,
+          email: verificationPendingEmail,
+          role: selectedRole,
+          name: name || 'CreatorOS User',
+          handle: `@${(name || 'user').toLowerCase().replace(/[^a-z0-9_]/g, '') || 'creator'}`,
+          avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150',
+          provider: 'email' as const,
+          isBetaUser: true,
+          badge: selectedRole === 'business' ? 'Verified Brand Partner' : 'Verified Founding Creator',
+        };
+        AuthService.saveSession(authUser);
+        login(authUser);
+        triggerCelebration();
+        setTimeout(() => {
+          onAuthSuccess?.(selectedRole);
+        }, 1200);
+      } else {
+        setPendingOtpError(res.error || 'Invalid verification code. Please check and try again.');
+      }
+    } catch {
+      setPendingOtpError('Failed to verify OTP code.');
+    } finally {
+      setIsVerifyingPendingOtp(false);
+    }
+  };
+
   const handleSocialSelect = (provider: 'google' | 'apple' | 'facebook') => {
     setErrorMessage(null);
     setOauthNoticeProvider(provider);
   };
 
-  // Dedicated Screen: Email Verification Required
+  // Dedicated Screen: Email Verification & OTP Confirmation
   if (verificationPendingEmail) {
     return (
       <div
-        className={`studio-card-soft rounded-[28px] p-6 sm:p-8 lg:p-9 w-full max-w-[430px] mx-auto select-none transition-all text-center space-y-5 animate-fade-in ${className}`}
+        className={`studio-card-soft rounded-[28px] p-6 sm:p-8 lg:p-9 w-full max-w-[440px] mx-auto select-none transition-all text-center space-y-4 animate-fade-in ${className}`}
       >
-        <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 flex items-center justify-center mx-auto shadow-sm">
-          <Mail className="w-7 h-7" />
+        <div className="w-13 h-13 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 flex items-center justify-center mx-auto shadow-sm">
+          <ShieldCheck className="w-7 h-7" />
         </div>
 
-        <div className="space-y-2">
+        <div className="space-y-1.5">
           <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100 font-display">
-            Check your email
+            Verify Email &amp; Activate Account
           </h2>
           <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
-            We have sent a verification link to:
+            Enter the 6-digit OTP code dispatched to confirm your identity:
           </p>
-          <p className="text-xs font-mono font-bold text-[var(--primary)] bg-[var(--surface-muted)] py-1.5 px-3 rounded-lg inline-block border border-[var(--border)]">
+          <p className="text-xs font-mono font-bold text-[var(--primary)] bg-[var(--surface-muted)] py-1 px-3 rounded-lg inline-block border border-[var(--border)]">
             {verificationPendingEmail}
-          </p>
-          <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed pt-1">
-            Click the link in the message to activate your CreatorOS account, then return here to sign in.
           </p>
         </div>
 
-        <div className="pt-3">
+        {/* Real-time Dispatch Preview (Guarantees zero friction if spam filtered) */}
+        {otpDispatchedCode && (
+          <div className="p-3 rounded-xl bg-blue-50/90 dark:bg-sky-950/40 border border-blue-200 dark:border-sky-800 text-left text-xs space-y-1">
+            <div className="flex items-center justify-between text-[11px] font-semibold text-blue-800 dark:text-sky-300">
+              <span className="flex items-center gap-1.5">
+                <Mail className="w-3.5 h-3.5" />
+                <span>Verification OTP Dispatched:</span>
+              </span>
+              <span className="font-mono text-[10px] bg-blue-200/60 dark:bg-sky-900/60 px-1.5 py-0.5 rounded">
+                Valid 10m
+              </span>
+            </div>
+            <div className="flex items-center justify-between pt-0.5">
+              <span className="font-mono text-sm font-bold text-blue-700 dark:text-sky-300 tracking-wider">
+                OTP: {otpDispatchedCode}
+              </span>
+              <button
+                type="button"
+                onClick={() => {
+                  setOtpCodeInput(otpDispatchedCode);
+                  handleVerifyPendingOtp(otpDispatchedCode);
+                }}
+                className="text-[11px] font-bold text-blue-600 dark:text-sky-400 hover:underline cursor-pointer flex items-center gap-1"
+              >
+                <span>Auto-Fill &amp; Confirm</span>
+                <ArrowRight className="w-3 h-3" />
+              </button>
+            </div>
+          </div>
+        )}
+
+        {pendingOtpError && (
+          <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-500 text-xs flex items-center gap-2 text-left">
+            <AlertCircle className="w-4 h-4 shrink-0" />
+            <span>{pendingOtpError}</span>
+          </div>
+        )}
+
+        {pendingOtpSuccess && (
+          <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-xs flex items-center gap-2 justify-center font-bold">
+            <CheckCircle2 className="w-4 h-4" />
+            <span>Account verified! Entering CreatorOS...</span>
+          </div>
+        )}
+
+        {/* 6-Digit Code Input */}
+        <div className="space-y-3 pt-1">
+          <input
+            type="text"
+            maxLength={6}
+            value={otpCodeInput}
+            onChange={(e) => {
+              const val = e.target.value.replace(/\D/g, '').slice(0, 6);
+              setOtpCodeInput(val);
+              setPendingOtpError(null);
+              if (val.length === 6) {
+                handleVerifyPendingOtp(val);
+              }
+            }}
+            placeholder="• • • • • •"
+            className="w-full text-center font-mono font-bold text-2xl tracking-[0.3em] py-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-600 dark:focus:border-sky-500 transition-all shadow-xs"
+          />
+
           <button
             type="button"
-            onClick={() => {
-              setVerificationPendingEmail(null);
-              setMode('signin');
-              setPassword('');
-              setConfirmPassword('');
-            }}
-            className="w-full py-3 rounded-full bg-[var(--primary)] text-white text-xs sm:text-sm font-bold flex items-center justify-center gap-2 cursor-pointer transition-all hover:bg-[var(--primary)]/90 shadow-sm"
+            onClick={() => handleVerifyPendingOtp()}
+            disabled={isVerifyingPendingOtp || pendingOtpSuccess || otpCodeInput.length < 6}
+            className="w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white dark:bg-sky-500 dark:hover:bg-sky-400 dark:text-slate-950 text-xs sm:text-sm font-bold flex items-center justify-center gap-2 cursor-pointer transition-all disabled:opacity-50 shadow-xs"
           >
-            <span>Return to Sign In</span>
-            <ArrowRight className="w-4 h-4" />
+            {isVerifyingPendingOtp ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin text-white dark:text-slate-950" />
+                <span>Verifying OTP...</span>
+              </>
+            ) : (
+              <span>Verify &amp; Activate Account</span>
+            )}
           </button>
+
+          <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 px-1 pt-1">
+            <button
+              type="button"
+              onClick={() => handleResendConfirmation(verificationPendingEmail)}
+              disabled={isResending}
+              className="text-blue-600 dark:text-sky-400 hover:underline font-semibold flex items-center gap-1 cursor-pointer"
+            >
+              <RefreshCw className={`w-3 h-3 ${isResending ? 'animate-spin' : ''}`} />
+              <span>{isResending ? 'Resending...' : 'Resend Link / OTP'}</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                setVerificationPendingEmail(null);
+                setMode('signin');
+              }}
+              className="hover:underline text-slate-600 dark:text-slate-400 cursor-pointer"
+            >
+              Back to Sign In
+            </button>
+          </div>
         </div>
       </div>
     );

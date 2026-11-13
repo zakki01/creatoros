@@ -267,22 +267,34 @@ describe('FinanceService Unit Tests', () => {
   });
 
   describe('Multi-Account Payment Rails & Strict Cross-Role Identity Policy', () => {
-    it('allows linking and reusing the same payment rail across multiple distinct accounts', async () => {
+    it('requires 2FA OTP verification before linking a payment rail already registered to another account', async () => {
       const userA = 'creator_acc_101';
       const userB = 'agency_acc_202';
       const sharedUpi = 'agency.finance@okhdfcbank';
 
+      // 1. User A registers payout method first
       const resA = await FinanceService.addPaymentMethod(userA, {
         providerType: 'upi',
         identifier: sharedUpi,
       });
       expect(resA.success).toBe(true);
 
-      const resB = await FinanceService.addPaymentMethod(userB, {
+      // 2. User B tries to link the same payout rail WITHOUT OTP verification -> BLOCKED
+      const resBBlocked = await FinanceService.addPaymentMethod(userB, {
         providerType: 'upi',
         identifier: sharedUpi,
       });
-      expect(resB.success).toBe(true);
+      expect(resBBlocked.success).toBe(false);
+      expect(resBBlocked.error).toContain('Security Verification Required');
+      expect(resBBlocked.error).toContain('OTP authorization');
+
+      // 3. User B completes 2FA OTP verification and provides isOtpVerified: true -> ALLOWED
+      const resBVerified = await FinanceService.addPaymentMethod(userB, {
+        providerType: 'upi',
+        identifier: sharedUpi,
+        isOtpVerified: true,
+      });
+      expect(resBVerified.success).toBe(true);
 
       const methodsA = await FinanceService.getPaymentMethods(userA);
       const methodsB = await FinanceService.getPaymentMethods(userB);
@@ -314,9 +326,14 @@ describe('FinanceService Unit Tests', () => {
       expect(brandSubmit.error).toContain('Strict Policy Restriction');
       expect(brandSubmit.error).toContain('CREATOR');
 
-      // 3. Another Creator account under the same creator role or same user is permitted
-      const validationSameRole = FinanceService.validateCrossRoleIdentity(passportId, 'creator', 'another_creator');
-      expect(validationSameRole.allowed).toBe(true);
+      // 3. Another Creator account with a DIFFERENT user ID is strictly BLOCKED (never allow multiple profiles with same IDs)
+      const validationSameRoleDifferentUser = FinanceService.validateCrossRoleIdentity(passportId, 'creator', 'another_creator');
+      expect(validationSameRoleDifferentUser.allowed).toBe(false);
+      expect(validationSameRoleDifferentUser.error).toContain('Strict Identity Policy');
+
+      // 4. The same user referencing their own ID is allowed
+      const validationSameUser = FinanceService.validateCrossRoleIdentity(passportId, 'creator', creatorUserId);
+      expect(validationSameUser.allowed).toBe(true);
     });
   });
 });

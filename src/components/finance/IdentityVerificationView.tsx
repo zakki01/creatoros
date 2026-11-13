@@ -185,17 +185,17 @@ export const IdentityVerificationView: React.FC<IdentityVerificationViewProps> =
         </div>
       )}
 
-      {/* Cross-Role & Payment Rail Policy Explainer */}
+      {/* Strict Identity & Security Policy Explainer */}
       <div className="p-3.5 rounded-xl bg-sky-500/10 border border-sky-500/20 text-xs text-sky-700 dark:text-sky-300 flex items-start gap-2.5">
         <ShieldCheck className="w-4 h-4 text-sky-600 dark:text-sky-400 shrink-0 mt-0.5" />
         <div className="space-y-0.5">
           <span className="font-semibold block text-slate-900 dark:text-slate-100">
-            Account Integrity &amp; Payment Rails Policy
+            Account Integrity &amp; Strict Anti-Duplication Policy
           </span>
           <p className="text-[11px] text-slate-600 dark:text-slate-300 leading-relaxed">
-            • <strong>Shared Payment Methods:</strong> You may link the same payout rail (Bank account, UPI ID, PayPal, or card) across multiple creator or agency accounts you manage.
+            • <strong>Strict 1-Account-Per-Identity Policy:</strong> Never allow multiple profile creation with the same IDs. Each government ID (Passport, Aadhaar, National ID, DL) can only belong to one verified profile across CreatorOS.
             <br />
-            • <strong>Strict Cross-Role Policy:</strong> The same government ID cannot be registered across both a Brand and a Creator account.
+            • <strong>2-Factor Payout Rail Verification:</strong> Every payout rail requires OTP confirmation dispatched to your registered financial email/phone before activation to prevent unauthorized payment rerouting.
           </p>
         </div>
       </div>

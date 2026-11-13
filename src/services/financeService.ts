@@ -334,6 +334,8 @@ export class FinanceService {
       identifier: string;
       isPreferred?: boolean;
       providerAccountId?: string;
+      otpCode?: string;
+      isOtpVerified?: boolean;
     }
   ): Promise<{ success: boolean; method?: UserPaymentMethod; error?: string }> {
     // Validate identifier according to provider type
@@ -350,6 +352,32 @@ export class FinanceService {
         return { success: false, error: 'Stripe onboarding identifier is missing.' };
       }
     }
+
+    const normalizedIdent = method.identifier.trim().toLowerCase();
+
+    // Check payment method registry for cross-account ownership & require OTP authorization
+    try {
+      const rawPaymentRegistry = localStorage.getItem(`${STORAGE_PREFIX}payment_method_registry`);
+      const paymentRegistry: Record<string, { userId: string; providerType: string; linkedAt: string; verifiedAt?: string }> =
+        rawPaymentRegistry ? JSON.parse(rawPaymentRegistry) : {};
+
+      const existingOwner = paymentRegistry[normalizedIdent];
+      if (existingOwner && existingOwner.userId !== userId && !method.isOtpVerified) {
+        return {
+          success: false,
+          error: `Security Verification Required: This payout rail (${method.identifier}) is associated with another profile. You must complete 2-factor OTP authorization to confirm identity ownership before linking.`,
+        };
+      }
+
+      // Record ownership in registry
+      paymentRegistry[normalizedIdent] = {
+        userId,
+        providerType: method.providerType,
+        linkedAt: new Date().toISOString(),
+        verifiedAt: new Date().toISOString(),
+      };
+      localStorage.setItem(`${STORAGE_PREFIX}payment_method_registry`, JSON.stringify(paymentRegistry));
+    } catch {}
 
     const currentMethods = await this.getPaymentMethods(userId);
     const isFirstMethod = currentMethods.length === 0;
@@ -650,16 +678,28 @@ export class FinanceService {
 
   /**
    * Enforces strict duplicate account policy:
-   * The same government ID cannot be shared across both Brand and Creator accounts.
+   * Never allow multiple profile creation with the same government IDs across CreatorOS.
    */
   static validateCrossRoleIdentity(
     idNumber: string,
     role: 'creator' | 'brand' | 'business' = 'creator',
     currentUserId?: string
   ): { allowed: boolean; existingRole?: string; error?: string } {
+    return this.validateIdentityUniqueness(idNumber, currentUserId, role);
+  }
+
+  /**
+   * Universal Identity Uniqueness Validator:
+   * Ensures a government ID is strictly unique to exactly 1 account across the entire platform.
+   */
+  static validateIdentityUniqueness(
+    idNumber: string,
+    currentUserId?: string,
+    targetRole?: 'creator' | 'brand' | 'business'
+  ): { allowed: boolean; existingRole?: string; existingUserId?: string; error?: string } {
     if (!idNumber) return { allowed: true };
     const normalizedId = idNumber.trim().toUpperCase();
-    const normalizedRole: 'creator' | 'brand' = role === 'business' ? 'brand' : role;
+    const normalizedRole = targetRole === 'business' ? 'brand' : targetRole || 'creator';
 
     try {
       const rawRegistry = localStorage.getItem(`${STORAGE_PREFIX}identity_registry`);
@@ -668,11 +708,21 @@ export class FinanceService {
         : {};
 
       const existing = registry[normalizedId];
-      if (existing && existing.userId !== currentUserId && existing.role !== normalizedRole) {
+      if (existing && existing.userId !== currentUserId) {
+        if (existing.role !== normalizedRole) {
+          return {
+            allowed: false,
+            existingRole: existing.role,
+            existingUserId: existing.userId,
+            error: `Strict Policy Restriction: This government ID is already registered to an active ${existing.role.toUpperCase()} account. To prevent conflicts of interest and fraudulent double-dealing, the same ID cannot be used across both Creator and Brand accounts.`,
+          };
+        }
+
         return {
           allowed: false,
           existingRole: existing.role,
-          error: `Strict Policy Restriction: This government ID is already registered to an active ${existing.role.toUpperCase()} account. To prevent conflicts of interest and fraudulent double-dealing, the same ID cannot be used across both Creator and Brand accounts.`,
+          existingUserId: existing.userId,
+          error: `Strict Identity Policy: This government ID is already registered to an existing CreatorOS profile (${existing.userId}). To prevent identity cloning and duplicate account abuse, creating multiple profiles with the same government ID is strictly prohibited.`,
         };
       }
 
